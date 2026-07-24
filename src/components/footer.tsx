@@ -22,27 +22,27 @@ export default function Footer() {
                 />
               </div>
             </div>
-            <p className="text-xs text-primary-color leading-relaxed max-w-xs">
-              SastraCode បង្កើតឡើងដើម្បីលើកកម្ពស់អ្នកអភិវឌ្ឍន៍ តាមរយៈមាតិកាបច្ចេកវិទ្យាដែលមានគុណភាព និងងាយយល់។
+            <p className="text-xs font-khmer text-primary-color leading-relaxed max-w-xs text-[12px] lg:text-[14px]">
+              <span className='font-sans text-[12px] lg:text-[14px]'>SastraCode</span> បង្កើតឡើងដើម្បីលើកកម្ពស់អ្នកអភិវឌ្ឍន៍ តាមរយៈមាតិកាបច្ចេកវិទ្យាដែលមានគុណភាព និងងាយយល់។
             </p>
           </div>
 
           {/* Column 2: Quick Links (តំណភ្ជាប់រហ័ស) */}
           <div>
-            <h3 className="font-bold text-primary-color text-base mb-4">តំណភ្ជាប់រហ័ស</h3>
+            <h3 className="font-bold font-khmer text-primary-color text-base mb-4 text-[14px] lg:text-[18px]">តំណភ្ជាប់រហ័ស</h3>
             <ul className="space-y-2.5 text-xs text-primary-color">
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors">
+                <a href="#" className="hover:text-secondary-color transition-colors font-khmer text-[12px] lg:text-[14px]">
                   អំពីសាស្ត្រាកូដ
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors">
+                <a href="#" className="hover:text-secondary-color transition-colors font-khmer text-[12px] lg:text-[14px]">
                   ក្រុមការងារ
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors">
+                <a href="#" className="hover:text-secondary-color transition-colors font-khmer text-[12px] lg:text-[14px]">
                   ដៃគូសហការ
                 </a>
               </li>
@@ -51,25 +51,25 @@ export default function Footer() {
 
           {/* Column 3: Study / Courses (ការសិក្សា) */}
           <div>
-            <h3 className="font-bold text-primary-color text-base mb-4">ការសិក្សា</h3>
+            <h3 className="font-bold text-[14px] lg:text-[18px] text-primary-color mb-4 font-khmer">ការសិក្សា</h3>
             <ul className="space-y-2.5 text-xs text-primary-color">
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors">
+                <a href="#" className="hover:text-secondary-color transition-colors font-khmer text-[12px] lg:text-[14px]">
                   វិញ្ញាបនបត្រ
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors">
+                <a href="#" className="hover:text-secondary-color transition-colors font-sans text-[12px] lg:text-[14px]">
                   Full-Stack Track
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors">
+                <a href="#" className="hover:text-secondary-color transition-colors font-sans text-[12px] lg:text-[14px]">
                   Data Science
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors">
+                <a href="#" className="hover:text-secondary-color transition-colors font-sans text-[12px] lg:text-[14px]">
                   System Design
                 </a>
               </li>
@@ -77,17 +77,17 @@ export default function Footer() {
           </div>
           {/* Column 4: Contact (ទំនាក់ទំនង) */}
           <div>
-            <h3 className="font-bold text-primary-color text-base mb-4">ទំនាក់ទំនង</h3>
+            <h3 className="font-bold text-primary-color mb-4 font-khmer text-[14px] lg:text-[18px]">ទំនាក់ទំនង</h3>
             <ul className="space-y-3 text-xs text-primary-color">
               <li className="flex items-center space-x-2.5">
                 <Mail className="w-4 h-4 text-primary-color flex-shrink-0" />
-                <a href="mailto:contact@sastracode.tech" className="hover:text-secondary-color transition-colors">
+                <a href="mailto:contact@sastracode.tech" className="hover:text-secondary-color transition-colors font-sans text-[12px] lg:text-[14px]">
                   contact@sastracode.tech
                 </a>
               </li>
               <li className="flex items-start space-x-2.5">
                 <MapPin className="w-4 h-4 text-primary-color flex-shrink-0 mt-0.5" />
-                <span>ភូមិ ១៣, ផ្លូវលេខ ៥០, Street 273, Phnom Penh 12151</span>
+                <span className='font-khmer text-[12px] lg:text-[14px]'>ភូមិ ១៣, ផ្លូវលេខ ៥០, Street 273, Phnom Penh 12151</span>
               </li>
             </ul>
           </div>
@@ -95,7 +95,7 @@ export default function Footer() {
 
         {/* Middle Section: Organized & Sponsored By */}
         <div className="pt-8 pb-10 border-t border-gray-100">
-          <h4 className="text-center text-primary-color font-bold text-base mb-8">
+          <h4 className="text-center text-primary-color font-bold mb-8 font-khmer text-[14px] lg:text-[18px]">
             រៀបចំ និងឧបត្ថម្ភដោយ
           </h4>
           <div className="flex flex-wrap items-center justify-center gap-y-12 gap-x-20 md:gap-x-32 lg:gap-x-60">
@@ -135,18 +135,18 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar Section */}
-        <div className="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between text-xs text-primary-color gap-4">
+        <div className="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between text-xs text-primary-color gap-4 font-khmer text-[12px] lg:text-[14px]">
           <div>
             រក្សាសិទ្ធិគ្រប់យ៉ាង © ២០២៦ SastraCode
           </div>
           <div className="flex items-center space-x-6">
-            <a href="#" className="hover:text-secondary-color transition-colors">
+            <a href="#" className="hover:text-secondary-color transition-colors text-[12px] lg:text-[14px]">
               គោលការណ៍ឯកជនភាព
             </a>
-            <a href="#" className="hover:text-secondary-color transition-colors">
+            <a href="#" className="hover:text-secondary-color transition-colors text-[12px] lg:text-[14px]">
               លក្ខខណ្ឌសេវាកម្ម
             </a>
-            <a href="#" className="hover:text-secondary-color transition-colors">
+            <a href="#" className="hover:text-secondary-color transition-colors text-[12px] lg:text-[14px]">
               យុត្តិធម៌
             </a>
           </div>
