@@ -32,17 +32,17 @@ export default function Footer() {
             <h3 className="font-bold font-khmer text-primary-color text-base mb-4 text-[22px]">តំណភ្ជាប់រហ័ស</h3>
             <ul className="space-y-2.5 text-xs text-primary-color">
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors font-khmer  text-[18px] lg:text-[22px]">
+                <a href="#" className="hover:text-secondary-color transition-colors font-khmer  text-[18px]">
                   អំពីសាស្ត្រាកូដ
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors font-khmer  text-[18px] lg:text-[22px]">
+                <a href="#" className="hover:text-secondary-color transition-colors font-khmer  text-[18px]">
                   ក្រុមការងារ
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors font-khmer  text-[18px] lg:text-[22px]">
+                <a href="#" className="hover:text-secondary-color transition-colors font-khmer  text-[18px]">
                   ដៃគូសហការ
                 </a>
               </li>
@@ -54,22 +54,22 @@ export default function Footer() {
             <h3 className="font-bold text-[22px] text-primary-color mb-4 font-khmer">ការសិក្សា</h3>
             <ul className="space-y-2.5 text-xs text-primary-color">
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors font-khmer  text-[18px] lg:text-[22px]">
+                <a href="#" className="hover:text-secondary-color transition-colors font-khmer  text-[18px]">
                   វិញ្ញាបនបត្រ
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors font-sans  text-[18px] lg:text-[22px]">
+                <a href="#" className="hover:text-secondary-color transition-colors font-sans  text-[18px]">
                   Full-Stack Track
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors font-sans  text-[18px] lg:text-[22px]">
+                <a href="#" className="hover:text-secondary-color transition-colors font-sans  text-[18px]">
                   Data Science
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-secondary-color transition-colors font-sans  text-[18px] lg:text-[22px]">
+                <a href="#" className="hover:text-secondary-color transition-colors font-sans  text-[18px]">
                   System Design
                 </a>
               </li>
@@ -82,13 +82,13 @@ export default function Footer() {
             <ul className="space-y-3 text-xs text-primary-color">
               <li className="flex items-center justify-center md:justify-start space-x-2.5">
                 <Mail className="w-4 h-4 text-primary-color flex-shrink-0" />
-                <a href="mailto:contact@sastracode.tech" className="hover:text-secondary-color transition-colors font-sans  text-[18px] lg:text-[22px]">
+                <a href="mailto:contact@sastracode.tech" className="hover:text-secondary-color transition-colors font-sans  text-[18px]">
                   contact@sastracode.tech
                 </a>
               </li>
               <li className="flex items-center md:items-start justify-center md:justify-start space-x-2.5">
                 <MapPin className="w-4 h-4 text-primary-color flex-shrink-0 md:mt-0.5" />
-                <span className='font-khmer  text-[18px] lg:text-[22px]'>ភូមិ ១៣, ផ្លូវលេខ ៥០, Street 273, Phnom Penh 12151</span>
+                <span className='font-khmer  text-[18px]'>ភូមិ ១៣, ផ្លូវលេខ ៥០, Street 273, Phnom Penh 12151</span>
               </li>
             </ul>
           </div>
