@@ -39,9 +39,7 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
         </div>
 
         <div className='flex items-center gap-6'>
-          <Button variant='ghost' size='icon'>
           <ModeToggle/>
-          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger className='md:hidden' render={<Button variant='outline' size='icon' />}>
               <MenuIcon
