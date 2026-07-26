@@ -1,5 +1,4 @@
 "use client";
-
 import { Search } from "lucide-react";
 import { FormEvent, useState } from "react";
 
@@ -23,7 +22,7 @@ export default function HeroSearchBar({ onSearch }: HeroSearchBarProps) {
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         placeholder="តើអ្នកចង់រៀនអ្វី?"
-        className="w-full rounded-[16px] border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-700 shadow-sm outline-none placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
+        className=" font-khmer text-primary-colorw-full rounded-[16px] bg-white py-3 pl-11 pr-20 text-sm text-slate-700  outline-none placeholder:text-slate-400 focus:border-blue-400 focus:ring-2 focus:ring-blue-100"
       />
     </form>
   );

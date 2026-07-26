@@ -13,6 +13,7 @@ import {
   TrackSlug,
   TrackTab,
 } from "@/types/course";
+import htmlLessonImg from '../assets/svg/html-lesson.png';
 
 // export const docSidebarLinks: SidebarNavItem[] = [
 //   { id: "home", label: "ទំព័រដើម", href: "/home", icon: "Home" },
@@ -108,7 +109,12 @@ export const inProgressLessons: ProgressLessonCard[] = [
     href: "/documentation/java/lessons",
   },
 ];
-
+export const currentProgress: CourseProgress = {
+  courseTitle: "Java Programming",
+  lessonLabel: "មេរៀនទី ៦ លើ ១៥",
+  percent: 40,
+  href: "/documentation/java-programming",
+};
 export const javaLessons: LessonCatalogItem[] = [
   {
     id: "intro-to-java",
@@ -236,13 +242,6 @@ export const techOptions: TechOption[] = [
   { id: "html", label: "HTML", icon: "/icons/html.svg" },
 ];
 
-export const currentProgress: CourseProgress = {
-  courseTitle: "Java Programming",
-  lessonLabel: "មេរៀនទី ៦ លើ ១៥",
-  percent: 40,
-  href: "/documentation/java-programming",
-};
-
 export const courses: Course[] = [
   {
     id: "html-lessons",
@@ -251,8 +250,8 @@ export const courses: Course[] = [
     description:
       "HTML (Markup Language) ជាភាសាមូលដ្ឋានសម្រាប់សាងសង់រចនាសម្ព័ន្ធគេហទំព័រ តាមរយៈ Elements, Tags និង Attributes។",
     tag: "HTML",
-    href: "/documentation/html-lessons",
-    coverImage: "/images/courses/html.jpg",
+    href: "/documentation/html-lesson",
+    coverImage: "/images/courses/html-lesson.png",
     ctaLabel: "រៀនឥឡូវ",
   },
   {
@@ -263,7 +262,7 @@ export const courses: Course[] = [
       "CSS ជួយឱ្យទំព័ររបស់អ្នកមានភាពស្រស់ស្អាត តាមរយៈ Colors, Layouts, Animations និង Responsive Design។",
     tag: "CSS",
     href: "/documentation/css",
-    coverImage: "/images/courses/css.jpg",
+    coverImage: "/images/courses/css.png",
     ctaLabel: "រៀនឥឡូវ",
   },
   {
@@ -316,16 +315,16 @@ export const forumPosts: ForumPost[] = [
     id: "react-hooks",
     type: "post",
     author: "អ្នកប្រើប្រាស់",
-    timeAgo: "០០ ថ្ងៃ",
+    timeAgo: "៤៥ នាទ",
     title: "របៀបគ្រប់គ្រង State ក្នុង React Hooks",
-    excerpt: "រៀនប្រើ useState, useEffect និង useContext ក្នុងកម្មវិធីជាក់ស្តែង។",
+    excerpt: "ស្វែងយល់ useState, useEffect និង useContext ក្នុងការអភិវឌ្ឍ UI ស្មុគស្មាញ",
     href: "/playground/react-hooks",
   },
   {
     id: "sql-query",
     type: "sql",
     author: "SQL",
-    timeAgo: "០០ ថ្ងៃ",
+    timeAgo: "៦០ នាទ",
     title: "តើធ្វើដូចម្តេចដើម្បីសរសេរ SQL Query ស្មុគ្រស្មាញ?",
     excerpt: "SELECT, JOIN, GROUP BY និងបច្ចេកទេសសំខាន់ៗសម្រាប់គ្រប់គ្រង Database។",
     href: "/playground/sql-query",

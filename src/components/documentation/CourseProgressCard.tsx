@@ -7,7 +7,7 @@ interface CourseProgressCardProps {
 
 export default function CourseProgressCard({ progress }: CourseProgressCardProps) {
   return (
-    <div className="flex flex-col gap-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+    <div className=" font-khmer text-primary-color flex flex-col gap-4 rounded-2xl border border-slate-100 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-4">
         <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
           {/* Replace with a Java/course icon */}
@@ -15,11 +15,11 @@ export default function CourseProgressCard({ progress }: CourseProgressCardProps
         </span>
 
         <div className="flex flex-col gap-2">
-          <p className="text-sm font-semibold text-slate-800">{progress.courseTitle}</p>
-          <p className="text-xs text-slate-400">{progress.lessonLabel}</p>
+          <p className="text-[18px] font-semibold text-slate-800 ">{progress.courseTitle}</p>
+          <p className="text-[18px] text-slate-400">{progress.lessonLabel}</p>
           <div className="h-1.5 w-48 overflow-hidden rounded-full bg-slate-100">
             <div
-              className="h-full rounded-full bg-blue-700"
+              className="h-full rounded-full bg-primary-color"
               style={{ width: `${progress.percent}%` }}
             />
           </div>
