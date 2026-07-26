@@ -16,14 +16,14 @@ export default function CourseProgressCard({ progress }: CourseProgressCardProps
 
         <div className="flex flex-col gap-2">
           <p className="text-[18px] font-semibold text-slate-800 ">{progress.courseTitle}</p>
-          <p className="text-[18px] text-slate-400">{progress.lessonLabel}</p>
+          <p className="text-[16px] text-slate-400">{progress.lessonLabel}</p>
           <div className="h-1.5 w-48 overflow-hidden rounded-full bg-slate-100">
             <div
-              className="h-full rounded-full bg-primary-color"
+              className="h-full rounded-full bg-primary-color text-[16px]"
               style={{ width: `${progress.percent}%` }}
             />
           </div>
-          <p className="text-xs text-slate-400">{progress.percent}% បានបញ្ចប់</p>
+          <p className="text-[16px] text-slate-400">{progress.percent}% បានបញ្ចប់</p>
         </div>
       </div>
 

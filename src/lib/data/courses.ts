@@ -251,7 +251,7 @@ export const courses: Course[] = [
       "HTML (Markup Language) ជាភាសាមូលដ្ឋានសម្រាប់សាងសង់រចនាសម្ព័ន្ធគេហទំព័រ តាមរយៈ Elements, Tags និង Attributes។",
     tag: "HTML",
     href: "/documentation/html-lesson",
-    coverImage: "/images/courses/html-lesson.png",
+    coverImage: "/images/html.png",
     ctaLabel: "រៀនឥឡូវ",
   },
   {
@@ -261,8 +261,8 @@ export const courses: Course[] = [
     description:
       "CSS ជួយឱ្យទំព័ររបស់អ្នកមានភាពស្រស់ស្អាត តាមរយៈ Colors, Layouts, Animations និង Responsive Design។",
     tag: "CSS",
-    href: "/documentation/css",
-    coverImage: "/images/courses/css.png",
+    href: "/documentation/html-lesson",
+    coverImage: "/images/html.png",
     ctaLabel: "រៀនឥឡូវ",
   },
   {
@@ -272,8 +272,8 @@ export const courses: Course[] = [
     description:
       "រៀនភាសាសរសេរកម្មវិធីលើគេហទំព័រ JavaScript ដើម្បីបង្កើត Interaction និងមុខងារឆ្លាតវៃ។",
     tag: "JavaScript",
-    href: "/documentation/javascript",
-    coverImage: "/images/courses/javascript.jpg",
+    href: "/documentation/html-lesson",
+    coverImage: "/images/html.png",
     ctaLabel: "រៀនឥឡូវ",
   },
   {
@@ -283,8 +283,8 @@ export const courses: Course[] = [
     description:
       "រៀនពីមូលដ្ឋាននៃ Java Programming និង OOP សម្រាប់បង្កើតកម្មវិធីលើ Web, Mobile និង Desktop ព្រមទាំង Syntax ជាមូលដ្ឋាន។",
     tag: "Java",
-    href: "/documentation/java-programming",
-    coverImage: "/images/courses/java.jpg",
+    href: "/documentation/html-lesson",
+    coverImage: "/images/html.png",
     ctaLabel: "រៀនបន្ត",
   },
   {
@@ -293,8 +293,8 @@ export const courses: Course[] = [
     titleKm: "Python Programming",
     description: "រៀនមូលដ្ឋានគ្រឹះនៃ Python ចាប់ពី Syntax រហូតដល់ Automation ។",
     tag: "Python",
-    href: "/documentation/python-programming",
-    coverImage: "/images/courses/python.jpg",
+    href: "/documentation/html-lesson",
+    coverImage: "/images/html.png",
     ctaLabel: "រៀនឥឡូវ",
   },
   {
@@ -304,8 +304,8 @@ export const courses: Course[] = [
     description:
       "រៀនពីគោលការណ៍ជាមូលដ្ឋាននៃ UI/UX ដូចជា Wireframe, Prototype និងគោលការណ៍រចនា UI ដ៏ល្អ។",
     tag: "CSS",
-    href: "/documentation/ui-ux-design",
-    coverImage: "/images/courses/ui-ux.jpg",
+   href: "/documentation/html-lesson",
+    coverImage: "/images/html.png",
     ctaLabel: "រៀនឥឡូវ",
   },
 ];
