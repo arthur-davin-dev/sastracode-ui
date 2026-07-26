@@ -1,7 +1,7 @@
 import { CourseCard } from "./CourseCard";
 import { Course } from "./Types";
 
-interface CourseGridProps{
+interface CourseGridProps {
   courses: Course[];
 }
 

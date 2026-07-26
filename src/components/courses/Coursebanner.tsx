@@ -47,10 +47,10 @@ export default function CourseCard() {
           </div>
 
           {/* Right illustration with floating badges */}
-          <div className="relative overflow-hidden r">
+          <div className="relative overflow-hidden ">
             <div className="absolute inset-0 =" />
             <Image
-              src="/assets/images/banner-course.png"
+              src="/assets/images/bannercourse.png"
               alt="Student learning to code"
               width={900}
               height={600}

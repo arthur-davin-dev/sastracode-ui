@@ -5,7 +5,6 @@ import { Separator } from "@/components/ui/separator";
 import { BookOpen, Clock } from "lucide-react";
 import { Course } from "./Types";
 
-
 interface CourseCardProps {
   course: Course;
 }
@@ -20,13 +19,14 @@ export function CourseCard({ course }: CourseCardProps) {
   return (
     <div className="group w-full overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md">
       {/* Card image */}
-      <div className="relative h-[110px] w-full">
-        <Image
-          src={course.image}
-          alt={course.title}
-          fill
-          className="rounded-t-xl object-cover"
-        />
+      <div className="relative h-[150px] w-full">
+                 <Image
+                   src="/assets/images/HTML & CSS.jpg"
+                   alt="Student learning to code"
+                   width={900}
+                   height={600}
+                   className="relative h-full w-full object-cover"
+                 />
       </div>
 
       {/* Card content */}
@@ -38,11 +38,17 @@ export function CourseCard({ course }: CourseCardProps) {
           {course.category}
         </Badge>
 
-        <h3 className="mb-2 text-[16px] font-semibold text-gray-900 font-khmer">
+        <h3
+          className="mb-2 text-[16px] font-semibold text-gray-900 font-(family-name:--font-sans)
+"
+        >
           {course.title}
         </h3>
 
-        <p className="line-clamp-2 text-[14px] leading-[1.7] text-gray-500 font-khmer">
+        <p
+          className="line-clamp-2 text-[14px] leading-[1.7] text-gray-500 font-(family-name:--font-sans)
+"
+        >
           {course.description}
         </p>
 
@@ -68,15 +74,12 @@ export function CourseCard({ course }: CourseCardProps) {
 
           <a
             href={course.href ?? "#"}
-            className="text-[13px] font-medium text-[#06295c] hover:underline font-khmer"
+            className="text-[13px] font-medium text-[#06295c] hover:underline font-(family-name:--font-sans)"
           >
             ចាប់ផ្តើមរៀន →
           </a>
         </div>
       </div>
-      
-
     </div>
-  
   );
 }
