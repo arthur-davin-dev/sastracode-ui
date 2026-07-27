@@ -12,7 +12,6 @@ export default function Playground() {
       <Hero />
       <Card />
       <ProjectsSection />
-      <Footer/>
     </div>
   )
 }

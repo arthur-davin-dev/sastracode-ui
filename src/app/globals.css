@@ -8,7 +8,7 @@
   --primary-color: #002455;
   --secondary-color: #dc0000;
   --init-color: #f1b012;
-  --font-sans: var(--font-geist-sans), var(--font-khmer);
+  --font-sans: var(--font-google-sans), var(--font-inter);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -50,7 +50,6 @@
   --color-secondary-color: var(--secondary-color);
   --color-init-color: var(--init-color);
   --font-sans: var(--font-sans);
-  --font-khmer: var(--font-khmer);
   --font-heading: var(--font-sans);
   --font-size-main-title: 40px;
   --font-size-sub-title: 24px;
@@ -140,4 +139,4 @@
 }
 
 /* Enable class-based dark mode in Tailwind v4 */
-@variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where(.dark, .dark *));
