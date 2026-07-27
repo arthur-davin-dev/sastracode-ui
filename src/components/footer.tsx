@@ -4,15 +4,15 @@ import { Mail, MapPin } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-white text-primary-color font-sans text-sm pt-6 pb-6 px-6 md:px-16 border-t border-gray-100">
-      <div className="max-w-7xl mx-auto">
+    <footer className="relative z-20 w-full bg-white text-primary-color font-sans text-sm pt-6 pb-6 px-6 md:px-16 border-t border-gray-100">
+      <div className="w-full px-4">
         {/* Upper Footer Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-4 text-center md:text-left">
           {/* Column 1: Brand Info */}
           <div className="space-y-2 flex flex-col items-center md:items-start">
             <div className="flex items-center space-x-2">
               {/* SastraCode logo */}
-              <div className="w-20 h-20 relative flex-shrink-0">
+              <div className="w-20 h-20 relative shrink-0">
                 <Image
                   src="/images/sastra_code_logo.png"
                   alt="SastraCode Logo"
@@ -81,13 +81,13 @@ export default function Footer() {
             <h3 className="font-bold text-primary-color mb-4 font-khmer text-[22px]">ទំនាក់ទំនង</h3>
             <ul className="space-y-3 text-xs text-primary-color">
               <li className="flex items-center justify-center md:justify-start space-x-2.5">
-                <Mail className="w-4 h-4 text-primary-color flex-shrink-0" />
+                <Mail className="w-4 h-4 text-primary-color shrink-0" />
                 <a href="mailto:contact@sastracode.tech" className="hover:text-secondary-color transition-colors font-sans  text-[18px]">
                   contact@sastracode.tech
                 </a>
               </li>
               <li className="flex items-center md:items-start justify-center md:justify-start space-x-2.5">
-                <MapPin className="w-4 h-4 text-primary-color flex-shrink-0 md:mt-0.5" />
+                <MapPin className="w-4 h-4 text-primary-color shrink-0 md:mt-0.5" />
                 <span className='font-khmer  text-[18px]'>ភូមិ ១៣, ផ្លូវលេខ ៥០, Street 273, Phnom Penh 12151</span>
               </li>
             </ul>

@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Sidebar,
   SidebarHeader,
@@ -22,17 +24,23 @@ import {
 } from "lucide-react";
 
 const menuItems = [
-  { title: "Home", icon: Home },
-  { title: "Editor", icon: Code2 },
-  { title: "Console", icon: Terminal },
-  { title: "Preview", icon: Eye },
+  { title: "Home", icon: Home, href: "/" },
+  { title: "Editor", icon: Code2, href: "/playground/editor" },
+  { title: "Console", icon: Terminal, href: "/playground/console" },
+  { title: "Preview", icon: Eye, href: "/preview" },
+];
+
+const footerItems = [
+  { title: "Docs", icon: FileText, href: "/docs" },
+  { title: "Help", icon: HelpCircle, href: "/help" },
 ];
 
 export default function AppSidebar() {
+  const pathname = usePathname();
+
   return (
     <Sidebar>
       <SidebarHeader className="p-4">
-        {/* Logo on top */}
         <div className="flex justify-center mb-3">
           <Image
             src="/playground/SastraCodeLogo.png"
@@ -42,7 +50,6 @@ export default function AppSidebar() {
           />
         </div>
 
-        {/* Icon circle + workspace text */}
         <div className="flex items-center justify-center gap-2 mb-4">
           <div className="h-12 w-12 rounded-full bg-primary-color flex items-center justify-center text-white">
             <Image
@@ -59,7 +66,7 @@ export default function AppSidebar() {
         </div>
 
         <Button
-          className="w-full gap-2 py-5 text-base bg-primary-color hover:bg-primary-color"
+          className="w-full gap-2 py-5 text-base bg-primary-color hover:bg-primary-color text-white hover:text-white"
           size="sm"
         >
           <Plus className="h-4 w-4" />
@@ -68,38 +75,49 @@ export default function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent className="px-2">
-        <SidebarMenu>
-          {menuItems.map((item, index) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton
-                className={
-                  index === 0
-                    ? "bg-primary-color text-white hover:bg-primary-color hover:text-white rounded-md py-5"
-                    : "text-primary-color rounded-xl py-5"
-                }
-              >
-                <item.icon className="h-4 w-4" />
-                <span className="font-medium">{item.title}</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+        <SidebarMenu className="space-y-1">
+          {menuItems.map((item) => {
+            const isActive =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname === item.href || pathname?.startsWith(`${item.href}/`);
+
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild>
+                  <Link
+                    href={item.href}
+                    className={`flex items-center gap-3 w-full px-3 py-3 rounded-xl text-sm font-medium transition-colors ${
+                      isActive
+                        ? "bg-primary-color text-white hover:bg-primary-color hover:text-white"
+                        : "text-slate-600 dark:text-gray-300 hover:bg-muted"
+                    }`}
+                  >
+                    <item.icon className="h-5 w-5 shrink-0" />
+                    <span>{item.title}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            );
+          })}
         </SidebarMenu>
       </SidebarContent>
 
       <SidebarFooter className="p-4 border-t">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton>
-              <FileText className="h-4 w-4" />
-              <span>Docs</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton>
-              <HelpCircle className="h-4 w-4" />
-              <span>Help</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
+        <SidebarMenu className="space-y-1">
+          {footerItems.map((item) => (
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton asChild>
+                <Link
+                  href={item.href}
+                  className="flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm text-slate-600 dark:text-gray-300 hover:bg-muted transition-colors"
+                >
+                  <item.icon className="h-4 w-4 shrink-0" />
+                  <span>{item.title}</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>

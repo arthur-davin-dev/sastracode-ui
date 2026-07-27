@@ -92,7 +92,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="relative w-full border-b border-gray-200/30 bg-white/60 dark:border-slate-800/50 dark:bg-slate-950/60 backdrop-blur-xl shadow-xs transition-colors duration-200 font-khmer">
+    <header className="sticky top-0 z-30 w-full border-b border-gray-200/30 bg-white/60 dark:border-slate-800/50 dark:bg-slate-950/60 backdrop-blur-xl shadow-xs transition-colors duration-200 font-khmer">
       <nav className="mx-auto flex h-16 items-center justify-center gap-8 px-4 sm:px-6">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
