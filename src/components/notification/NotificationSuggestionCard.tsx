@@ -12,17 +12,19 @@ export function NotificationSuggestionCard({ suggestion }: { suggestion: Notific
   const Icon = iconMap[suggestion.icon] || Lock;
 
   const variantStyles = {
-    primary: "bg-indigo-950 text-white",
-    secondary: "bg-blue-50 text-indigo-950",
-    locked: "bg-muted/50 text-muted-foreground",
+    primary: "bg-indigo-950 text-white dark:bg-indigo-600",
+    secondary: "bg-blue-50 text-indigo-950 dark:bg-slate-800 dark:text-blue-50",
+    locked: "bg-muted/50 text-muted-foreground dark:bg-slate-900/50 dark:text-slate-500",
   };
 
   return (
-    <Card className={`border-0 ${variantStyles[suggestion.variant]}`}>
+    <Card className={`border-0 transition-colors duration-300 ${variantStyles[suggestion.variant]}`}>
       <CardContent className="flex flex-col items-center text-center gap-2 p-6">
         <div
-          className={`h-10 w-10 rounded-full flex items-center justify-center ${
-            suggestion.variant === "primary" ? "bg-white/10" : "bg-white"
+          className={`h-10 w-10 rounded-full flex items-center justify-center transition-colors duration-300 ${
+            suggestion.variant === "primary" 
+              ? "bg-white/10" 
+              : "bg-white dark:bg-slate-700"
           }`}
         >
           <Icon className="h-5 w-5" />

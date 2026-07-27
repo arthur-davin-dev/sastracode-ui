@@ -1,5 +1,7 @@
-export default function HomePage(){
-    return(
-        <h1>Home Page</h1>
-    )
+import React from 'react'
+
+export default function page() {
+  return (
+    <div>page</div>
+  )
 }

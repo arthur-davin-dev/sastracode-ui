@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 import React from "react";
 import Image from "next/image";
 import { Mail, MapPin } from "lucide-react";
-=======
-import Image from 'next/image';
-import { Mail, MapPin } from 'lucide-react';
->>>>>>> origin/Vanney
 
 export default function Footer() {
   return (

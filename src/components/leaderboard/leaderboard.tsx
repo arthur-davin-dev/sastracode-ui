@@ -38,10 +38,10 @@ const weeklyDays: WeeklyGoalDay[] = [
 ];
 
 const userStats: UserStat[] = [
-  { icon: "star", value: "2,678 xp", label: "Total Experience", color: "bg-blue-100 text-blue-600" },
-  { icon: "check", value: 14, label: "Problems solved", color: "bg-green-100 text-green-600" },
-  { icon: "flame", value: 12, label: "Day Streak", color: "bg-yellow-100 text-yellow-600" },
-  { icon: "chart", value: 14, label: "Current Level", color: "bg-purple-100 text-purple-600" },
+  { icon: "star", value: "2,678 xp", label: "Total Experience", color: "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400" },
+  { icon: "check", value: 14, label: "Problems solved", color: "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-400" },
+  { icon: "flame", value: 12, label: "Day Streak", color: "bg-yellow-100 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-400" },
+  { icon: "chart", value: 14, label: "Current Level", color: "bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-400" },
 ];
 
 const topPerformers: TopPerformer[] = [
@@ -54,25 +54,32 @@ export default function Leaderboard() {
   const [activeTab, setActiveTab] = useState("Global");
 
   return (
-    <div className="space-y-6 p-6">
-      <h1 className="text-xl font-bold text-indigo-950">តារាងចំណាត់ថ្នាក់</h1>
+    <div className="relative w-full min-h-screen bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 px-4 py-16 overflow-hidden transition-colors duration-300">
+      <div className="max-w-6xl mx-auto space-y-6">
+        <h1 className="text-xl font-bold text-indigo-950 dark:text-white transition-colors duration-300">
+          តារាងចំណាត់ថ្នាក់
+        </h1>
 
-      <LeaderboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
+        <LeaderboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
-          <LeaderboardTable entries={entries} currentUser={currentUser} />
-        </div>
-
-        <div className="space-y-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input placeholder="Search for courses, lessons, topics..." className="pl-9" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2">
+            <LeaderboardTable entries={entries} currentUser={currentUser} />
           </div>
 
-          <WeeklyGoalCard days={weeklyDays} completedCount={4} totalCount={5} />
-          <YourStatsCard stats={userStats} />
-          <TopPerformersCard performers={topPerformers} />
+          <div className="space-y-4">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-slate-400" />
+              <Input 
+                placeholder="Search for courses, lessons, topics..." 
+                className="pl-9 dark:bg-slate-900/80 dark:border-slate-800 dark:text-white dark:placeholder:text-slate-500 transition-colors duration-300" 
+              />
+            </div>
+
+            <WeeklyGoalCard days={weeklyDays} completedCount={4} totalCount={5} />
+            <YourStatsCard stats={userStats} />
+            <TopPerformersCard performers={topPerformers} />
+          </div>
         </div>
       </div>
     </div>
