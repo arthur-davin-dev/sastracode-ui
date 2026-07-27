@@ -48,7 +48,7 @@ export default function Timeline() {
         <div className="relative">
           
           {/* Connecting Line (Gradient adapted for both modes) */}
-          <div className="hidden md:block absolute top-5 left-[10%] right-[10%] h-[2px] bg-linear-to-r from-teal-400 via-blue-500 to-indigo-500 dark:from-teal-500 dark:via-blue-400 dark:to-indigo-400 z-0 opacity-80" />
+          <div className="hidden md:block absolute top-5 left-[10%] right-[10%] h-0.5 bg-linear-to-r from-teal-400 via-blue-500 to-indigo-500 dark:from-teal-500 dark:via-blue-400 dark:to-indigo-400 z-0 opacity-80" />
 
           {/* Cards & Steps Grid */}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6 relative z-10 font-khmer">

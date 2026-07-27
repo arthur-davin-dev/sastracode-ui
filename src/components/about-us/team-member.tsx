@@ -42,7 +42,7 @@ export default function TeamMember() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 sm:gap-6 justify-items-center">
             {Array.from({ length: 8 }).map((_, index) => (
               <div key={index} className="pt-20 pb-4 flex justify-center w-full">
-                <div className="relative bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-md pt-20 pb-6 px-6 w-full max-w-[280px] h-[280px] text-center flex flex-col items-center animate-pulse">
+                <div className="relative bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-md pt-20 pb-6 px-6 w-full max-w-70 h-70 text-center flex flex-col items-center animate-pulse">
                   <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-900 shadow-sm" />
                   <div className="h-5 w-32 bg-slate-200 dark:bg-slate-800 rounded mb-2 mt-2" />
                   <div className="h-4 w-20 bg-slate-200 dark:bg-slate-800 rounded mb-4" />
@@ -68,18 +68,18 @@ export default function TeamMember() {
           {filteredMembers.map((member) => (
             <div key={member.id} className="pt-20 pb-4 flex justify-center w-full">
               {/* Card Container */}
-              <div className="group relative bg-slate-50 dark:bg-slate-900/90 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-md dark:shadow-none pt-20 pb-6 px-6 w-full max-w-[280px] text-center flex flex-col items-center transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-xl dark:hover:border-slate-700">
+              <div className="group relative bg-slate-50 dark:bg-slate-900/90 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-md dark:shadow-none pt-20 pb-6 px-6 w-full max-w-70 text-center flex flex-col items-center transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-xl dark:hover:border-slate-700">
                 
                 {/* Avatar Container with Animated Stroke Ring */}
                 <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-40 h-40 flex items-center justify-center">
                   
                   {/* SVG Stroke Circle */}
-                  <svg className="absolute -inset-1.5 w-[172px] h-[172px] rotate-90 pointer-events-none z-20">
+                  <svg className="absolute -inset-1.5 w-43 h-43 rotate-90 pointer-events-none z-20">
                     <circle
                       cx="86"
                       cy="86"
                       r="78"
-                      className="stroke-[#002455] dark:stroke-blue-500 fill-none stroke-[3] [stroke-dasharray:490] [stroke-dashoffset:-490] transition-all duration-1500 ease-in-out group-hover:[stroke-dashoffset:0]"
+                      className="stroke-[#002455] dark:stroke-blue-500 fill-none stroke-3 [stroke-dasharray:490] [stroke-dashoffset:-490] transition-all duration-1500 ease-in-out group-hover:[stroke-dashoffset:0]"
                     />
                   </svg>
 

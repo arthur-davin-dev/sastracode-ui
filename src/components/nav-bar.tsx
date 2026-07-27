@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function Navbar() {
-  const [lang, setLang] = useState("km"); // 'km' | 'en'
+  const [lang, setLang] = useState<"km" | "en">("km"); // 'km' | 'en'
   const [darkMode, setDarkMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 

@@ -12,7 +12,7 @@ export default function Footer() {
           <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-2">
             <div className="flex items-center space-x-2">
               {/* SastraCode logo */}
-              <div className="w-20 h-20 relative flex-shrink-0">
+              <div className="w-20 h-20 relative shrink-0">
                 <Image
                   src="/images/sastra_code_logo.png"
                   alt="SastraCode Logo"
@@ -117,15 +117,15 @@ export default function Footer() {
                   href="mailto:contact@sastracode.tech"
                   className="inline-flex items-center gap-2.5 hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
                 >
-                  <Mail className="w-4 h-4 text-primary-color dark:text-blue-400 flex-shrink-0" />
+                  <Mail className="w-4 h-4 text-primary-color dark:text-blue-400 shrink-0" />
                   <span>contact@sastracode.tech</span>
                 </a>
               </li>
 
               {/* Location */}
               <li className="w-full flex justify-center md:justify-start">
-                <div className="inline-flex items-start gap-2.5 max-w-[280px] sm:max-w-none text-left">
-                  <MapPin className="w-4 h-4 text-primary-color dark:text-blue-400 flex-shrink-0 mt-1.5" />
+                <div className="inline-flex items-start gap-2.5 max-w-70 sm:max-w-none text-left">
+                  <MapPin className="w-4 h-4 text-primary-color dark:text-blue-400 shrink-0 mt-1.5" />
                   <span className="font-khmer text-[18px] leading-snug">
                     ភូមិ ១៣, ផ្លូវលេខ ៥០, Street 273, Phnom Penh 12151
                   </span>

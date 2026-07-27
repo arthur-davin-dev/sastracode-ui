@@ -12,18 +12,18 @@ export default function Login() {
     rememberMe: false,
   });
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+ const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, value, type, checked } = e.target;
+  setFormData((prev) => ({
+    ...prev,
+    [name]: type === "checkbox" ? checked : value,
+  }));
+};
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Form Submitted:", formData);
-  };
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  console.log("Form Submitted:", formData);
+};
 
   return (
     <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0b0f17] flex flex-col justify-between p-6 mt-12 md:p-12 relative overflow-hidden font-sans transition-colors duration-300">
@@ -127,7 +127,7 @@ export default function Login() {
             {/* Floating Badges / Cards */}
 
             {/* 1. Top - Documentation */}
-            <div className="absolute -top-6 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-[140px] font-sans transition-colors">
+            <div className="absolute -top-6 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-35 font-sans transition-colors">
               <div className="p-2 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-lg">
                 <FileText size={18} />
               </div>
@@ -138,7 +138,7 @@ export default function Login() {
             </div>
 
             {/* 2. Left - Playground */}
-            <div className="absolute -left-6 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-[130px] font-sans transition-colors">
+            <div className="absolute -left-6 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-32.5 font-sans transition-colors">
               <div className="p-2 bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 rounded-lg">
                 <Code2 size={18} />
               </div>
@@ -149,7 +149,7 @@ export default function Login() {
             </div>
 
             {/* 3. Bottom Left - Quiz & Test */}
-            <div className="absolute -bottom-6 left-2 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-[130px] font-sans transition-colors">
+            <div className="absolute -bottom-6 left-2 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-32.5 font-sans transition-colors">
               <div className="p-2 bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-lg">
                 <Trophy size={18} />
               </div>
@@ -160,7 +160,7 @@ export default function Login() {
             </div>
 
             {/* 4. Bottom Right - Roadmap */}
-            <div className="absolute -bottom-6 right-2 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-[130px] font-sans transition-colors">
+            <div className="absolute -bottom-6 right-2 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-32.5 font-sans transition-colors">
               <div className="p-2 bg-cyan-50 dark:bg-cyan-950/50 text-cyan-600 dark:text-cyan-400 rounded-lg">
                 <Map size={18} />
               </div>
@@ -171,7 +171,7 @@ export default function Login() {
             </div>
 
             {/* 5. Right - AI Assistant */}
-            <div className="absolute -right-6 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-[130px] font-sans transition-colors">
+            <div className="absolute -right-6 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-32.5 font-sans transition-colors">
               <div className="p-2 bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 rounded-lg">
                 <Bot size={18} />
               </div>
@@ -278,16 +278,6 @@ export default function Login() {
               </Link>
             </div>
           </form>
-        </div>
-      </div>
-
-      {/* Bottom Right Logo Accent */}
-      <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8">
-        <div className="relative w-10 h-10 flex items-center justify-center">
-          {/* Logo representation */}
-          <div className="bg-primary-color text-white font-bold p-2 rounded-lg text-xs transform -rotate-6 border-2 border-secondary-color shadow-lg font-sans">
-            S
-          </div>
         </div>
       </div>
     </div>

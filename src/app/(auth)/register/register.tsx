@@ -11,18 +11,18 @@ export default function Register() {
     password: "kongkea@123",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, value } = e.target;
+  setFormData((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Registration Data:", formData);
-  };
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  console.log("Registration Data:", formData);
+};
 
   return (
     <div className="min-h-screen bg-[#f8fafc] dark:bg-[#0b0f17] flex flex-col justify-between mt-12 p-6 md:p-12 relative overflow-hidden font-sans transition-colors duration-300">
@@ -239,7 +239,7 @@ export default function Register() {
             {/* Floating Badges / Cards */}
 
             {/* 1. Top - Documentation */}
-            <div className="absolute -top-6 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-[140px] font-sans transition-colors">
+            <div className="absolute -top-6 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-35 font-sans transition-colors">
               <div className="p-2 bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 rounded-lg">
                 <FileText size={18} />
               </div>
@@ -250,7 +250,7 @@ export default function Register() {
             </div>
 
             {/* 2. Left - Playground */}
-            <div className="absolute -left-6 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-[130px] font-sans transition-colors">
+            <div className="absolute -left-6 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-32.5 font-sans transition-colors">
               <div className="p-2 bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 rounded-lg">
                 <Code2 size={18} />
               </div>
@@ -261,7 +261,7 @@ export default function Register() {
             </div>
 
             {/* 3. Bottom Left - Quiz & Test */}
-            <div className="absolute -bottom-6 left-2 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-[130px] font-sans transition-colors">
+            <div className="absolute -bottom-6 left-2 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-32.5 font-sans transition-colors">
               <div className="p-2 bg-amber-50 dark:bg-amber-950/50 text-amber-600 dark:text-amber-400 rounded-lg">
                 <Trophy size={18} />
               </div>
@@ -272,7 +272,7 @@ export default function Register() {
             </div>
 
             {/* 4. Bottom Right - Roadmap */}
-            <div className="absolute -bottom-6 right-2 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-[130px] font-sans transition-colors">
+            <div className="absolute -bottom-6 right-2 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-32.5 font-sans transition-colors">
               <div className="p-2 bg-cyan-50 dark:bg-cyan-950/50 text-cyan-600 dark:text-cyan-400 rounded-lg">
                 <Map size={18} />
               </div>
@@ -283,7 +283,7 @@ export default function Register() {
             </div>
 
             {/* 5. Right - AI Assistant */}
-            <div className="absolute -right-6 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-[130px] font-sans transition-colors">
+            <div className="absolute -right-6 bg-white dark:bg-[#1e293b] rounded-xl shadow-lg dark:shadow-2xl p-2.5 flex items-center gap-2.5 z-20 border border-slate-100 dark:border-slate-700/60 min-w-32.5 font-sans transition-colors">
               <div className="p-2 bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 rounded-lg">
                 <Bot size={18} />
               </div>

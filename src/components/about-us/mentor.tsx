@@ -36,9 +36,9 @@ export default function Mentor() {
 
       {/* Skeleton Loading State */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center max-w-[600px] w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center max-w-150 w-full">
           {[1, 2].map((n) => (
-            <div key={n} className="flex flex-col items-center w-full max-w-[240px] animate-pulse py-4">
+            <div key={n} className="flex flex-col items-center w-full max-w-60 animate-pulse py-4">
               <div className="w-48 h-48 rounded-full bg-slate-200 dark:bg-slate-800 mb-5" />
               <div className="h-6 w-32 bg-slate-200 dark:bg-slate-800 rounded mb-2" />
               <div className="h-4 w-20 bg-slate-200 dark:bg-slate-800 rounded mb-5" />
@@ -51,11 +51,11 @@ export default function Mentor() {
         </div>
       ) : (
         /* Mentors Grid */
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center max-w-[600px] w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center max-w-150 w-full">
           {mentors.slice(0, 2).map((mentor) => (
             <div 
               key={mentor.id} 
-              className="group flex flex-col items-center text-center w-full max-w-[240px] py-4"
+              className="group flex flex-col items-center text-center w-full max-w-60 py-4"
             >
               {/* Image Container with Dark Mode Border */}
               <div className="relative w-48 h-48 rounded-full border-[3px] border-[#002455] dark:border-blue-400 p-1 mb-5 transition-transform duration-300 group-hover:scale-105">
