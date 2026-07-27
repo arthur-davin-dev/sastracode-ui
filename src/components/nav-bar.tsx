@@ -9,24 +9,32 @@ export default function Navbar() {
   const [darkMode, setDarkMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Exact Khmer translations & dynamic path mappings
   const t = {
     km: {
       navItems: [
         { label: "មេរៀន", href: "/documentation" },
         { label: "វគ្គសិក្សា", href: "/courses" },
         { label: "បញ្ជីវីដេអូ", href: "/playlists" },
+
+        // Playground
+        { label: "កន្លែងសាកល្បងកូដ", href: "/playground" },
+
         { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
       ],
       register: "ចុះឈ្មោះ",
       langName: "ខ្មែរ",
       flagSrc: "https://flagcdn.com/w40/kh.png",
     },
+
     en: {
       navItems: [
         { label: "Lessons", href: "/documentation" },
         { label: "Courses", href: "/courses" },
         { label: "Playlists", href: "/playlists" },
+
+        // Playground
+        { label: "Playground", href: "/playground" },
+
         { label: "About Sastra Code", href: "/about-us" },
       ],
       register: "Register",
