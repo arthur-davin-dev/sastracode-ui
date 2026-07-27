@@ -13,7 +13,7 @@ export default function Navbar() {
   const t = {
     km: {
       navItems: [
-        { label: "មេរៀន", href: "/lessons" },
+        { label: "មេរៀន", href: "/documentation" },
         { label: "វគ្គសិក្សា", href: "/courses" },
         { label: "បញ្ជីវីដេអូ", href: "/playlists" },
         { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
@@ -24,7 +24,7 @@ export default function Navbar() {
     },
     en: {
       navItems: [
-        { label: "Lessons", href: "/lessons" },
+        { label: "Lessons", href: "/documentation" },
         { label: "Courses", href: "/courses" },
         { label: "Playlists", href: "/playlists" },
         { label: "About Sastra Code", href: "/about-us" },

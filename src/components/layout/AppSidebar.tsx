@@ -85,11 +85,15 @@ export default function AppSidebar({
 
       {/* Logo */}
       <div className="flex items-center justify-center mb-6 px-4">
-        <img
-          src="/images/sastra_code_logo.png"
-          alt="Logo"
-          className={`transition-all duration-300 ${isCollapsed ? "h-10" : "h-20"}`}
-        />
+        <Link href="/">
+          <img
+            src="/images/sastra_code_logo.png"
+            alt="SastraCode Logo"
+            className={`cursor-pointer transition-all duration-300 ${
+              isCollapsed ? "h-10" : "h-20"
+            }`}
+          />
+        </Link>
       </div>
 
       {/* Navigation */}
