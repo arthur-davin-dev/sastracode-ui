@@ -22,8 +22,7 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 size="lg"
-                className="gap-2 w-full sm:w-55 py-6 text-base transition-transform duration-200 hover:scale-105"
-                style={{ backgroundColor: "var(--primary-color)" }}
+                className="gap-2 w-full sm:w-55 py-6 text-base bg-primary-color transition-transform duration-200 hover:scale-105"
               >
                 <Rocket className="h-4 w-4" />
                 បើក Playground ថ្មី

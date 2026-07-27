@@ -42,10 +42,15 @@ export default function AppSidebar() {
           />
         </div>
 
-        {/* Existing KC box + workspace text, unchanged */}
+        {/* Icon circle + workspace text */}
         <div className="flex items-center justify-center gap-2 mb-4">
-          <div className="h-8 w-8 rounded-md bg-primary flex items-center justify-center text-white text-xs font-bold">
-            KC
+          <div className="h-12 w-12 rounded-full bg-primary-color flex items-center justify-center text-white">
+            <Image
+              src="/playground/icons/Icon-terminal.svg"
+              alt="Terminal icon"
+              width={24}
+              height={24}
+            />
           </div>
           <div>
             <p className="text-sm font-semibold leading-none">Workspace</p>
@@ -54,9 +59,8 @@ export default function AppSidebar() {
         </div>
 
         <Button
-          className="w-full gap-2 py-5 text-base"
+          className="w-full gap-2 py-5 text-base bg-primary-color hover:bg-primary-color"
           size="sm"
-          style={{ backgroundColor: "var(--primary-color)" }}
         >
           <Plus className="h-4 w-4" />
           New Project
@@ -65,11 +69,17 @@ export default function AppSidebar() {
 
       <SidebarContent className="px-2">
         <SidebarMenu>
-          {menuItems.map((item) => (
+          {menuItems.map((item, index) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton>
+              <SidebarMenuButton
+                className={
+                  index === 0
+                    ? "bg-primary-color text-white hover:bg-primary-color hover:text-white rounded-md py-5"
+                    : "text-primary-color rounded-xl py-5"
+                }
+              >
                 <item.icon className="h-4 w-4" />
-                <span>{item.title}</span>
+                <span className="font-medium">{item.title}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
