@@ -39,7 +39,7 @@ export default function TeamLeader() {
       <div className="w-64 sm:w-96 h-0.5 bg-amber-400 mb-8 rounded-full" />
 
       {/* Section Header */}
-      <div className="text-center max-w-2xl mx-auto mb-6">
+      <div className="text-center max-w-2xl mx-auto mb-6 font-khmer">
         <h2 className="text-3xl sm:text-4xl font-bold text-[#002455] dark:text-slate-100 mb-3">
           សមាជិក<span className="text-red-600 dark:text-red-500">ក្រុម</span>របស់យើង
         </h2>
