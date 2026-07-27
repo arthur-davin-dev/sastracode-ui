@@ -140,7 +140,7 @@ export default function Footer() {
           <h4 className="text-center text-primary-color dark:text-slate-100 font-bold font-khmer text-[22px] pb-6">
             រៀបចំ និងឧបត្ថម្ភដោយ
           </h4>
-          
+
           {/* Responsive Sponsors Grid: 1 col on phone, 2 on tablet, 3 on desktop */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-center justify-items-center">
             {/* ISTAD Logo */}
@@ -179,9 +179,14 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar Section */}
-        <div className="pt-4 border-t border-gray-100 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-primary-color dark:text-slate-400 gap-4 font-khmer text-[18px] text-center sm:text-left">
-          <div>រក្សាសិទ្ធិគ្រប់យ៉ាង © ២០២៦ SastraCode</div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-center">
+        <div className="pt-4 border-t border-gray-100 dark:border-slate-800/80 flex flex-col md:flex-row items-center justify-between text-xs text-primary-color dark:text-slate-400 gap-4 font-khmer text-[18px] text-center md:text-left">
+          {/* Copyright Text */}
+          <div className="w-full md:w-auto text-center md:text-left">
+            រក្សាសិទ្ធិគ្រប់យ៉ាង © ២០២៦ SastraCode
+          </div>
+
+          {/* Policy Links */}
+          <div className="w-full md:w-auto flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-center">
             <a
               href="#"
               className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors text-[18px]"
