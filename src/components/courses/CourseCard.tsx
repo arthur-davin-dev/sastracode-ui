@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { BookOpen, Clock } from "lucide-react";
-import { Course } from "./Types";
+import {Course} from "@/lib/course/courses";
 
 interface CourseCardProps {
   course: Course;
@@ -19,7 +19,7 @@ export function CourseCard({ course }: CourseCardProps) {
   return (
     <div className="group w-full overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md">
       {/* Card image */}
-      <div className="relative h-[150px] w-full">
+      <div className="relative h-37.5 w-full">
                  <Image
                    src="/assets/images/HTML & CSS.jpg"
                    alt="Student learning to code"

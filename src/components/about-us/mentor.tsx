@@ -1,0 +1,110 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { Send } from 'lucide-react';
+import { FaGithub } from 'react-icons/fa';
+import { fetchAllMentors, MentorType } from '@/lib/mock-data/about-us/mentor';
+
+export default function Mentor() {
+  const [mentors, setMentors] = useState<MentorType[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetchAllMentors()
+      .then((data) => {
+        setMentors(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Failed to fetch mentors:', err);
+        setLoading(false);
+      });
+  }, []);
+
+  return (
+    <section className="w-full py-12 px-4 sm:px-8 flex flex-col items-center bg-white dark:bg-slate-950 transition-colors duration-300">
+      {/* Section Header */}
+      <div className="text-center max-w-2xl mx-auto mb-10">
+        <h2 className="text-3xl sm:text-4xl font-bold font-khmer text-primary-color dark:text-slate-100 mb-3">
+          អ្នក<span className="text-red-600 dark:text-red-500">ដឹកនាំ</span>របស់យើង
+        </h2>
+        <p className="text-sm sm:text-base font-khmer text-slate-600 dark:text-slate-300 leading-relaxed">
+          ដឹកនាំដោយអ្នកជំនាញក្នុងវិស័យបច្ចេកវិទ្យា ដែលផ្តល់នូវការណែនាំនិងជម្រុញការច្នៃប្រឌិត ដើម្បីភាពជោគជ័យរបស់អ្នកសិក្សា។
+        </p>
+      </div>
+
+      {/* Skeleton Loading State */}
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center max-w-150 w-full">
+          {[1, 2].map((n) => (
+            <div key={n} className="flex flex-col items-center w-full max-w-60 animate-pulse py-4">
+              <div className="w-48 h-48 rounded-full bg-slate-200 dark:bg-slate-800 mb-5" />
+              <div className="h-6 w-32 bg-slate-200 dark:bg-slate-800 rounded mb-2" />
+              <div className="h-4 w-20 bg-slate-200 dark:bg-slate-800 rounded mb-5" />
+              <div className="flex gap-3">
+                <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800" />
+                <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-800" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        /* Mentors Grid */
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center max-w-150 w-full">
+          {mentors.slice(0, 2).map((mentor) => (
+            <div 
+              key={mentor.id} 
+              className="group flex flex-col items-center text-center w-full max-w-60 py-4"
+            >
+              {/* Image Container with Dark Mode Border */}
+              <div className="relative w-48 h-48 rounded-full border-[3px] border-[#002455] dark:border-blue-400 p-1 mb-5 transition-transform duration-300 group-hover:scale-105">
+                <div className="relative w-full h-full rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800">
+                  <Image
+                    src={mentor.image}
+                    alt={mentor.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+
+              {/* Mentor Name */}
+              <h3 className="font-bold text-[#002455] dark:text-slate-100 text-2xl tracking-tight mb-1">
+                {mentor.name}
+              </h3>
+
+              {/* Role */}
+              <p className="text-base font-semibold text-[#1d3557] dark:text-slate-300 mb-5">
+                ({mentor.role})
+              </p>
+
+              {/* Social Media Links */}
+              <div className="flex items-center gap-3 mt-auto">
+                <a
+                  href={mentor.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-[#002455] dark:text-slate-200 hover:bg-slate-900 dark:hover:bg-slate-100 hover:text-white dark:hover:text-slate-900 transition-all duration-300 hover:scale-110"
+                  aria-label="GitHub"
+                >
+                  <FaGithub className="w-5 h-5" />
+                </a>
+
+                <a
+                  href={mentor.telegramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 flex items-center justify-center text-blue-600 dark:text-blue-400 hover:bg-blue-600 dark:hover:bg-blue-500 hover:text-white dark:hover:text-white transition-all duration-300 hover:scale-110 border border-transparent dark:border-blue-800/40"
+                  aria-label="Telegram"
+                >
+                  <Send className="w-4 h-4 -translate-x-0.5 translate-y-0.5" />
+                </a>
+              </div>          
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
