@@ -35,10 +35,10 @@ export default function Timeline() {
         
         {/* Top Badge & Heading */}
         <div className="text-center mb-16">
-          <span className="inline-block bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 text-[11px] font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4 border border-transparent dark:border-blue-800/40">
+          <span className="inline-block bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 text-[11px] font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4 border border-transparent dark:border-blue-800/40 font-sans">
             How We Got Here
           </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight flex items-center justify-center gap-3 flex-wrap">
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight flex items-center justify-center gap-3 flex-wrap font-khmer">
             <span>ដំណើរនៃការបង្កើត</span>
             <span className="text-red-600 dark:text-red-500 font-extrabold">SastraCode</span>
           </h2>
@@ -48,10 +48,10 @@ export default function Timeline() {
         <div className="relative">
           
           {/* Connecting Line (Gradient adapted for both modes) */}
-          <div className="hidden md:block absolute top-5 left-[10%] right-[10%] h-[2px] bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-500 dark:from-teal-500 dark:via-blue-400 dark:to-indigo-400 z-0 opacity-80" />
+          <div className="hidden md:block absolute top-5 left-[10%] right-[10%] h-[2px] bg-linear-to-r from-teal-400 via-blue-500 to-indigo-500 dark:from-teal-500 dark:via-blue-400 dark:to-indigo-400 z-0 opacity-80" />
 
           {/* Cards & Steps Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 relative z-10 font-khmer">
             {steps.map((step) => (
               <div key={step.number} className="flex flex-col items-center">
                 
@@ -61,7 +61,7 @@ export default function Timeline() {
                 </div>
 
                 {/* Content Card */}
-                <div className="w-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-2xl p-5 text-center shadow-sm dark:shadow-none hover:shadow-md dark:hover:border-slate-700 transition-all duration-200 flex flex-col justify-between h-full min-h-[180px]">
+                <div className="w-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 rounded-2xl p-5 text-center shadow-sm dark:shadow-none hover:shadow-md dark:hover:border-slate-700 transition-all duration-200 flex flex-col justify-between h-full min-h-45">
                   <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm mb-2.5">
                     {step.title}
                   </h3>
