@@ -122,7 +122,7 @@ export default function Navbar() {
           {currentT.navItems.map((item, index) => (
             <Link
               key={index}
-              href="#"
+              href="/about-us"
               className="text-[14px] lg:text-[18px] font-semibold whitespace-nowrap transition-colors hover:text-red-500"
             >
               {item}
@@ -160,7 +160,7 @@ export default function Navbar() {
 
           {/* Register Link */}
           <Link
-            href="#"
+            href="/register"
             className="hidden md:inline-block text-[14px] lg:text-[18px] font-semibold text-[#DC0000] whitespace-nowrap transition-colors hover:text-red-600 shrink-0"
           >
             {currentT.register}

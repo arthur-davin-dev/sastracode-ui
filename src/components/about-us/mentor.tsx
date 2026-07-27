@@ -23,13 +23,13 @@ export default function Mentor() {
   }, []);
 
   return (
-    <section className="w-full py-12 px-4 sm:px-8 flex flex-col items-center bg-white dark:bg-slate-950 transition-colors duration-300">
+    <section className="w-full py-10 px-4 sm:px-8 flex flex-col items-center bg-white dark:bg-slate-950 transition-colors duration-300">
       {/* Section Header */}
       <div className="text-center max-w-2xl mx-auto mb-10">
         <h2 className="text-3xl sm:text-4xl font-bold font-khmer text-primary-color dark:text-slate-100 mb-3">
           អ្នក<span className="text-red-600 dark:text-red-500">ដឹកនាំ</span>របស់យើង
         </h2>
-        <p className="text-sm sm:text-base font-khmer text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p className="font-khmer text-slate-600 dark:text-slate-300 leading-relaxed text-[22px]">
           ដឹកនាំដោយអ្នកជំនាញក្នុងវិស័យបច្ចេកវិទ្យា ដែលផ្តល់នូវការណែនាំនិងជម្រុញការច្នៃប្រឌិត ដើម្បីភាពជោគជ័យរបស់អ្នកសិក្សា។
         </p>
       </div>
@@ -75,7 +75,7 @@ export default function Mentor() {
               </h3>
 
               {/* Role */}
-              <p className="text-base font-semibold text-[#1d3557] dark:text-slate-300 mb-5">
+              <p className="text-[22px] font-semibold text-[#1d3557] dark:text-slate-300 mb-5">
                 ({mentor.role})
               </p>
 

@@ -19,11 +19,16 @@ export default function TeamLeader() {
   useEffect(() => {
     fetchAllTeamMembers()
       .then((data) => {
-        // Explicitly filter for leader IDs 2 and 3
-        const filteredLeaders = data.filter(
-          (member) => member.id === '9' || member.id === '10'
+        // Find Leader (ID '9') and Sub-Leader (ID '10') explicitly to guarantee correct order
+        const leaderObj = data.find((member) => member.id === '9');
+        const subLeaderObj = data.find((member) => member.id === '10');
+
+        // Combine into array while filtering out any undefined items
+        const selectedLeaders = [leaderObj, subLeaderObj].filter(
+          (member): member is TeamMemberType => member !== undefined
         );
-        setLeaders(filteredLeaders);
+
+        setLeaders(selectedLeaders);
         setLoading(false);
       })
       .catch((err) => {
@@ -33,7 +38,7 @@ export default function TeamLeader() {
   }, []);
 
   return (
-    <section className="w-full py-12 px-4 sm:px-8 md:px-12 flex flex-col items-center bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <section className="w-full py-4 px-4 sm:px-8 md:px-12 flex flex-col items-center bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       
       {/* Top Divider Line */}
       <div className="w-64 sm:w-96 h-0.5 bg-amber-400 mb-8 rounded-full" />
@@ -43,7 +48,7 @@ export default function TeamLeader() {
         <h2 className="text-3xl sm:text-4xl font-bold text-[#002455] dark:text-slate-100 mb-3">
           សមាជិក<span className="text-red-600 dark:text-red-500">ក្រុម</span>របស់យើង
         </h2>
-        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed font-khmer">
+        <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-khmer text-[22px]">
           ក្រុមការងារប្រកបដោយការប្ដេជ្ញាចិត្តខ្ពស់ ក្នុងការជំរុញសាស្ត្រCODE ឱ្យដើរទៅមុខ។
         </p>
       </div>
@@ -69,8 +74,8 @@ export default function TeamLeader() {
       ) : (
         /* 2-Column Centered Layout for Leaders */
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-items-center max-w-150 w-full">
-          {leaders.map((leader) => (
-            <div key={leader.id} className="pt-20 pb-4 flex justify-center w-full max-w-70">
+          {leaders.map((leader, index) => (
+            <div key={leader.id || index} className="pt-20 pb-4 flex justify-center w-full max-w-70">
               {/* Card Container */}
               <div className="group relative bg-slate-50 dark:bg-slate-900/90 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-md dark:shadow-none pt-20 pb-6 px-6 w-full text-center flex flex-col items-center transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-xl dark:hover:border-slate-700">
                 
@@ -99,17 +104,17 @@ export default function TeamLeader() {
                 </div>
 
                 {/* Leader Name */}
-                <h3 className="font-bold text-[#002455] dark:text-slate-100 text-lg mb-1 mt-2 transition-colors duration-300 group-hover:text-red-500 dark:group-hover:text-blue-400">
+                <h3 className="font-bold font-khmer text-[#002455] dark:text-slate-100 text-[24px] mb-1 mt-2 transition-colors duration-300 group-hover:text-red-500 dark:group-hover:text-blue-400">
                   {leader.name}
                 </h3>
 
-                {/* Leader Role Tag */}
-                <span className="text-xs font-semibold text-[#002455] dark:text-slate-400 mb-3">
-                  (Leader)
+                {/* Leader / Sub-Leader Role Tag */}
+                <span className="text-[22px] font-semibold text-[#002455] dark:text-slate-400 mb-3">
+                  {leader.id === '9' ? '(Leader)' : '(Sub-Leader)'}
                 </span>
 
                 {/* Description / Bio */}
-                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                <p className="text-[18px] text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
                   {leader.bio}
                 </p>
 
