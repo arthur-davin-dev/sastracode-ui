@@ -14,8 +14,8 @@ export default function Profile() {
   return (
     <div className="space-y-6 p-6">
       <div>
-        <h1 className="text-xl font-bold text-indigo-950">ការកំណត់ប្រវត្តិរូប</h1>
-        <p className="text-sm text-muted-foreground mt-1">
+        <h1 className="text-2xl font-bold text-indigo-950">ការកំណត់ប្រវត្តិរូប</h1>
+        <p className="text-lg text-primary-color mt-1">
           រៀបចំព័ត៌មានផ្ទាល់ខ្លួន និងគណនីរបស់អ្នក
         </p>
       </div>

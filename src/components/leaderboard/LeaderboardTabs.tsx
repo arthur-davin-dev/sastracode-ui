@@ -6,7 +6,7 @@ interface LeaderboardTabsProps {
 }
 
 export function LeaderboardTabs({ activeTab, onTabChange }: LeaderboardTabsProps) {
-  const tabs = ["Global", "Daily", "Weekly", "Course", "Course"];
+  const tabs = ["Global", "Daily", "Weekly", "Course"];
 
   return (
     <div className="flex gap-2">

@@ -16,11 +16,11 @@ export function ProfileHeaderCard({ profile }: { profile: UserProfile }) {
             <p className="font-bold text-lg text-indigo-950">
               {profile.firstName} {profile.lastName}
             </p>
-            <p className="text-sm text-muted-foreground italic">"{profile.quote}"</p>
+            <p className="text-lg text-primary-color italic">"{profile.quote}"</p>
           </div>
         </div>
 
-        <Button className="​ text-white bg-indigo-950 hover:bg-indigo-900">
+        <Button className="​ text-white text-lg bg-indigo-950 hover:bg-indigo-900">
           កែប្រែការផ្លាស់ប្តូរ
         </Button>
       </CardContent>

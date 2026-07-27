@@ -4,14 +4,14 @@ interface XpLevelBadgeProps {
   size?: number;
 }
 
-export function XpLevelBadge({ level, size = 56 }: XpLevelBadgeProps) {
+export function XpLevelBadge({ level, size = 72 }: XpLevelBadgeProps) {
   const center = 28;
   const radius = 20;
   const arcs = [
-    { start: -75, end: 0 },    // top-right
-    { start: 15, end: 90 },    // bottom-right
-    { start: 105, end: 180 },  // bottom-left
-    { start: 195, end: 270 },  // top-left
+    { start: -75, end: 0 },    
+    { start: 15, end: 90 },    
+    { start: 105, end: 180 }, 
+    { start: 195, end: 270 },  
   ];
 
   function polarToCartesian(angleDeg: number) {

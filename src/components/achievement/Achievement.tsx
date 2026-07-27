@@ -43,10 +43,10 @@ export default function Achievement() {
   return (
     <div className="space-y-6 p-6 ">
       <div>
-        <h1 className="text-main-title font-bold text-indigo-950">
+        <h1 className="text-2xl font-bold text-primary-color">
           ផ្ទាំងគ្រប់គ្រងសមិទ្ធផល
         </h1>
-        <p className="text-content text-muted-foreground mt-1">
+        <p className="text-lg text-muted-foreground mt-1">
           តាមដានវឌ្ឍនភាព ការសិក្សា និងផ្នែកសមិទ្ធផលដែលអ្នកទទួលបាន
         </p>
       </div>
@@ -60,7 +60,7 @@ export default function Achievement() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-sub-title font-semibold">
+          <CardTitle className="flex items-center gap-2 text-lg font-semibold">
             🏅 មេដាយដែលទទួលបាន
           </CardTitle>
         </CardHeader>
@@ -80,7 +80,7 @@ export default function Achievement() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-sub-title font-semibold">
+          <CardTitle className="flex items-center gap-2 text-lg font-semibold">
             ✅ របស់កម្មដែលបានបញ្ចប់
           </CardTitle>
         </CardHeader>
@@ -100,7 +100,7 @@ export default function Achievement() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-sub-title font-semibold text-indigo-700">
+          <CardTitle className="flex items-center gap-2 text-lg font-semibold text-primary-color">
             🏅 រង្វានភាពវិញ្ញាបនបត្រ
           </CardTitle>
         </CardHeader>

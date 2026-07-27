@@ -15,12 +15,14 @@ export function ProfileForm({ profile }: { profile: UserProfile }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">ព័ត៌មានទូទៅ</CardTitle>
+        <CardTitle className="text-2xl text-primary-color">ព័ត៌មានទូទៅ</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-4 ">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-1">
-            <Label htmlFor="firstName">នាមខ្លួន *</Label>
+          <div className="space-y-1 ">
+            <Label htmlFor="firstName" className="text-primary-color text-lg">
+              នាមខ្លួន *
+            </Label>
             <Input
               id="firstName"
               value={firstName}
@@ -28,7 +30,9 @@ export function ProfileForm({ profile }: { profile: UserProfile }) {
             />
           </div>
           <div className="space-y-1">
-            <Label htmlFor="lastName">នាម *</Label>
+            <Label htmlFor="lastName" className="text-primary-color text-lg">
+              នាម *
+            </Label>
             <Input
               id="lastName"
               value={lastName}
@@ -37,12 +41,14 @@ export function ProfileForm({ profile }: { profile: UserProfile }) {
           </div>
         </div>
 
-        <p className="text-xs text-muted-foreground">
+        <p className="text-lg text-muted-foreground text-primary-color">
           ឈ្មោះរបស់អ្នកនឹងបង្ហាញនៅលើវិញ្ញាបនបត្រ
         </p>
 
         <div className="space-y-1">
-          <Label htmlFor="email">អ៊ីមែល *</Label>
+          <Label htmlFor="email" className="text-primary-color text-lg">
+            អ៊ីមែល *
+          </Label>
           <Input
             id="email"
             type="email"
@@ -51,9 +57,11 @@ export function ProfileForm({ profile }: { profile: UserProfile }) {
           />
         </div>
 
-        <p className="text-xs text-muted-foreground">លេខទូរស័ព្ទ</p>
+        <p className="text-lg text-muted-foreground text-primary-color">
+          លេខទូរស័ព្ទ
+        </p>
 
-        <Button className="w-full text-white bg-indigo-950 hover:bg-indigo-900">
+        <Button className="w-full text-lg text-white bg-indigo-950 hover:bg-indigo-900">
           ប្ដូរលេខសម្ងាត់
         </Button>
       </CardContent>

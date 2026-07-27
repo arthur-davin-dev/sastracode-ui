@@ -16,12 +16,12 @@ export function XpLevelCard({ level, currentXp, nextLevelXp, progressPercent }: 
     <Card>
       <CardContent className="p-8">
         <div className="flex items-center gap-2 mb-4">
-          <Zap className="h-4 w-4 text-muted-foreground" />
-          <p className="text-sm font-medium">កម្រិត និងពិន្ទុ XP</p>
+          <Zap className="h-4 w-4 text-muted-foreground " />
+          <p className="text-lg text-primary-color font-medium">កម្រិត និងពិន្ទុ XP</p>
         </div>
 
         <div className="flex items-center gap-5">
-          <XpLevelBadge level={level} size={56} /> 
+          <XpLevelBadge level={level} size={72} /> 
 
           <div className="flex-1">
             <div className="flex items-baseline justify-between mb-1">

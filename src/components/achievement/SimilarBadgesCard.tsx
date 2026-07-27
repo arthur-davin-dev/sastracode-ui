@@ -9,7 +9,7 @@ const iconMap: Record<string, any> = {
 
 export function SimilarBadgesCard({ badges }: { badges: SimilarBadge[] }) {
   return (
-    <Card className="bg-[#F5F1E8]"> {/* ← background ពណ៌ក្រែម ដូចរូបភាព */}
+    <Card className="bg-[#F5F1E8]"> 
       <CardHeader>
         <CardTitle className="text-sub-title font-bold text-indigo-950">មេដាយពាក់ព័ន្ធ</CardTitle>
       </CardHeader>
