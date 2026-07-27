@@ -12,7 +12,7 @@ export default function DocsShell({ children }: DocsShellProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="mx-auto flex max-w-[1440px]">
+    <div className="flex min-h-screen w-full">
       {/* Desktop sidebar */}
       <div className="sticky top-16 hidden h-[calc(100vh-4rem)] w-64 shrink-0 lg:block">
         <DocsSidebar />

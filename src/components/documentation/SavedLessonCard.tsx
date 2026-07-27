@@ -6,7 +6,7 @@ export default function SavedLessonCard({ card }: { card: SavedLessonCardType })
   return (
     <Link
       href={card.href}
-      className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md"
+      className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card"
     >
       <div className="relative flex h-24 w-full items-center justify-center bg-gradient-to-br from-primary to-[#0a1f45]">
         <span className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-warning text-white">

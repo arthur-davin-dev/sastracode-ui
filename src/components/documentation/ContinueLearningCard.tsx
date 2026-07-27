@@ -8,7 +8,7 @@ export default function ContinueLearningCard({ card }: { card: ContinueLearningC
   return (
     <Link
       href={card.href}
-      className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md"
+      className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card "
     >
       <div className="relative flex h-28 w-full items-center justify-center bg-gradient-to-br from-accent to-primary/10">
         <BookOpen className="h-8 w-8 text-primary/70" />
