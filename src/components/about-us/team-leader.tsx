@@ -36,24 +36,24 @@ export default function TeamLeader() {
     <section className="w-full py-12 px-4 sm:px-8 md:px-12 flex flex-col items-center bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       
       {/* Top Divider Line */}
-      <div className="w-64 sm:w-96 h-[2px] bg-amber-400 mb-8 rounded-full" />
+      <div className="w-64 sm:w-96 h-0.5 bg-amber-400 mb-8 rounded-full" />
 
       {/* Section Header */}
       <div className="text-center max-w-2xl mx-auto mb-6">
         <h2 className="text-3xl sm:text-4xl font-bold text-[#002455] dark:text-slate-100 mb-3">
           សមាជិក<span className="text-red-600 dark:text-red-500">ក្រុម</span>របស់យើង
         </h2>
-        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+        <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed font-khmer">
           ក្រុមការងារប្រកបដោយការប្ដេជ្ញាចិត្តខ្ពស់ ក្នុងការជំរុញសាស្ត្រCODE ឱ្យដើរទៅមុខ។
         </p>
       </div>
 
       {/* Skeleton Loading State */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-items-center max-w-[600px] w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-items-center max-w-150 w-full">
           {[1, 2].map((n) => (
-            <div key={n} className="pt-20 pb-4 flex justify-center w-full max-w-[280px]">
-              <div className="relative bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-md pt-20 pb-6 px-6 w-full h-[280px] text-center flex flex-col items-center animate-pulse">
+            <div key={n} className="pt-20 pb-4 flex justify-center w-full max-w-70">
+              <div className="relative bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-md pt-20 pb-6 px-6 w-full h-70 text-center flex flex-col items-center animate-pulse">
                 <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-40 h-40 rounded-full bg-slate-200 dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-900 shadow-sm" />
                 <div className="h-5 w-32 bg-slate-200 dark:bg-slate-800 rounded mb-2 mt-2" />
                 <div className="h-4 w-20 bg-slate-200 dark:bg-slate-800 rounded mb-4" />
@@ -68,9 +68,9 @@ export default function TeamLeader() {
         </div>
       ) : (
         /* 2-Column Centered Layout for Leaders */
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-items-center max-w-[600px] w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 justify-items-center max-w-150 w-full">
           {leaders.map((leader) => (
-            <div key={leader.id} className="pt-20 pb-4 flex justify-center w-full max-w-[280px]">
+            <div key={leader.id} className="pt-20 pb-4 flex justify-center w-full max-w-70">
               {/* Card Container */}
               <div className="group relative bg-slate-50 dark:bg-slate-900/90 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-md dark:shadow-none pt-20 pb-6 px-6 w-full text-center flex flex-col items-center transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-xl dark:hover:border-slate-700">
                 
@@ -78,12 +78,12 @@ export default function TeamLeader() {
                 <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-40 h-40 flex items-center justify-center">
                   
                   {/* SVG Stroke Circle */}
-                  <svg className="absolute -inset-1.5 w-[172px] h-[172px] rotate-90 pointer-events-none z-20">
+                  <svg className="absolute -inset-1.5 w-43 h-43 rotate-90 pointer-events-none z-20">
                     <circle
                       cx="86"
                       cy="86"
                       r="78"
-                      className="stroke-[#002455] dark:stroke-blue-500 fill-none stroke-[3] [stroke-dasharray:490] [stroke-dashoffset:-490] transition-all duration-1500 ease-in-out group-hover:[stroke-dashoffset:0]"
+                      className="stroke-[#002455] dark:stroke-blue-500 fill-none stroke-3 [stroke-dasharray:490] [stroke-dashoffset:-490] transition-all duration-1500 ease-in-out group-hover:[stroke-dashoffset:0]"
                     />
                   </svg>
 
