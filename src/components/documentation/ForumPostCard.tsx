@@ -27,7 +27,7 @@ export default function ForumPostCard({ post }: ForumPostCardProps) {
       </div>
 
       {/* Middle: Content Column */}
-      <div className="flex flex-1 flex-col gap-2 font-khmer">
+      <div className="flex flex-1 flex-col gap-2 ">
         {/* Meta Row (Level & Time) */}
         <div className="flex items-center gap-2 text-[14px]">
           <span className="rounded-full bg-amber-50 px-3 py-1 font-medium text-amber-600">
@@ -39,12 +39,12 @@ export default function ForumPostCard({ post }: ForumPostCardProps) {
         </div>
 
         {/* Title */}
-        <h3 className="text-[18px] font-bold leading-snug text-[#0f2942]">
+        <h3 className="text-[20px] font-bold leading-snug text-[#0f2942]">
           {post.title}
         </h3>
 
         {/* Excerpt / Description */}
-        <p className="line-clamp-2 text-[18px] leading-relaxed text-slate-500">
+        <p className="line-clamp-2 text-[16px] leading-relaxed text-slate-500">
           {post.excerpt}
         </p>
       </div>
