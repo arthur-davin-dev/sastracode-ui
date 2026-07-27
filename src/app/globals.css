@@ -19,6 +19,9 @@
   --color-init-color: var(--init-color);
   --font-sans: var(--font-geist-sans);
   --font-khmer: var(--font-khmer);
+  --font-size-main-title: 40px;
+  --font-size-sub-title: 24px;
+  --font-size-content: 18px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -31,7 +34,8 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    var(--font-google-sans), var(--font-inter), Arial, Helvetica, sans-serif;
 }
 
 /* Enable class-based dark mode in Tailwind v4 */
