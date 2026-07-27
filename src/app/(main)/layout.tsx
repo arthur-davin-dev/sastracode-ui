@@ -1,4 +1,5 @@
-import NavbarPage from "../../components/navbar-component-01/page";
+import Footer from "@/components/footer";
+import Navbar from "@/components/nav-bar";
 
 export default function DashboardLayout({
   children,
@@ -7,8 +8,9 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      <NavbarPage />
+      <Navbar />
       <main>{children}</main>
+      <Footer />
     </>
   );
 }
