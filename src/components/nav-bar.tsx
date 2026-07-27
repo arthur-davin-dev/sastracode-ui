@@ -5,20 +5,30 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 export default function Navbar() {
-  const [lang, setLang] = useState<"km" | "en">("km"); // 'km' | 'en'
+  const [lang, setLang] = useState<"km" | "en">("km");
   const [darkMode, setDarkMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  // Exact Khmer translations from your UI
+  // Exact Khmer translations & dynamic path mappings
   const t = {
     km: {
-      navItems: ["មេរៀន", "វគ្គសិក្សា", "បញ្ជីវីដេអូ", "អំពីសាស្ត្រាកូដ"],
+      navItems: [
+        { label: "មេរៀន", href: "/lessons" },
+        { label: "វគ្គសិក្សា", href: "/courses" },
+        { label: "បញ្ជីវីដេអូ", href: "/playlists" },
+        { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
+      ],
       register: "ចុះឈ្មោះ",
       langName: "ខ្មែរ",
       flagSrc: "https://flagcdn.com/w40/kh.png",
     },
     en: {
-      navItems: ["Lessons", "Courses", "Playlists", "About Sastra Code"],
+      navItems: [
+        { label: "Lessons", href: "/lessons" },
+        { label: "Courses", href: "/courses" },
+        { label: "Playlists", href: "/playlists" },
+        { label: "About Sastra Code", href: "/about-us" },
+      ],
       register: "Register",
       langName: "English",
       flagSrc: "https://flagcdn.com/w40/gb.png",
@@ -95,7 +105,7 @@ export default function Navbar() {
           clipPath: clipPath,
         },
         {
-          duration: 1000, // 1000ms (1 second) for a smooth, relaxed transition
+          duration: 1000,
           easing: "cubic-bezier(0.4, 0, 0.2, 1)",
           pseudoElement: "::view-transition-new(root)",
         }
@@ -122,10 +132,10 @@ export default function Navbar() {
           {currentT.navItems.map((item, index) => (
             <Link
               key={index}
-              href="/about-us"
+              href={item.href}
               className="text-[14px] lg:text-[18px] font-semibold whitespace-nowrap transition-colors hover:text-red-500"
             >
-              {item}
+              {item.label}
             </Link>
           ))}
         </div>
@@ -184,18 +194,18 @@ export default function Navbar() {
             {currentT.navItems.map((item, index) => (
               <Link
                 key={index}
-                href="#"
+                href={item.href}
                 onClick={() => setIsOpen(false)}
                 className="text-[18px] font-semibold text-[#002455] dark:text-[#FFFFFF] transition-colors hover:text-red-500 py-1"
               >
-                {item}
+                {item.label}
               </Link>
             ))}
 
             {/* Register Link inside mobile drawer */}
             <div className="pt-2 border-t border-gray-100/50 dark:border-slate-800/50">
               <Link
-                href="#"
+                href="/register"
                 onClick={() => setIsOpen(false)}
                 className="text-[18px] font-semibold text-[#DC0000] whitespace-nowrap transition-colors hover:text-red-600"
               >
