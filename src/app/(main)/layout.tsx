@@ -1,15 +1,13 @@
-import Footer from "@/components/footer";
 import Navbar from "@/components/nav-bar";
+import Footer from "@/components/footer";
 
-export default function DashboardLayout({
+export default function MainLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <>
       <Navbar />
-      <main>{children}</main>
+      {children}
       <Footer />
     </>
   );

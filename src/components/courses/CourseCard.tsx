@@ -1,9 +1,10 @@
+import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { BookOpen, Clock } from "lucide-react";
-import {Course} from "@/lib/course/courses";
+import { Course } from "@/lib/course/courses";
 
 interface CourseCardProps {
   course: Course;
@@ -17,19 +18,27 @@ export function CourseCard({ course }: CourseCardProps) {
     : "h-8 rounded-md bg-amber-400 px-3 text-[13px] font-khmer text-slate-950 hover:bg-amber-300";
 
   return (
-    <div className="group w-full overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md">
-      {/* Card image */}
-      <div className="relative h-37.5 w-full">
-                 <Image
-                   src="/assets/images/HTML & CSS.jpg"
-                   alt="Student learning to code"
-                   width={900}
-                   height={600}
-                   className="relative h-full w-full object-cover"
-                 />
+    <Link
+      href={`/courses/${course.id}`}
+      className="group block w-full overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md"
+    >
+      <div className="relative h-[150px] w-full">
+        {/* <Image
+          src={course.image}
+          alt={course.title}
+          width={900}
+          height={600}
+          className="relative h-full w-full object-cover"
+        /> */}
+        <Image
+          src="/assets/images/HTML & CSS.jpg"
+          alt="Student learning to code"
+          width={900}
+          height={600}
+          className="relative h-full w-full object-cover"
+        />
       </div>
 
-      {/* Card content */}
       <div className="p-4">
         <Badge
           variant="secondary"
@@ -38,22 +47,14 @@ export function CourseCard({ course }: CourseCardProps) {
           {course.category}
         </Badge>
 
-        <h3
-          className="mb-2 text-[16px] font-semibold text-gray-900 font-(family-name:--font-sans)
-"
-        >
+        <h3 className="mb-2 text-[16px] font-semibold text-gray-900--font-google-sans">
           {course.title}
         </h3>
 
-        <p
-          className="line-clamp-2 text-[14px] leading-[1.7] text-gray-500 font-(family-name:--font-sans)
-"
-        >
+        <p className="line-clamp-2 text-[14px] leading-[1.7] text-gray-500--font-google-sans">
           {course.description}
         </p>
-
-        {/* Metadata row */}
-        <div className="mt-4 flex items-center justify-between text-[12px] text-gray-400">
+        <div className="mt-4 flex items-center justify-between text-[12px] text-primary-color">
           <span className="flex items-center gap-1">
             <BookOpen className="h-3.5 w-3.5" />
             {course.lessons} មេរៀន
@@ -66,20 +67,17 @@ export function CourseCard({ course }: CourseCardProps) {
 
         <Separator className="my-4" />
 
-        {/* Footer */}
         <div className="flex items-center justify-between pt-0">
-          <Button size="sm" className={buttonClass}>
+          <Button size="sm" className={buttonClass} tabIndex={-1}>
             {buttonLabel}
           </Button>
 
-          <a
-            href={course.href ?? "#"}
-            className="text-[13px] font-medium text-[#06295c] hover:underline font-(family-name:--font-sans)"
-          >
+          {/* was: <a href={course.href ?? "#"}>...</a> — replaced with a span since the whole card is already the link */}
+          <span className="text-[13px] font-medium text-[#06295c] group-hover:underline--font-google-sans">
             ចាប់ផ្តើមរៀន →
-          </a>
+          </span>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

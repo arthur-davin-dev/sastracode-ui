@@ -1,10 +1,4 @@
-export interface Instructor {
-  name: string;
-  avatar: string;
-  rating?: number;
-  reviewCount?: number;
-  tags?: string[];
-}
+// ---- Types ----
 
 export interface Lesson {
   id: string;
@@ -22,6 +16,14 @@ export interface Chapter {
   lessons: Lesson[];
 }
 
+export interface Instructor {
+  name: string;
+  avatar: string;
+  rating?: number;
+  reviewCount?: number;
+  tags?: string[];
+}
+
 export interface Course {
   id: string;
   category: string;
@@ -31,11 +33,24 @@ export interface Course {
   duration: string;
   image: string;
   href?: string;
-  price?: number;
+  price?: number; // undefined/0 = free
   learningPoints?: string[];
   instructor?: Instructor;
   curriculum?: Chapter[];
 }
+
+// ---- Data ----
+
+export const categories = [
+  "ទាំងអស់",
+  "HTML",
+  "CSS",
+  "Free Course",
+  "Frontend",
+  "Backend",
+  "JavaScript",
+  "UI/UX",
+] as const;
 
 export const courses: Course[] = [
   {
@@ -56,7 +71,7 @@ export const courses: Course[] = [
       "ស្វែងយល់ពី Grid, Flexbox និង Responsive Patterns ដើម្បីបង្កើត UI រាបស្មើ",
     lessons: 24,
     duration: "៥ម៉ោង ១០នាទី",
-    image: "/assets/images/CSS.jpg",
+    image: "/assets/images/HTML & CSS.jpg",
   },
   {
     id: "3",
@@ -66,7 +81,7 @@ export const courses: Course[] = [
       "រៀនរចនាផ្ទៃក្នុង HTML ជាមួយ Semantic Elements និង Accessibility",
     lessons: 18,
     duration: "៤ម៉ោង ២០នាទី",
-    image: "/assets/images/HTML-course.jpg",
+    image: "/assets/images/HTML & CSS.jpg",
   },
   {
     id: "4",
@@ -86,7 +101,7 @@ export const courses: Course[] = [
       "ស្នើភាសាស្វ័យប្រវត្តិកម្ម JavaScript ដើម្បីបង្កើតព្រលឹង Web អន្តរកម្ម",
     lessons: 26,
     duration: "៦ម៉ោង ៣០នាទី",
-    image: "/assets/images/HTML & CSS.jpg",
+    image: "/assets/images/javascript-banner.png",
   },
   {
     id: "6",
@@ -105,7 +120,7 @@ export const courses: Course[] = [
       "ស្វែងយល់ពី ES6+, Async/Await និង Patterns សម័យថ្មីសម្រាប់ Web Development",
     lessons: 22,
     duration: "៦ម៉ោង ៤០នាទី",
-    image: "/assets/images/DataScience-card.jpg",
+    image: "/images/javascript-banner.png",
   },
   {
     id: "8",
@@ -115,7 +130,7 @@ export const courses: Course[] = [
       "រៀនរចនាប្រព័ន្ធ UI ដោយប្រើ Principles និង Patterns ដូចជា Atomic Design",
     lessons: 18,
     duration: "៥ម៉ោង ២០នាទី",
-    image: "/assets/images/bannercourse.png",
+    image: "/images/frontend-banner.png",
   },
   {
     id: "9",
@@ -125,42 +140,35 @@ export const courses: Course[] = [
       "បង្កើត RESTful និង GraphQL API ដែលអាចប្រើបានឆាប់ រហ័ស និងសុវត្ថិភាព",
     lessons: 26,
     duration: "៧ម៉ោង ៣០នាទី",
-    image: "/assets/images/HTML-course.jpg",
+    image: "/images/backend-banner.png",
   },
 ];
+
+// ---- Data-access helpers ----
 
 export async function getAllCourses(): Promise<Course[]> {
   return courses;
 }
 
-export async function getCourseById(
-  id: string,
-): Promise<Course | undefined> {
-  return courses.find((course) => course.id === id);
+export async function getCourseById(id: string): Promise<Course | undefined> {
+  return courses.find((c) => c.id === id);
 }
 
 export async function getRelatedCourses(
   currentId: string,
   category?: string,
-  limit = 4,
+  limit = 4
 ): Promise<Course[]> {
   const normalizedCategory = category?.toLowerCase();
 
   const sameCategory = courses.filter(
-    (course) =>
-      course.id !== currentId &&
-      course.category.toLowerCase() === normalizedCategory,
+    (c) => c.id !== currentId && c.category.toLowerCase() === normalizedCategory
   );
 
-  if (sameCategory.length >= limit) {
-    return sameCategory.slice(0, limit);
-  }
-
-  const sameCategoryIds = new Set(sameCategory.map((c) => c.id));
+  if (sameCategory.length >= limit) return sameCategory.slice(0, limit);
 
   const fallback = courses.filter(
-    (course) =>
-      course.id !== currentId && !sameCategoryIds.has(course.id),
+    (c) => c.id !== currentId && !sameCategory.includes(c)
   );
 
   return [...sameCategory, ...fallback].slice(0, limit);

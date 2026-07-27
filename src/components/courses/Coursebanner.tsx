@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export default function CourseCard() {
   return (
-    <section className="relative overflow-hidden bg-indigo-50 py-16 sm:py-20 font-(family-name:--font-sans)">
+    <section className="relative overflow-hidden bg-indigo-50 py-16 sm:py-20 --font-google-sans">
       <style>{`
         @keyframes floatY {
           0%, 100% { transform: translateY(0px) rotate(var(--rot, 0deg)); }
@@ -39,7 +39,7 @@ export default function CourseCard() {
               <Button
                 size="lg"
                 variant="outline"
-                className="rounded-full bg-indigo-950 px-6 hover:bg-indigo-900"
+                className="rounded-full bg-indigo-950 px-6 text-white hover:bg-indigo-900"
               >
                 ស្វែងរកផែនការសិក្សា
               </Button>

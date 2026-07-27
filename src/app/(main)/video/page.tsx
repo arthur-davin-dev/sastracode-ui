@@ -1,6 +1,9 @@
-// import LessonPlayerPage from "@/components/video/LessonPlayerPage";
-// export default function VideoPlayer(){
-//     return (
-//         <LessonPlayerPage/>
-//     )
+// import { VideoPlayer } from "@/components/video/VideoPlayer";
+
+// export default function VideoPage() {
+//   return (
+//     <main>
+//       <VideoPlayer />
+//     </main>
+//   );
 // }

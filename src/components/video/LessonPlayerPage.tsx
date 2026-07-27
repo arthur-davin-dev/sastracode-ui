@@ -56,7 +56,6 @@
 //   );
 // }
 
-
 "use client";
 
 import { useState } from "react";
@@ -79,7 +78,10 @@ interface LessonPlayerPageProps {
   lessonId: string;
 }
 
-export default function LessonPlayerPage({ course, lessonId }: LessonPlayerPageProps) {
+export default function LessonPlayerPage({
+  course,
+  lessonId,
+}: LessonPlayerPageProps) {
   const [autoplay, setAutoplay] = useState(true);
 
   const chapters = course.curriculum ?? [];

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import CourseDetailPage from "@/components/courses-detail/CourseDetailPage";
 import { getCourseById } from "@/lib/course/courses";
+import CourseDetailPage from "@/components/courses-detail/CourseDetail";
 
 interface PageProps {
   params: Promise<{ id: string }>;
