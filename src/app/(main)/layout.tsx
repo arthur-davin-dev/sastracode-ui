@@ -1,18 +1,17 @@
-import NavbarPage from "../../components/navbar-component-01/page";
 import AppSidebar from "@/components/playground/AppSidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
+import Footer from "@/components/footer";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
-    <SidebarProvider>
-      <div className="flex">
+    <div>
+      <SidebarProvider className="flex-1">
         <AppSidebar />
-        <main className="flex-1">{children}</main>
-      </div>
-    </SidebarProvider>
+        <SidebarInset>
+          <main>{children}</main>
+          <Footer />
+        </SidebarInset>
+      </SidebarProvider>
+    </div>
   );
 }
