@@ -2,52 +2,65 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { LeaderboardEntry } from "@/types/leaderboard";
 
 const rankColors: Record<number, string> = {
-  1: "bg-yellow-400 text-white",
-  2: "bg-gray-300 text-white dark:bg-slate-600",
-  3: "bg-orange-400 text-white",
+  1: "bg-yellow-400 text-slate-950 font-extrabold border-2 border-yellow-300 shadow-md",
+  2: "bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-100 font-bold",
+  3: "bg-red-600 text-white font-bold shadow-md",
 };
 
 export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
   return (
-    <div 
-      className={`flex items-center justify-between py-3 transition-colors duration-300 ${
-        entry.isCurrentUser 
-          ? "bg-blue-50 dark:bg-indigo-950/40 rounded-lg px-3" 
-          : "px-3"
+    <div
+      className={`flex items-center justify-between p-4 my-1.5 rounded-2xl transition-all duration-300 border ${
+        entry.isCurrentUser
+          ? "bg-yellow-400/20 border-yellow-400/60 shadow-md"
+          : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60"
       }`}
     >
-      <div className="flex items-center gap-4 w-12">
+      {/* Rank Badge */}
+      <div className="flex items-center justify-center w-12 shrink-0">
         {entry.rank <= 3 ? (
-          <span className={`h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold ${rankColors[entry.rank]}`}>
+          <span
+            className={`h-9 w-9 rounded-2xl flex items-center justify-center text-lg ${rankColors[entry.rank]}`}
+          >
             {entry.rank}
           </span>
         ) : (
-          <span className="text-sm font-medium text-muted-foreground dark:text-slate-400 w-6 text-center">
-            {entry.rank}
+          <span className="text-lg font-bold text-primary-color opacity-70 w-8 text-center">
+            #{entry.rank}
           </span>
         )}
       </div>
 
-      <div className="flex items-center gap-3 flex-1">
-        <Avatar className="h-9 w-9 dark:border dark:border-slate-700">
-          <AvatarImage src={entry.avatarUrl} />
-          <AvatarFallback className="dark:bg-slate-800 dark:text-white">
-            {entry.name[0]}
+      {/* User Info */}
+      <div className="flex items-center gap-4 flex-1 min-w-0 ml-2">
+        <Avatar className="h-12 w-12 border-2 border-slate-200 dark:border-slate-700 shrink-0">
+          <AvatarImage src={entry.avatarUrl} alt={entry.name} />
+          <AvatarFallback className="bg-yellow-400/20 text-red-600 text-lg font-extrabold">
+            {entry.name?.[0] || "U"}
           </AvatarFallback>
         </Avatar>
-        <div>
-          <p className="font-medium text-sm text-slate-900 dark:text-white transition-colors duration-300">
-            {entry.name}{entry.isCurrentUser ? " (You)" : ""}
+
+        <div className="flex flex-col min-w-0">
+          <p className="text-lg font-bold text-primary-color truncate leading-tight">
+            {entry.name}
+            {entry.isCurrentUser && (
+              <span className="ml-2 text-sm font-extrabold text-red-600 bg-red-100 dark:bg-red-950/50 px-2.5 py-0.5 rounded-full inline-block">
+                អ្នក
+              </span>
+            )}
           </p>
-          <p className="text-xs text-muted-foreground dark:text-slate-400 transition-colors duration-300">
-            Level {entry.level}
+          <p className="text-base font-medium text-primary-color opacity-70">
+            កម្រិត {entry.level}
           </p>
         </div>
       </div>
 
-      <span className="font-semibold text-sm text-indigo-950 dark:text-indigo-300 transition-colors duration-300">
-        {entry.xp.toLocaleString()} xp
-      </span>
+      {/* XP Score */}
+      <div className="text-right shrink-0">
+        <span className="text-lg font-extrabold text-primary-color bg-slate-100 dark:bg-slate-800 px-3.5 py-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 inline-block">
+          {entry.xp.toLocaleString()} <span className="text-red-600 text-base font-bold">XP</span>
+        </span>
+      </div>
     </div>
   );
 }
