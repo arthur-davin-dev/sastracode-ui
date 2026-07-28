@@ -35,6 +35,11 @@ import React from "react";
  *   <body className={khmer.className}>...
  */
 
+import { useLanguage } from "@/app/Context";
+
+import { en } from "./locale/en";
+import { km } from "./locale/km";
+
 export type Feature = {
   icon: React.ReactNode;
   lines: string[];
@@ -42,17 +47,23 @@ export type Feature = {
 
 const defaultFeatures: Feature[] = [
   {
-    icon: <img src="/assets/home/feature-section/languageWrite.png" />,
+    icon: <img src="/home/feature-section/lessons.png" />,
     lines: ["សិក្សាតាមរយៈមេរៀនដែលមានការពន្យល់", "និងឧទាហរណ៍ជាក់ស្តែងៗ"],
   },
   {
-    icon: <img src="/assets/home/feature-section/laptop.png" />,
+    icon: <img src="/home/feature-section/laptop.png" />,
     lines: ["សរសេរ សាកល្បង", "និងដំណើរការកូដបានភ្លាមៗនៅក្នុង Browserៗ"],
   },
   {
-    icon: <img src="/assets/home/feature-section/robot.png" />,
+    icon: <img src="/home/feature-section/robot.png" />,
     lines: ["ទទួលបានព័ត៌មានជំនួយ និងការពន្យល់កូដ", "ដើម្បីអភិវឌ្ឍជំនាញរបស់អ្នកៗ"],
   },
+];
+
+const icons = [
+  <img key="1" src="/home/feature-section/lessons.png" />,
+  <img key="2" src="/home/feature-section/laptop.png" />,
+  <img key="3" src="/home/feature-section/robot.png" />,
 ];
 
 export default function FeatureSection({
@@ -60,11 +71,29 @@ export default function FeatureSection({
 }: {
   features?: Feature[];
 }) {
+  const { lang } = useLanguage();
+
+  const translations = {
+    en,
+    km,
+  };
+
+  const currentT = translations[lang];
+
+  features = currentT.featureSection.features.map((feature, index) => ({
+    icon: icons[index],
+    lines: feature.lines,
+  }));
+
   return (
-      <section className="w-full bg-gradient-to-b from-[#fdf3f3] to-white px-4 py-12 sm:px-6 sm:py-16 dark:from-[#0B1120] dark:to-[#111827]">
+    <section className="w-full bg-gradient-to-b from-[#fdf3f3] to-white px-4 py-12 sm:px-6 sm:py-16 dark:from-[#0B1120] dark:to-[#111827]">
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 sm:grid-cols-3 sm:gap-6 md:gap-8">
-        {features.map((f, i) => (
-          <FeatureCard key={i} icon={f.icon} lines={f.lines} />
+        {features.map((feature, index) => (
+          <FeatureCard
+            key={index}
+            icon={feature.icon}
+            lines={feature.lines}
+          />
         ))}
       </div>
     </section>
@@ -73,7 +102,7 @@ export default function FeatureSection({
 
 function FeatureCard({ icon, lines }: { icon: React.ReactNode; lines: string[] }) {
   return (
-   <div className="flex flex-col items-center text-center">
+    <div className="flex flex-col items-center text-center">
       {/* icon */}
       <div className="mb-4 flex h-24 w-24 items-end justify-center sm:h-28 sm:w-28 md:h-32 md:w-32">
         {icon}

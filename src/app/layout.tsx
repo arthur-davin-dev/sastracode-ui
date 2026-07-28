@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/nav-bar";
 import Footer from "@/components/footer";
+import { LanguageProvider } from "./Context";
 
 const googleSans = localFont({
   src: [
@@ -42,13 +43,15 @@ export default function RootLayout({
       className={`${googleSans.variable} ${inter.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-white text-black dark:bg-gray-950 dark:text-white">
-        <Navbar />
+        <LanguageProvider>
+          <Navbar />
 
-        <main className="flex-1">
-          {children}
-        </main>
+          <main className="flex-1">
+            {children}
+          </main>
 
-        <Footer />
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

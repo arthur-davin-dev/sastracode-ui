@@ -1,18 +1,23 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin } from "lucide-react";
+import { useTranslation } from "@/app/hooks/useTranslations";
 
 export default function Footer() {
+ const currentT = useTranslation();
+
   return (
     <footer className="w-full bg-white dark:bg-slate-950 text-primary-color dark:text-slate-300 font-sans text-sm pt-6 pb-6 px-6 md:px-16 border-t border-gray-100 dark:border-slate-800/80 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         {/* Upper Footer Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-4 text-center md:text-left">
-          
+
           {/* Column 1: Brand Info */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-2">
-            
+
             {/* SastraCode Logo */}
             <Link
               href="/"
@@ -35,15 +40,14 @@ export default function Footer() {
               <span className="font-sans text-[18px] text-primary-color dark:text-slate-100 font-semibold">
                 SastraCode
               </span>{" "}
-              បង្កើតឡើងដើម្បីលើកកម្ពស់អ្នកអភិវឌ្ឍន៍
-              តាមរយៈមាតិកាបច្ចេកវិទ្យាដែលមានគុណភាព និងងាយយល់។
+              {currentT.footer.description}
             </p>
           </div>
 
           {/* Column 2: Quick Links */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h3 className="font-bold font-khmer text-primary-color dark:text-slate-100 text-base mb-4 text-[22px]">
-              តំណភ្ជាប់រហ័ស
+              {currentT.footer.quickLinks.title}
             </h3>
 
             <ul className="space-y-2.5 text-xs text-primary-color dark:text-slate-300">
@@ -52,7 +56,7 @@ export default function Footer() {
                   href="#"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
-                  អំពីសាស្ត្រាកូដ
+                  {currentT.footer.quickLinks.about}
                 </a>
               </li>
 
@@ -61,7 +65,7 @@ export default function Footer() {
                   href="#"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
-                  ក្រុមការងារ
+                  {currentT.footer.quickLinks.team}
                 </a>
               </li>
 
@@ -70,7 +74,7 @@ export default function Footer() {
                   href="#"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
-                  ដៃគូសហការ
+                  {currentT.footer.quickLinks.partners}
                 </a>
               </li>
             </ul>
@@ -79,7 +83,7 @@ export default function Footer() {
           {/* Column 3: Study / Courses */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h3 className="font-bold text-[22px] text-primary-color dark:text-slate-100 mb-4 font-khmer">
-              ការសិក្សា
+              {currentT.footer.study.title}
             </h3>
 
             <ul className="space-y-2.5 text-xs text-primary-color dark:text-slate-300">
@@ -88,7 +92,7 @@ export default function Footer() {
                   href="#"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
-                  វិញ្ញាបនបត្រ
+                  {currentT.footer.study.certificate}
                 </a>
               </li>
 
@@ -97,7 +101,7 @@ export default function Footer() {
                   href="#"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
                 >
-                  Full-Stack Track
+                  {currentT.footer.study.fullstack}
                 </a>
               </li>
 
@@ -106,7 +110,7 @@ export default function Footer() {
                   href="#"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
                 >
-                  Data Science
+                  {currentT.footer.study.dataScience}
                 </a>
               </li>
 
@@ -115,7 +119,7 @@ export default function Footer() {
                   href="#"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
                 >
-                  System Design
+                  {currentT.footer.study.systemDesign}
                 </a>
               </li>
             </ul>
@@ -124,11 +128,11 @@ export default function Footer() {
           {/* Column 4: Contact */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h3 className="font-bold text-primary-color dark:text-slate-100 mb-4 font-khmer text-[22px]">
-              ទំនាក់ទំនង
+              {currentT.footer.contact.title}
             </h3>
 
             <ul className="space-y-3 text-xs text-primary-color dark:text-slate-300 w-full flex flex-col items-center md:items-start">
-              
+
               {/* Email */}
               <li className="w-full flex justify-center md:justify-start">
                 <a
@@ -136,7 +140,7 @@ export default function Footer() {
                   className="inline-flex items-center gap-2.5 hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
                 >
                   <Mail className="w-4 h-4 text-primary-color dark:text-blue-400 shrink-0" />
-                  <span>contact@sastracode.tech</span>
+                  <span>{currentT.footer.email}</span>
                 </a>
               </li>
 
@@ -146,7 +150,7 @@ export default function Footer() {
                   <MapPin className="w-4 h-4 text-primary-color dark:text-blue-400 shrink-0 mt-1.5" />
 
                   <span className="font-khmer text-[18px] leading-snug">
-                    ភូមិ ១៣, ផ្លូវលេខ ៥០, Street 273, Phnom Penh 12151
+                    {currentT.footer.contact.address}
                   </span>
                 </div>
               </li>
@@ -157,11 +161,11 @@ export default function Footer() {
         {/* Middle Section */}
         <div className="pt-6 pb-6 border-t border-gray-100 dark:border-slate-800/80">
           <h4 className="text-center text-primary-color dark:text-slate-100 font-bold font-khmer text-[22px] pb-6">
-            រៀបចំ និងឧបត្ថម្ភដោយ
+            {currentT.footer.sponsor}
           </h4>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-center justify-items-center">
-            
+
             {/* ISTAD */}
             <div className="h-16 flex items-center justify-center">
               <Image
@@ -199,10 +203,10 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-4 border-t border-gray-100 dark:border-slate-800/80 flex flex-col md:flex-row items-center justify-between text-xs text-primary-color dark:text-slate-400 gap-4 font-khmer text-[18px] text-center md:text-left">
-          
+
           {/* Copyright */}
           <div className="w-full md:w-auto text-center md:text-left">
-            រក្សាសិទ្ធិគ្រប់យ៉ាង © ២០២៦ SastraCode
+            {currentT.footer.copyright}
           </div>
 
           {/* Policy Links */}
@@ -211,21 +215,21 @@ export default function Footer() {
               href="#"
               className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors text-[18px]"
             >
-              គោលការណ៍ឯកជនភាព
+              {currentT.footer.privacy}
             </a>
 
             <a
               href="#"
               className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors text-[18px]"
             >
-              លក្ខខណ្ឌសេវាកម្ម
+              {currentT.footer.terms}
             </a>
 
             <a
               href="#"
               className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors text-[18px]"
             >
-              យុត្តិធម៌
+              {currentT.footer.legal}
             </a>
           </div>
         </div>

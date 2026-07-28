@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, useAnimationFrame, useMotionValue, useTransform } from "framer-motion";
+import { useTranslation } from "@/app/hooks/useTranslations";
+
 
 /**
  * TechStackSection
@@ -29,7 +31,7 @@ const CENTER = { x: 438, y: 413 };
 
 const defaultNodes: StackNode[] = [
   {
-    icon: <img src="/assets/home/technology-stack/html-5-svgrepo-com.svg" alt="html" />,
+    icon: <img src="/home/technology-stack/html5-svgrepo-com.svg" alt="html" />,
     x: 331,
     y: 285,
     ring: "#2f6fed",
@@ -37,7 +39,7 @@ const defaultNodes: StackNode[] = [
     orbitRadius: 1.0
   },
   {
-    icon: <img src="/assets/home/technology-stack/css-3-svgrepo-com.svg" alt="css" />,
+    icon: <img src="/home/technology-stack/css3-svgrepo-com.svg" alt="css" />,
     x: 438,
     y: 259,
     ring: "#e14e2c",
@@ -45,7 +47,7 @@ const defaultNodes: StackNode[] = [
     orbitRadius: 1.0
   },
   {
-    icon: <img src="/assets/home/technology-stack/java-svgrepo-com.svg" alt="java" />,
+    icon: <img src="/home/technology-stack/java-svgrepo-com.svg" alt="java" />,
     x: 548,
     y: 285,
     ring: "#2f6fed",
@@ -53,7 +55,7 @@ const defaultNodes: StackNode[] = [
     orbitRadius: 1.0
   },
   {
-    icon: <img src="/assets/home/technology-stack/javascript.png" alt="javascript" />,
+    icon: <img src="/home/technology-stack/javascript.png" alt="javascript" />,
     x: 274,
     y: 386,
     ring: "#e14e2c",
@@ -61,7 +63,7 @@ const defaultNodes: StackNode[] = [
     orbitRadius: 1.0
   },
   {
-    icon: <img src="/assets/home/technology-stack/laravel-svgrepo-com.svg" alt="laravel" />,
+    icon: <img src="/home/technology-stack/laravel-svgrepo-com.svg" alt="laravel" />,
     x: 609,
     y: 386,
     ring: "#e0b400",
@@ -69,7 +71,7 @@ const defaultNodes: StackNode[] = [
     orbitRadius: 1.0
   },
   {
-    icon: <img src="/assets/home/technology-stack/MySQL.jpg" alt="mySql" />,
+    icon: <img src="/home/technology-stack/mysql-logo-svgrepo-com.svg" alt="mySql" />,
     x: 294,
     y: 499,
     ring: "#3aa876",
@@ -77,7 +79,7 @@ const defaultNodes: StackNode[] = [
     orbitRadius: 1.0
   },
   {
-    icon: <img src="/assets/home/technology-stack/python-svgrepo-com.svg" alt="python" />,
+    icon: <img src="/home/technology-stack/python-svgrepo-com.svg" alt="python" />,
     x: 382,
     y: 573,
     ring: "#38bdf8",
@@ -85,7 +87,7 @@ const defaultNodes: StackNode[] = [
     orbitRadius: 1.0
   },
   {
-    icon: <img src="/assets/home/technology-stack/tailwind.svg" alt="tailwind" />,
+    icon: <img src="/home/technology-stack/tailwind.svg" alt="tailwind" />,
     x: 497,
     y: 573,
     ring: "#2f6fed",
@@ -93,7 +95,7 @@ const defaultNodes: StackNode[] = [
     orbitRadius: 1.0
   },
   {
-    icon: <img src="/assets/home/technology-stack/vercel.svg" alt="vercel" />,
+    icon: <img src="/home/technology-stack/vue.svg" alt="vue" />,
     x: 586,
     y: 499,
     ring: "#e0793c",
@@ -174,9 +176,9 @@ const OrbitingNode = ({
 };
 
 export default function TechStackSection({
-  badge = "UNDER THE HOOD",
-  heading = "Technology Stack",
-  subtitle = "Modern technologies powering a next-generation learning experience.",
+  // badge = "UNDER THE HOOD",
+  // heading = "Technology Stack",
+  // subtitle = "Modern technologies powering a next-generation learning experience.",
   nodes = defaultNodes,
   centerLabel = "SastraCode",
   centerIcon,
@@ -199,19 +201,20 @@ export default function TechStackSection({
     setIsClient(true);
   }, []);
 
+  const currentT = useTranslation();
   if (!isClient) {
     // Return a static version for SSR
     return (
       <section className="w-full overflow-hidden bg-white px-4 py-14 sm:px-8 dark:bg-[#0B1120] transition-colors duration-300">
         <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
           <span className="mb-4 rounded-full border border-[#c9d3f5] dark:border-blue-700 bg-[#eef1fd] dark:bg-blue-950 px-4 py-1 text-[11px] font-semibold tracking-wide text-[#3a52c9] dark:text-blue-300 transition-colors duration-300">
-            {badge}
+            {currentT.technologyStack.badge}
           </span>
           <h2 className="text-3xl font-extrabold text-[#0c1c4a] dark:text-white sm:text-4xl transition-colors duration-300">
-            {heading}
+            {currentT.technologyStack.title1}
           </h2>
           <p className="mt-3 text-sm text-[#4a5578] dark:text-gray-300 sm:text-base transition-colors duration-300">
-            {subtitle}
+            {currentT.technologyStack.description}
           </p>
         </div>
         <div className="relative mx-auto w-full max-w-[900px]" style={{ aspectRatio: `${CANVAS_W} / ${CANVAS_H}` }}>
@@ -228,13 +231,13 @@ export default function TechStackSection({
       {/* header */}
       <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
         <span className="mb-4 rounded-full border border-[#c9d3f5] dark:border-blue-700 bg-[#eef1fd] dark:bg-blue-950 px-4 py-1 text-[11px] font-semibold tracking-wide text-[#3a52c9] dark:text-blue-300 transition-colors duration-300">
-          {badge}
+          {currentT.technologyStack.badge}
         </span>
         <h2 className="text-3xl font-extrabold text-[#0c1c4a] dark:text-white sm:text-4xl transition-colors duration-300">
-          {heading}
+          {currentT.technologyStack.title1}
         </h2>
         <p className="mt-3 text-sm text-[#4a5578] dark:text-gray-300 sm:text-base transition-colors duration-300">
-          {subtitle}
+          {currentT.technologyStack.description}
         </p>
       </div>
 

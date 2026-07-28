@@ -1,7 +1,13 @@
 // AIChatCard.tsx
+"use client"
 import React from 'react';
+import { current } from '@reduxjs/toolkit';
+import { useTranslation } from '@/app/hooks/useTranslations';
+
+
 
 export default function AIChatCard() {
+
     return (
         <div className="min-h-[300px] flex items-center justify-center">
             <AiCoachWidget />
@@ -10,12 +16,13 @@ export default function AIChatCard() {
 }
 
 function AiCoachWidget() {
+    const currentT = useTranslation();
     return (
         <div className="relative w-full max-w-2xl mx-auto py-[15px] px-6">
             <div className="flex flex-col items-center gap-2 sm:flex-row sm:items-start sm:gap-6">
                 <div className="relative shrink-0 pt-6 sm:-top-[65px]">
                     <img
-                        src="/assets/home/image/aiChatBot.png"
+                        src="/home/image/aiCoachRobot.png"
                         alt="AI Coach robot"
                         className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 animate-float object-contain"
                     />
@@ -23,7 +30,7 @@ function AiCoachWidget() {
 
                 <div className="flex-1 min-w-0 w-full">
                     <p className="text-[15px] md:text-base font-medium text-slate-800 dark:text-slate-200 leading-snug mb-3 transition-colors duration-300">
-                        ការពន្យល់និងជំនួយក្នុងការសិក្សារកកំហុសក្នុងកូដ។
+                        {currentT.interactiveDoc.aiChat}
                     </p>
 
                     <ChatCard />

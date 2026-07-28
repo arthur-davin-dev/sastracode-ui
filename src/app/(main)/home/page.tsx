@@ -1,4 +1,5 @@
-import Banner from '@/components/home/Banner'
+
+import Banner from '@/components/home/banner/Banner'
 import CoreFeatures from '@/components/home/core-feature/CoreFeature'
 import InteractiveDoc from '@/components/home/interactive-doc/InteractiveDoc'
 import FeatureSection from '@/components/home/results-and-rewards/FeatureSection'
@@ -11,14 +12,16 @@ import React from 'react'
 export default function page() {
   return (
     <div>
-      <Banner />
+
+      <h1> Can't show a landing page here!!!</h1>
+      {/* <Banner />
       <Showcase />
       <InteractiveDoc />
       <CoreFeatures />
       <TechStackSection />
       <FeatureSection />
       <Rewards />
-      <SupportTeam />
+      <SupportTeam /> */}
     </div>
   )
 }

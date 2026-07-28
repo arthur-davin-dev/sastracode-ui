@@ -1,6 +1,9 @@
 "use client";
 
 import React from "react";
+import { useLanguage } from "@/app/Context";
+import { en } from "./locale/en";
+import { km } from "./locale/km";
 
 /**
  * HeroSection
@@ -34,12 +37,12 @@ import React from "react";
  */
 
 export default function Rewards({
-  leftIcon = <img src="/assets/home/svg/code-water.svg" />,
-  rightIcon = <img src="/assets/home/svg/computer-water.svg" />,
-  headingMain = "សមិទ្ធផលនិង",
-  headingAccent = "រង្វាន់",
-  description = "SastraCode ជាទីកន្លែងផ្តល់ XP, Badge និង Certificate ពីការរៀន និងការអនុវត្តជាបន្តបន្ទាប់សម្រាប់រៀន Programming ដោយរួមបញ្ចូលមេរៀន ការអនុវត្តជាក់ និងការតាមដានវឌ្ឍនភាពៗ",
-  ctaLabel = "ចាប់ផ្តើមរៀន",
+  leftIcon = <img src="/home/svg/code-water.svg" />,
+  rightIcon = <img src="/home/svg/computer-water.svg" />,
+  headingMain,
+  headingAccent,
+  description,
+  ctaLabel,
   onCtaClick,
   ctaHref,
 }: {
@@ -53,6 +56,22 @@ export default function Rewards({
   ctaHref?: string;
 }) {
   const Cta = ctaHref ? "a" : "button";
+  const { lang } = useLanguage();
+
+  const translations = { en, km };
+  const currentT = translations[lang];
+
+  const finalHeadingMain =
+    headingMain = currentT.rewards.headingMain;
+
+  const finalHeadingAccent =
+    headingAccent = currentT.rewards.headingAccent;
+
+  const finalDescription =
+    description = currentT.rewards.description;
+
+  const finalCtaLabel =
+    ctaLabel = currentT.rewards.ctaLabel;
 
   return (
     <section className="relative w-full overflow-hidden bg-white dark:bg-gray-900 px-4 py-12 sm:px-8 sm:py-16 md:py-20">
