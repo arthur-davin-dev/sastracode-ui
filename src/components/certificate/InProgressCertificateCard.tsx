@@ -11,19 +11,19 @@ export function InProgressCertificateCard({ certificate }: { certificate: InProg
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-1">
-            <p className="text-content font-bold text-indigo-950">{certificate.title}</p> {/* ← ប្តូរពី text-sm */}
-            <span className="text-xs font-medium text-orange-600 bg-orange-50 px-2 py-1 rounded-full shrink-0">
+            <p className="text-lg font-bold text-primary-color">{certificate.title}</p> 
+            <span className="text-lg font-medium text-orange-600 bg-orange-50 px-2 py-1 rounded-full shrink-0">
               កំពុងដំណើរការ
             </span>
           </div>
 
-          <p className="text-xs text-muted-foreground mb-1">
+          <p className="text-lg text-muted-foreground mb-1">
             រដ្ឋភាព: {certificate.progressPercent}%
           </p>
 
           <Progress value={certificate.progressPercent} className="h-1.5 [&>div]:bg-orange-400" />
 
-          <p className="text-xs text-muted-foreground mt-1">
+          <p className="text-lg text-muted-foreground mt-1">
             បញ្ចប់ក្នុងរយៈពេល {certificate.daysLeft} ថ្ងៃ (ពី {certificate.totalDays} ថ្ងៃ)
           </p>
         </div>

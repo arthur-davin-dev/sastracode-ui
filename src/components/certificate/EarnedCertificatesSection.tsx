@@ -19,13 +19,13 @@ export function EarnedCertificatesSection({ certificates }: EarnedCertificatesSe
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-sub-title font-semibold flex items-center gap-2">
+        <CardTitle className="text-2xl text-primary-color font-semibold flex items-center gap-2">
           <span className="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center">
             <CheckCircle2 className="h-3.5 w-3.5 text-green-600" />
           </span>
           វិញ្ញាបនបត្រដែលបានទទួល
         </CardTitle>
-        <a href="#" className="text-content text-blue-600 flex items-center gap-1 hover:underline"> 
+        <a href="#" className="text-lg text-blue-800 flex items-center gap-1 hover:underline"> 
           មើលទាំងអស់ <ChevronRight className="h-3 w-3" />
         </a>
       </CardHeader>
@@ -35,28 +35,28 @@ export function EarnedCertificatesSection({ certificates }: EarnedCertificatesSe
           <div className="flex items-center gap-2 border rounded-full p-1">
             <button
               onClick={() => setFilter("all")}
-              className={`text-content px-4 py-1.5 rounded-full transition-colors ${
-                filter === "all" ? "bg-blue-600 text-white" : "text-muted-foreground"
+              className={`text-lg px-4 py-1.5 rounded-full transition-colors ${
+                filter === "all" ? "bg-primary-color text-white" : "text-muted-foreground"
               }`}
             >
               គ្រប់ភាពតាមខែ
             </button>
             <button
               onClick={() => setFilter("docs")}
-              className={`text-content px-4 py-1.5 rounded-full flex items-center gap-1 transition-colors ${
-                filter === "docs" ? "bg-blue-600 text-white" : "text-muted-foreground"
+              className={`text-lg px-4 py-1.5 rounded-full flex items-center gap-1 transition-colors ${
+                filter === "docs" ? "bg-primary-color text-white" : "text-muted-foreground"
               }`}
             >
-              <FileText className="h-3 w-3" /> ឯកសារមេរៀន
+              <FileText className="h-6 w-6" /> ឯកសារមេរៀន
             </button>
           </div>
 
           <div className="flex items-center gap-2">
             <Select defaultValue="12">
-              <SelectTrigger className="w-[110px] h-8 text-content">
+              <SelectTrigger className="width: 110px h-8 text-lg">
                 <SelectValue placeholder="ចំនួន" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="width: 110px text-lg">
                 <SelectItem value="12">ចំនួន(12)</SelectItem>
                 <SelectItem value="8">ចំនួន(8)</SelectItem>
               </SelectContent>
