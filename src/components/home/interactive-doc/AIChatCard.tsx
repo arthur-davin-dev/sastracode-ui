@@ -2,7 +2,7 @@
 "use client"
 import React from 'react';
 import { current } from '@reduxjs/toolkit';
-import { useTranslation } from '@/app/hooks/useTranslations';
+import { useTranslation } from '@/hooks/useTranslations';
 
 
 

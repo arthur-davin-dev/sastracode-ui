@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { CodeBracketIcon } from '@heroicons/react/24/outline'
 import Stats from './Stats'
 import CodeWindow from './CodeWindow'
-import { useTranslation } from '@/app/hooks/useTranslations'
+import { useTranslation } from '@/hooks/useTranslations'
 
 export default function Banner() {
 

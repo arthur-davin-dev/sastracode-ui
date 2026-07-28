@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, useAnimationFrame, useMotionValue, useTransform } from "framer-motion";
-import { useTranslation } from "@/app/hooks/useTranslations";
+import { useTranslation } from "@/hooks/useTranslations";
 
 
 /**

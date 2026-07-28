@@ -1,7 +1,7 @@
 // AllCard.tsx
 import Image from "next/image";
 import { Props } from "./ClassNameProps";
-import { useTranslation } from "@/app/hooks/useTranslations";
+import { useTranslation } from "@/hooks/useTranslations";
 
 
 type Variant = "floating" | "grid";

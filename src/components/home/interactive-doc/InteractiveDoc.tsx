@@ -1,6 +1,6 @@
 // InteractiveDoc.tsx
 "use client"
-import { useTranslation } from "@/app/hooks/useTranslations";
+import { useTranslation } from "@/hooks/useTranslations";
 import AIChatCard from "./AIChatCard";
 import PreviewCard from "./PreviewCard";
 

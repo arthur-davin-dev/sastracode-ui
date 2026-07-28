@@ -1,6 +1,6 @@
 // HeroCharacter.tsx
 import Image from "next/image";
-import { useTranslation } from "@/app/hooks/useTranslations";
+import { useTranslation } from "@/hooks/useTranslations";
 
 
 

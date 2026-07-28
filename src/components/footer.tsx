@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin } from "lucide-react";
-import { useTranslation } from "@/app/hooks/useTranslations";
+import { useTranslation } from "@/hooks/useTranslations";
 
 export default function Footer() {
  const currentT = useTranslation();

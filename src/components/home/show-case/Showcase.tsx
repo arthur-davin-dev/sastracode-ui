@@ -6,7 +6,7 @@ import AnalyticsCard, { AICard, BusinessCard, LiveCoding, NormalCard } from "../
 import FloatingCard from "../floatingCard/FloatingCard";
 import HeroCharacter from "./HeroCharacter";
 import { current } from "@reduxjs/toolkit";
-import { useTranslation } from "@/app/hooks/useTranslations";
+import { useTranslation } from "@/hooks/useTranslations";
 
 const CANVAS_W = 1216;
 const CANVAS_H = 440;

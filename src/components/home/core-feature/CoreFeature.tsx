@@ -1,7 +1,7 @@
 // CoreFeatures.tsx
 "use client"
 
-import { useTranslation } from "@/app/hooks/useTranslations";
+import { useTranslation } from "@/hooks/useTranslations";
 
 // Static per-card visuals — not language dependent
 const cardStyles = [
@@ -54,7 +54,7 @@ export default function CoreFeatures() {
             {currentT.coreFeature.badge}
           </span>
           <h2 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">
-            <span className="text-[#0d1b3e] dark:text-white">{currentT.headingPrefix}</span>
+            <span className="text-[#0d1b3e] dark:text-white">{currentT.coreFeature.headingPrefix}</span>
             <span className="gradient-features dark:bg-gradient-to-r dark:from-purple-400 dark:to-blue-400 dark:bg-clip-text dark:text-transparent">
               {currentT.coreFeature.headingHighlight}
             </span>
