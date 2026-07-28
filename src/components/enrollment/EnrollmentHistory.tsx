@@ -13,7 +13,7 @@ export function EnrollmentHistory({ items }: EnrollmentHistoryProps) {
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-bold text-gray-900 font-(family-name:--font-sans)">
-          Your Enrollment History
+          ប្រវត្តិចុះឈ្មោះរបស់អ្នក
         </h2>
         <Link href="/enrollments" className="text-sm font-medium text-primary-color hover:underline">
           View all

@@ -34,14 +34,15 @@ export interface Course {
   duration: string;
   image: string;
   href?: string;
-  price?: number; // undefined/0 = free
+  price?: number;
   learningPoints?: string[];
   instructor?: Instructor;
   curriculum?: Chapter[];
   originalPrice?: number;
   totalDuration?: string;
+  benefits?: Benefit[];   
 }
-
+//-------enrollment------///
 export interface Benefit {
   icon: "video" | "download" | "certificate" | "qa" | "pace" | "devices";
   title: string;

@@ -3,6 +3,7 @@ import { EnrollmentHeader } from "./EnrollmentHeader";
 import { EnrollmentHistory } from "./EnrollmentHistory";
 import { CheckoutCard } from "./CheckoutCard";
 import { Course, EnrollmentHistoryItem } from "@/lib/course/courses";
+import { WhatYoullGet } from "./WhatYoullGet";
 
 interface EnrollmentPageProps {
   course: Course;
@@ -16,7 +17,7 @@ export default function EnrollmentPage({ course, enrollmentHistory }: Enrollment
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
           <div className="space-y-6">
             <EnrollmentHeader course={course} />
-            {/* <WhatYoullGet course={course} /> */}
+            <WhatYoullGet course={course} />
             <EnrollmentHistory items={enrollmentHistory} />
           </div>
 
