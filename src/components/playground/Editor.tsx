@@ -78,7 +78,6 @@ export default function Editor() {
     return () => observer.disconnect();
   }, []);
 
-  // auto-scroll output to bottom on new lines, unless user pinned to Top
   useEffect(() => {
     if (!outputRef.current) return;
     if (outputAnchor === "Bottom") {
@@ -90,7 +89,11 @@ export default function Editor() {
     editorRef.current = editor;
   };
 
-  const handleSelectLanguage = (label: string, value: string, color: string) => {
+  const handleSelectLanguage = (
+    label: string,
+    value: string,
+    color: string,
+  ) => {
     setActiveLabel(label);
     setLanguage(value);
     setActiveColor(color);
@@ -146,14 +149,18 @@ export default function Editor() {
 
   const zoom = (
     setter: React.Dispatch<React.SetStateAction<number>>,
-    dir: 1 | -1
+    dir: 1 | -1,
   ) => setter((prev) => Math.min(28, Math.max(10, prev + dir)));
 
-  // JS yellow is low-contrast against white text — use dark text for it, white for the rest
   const activeTextColor = activeColor === "#F0DB4F" ? "#0f172a" : "#ffffff";
 
   return (
     <div className="transition-colors duration-300 bg-white dark:bg-slate-950 px-4 sm:px-6 lg:px-8 pt-6 pb-8">
+      {/* TEMP TEST MARKER - remove once we confirm this file is rendering */}
+      {/* <h1 style={{ color: "red", fontSize: "40px" }}>
+        TEST 123 - IS THIS SHOWING?
+      </h1> */}
+
       {/* Language tabs */}
       <div className="flex items-center gap-1 pb-3 overflow-x-auto no-scrollbar">
         {languages.map((lang) => {
@@ -203,14 +210,16 @@ export default function Editor() {
             </span>
             <button
               onClick={() => zoom(setEditorFontSize, -1)}
-              className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-1 rounded text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <ZoomOut className="h-3.5 w-3.5" />
             </button>
-            <span className="text-xs w-8 text-center">{editorFontSize}px</span>
+            <span className="text-xs w-8 text-center text-slate-700 dark:text-slate-300">
+              {editorFontSize}px
+            </span>
             <button
               onClick={() => zoom(setEditorFontSize, 1)}
-              className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-1 rounded text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <ZoomIn className="h-3.5 w-3.5" />
             </button>
@@ -222,14 +231,16 @@ export default function Editor() {
             </span>
             <button
               onClick={() => zoom(setOutputFontSize, -1)}
-              className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-1 rounded text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <ZoomOut className="h-3.5 w-3.5" />
             </button>
-            <span className="text-xs w-8 text-center">{outputFontSize}px</span>
+            <span className="text-xs w-8 text-center text-slate-700 dark:text-slate-300">
+              {outputFontSize}px
+            </span>
             <button
               onClick={() => zoom(setOutputFontSize, 1)}
-              className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-1 rounded text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <ZoomIn className="h-3.5 w-3.5" />
             </button>
@@ -237,7 +248,7 @@ export default function Editor() {
 
           <button
             onClick={() => setShowLineNumbers((p) => !p)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-800 ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 ${
               showLineNumbers
                 ? "bg-slate-100 dark:bg-slate-800"
                 : "text-slate-500"
@@ -251,7 +262,7 @@ export default function Editor() {
             onClick={() =>
               setOutputAnchor((p) => (p === "Bottom" ? "Top" : "Bottom"))
             }
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-800"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300"
           >
             {outputAnchor === "Bottom" ? (
               <ChevronDown className="h-3.5 w-3.5" />
@@ -263,7 +274,7 @@ export default function Editor() {
 
           <button
             onClick={toggleFullscreen}
-            className="p-2 rounded-lg border border-slate-200 dark:border-slate-800"
+            className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300"
           >
             {isFullscreen ? (
               <Minimize2 className="h-3.5 w-3.5" />
@@ -295,11 +306,19 @@ export default function Editor() {
             <RotateCcw className="h-4 w-4" />
             Reset
           </Button>
-          <Button variant="outline" className="gap-2" onClick={handleClearEditor}>
+          <Button
+            variant="outline"
+            className="gap-2"
+            onClick={handleClearEditor}
+          >
             <Trash2 className="h-4 w-4" />
             Clear
           </Button>
-          <Button variant="outline" className="gap-2" onClick={handleClearOutput}>
+          <Button
+            variant="outline"
+            className="gap-2"
+            onClick={handleClearOutput}
+          >
             <Eraser className="h-4 w-4" />
             Clear Output
           </Button>
@@ -397,11 +416,11 @@ export default function Editor() {
             <div
               ref={outputRef}
               style={{ fontSize: outputFontSize }}
-              className="h-[500px] p-4 font-mono space-y-1 overflow-y-auto"
+              className="h-125 p-4 font-mono space-y-1 overflow-y-auto"
             >
               {output.length === 0 ? (
                 <p className="text-slate-500">
-                  Click "Run" to see output here.
+                  Click &quot;Run&quot; to see output here.
                 </p>
               ) : (
                 output.map((line, i) => (
