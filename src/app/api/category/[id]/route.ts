@@ -8,12 +8,13 @@ export async function GET(
   {
     params,
   }: {
-    params: {
+    params: Promise<{
       id: string;
-    };
+    }>;
   },
 ) {
-  const result = await apiProxy(`/categories/${params.id}`);
+  const { id } = await params;
+  const result = await apiProxy(`/categories/${id}`);
 
   return NextResponse.json(result.data, {
     status: result.status,

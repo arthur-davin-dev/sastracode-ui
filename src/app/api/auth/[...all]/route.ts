@@ -5,12 +5,13 @@ export async function GET(
   {
     params,
   }: {
-    params: {
+    params: Promise<{
       all: string[];
-    };
+    }>;
   },
 ) {
-  const endpoint = "/" + params.all.join("/");
+  const { all } = await params;
+  const endpoint = "/" + all.join("/");
 
   const response = await fetch(`${process.env.BACKEND_URL}${endpoint}`, {
     method: "GET",
