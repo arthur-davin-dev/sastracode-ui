@@ -30,7 +30,7 @@ export function RelatedCourses({ courses }: RelatedCoursesProps) {
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-10">
-      <h2 className="mb-5 text-xl font-bold text-primary-color font-(family-name:--font-sans)">
+      <h2 className="mb-5 text-2xl font-bold text-primary-color font-(family-name:--font-sans)">
         ថ្នាក់រៀនទាំងអស់
       </h2>
       <div className="mb-8">

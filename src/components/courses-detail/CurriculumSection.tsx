@@ -1,4 +1,3 @@
-
 import { ChapterAccordion } from "./ChapterAccordion";
 import { Chapter, Course } from "@/lib/course/courses";
 
@@ -69,13 +68,13 @@ export function CurriculumSection({ course }: CurriculumSectionProps) {
 
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-      <h2 className="text-xl font-bold text-primary-color font-(family-name:--font-sans)">
+      <h2 className="text-2xl font-bold text-primary-color font-(family-name:--font-sans) pb-3">
         មាតិកាវគ្គសិក្សា
       </h2>
-      <p className="mb-5 text-sm text-gray-400 font-(family-name:--font-sans)">
-        {chapters.length} chapters · {totalLessons} lessons total
+      <p className="mb-5 text-base text-gray-400 font-(family-name:--font-sans)">
+         ជំពូកទី {chapters.length} ·  ចំនួនមេរៀនសរុប​ {totalLessons}
       </p>
-      <div className="space-y-3">
+      <div className="space-y-3 ">
         {chapters.map((chapter, i) => (
           <ChapterAccordion
             key={chapter.id}
@@ -85,6 +84,7 @@ export function CurriculumSection({ course }: CurriculumSectionProps) {
           />
         ))}
       </div>
+      
     </div>
   );
 }

@@ -21,8 +21,8 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
       </div>
 
       <div className="space-y-3">
-        <Button className="w-full rounded-lg bg-primary-color py-5 text-xs font-semibold text-white hover:bg-primary-color/90">
-          Enroll Now
+        <Button className="w-full rounded-lg bg-primary-color py-5 text-sm font-semibold text-white hover:bg-primary-color/90">
+          ចុះឈ្មោះឥឡូវនេះ
         </Button>
         <Button
           variant="outline"

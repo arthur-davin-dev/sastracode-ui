@@ -142,3 +142,47 @@
 }
 /* Enable class-based dark mode in Tailwind v4 */
 @variant dark (&:where(.dark, .dark *));
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-slow-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+@keyframes counter-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+@keyframes counter-spin-reverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 18s linear infinite;
+}
+
+.animate-spin-slow-reverse {
+  animation: spin-slow-reverse 14s linear infinite;
+}
+
+.animate-counter-spin {
+  animation: counter-spin 18s linear infinite;
+}
+
+.animate-counter-spin-reverse {
+  animation: counter-spin-reverse 14s linear infinite;
+}
+
+.animate-bob {
+  animation: bob 4s ease-in-out infinite;
+}

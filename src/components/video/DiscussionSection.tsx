@@ -23,7 +23,7 @@ export function DiscussionSection({ comments, totalCount }: DiscussionSectionPro
 
       <div className="mb-6 flex items-start gap-3">
         <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-gray-200">
-          <Image src="/assets/images/current-user.png" alt="You" fill className="object-cover" />
+          <Image src="/assets/images/Davin.DNG" alt="You" fill className="object-cover" />
         </div>
         <div className="flex flex-1 items-center gap-2 text-primary-color">
           <input

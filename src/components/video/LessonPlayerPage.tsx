@@ -106,7 +106,7 @@ export default function LessonPlayerPage({
       : "Lesson 1 of 12";
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 mt-15">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
           <div className="space-y-6">

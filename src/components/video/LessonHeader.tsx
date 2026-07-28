@@ -21,7 +21,7 @@ export function LessonHeader({
   const [isComplete, setIsComplete] = useState(false);
 
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between ">
       <div>
         <h1 className="text-xl font-bold text-gray-900 font-(family-name:--font-sans)">
           {title}

@@ -14,6 +14,7 @@ export interface Chapter {
   lessonCount: number;
   totalDuration: string;
   lessons: Lesson[];
+  
 }
 
 export interface Instructor {
@@ -37,8 +38,15 @@ export interface Course {
   learningPoints?: string[];
   instructor?: Instructor;
   curriculum?: Chapter[];
+  originalPrice?: number;
+  totalDuration?: string;
 }
 
+export interface Benefit {
+  icon: "video" | "download" | "certificate" | "qa" | "pace" | "devices";
+  title: string;
+  description: string;
+}
 // ---- Data ----
 
 export const categories = [
@@ -172,4 +180,19 @@ export async function getRelatedCourses(
   );
 
   return [...sameCategory, ...fallback].slice(0, limit);
+}
+//-------enrollment------///
+export interface Benefit {
+  icon: "video" | "download" | "certificate" | "qa" | "pace" | "devices";
+  title: string;
+  description: string;
+}
+
+export interface EnrollmentHistoryItem {
+  courseId: string;
+  title: string;
+  thumbnail: string;
+  status: "completed" | "in-progress";
+  progressPercent: number;
+  
 }
