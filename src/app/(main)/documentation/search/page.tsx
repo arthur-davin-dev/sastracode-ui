@@ -2,7 +2,7 @@ import { Search } from "lucide-react";
 import DocsShell from "@/components/documentation/DocsShell";
 import FilterTabs from "@/components/documentation/FilterTabs";
 import SearchResultCard from "@/components/documentation/SearchResultCard";
-import SortDropdown from "@/components/documentation/SortDropdown";
+
 import { searchResults } from "@/lib/data/documentation";
 
 export default async function SearchDocsPage({
@@ -35,7 +35,7 @@ export default async function SearchDocsPage({
             <span className="font-semibold text-primary">&ldquo;{query}&rdquo;</span>
           </p>
 
-          <SortDropdown />
+          {/* <SortDropdown /> */}
         </div>
 
         <div className="flex flex-col gap-4">

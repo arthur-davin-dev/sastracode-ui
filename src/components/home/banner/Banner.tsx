@@ -1,6 +1,4 @@
-// Banner.tsx
-import React from 'react'
-import { CodeBracketIcon } from '@heroicons/react/24/outline'
+
 import Stats from './Stats'
 import CodeWindow from './CodeWindow'
 

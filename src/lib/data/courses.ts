@@ -339,10 +339,3 @@ export const promoBanner: PromoBannerData = {
   href: "/documentation/python-for-data-science",
   image: "/images/promo/python-data-science.png",
 };
-export const docsNavItems: DocsNavItem[] = [
-  { id: "home", label: "ទំព័រដើម", href: "/documentation/dashboard", icon: "home" },
-  { id: "courses", label: "វគ្គសិក្សា", href: "/documentation/java", icon: "book" },
-  { id: "resources", label: "Resources", href: "/documentation/resources", icon: "folder" },
-  { id: "bookmark", label: "Bookmark", href: "/documentation/bookmark", icon: "bookmark" },
-  { id: "help", label: "Help Center", href: "/documentation/help", icon: "help" },
-];
