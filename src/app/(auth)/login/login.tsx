@@ -255,7 +255,7 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
                 </span>
               </label>
               <Link
-                href="#"
+                href="/forgot-password"
                 className="text-xs sm:text-sm text-secondary-color hover:underline font-medium font-khmer"
               >
                 ភ្លេចពាក្យសម្ងាត់មែនទេ?
@@ -276,7 +276,7 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
                 មិនទាន់មានគណនីមែនទេ?
               </span>
               <Link
-                href="#"
+                href="/register"
                 className="text-secondary-color hover:underline font-medium font-khmer"
               >
                 ចុះឈ្មោះ
