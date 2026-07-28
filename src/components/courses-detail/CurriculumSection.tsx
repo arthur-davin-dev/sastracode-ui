@@ -1,4 +1,3 @@
-
 import { ChapterAccordion } from "./ChapterAccordion";
 import { Chapter, Course } from "@/lib/course/courses";
 
@@ -68,11 +67,11 @@ export function CurriculumSection({ course }: CurriculumSectionProps) {
   const totalLessons = chapters.reduce((sum, c) => sum + c.lessonCount, 0);
 
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-      <h2 className="text-xl font-bold text-primary-color font-(family-name:--font-sans)">
+    <div className="rounded-2xl border border-border bg-card/80 p-6 shadow-sm backdrop-blur-sm transition-colors duration-300">
+      <h2 className="text-lg font-bold text-foreground">
         មាតិកាវគ្គសិក្សា
       </h2>
-      <p className="mb-5 text-sm text-gray-400 font-(family-name:--font-sans)">
+      <p className="mb-5 text-sm text-muted-foreground">
         {chapters.length} chapters · {totalLessons} lessons total
       </p>
       <div className="space-y-3">

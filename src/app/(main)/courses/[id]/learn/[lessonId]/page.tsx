@@ -1,9 +1,3 @@
-// import LessonPlayerPage from "@/components/video/LessonPlayerPage";
-
-// export default function Page() {
-//   return <LessonPlayerPage />;
-// }
-
 import { notFound } from "next/navigation";
 import LessonPlayerPage from "@/components/video/LessonPlayerPage";
 import { getCourseById } from "@/lib/course/courses";

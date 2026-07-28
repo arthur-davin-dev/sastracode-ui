@@ -4,7 +4,9 @@ import { useMemo, useState } from "react";
 import { SearchBar } from "./SearchBar";
 import { CategoryFilter } from "./CategoryFilter";
 import { CourseGrid } from "./CourseGrid";
-import { Course } from "./Types";
+import { Course } from "@/lib/course/courses";
+import CourseBanner from "./course-banner";
+
 
 const categories = [
   "ទាំងអស់",
@@ -55,7 +57,7 @@ const courses: Course[] = [
     description:
       "ទទួលបានប្រាក់ចំណូលសម្រាប់ Server-side development ជាមួយ Node.js និង Express",
     lessons: 32,
-    duration: "៧ម៉ោង ૧૦នាទី",
+    duration: "៧ម៉ោង ១០នាទី",
     image: "/images/backend-banner.png",
   },
   {
@@ -130,10 +132,14 @@ export default function CourseListingPage() {
   }, [search, activeCategory]);
 
   return (
-    <div className="min-h-screen bg-white">
-      <main className="mx-auto max-w-300 px-6 pb-16 pt-8">
-        {/* Search & filter row */}
-        <div className="mb-10.5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+      {/* Top Hero Banner */}
+      <CourseBanner/>
+
+      {/* Main Content Area */}
+      <main className="mx-auto max-w-7xl px-6 pb-16 pt-10">
+        {/* Search & Filter Row */}
+        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <SearchBar value={search} onChange={setSearch} />
           <CategoryFilter
             categories={categories}
@@ -142,7 +148,7 @@ export default function CourseListingPage() {
           />
         </div>
 
-        {/* Course grid */}
+        {/* Course Grid */}
         <CourseGrid courses={filteredCourses} />
       </main>
     </div>

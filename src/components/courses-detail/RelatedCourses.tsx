@@ -29,18 +29,30 @@ export function RelatedCourses({ courses }: RelatedCoursesProps) {
   if (courses.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-10">
-      <h2 className="mb-5 text-xl font-bold text-primary-color font-(family-name:--font-sans)">
-        ថ្នាក់រៀនទាំងអស់
-      </h2>
-      <div className="mb-8">
-        <CategoryFilter
-          categories={categories}
-          active={activeCategory}
-          onChange={setActiveCategory}
-        />
+    <section className="border-t border-slate-200/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/50 transition-colors duration-300">
+      <div className="mx-auto max-w-7xl px-6 py-10 sm:py-14">
+        {/* Header Section */}
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
+            ថ្នាក់រៀនពាក់ព័ន្ធ
+          </h2>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            ស្វែងរកវគ្គសិក្សាផ្សេងទៀតដែលសមស្របសម្រាប់អ្នក
+          </p>
+        </div>
+
+        {/* Filter Category Tabs */}
+        <div className="mb-8">
+          <CategoryFilter
+            categories={categories}
+            active={activeCategory}
+            onChange={setActiveCategory}
+          />
+        </div>
+
+        {/* Filtered Course Grid */}
+        <CourseGrid courses={filtered} />
       </div>
-      <CourseGrid courses={filtered} />
     </section>
   );
 }

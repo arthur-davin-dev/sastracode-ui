@@ -1,61 +1,3 @@
-// "use client";
-
-// import { useState } from "react";
-// import { VideoPlayer } from "./VideoPlayer";
-// import { LessonHeader } from "./LessonHeader";
-// import { DiscussionSection } from "./DiscussionSection";
-// import { CourseContentSidebar } from "./CourseContentSidebar";
-// import { UpNextCard } from "./UpNextCard";
-// import { sections, comments, getTotalLessons } from "@/lib/videoplayer/videoplayer";
-
-// const totalLessons = getTotalLessons(sections);
-
-// export default function LessonPlayerPage() {
-//   const [autoplay, setAutoplay] = useState(true);
-
-//   return (
-//     <div className="min-h-screen bg-gray-50 py-8">
-//       <div className="mx-auto max-w-7xl px-6">
-//         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
-//           <div className="space-y-6">
-//             <VideoPlayer
-//               thumbnailTitle="HTML"
-//               currentTime="05:42"
-//               totalTime="12:15"
-//               progressPercent={47}
-//             />
-
-//             <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-//               <LessonHeader
-//                 title="Introduction to HTML"
-//                 sectionLabel="Section 1"
-//                 lessonPosition="Lesson 1 of 12"
-//                 level="Beginner"
-//                 likeCount={128}
-//               />
-//             </div>
-
-//             <DiscussionSection comments={comments} totalCount={15} />
-//           </div>
-
-//           <div className="space-y-6">
-//             <CourseContentSidebar sections={sections} totalLessons={totalLessons} />
-//             <UpNextCard
-//               thumbnail="/assets/images/CSS.jpg"
-//               title="CSS Selectors"
-//               description="Learn how to target HTML elements using CSS selectors."
-//               lessonPosition="Lesson 6 of 12"
-//               duration="14:30"
-//               autoplay={autoplay}
-//               onAutoplayChange={setAutoplay}
-//             />
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
 "use client";
 
 import { useState } from "react";
@@ -97,7 +39,7 @@ export default function LessonPlayerPage({
   const lessonTitle = found?.lesson.title ?? "Introduction to HTML";
   const sectionLabel = found?.chapter.title ?? "Section 1";
 
-  // find the lesson's position (e.g. "Lesson 6 of 12") across all chapters
+  // Find the lesson's position (e.g. "Lesson 6 of 12") across all chapters
   const flatLessons = chapters.flatMap((c) => c.lessons);
   const lessonIndex = flatLessons.findIndex((l) => l.id === lessonId);
   const lessonPosition =
@@ -106,9 +48,10 @@ export default function LessonPlayerPage({
       : "Lesson 1 of 12";
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="mx-auto max-w-7xl px-6">
+    <div className="min-h-screen bg-background text-foreground py-8 transition-colors duration-300">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
+          {/* Main Video & Discussion Section */}
           <div className="space-y-6">
             <VideoPlayer
               thumbnailTitle={course.title}
@@ -117,7 +60,7 @@ export default function LessonPlayerPage({
               progressPercent={0}
             />
 
-            <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors duration-300">
               <LessonHeader
                 title={lessonTitle}
                 sectionLabel={sectionLabel}
@@ -130,6 +73,7 @@ export default function LessonPlayerPage({
             <DiscussionSection comments={comments} totalCount={15} />
           </div>
 
+          {/* Right Sidebar Section */}
           <div className="space-y-6">
             <CourseContentSidebar
               sections={sections}
