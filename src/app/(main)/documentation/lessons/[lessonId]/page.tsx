@@ -11,7 +11,7 @@ import TipsSection from "@/components/documentation/TipsSection";
 import VideoCard from "@/components/documentation/VideoCard";
 import QuickQuiz from "@/components/documentation/QuickQuiz";
 import LessonFooterNav from "@/components/documentation/LessonFooterNav";
-import { getLessonById } from "@/lib/data/lessions";
+import { getLessonById, trackTabs } from "@/lib/data/lessions";
 
 export default async function LessonPage({
   params,
@@ -28,13 +28,33 @@ export default async function LessonPage({
   return (
     <div className="flex min-h-screen bg-[#F5F6F8] text-[#1A1A1A]" style={{ fontSize: 18 }}>
       <DocsSidebar activeTrack={lesson.trackSlug} activeLessonId={lesson.id} />
-
-      <main className="flex-1 max-w-3xl mx-auto py-8 px-4">
-        <Link href="/documentation" className="flex items-center gap-1 text-sm text-gray-500 mb-4 w-fit">
-          <ChevronLeft size={16} /> ត្រឡប់ក្រោយ
+      
+      <main className="flex-1 max-w-5xl mx-auto py-5 px-4">
+        
+        {/* 1. HORIZONTAL TRACK NAVIGATION TABS (PLACED AT THE VERY TOP) */}
+        <div className="flex items-center gap-8 mb-8 flex-wrap px-2  border-gray-200 ">
+          {trackTabs.map((tab) => {
+            const isActive = tab.slug === lesson.trackSlug;
+            return (
+              <Link
+                key={tab.slug}
+                href={tab.href}
+                className={`text-sm font-extrabold tracking-wider uppercase transition-all duration-150 ${
+                  isActive
+                    ? "bg-[#002455] text-white px-5 py-2 rounded-full shadow-sm"
+                    : "text-slate-500 hover:text-[#002455] py-2"
+                }`}
+              >
+                {tab.label}
+              </Link>
+            );
+          })}
+        </div>
+        <Link href="/documentation" className="flex items-center gap-1 text-[16px] border border-gray-200 bg-white px-3 py-2 rounded-lg text-gray-500 mb-6 w-fit hover:bg-gray-50 transition-colors">
+          <ChevronLeft size={16} /> ទំព័រដើម
         </Link>
-
         <HeroLesson lesson={lesson} />
+      
         <LearningGoals objectives={lesson.objectives} />
         <KeyPoint summary={lesson.summary} />
         <CodeExample filename={lesson.codeFilename} code={lesson.code} />

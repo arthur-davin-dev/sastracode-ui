@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { trackTabs, trackTocGroups } from "@/lib/data/lessions";
+import Image from "next/image";
+import { ChevronRight } from "lucide-react";
+import { trackTocGroups } from "@/lib/data/lessions";
 import { TrackSlug } from "@/types/course";
 
 export default function DocsSidebar({
@@ -9,30 +11,37 @@ export default function DocsSidebar({
   activeTrack: TrackSlug;
   activeLessonId: string;
 }) {
-  const groups = trackTocGroups[activeTrack];
+  const groups = trackTocGroups[activeTrack] || [];
 
   return (
-    <aside className="w-64 shrink-0 bg-white border-r border-gray-200 p-4 hidden md:block">
-      <div className="flex gap-2 mb-4 flex-wrap">
-        {trackTabs.map((tab) => (
-          <Link
-            key={tab.slug}
-            href={tab.href}
-            className="text-xs px-2 py-1"
-            style={{
-              background: tab.slug === activeTrack ? "#002455" : "#EEF1F5",
-              color: tab.slug === activeTrack ? "white" : "#555",
-              borderRadius: 16,
-            }}
-          >
-            {tab.label}
-          </Link>
-        ))}
+    <aside className="w-64 shrink-0 bg-[#F2F6FF] border-r border-gray-100 p-4 hidden md:flex flex-col h-screen">
+      
+      {/* 1. TOP LOGO AREA */}
+      <div className="flex justify-center mb-6 mt-2">
+        <div className="relative w-14 h-14 bg-white rounded-full shadow-sm flex items-center justify-center overflow-hidden border border-gray-100">
+          {/* Replace src with your exact logo file path (e.g., "/logo.png") */}
+          <Image 
+            src="/logo.png" 
+            alt="Logo" 
+            width={40} 
+            height={40} 
+            className="object-contain"
+          />
+        </div>
       </div>
-      <nav className="space-y-4">
+
+      {/* 2. NAVIGATION LINKS TRACK SECTION */}
+      <nav className="flex-1 space-y-5 overflow-y-auto pr-1">
         {groups.map((group) => (
-          <div key={group.id}>
-            <div className="px-3 text-xs text-gray-400 mb-1">{group.label}</div>
+          <div key={group.id} className="space-y-2">
+            
+            {/* Group Title Section mimicking the dynamic level header items with a right chevron */}
+            <div className="flex items-center justify-between px-3 py-1.5 text-sm font-bold text-[#002455] cursor-pointer hover:bg-white/45 rounded-xl transition-colors">
+              <span>{group.label}</span>
+              <ChevronRight size={16} className="text-[#002455]/80" />
+            </div>
+
+            {/* Sub lesson navigation links */}
             <div className="space-y-1">
               {group.items.map((item) => {
                 const active = item.id === activeLessonId;
@@ -40,18 +49,18 @@ export default function DocsSidebar({
                   <Link
                     key={item.id}
                     href={item.href}
-                    className="block px-3 py-2 text-sm"
-                    style={{
-                      background: active ? "#002455" : "transparent",
-                      color: active ? "white" : "#333",
-                      borderRadius: 16,
-                    }}
+                    className={`block px-4 py-2 text-[16px] transition-all duration-150 ${
+                      active
+                        ? "bg-[#002455] text-white font-medium rounded-xl shadow-md shadow-[#002455]/10"
+                        : "text-slate-700 hover:text-[#002455] hover:bg-white/60 rounded-xl"
+                    }`}
                   >
                     {item.label}
                   </Link>
                 );
               })}
             </div>
+
           </div>
         ))}
       </nav>
