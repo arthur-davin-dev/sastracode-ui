@@ -1,4 +1,5 @@
 "use client";
+
 import { motion } from "framer-motion";
 import { PageHeader } from "@/components/ui/page-header";
 import { CertificateStatsRow } from "@/components/certificate/CertificateStatsRow";
@@ -41,7 +42,7 @@ const checklistItems: RequirementChecklistItem[] = [
 
 export default function Certificate() {
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-6 min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <PageHeader
         title="វិញ្ញាបនបត្រ"
         description="មើល និងគ្រប់គ្រងវិញ្ញាបនបត្រនិងវឌ្ឍនភាពសិក្សារបស់អ្នក"
@@ -58,11 +59,12 @@ export default function Certificate() {
 
       <InProgressCertificatesSection certificates={inProgressCertificates} />
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-sub-title font-semibold flex items-center gap-2 text-indigo-950">
-            <span className="h-6 w-6 rounded-full bg-indigo-100 flex items-center justify-center">
-              <Lock className="h-3.5 w-3.5 text-indigo-600" />
+      {/* Locked / Requirement Certificates Card */}
+      <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-[18px] font-semibold flex items-center gap-2.5 text-slate-900 dark:text-slate-100">
+            <span className="h-7 w-7 rounded-full bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-100 dark:border-indigo-900/50 flex items-center justify-center shrink-0">
+              <Lock className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
             </span>
             វិញ្ញាបនបត្រមិនទាន់មានបញ្ចប់
           </CardTitle>
