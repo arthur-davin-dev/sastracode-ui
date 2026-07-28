@@ -1,9 +1,9 @@
 "use client";
 
 import { SunMedium, Moon, Menu, X } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
 
 export default function Navbar() {
@@ -104,6 +104,7 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 z-50 w-full border-b border-gray-200/30 bg-white/60 dark:border-slate-800/50 dark:bg-slate-950/60 backdrop-blur-xl shadow-xs transition-colors duration-200 font-khmer">
       <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+        {/* Left: Logo */}
         <div className="flex items-center shrink-0">
           <Link href="/">
             <img
@@ -114,14 +115,18 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-3 lg:gap-8 rounded-full border border-[#002455]/20 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md px-4 lg:px-8 py-2 lg:py-2.5 text-[#002455] dark:text-[#FFFFFF] shadow-xs dark:border-slate-700/50 max-w-[55%] lg:max-w-none overflow-hidden">
+        {/* Desktop Center: Pill Navigation with Glass Effect */}
+        <motion.div
+          layout
+          className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-3 lg:gap-8 rounded-full border border-[#002455]/20 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md px-4 lg:px-8 py-2 lg:py-2.5 text-[#002455] dark:text-[#FFFFFF] shadow-xs dark:border-slate-700/50 max-w-[55%] lg:max-w-none overflow-hidden"
+        >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={lang}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.2, ease: "easeInOut" }}
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={{ duration: 0.25, ease: "easeInOut" }}
               className="flex items-center gap-3 lg:gap-8"
             >
               {currentT.navItems.map((item, index) => (
@@ -135,9 +140,11 @@ export default function Navbar() {
               ))}
             </motion.div>
           </AnimatePresence>
-        </div>
+        </motion.div>
 
+        {/* Right Controls */}
         <div className="flex items-center space-x-2 md:space-x-3 lg:space-x-5 shrink-0">
+          {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
             aria-label="Toggle Theme"
@@ -150,6 +157,7 @@ export default function Navbar() {
             )}
           </button>
 
+          {/* Language Switcher */}
           <button
             onClick={toggleLanguage}
             className="flex items-center space-x-1.5 sm:space-x-2 rounded-full border border-[#002455] px-2.5 sm:px-3 py-1.5 sm:py-2 text-[14px] lg:text-[16px] font-medium text-[#002455] hover:text-[#DC0000] dark:border-slate-700 dark:text-gray-200 dark:hover:bg-slate-800/50 transition-colors cursor-pointer shrink-0 bg-white/30 dark:bg-slate-900/30 backdrop-blur-xs"
@@ -162,6 +170,7 @@ export default function Navbar() {
             <span className="whitespace-nowrap">{currentT.langName}</span>
           </button>
 
+          {/* Register Link */}
           <Link
             href="/register"
             className="hidden md:inline-block text-[14px] lg:text-[18px] font-semibold text-[#DC0000] whitespace-nowrap transition-colors hover:text-red-600 shrink-0"
@@ -169,6 +178,7 @@ export default function Navbar() {
             {currentT.register}
           </Link>
 
+          {/* Hamburger Button (Mobile only) */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle Navigation Menu"
@@ -179,6 +189,7 @@ export default function Navbar() {
         </div>
       </nav>
 
+      {/* Mobile Dropdown Menu with Glassmorphism */}
       {isOpen && (
         <div className="md:hidden border-t border-gray-200/30 bg-white/70 dark:border-slate-800/50 dark:bg-slate-950/70 backdrop-blur-xl px-6 py-4 transition-all">
           <div className="flex flex-col space-y-3">
@@ -193,6 +204,7 @@ export default function Navbar() {
               </Link>
             ))}
 
+            {/* Register Link inside mobile drawer */}
             <div className="pt-2 border-t border-gray-100/50 dark:border-slate-800/50">
               <Link
                 href="/register"

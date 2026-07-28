@@ -57,13 +57,13 @@ export default function Hero() {
                     {t.openPlayground}
                   </Button>
                 </Link>
-                <Button
+                {/* <Button
                   size="lg"
                   variant="outline"
                   className="w-full sm:w-auto py-6 text-base border-slate-300 dark:border-slate-700 cursor-pointer text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors duration-300"
                 >
                   {t.learnMore}
-                </Button>
+                </Button> */}
               </div>
             </motion.div>
           </AnimatePresence>
