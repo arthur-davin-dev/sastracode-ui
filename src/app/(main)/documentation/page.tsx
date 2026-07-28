@@ -12,7 +12,7 @@ export default function DocumentationHomePage() {
 
       <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 pb-16 sm:px-6 lg:px-8">
         <section className="flex flex-col gap-4">
-          <h2 className="text-base text-primary-color ">បន្តការសិក្សា</h2>
+          <h2 className="text-[24px] font-semibold text-primary-color ">បន្តការសិក្សា</h2>
           <CourseProgressCard progress={currentProgress} />
         </section>
 

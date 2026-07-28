@@ -31,7 +31,7 @@ export default function DocsSidebar({ className = "", onNavigate }: DocsSidebarP
 
   return (
     <aside
-      className={`flex h-full w-full flex-col justify-between gap-8 border-r border-border bg-[#F3F7FC] px-4 py-8 ${className}`}
+      className={`flex h-full w-full flex-col justify-between gap-8 border-r border-border bg-[#F3F7FC] dark:bg-black px-4 py-8 ${className}`}
     >
       <div className="flex flex-col gap-6 items-center w-full">
         
