@@ -87,7 +87,7 @@ export default function CodeWindow() {
 
       {/* <!-- Chart icon --> */}
       <div className="absolute -bottom-4 left-2 sm:-bottom-6 sm:left-6 lg:-bottom-10 lg:left-16 rounded-xl border border-violet-200/50 dark:border-violet-800/50 bg-white/70 dark:bg-gray-800/70 p-2 sm:p-2.5 lg:p-4 shadow-lg backdrop-blur-sm transition-colors duration-300">
-        <img src="assets/home/svg/chart-icon.svg" alt="" className="size-5 sm:size-7 lg:size-10" />
+        <img src="/home/svg/chart-icon.svg" alt="" className="size-5 sm:size-7 lg:size-10" />
       </div>
     </div>
   );

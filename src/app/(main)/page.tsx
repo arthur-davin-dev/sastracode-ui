@@ -4,7 +4,7 @@ import CoreFeatures from '@/components/home/core-feature/CoreFeature'
 import InteractiveDoc from '@/components/home/interactive-doc/InteractiveDoc'
 import FeatureSection from '@/components/home/results-and-rewards/FeatureSection'
 import Rewards from '@/components/home/results-and-rewards/Rewards'
-import Showcase from '@/components/home/show-case/Showcase'
+// import Showcase from '@/components/home/show-case/Showcase'
 import SupportTeam from '@/components/home/support-team/SupportTeam'
 import TechStackSection from '@/components/home/technology-stack/TechStackSection'
 
@@ -12,7 +12,7 @@ export default function page() {
   return (
     <div>
       <Banner />
-      <Showcase />
+      {/* <Showcase /> */}
       <InteractiveDoc />
       <CoreFeatures />
       <TechStackSection />

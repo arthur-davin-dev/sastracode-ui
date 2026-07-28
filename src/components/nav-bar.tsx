@@ -3,9 +3,10 @@
 import { SunMedium, Moon, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/lib/language-context";
 
 export default function Navbar() {
-  const [lang, setLang] = useState<"km" | "en">("km");
+  const { lang, setLang } = useLanguage();
   const [darkMode, setDarkMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 

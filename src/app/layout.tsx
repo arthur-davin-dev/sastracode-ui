@@ -58,6 +58,8 @@ import localFont from "next/font/local";
 import { Inter } from "next/font/google";
 
 import "./globals.css";
+// 1. Import LanguageProvider here
+import { LanguageProvider } from "@/lib/language-context"; 
 
 const googleSans = localFont({
   src: [
@@ -95,7 +97,10 @@ export default function RootLayout({
       className={`${googleSans.variable} ${inter.variable}`}
     >
       <body className="min-h-screen flex flex-col bg-white text-black dark:bg-gray-950 dark:text-white">
-        <main className="flex-1">{children}</main>
+        {/* 2. Wrap children at the very top level */}
+        <LanguageProvider>
+          <main className="flex-1">{children}</main>
+        </LanguageProvider>
       </body>
     </html>
   );

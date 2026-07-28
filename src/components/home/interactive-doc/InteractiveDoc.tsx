@@ -1,9 +1,13 @@
 // InteractiveDoc.tsx
+"use client"
+import { useTranslation } from "@/hooks/useTranslations";
 import AIChatCard from "./AIChatCard";
 import PreviewCard from "./PreviewCard";
-import Sidebar from "./Sidebar";
+
+
 
 export default function InteractiveDoc() {
+    const currentT = useTranslation();
     return (
         <section className="py-[10px] sm:py-[20px] lg:py-[30px]  bg-white dark:bg-gray-900 transition-colors duration-300">
             <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
@@ -17,17 +21,15 @@ export default function InteractiveDoc() {
                                 top-0
                                 lg:-top-[150px]">
                             <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-white mb-4 sm:mb-6 transition-colors duration-300">
-                                ឯកសារ Interactive Documentation
+                               {currentT.interactiveDoc.title}
                             </h1>
 
                             <p className="text-base sm:text-lg text-slate-500 dark:text-gray-400 leading-7 sm:leading-relaxed mb-5 sm:mb-6 transition-colors duration-300">
-                                ស្វែងយល់ពីមេរៀនដែលរៀបចំជាព័ន្ធ ជាមួយ Live Code Examples,
-                                Syntax Highlighting, Embedded Exercises និង Quiz
-                                ដែលជួយប្លែងចំណេះដឹងស្ទឹះទៅជាការអនុវត្តជាក់ស្តែងៗ
+                               {currentT.interactiveDoc.description}
                             </p>
 
                             <a href="#" className="inline-flex items-center gap-2 text-sm sm:text-base text-slate-800 dark:text-white font-medium hover:text-slate-600 dark:hover:text-gray-300 transition-colors duration-300">
-                                មើល Documentation
+                                {currentT.interactiveDoc.link}
                                 <span aria-hidden="true">→</span>
                             </a>
                         </div>
