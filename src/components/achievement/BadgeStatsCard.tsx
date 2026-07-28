@@ -26,27 +26,27 @@ export function BadgeStatsCard({ completionPercent, earnedDate, category, totalE
                 strokeLinecap="round"
               />
             </svg>
-            <span className="text-lg font-bold text-red-600">{completionPercent}%</span>
+            <span className="text-lg font-bold text-secondary-color">{completionPercent}%</span>
           </div>
-          <p className="text-xs text-muted-foreground mt-1">បញ្ចប់</p>
+          <p className="text-lg text-muted-foreground mt-1">បញ្ចប់</p>
         </div>
 
         <div className="space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-muted-foreground">កាលបរិច្ឆេទទទួល</span>
-            <span className="font-medium">{earnedDate}</span>
+            <span className=" font-medium text-muted-foreground text-lg text-primary-color">កាលបរិច្ឆេទទទួល</span>
+            <span className=" text-lg text-primary-color">{earnedDate}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">ប្រភេទ</span>
-            <span className="font-medium">{category}</span>
+            <span className=" font-medium text-muted-foreground text-lg text-primary-color">ប្រភេទ</span>
+            <span className="text-lg text-primary-color">{category}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-muted-foreground">ចំនួនអ្នកទទួល</span>
-            <span className="font-medium">{totalEarners.toLocaleString()} នាក់</span>
+            <span className="font-medium text-muted-foreground text-lg text-primary-color">ចំនួនអ្នកទទួល</span>
+            <span className=" text-lg text-primary-color">{totalEarners.toLocaleString()} នាក់</span>
           </div>
         </div>
 
-        <Button className="w-full gap-2">
+        <Button className="w-full gap-2 bg-primary-color hover:bg-primary-color/90 text-white text-lg">
           <Share2 className="h-4 w-4" /> ចែករំលែកសមិទ្ធផល
         </Button>
       </CardContent>

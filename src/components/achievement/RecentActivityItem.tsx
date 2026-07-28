@@ -1,4 +1,3 @@
-// components/achievement/RecentActivityItem.tsx
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2 } from "lucide-react";
@@ -13,12 +12,12 @@ export function RecentActivityItem({ activity }: { activity: Activity }) {
             {activity.icon}
           </div>
           <div>
-            <p className="font-medium text-sm">{activity.title}</p>
-            <p className="text-xs text-muted-foreground">{activity.subtitle}</p>
+            <p className="font-medium text-lg text-primary-color">{activity.title}</p>
+            <p className="text-lg text-primary-color text-muted-foreground">{activity.subtitle}</p>
           </div>
         </div>
-        <Badge variant="secondary" className="gap-1 text-green-600 bg-green-50">
-          +{activity.xp} XP <CheckCircle2 className="h-3 w-3" />
+        <Badge variant="secondary" className="gap-1 text-lg text-green-600 bg-green-50">
+          +{activity.xp} XP <CheckCircle2 className="h-12 w-12" />
         </Badge>
       </CardContent>
     </Card>

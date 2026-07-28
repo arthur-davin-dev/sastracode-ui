@@ -13,8 +13,8 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-sm">Top Performers This Month</CardTitle>
-        <a href="#" className="text-xs text-green-600 hover:underline">View all</a>
+        <CardTitle className="text-lg text-primary-color ">Top Performers This Month</CardTitle>
+        <a href="#" className="text-lg text-green-600 hover:underline">View all</a>
       </CardHeader>
       <CardContent className="space-y-3">
         {performers.map((p) => (
@@ -26,9 +26,9 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
               <AvatarFallback>{p.name[0]}</AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <p className="text-sm font-medium">{p.name}</p>
+              <p className="text-lg font-medium text-primary-color">{p.name}</p>
             </div>
-            <span className="text-xs font-semibold text-indigo-950">{p.xp.toLocaleString()} XP</span>
+            <span className="text-lg font-semibold text-primary-color">{p.xp.toLocaleString()} XP</span>
           </div>
         ))}
       </CardContent>

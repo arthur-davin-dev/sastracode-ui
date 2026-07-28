@@ -71,13 +71,13 @@ export default function Bookmark() {
   return (
     <div className="space-y-6 p-6">
       <div>
-        <h1 className="text-xl font-bold text-indigo-950">ចំណាំ</h1>
-        <p className="text-sm text-muted-foreground mt-1">
+        <h1 className="text-2xl font-bold text-primary-color">ចំណាំ</h1>
+        <p className="text-lg text-muted-foreground mt-1">
           ចូលមើលព័ត៌មានវគ្គសិក្សា ដែលអ្នកកំពុងចាប់អារម្មណ៍និងអានសំខាន់នៅក្នុងបញ្ជីនេះ
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {bookmarkedCourses.map((course, i) => (
           <motion.div
             key={course.id}

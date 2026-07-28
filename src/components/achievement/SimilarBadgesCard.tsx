@@ -11,7 +11,7 @@ export function SimilarBadgesCard({ badges }: { badges: SimilarBadge[] }) {
   return (
     <Card className="bg-[#F5F1E8]"> 
       <CardHeader>
-        <CardTitle className="text-sub-title font-bold text-indigo-950">មេដាយពាក់ព័ន្ធ</CardTitle>
+        <CardTitle className="text-2xl font-bold text-primary-color">មេដាយពាក់ព័ន្ធ</CardTitle>
       </CardHeader>
       <CardContent className="space-y-5">
         {badges.map((b) => {
@@ -22,8 +22,8 @@ export function SimilarBadgesCard({ badges }: { badges: SimilarBadge[] }) {
                 <Icon className="h-5 w-5 text-muted-foreground" />
               </div>
               <div>
-                <p className="text-content font-semibold text-indigo-950">{b.name}</p>
-                <p className="text-xs text-blue-600">{b.status}</p>
+                <p className="text-lg font-semibold text-primary-color">{b.name}</p>
+                <p className="text-lg text-primary-color">{b.status}</p>
               </div>
             </div>
           );

@@ -16,8 +16,8 @@ export default function MyCourses() {
   return (
     <div className="space-y-6 p-6">
       <div>
-        <h1 className="text-xl font-bold text-blue-950">វគ្គសិក្សារបស់ខ្ញុំ</h1>
-        <p className="text-sm text-muted-foreground mt-1">
+        <h1 className="text-2xl font-bold text-primary-color">វគ្គសិក្សារបស់ខ្ញុំ</h1>
+        <p className="text-lg text-muted-foreground mt-1">
           ចូលបន្តវគ្គសិក្សានិងតាមដានវឌ្ឍនភាពសិក្សារបស់អ្នកនៅក្នុងបញ្ជីនេះ
         </p>
       </div>
