@@ -16,10 +16,9 @@ import {
 } from "@/types/certificate";
 
 const earnedCertificates: EarnedCertificate[] = [
-  { id: "1", title: "HTML, CSS & JavaScript", thumbnailUrl: "/images/certificate2.png", level: "Beginner", date: "12/03/2025", certificateId: "SC-9821-XP", category: "Beginner Web" },
-  { id: "2", title: "React.js Fundamental", thumbnailUrl: "/images/certificate2.png", level: "Intermediate", date: "05/04/2025", certificateId: "SC-7712-XP", category: "Frontend" },
-  { id: "3", title: "Java Programming", thumbnailUrl: "/images/certificate2.png", level: "Advanced", date: "20/04/2025", certificateId: "SC-6611-XP", category: "Backend" },
-  { id: "4", title: "Spring Boot Basic", thumbnailUrl: "/images/certificate2.png", level: "Intermediate", date: "01/05/2025", certificateId: "SC-5583-XP", category: "Backend" },
+  { id: "1", title: "HTML, CSS & JavaScript", thumbnailUrl: "/images/certi.png", level: "Beginner", date: "12/03/2025", certificateId: "SC-9821-XP", category: "Beginner Web" },
+  { id: "2", title: "React.js Fundamental", thumbnailUrl: "/images/certi.png", level: "Intermediate", date: "05/04/2025", certificateId: "SC-7712-XP", category: "Frontend" },
+  { id: "3", title: "Java Programming", thumbnailUrl: "/images/certi.png", level: "Advanced", date: "20/04/2025", certificateId: "SC-6611-XP", category: "Backend" },
 ];
 
 const inProgressCertificates: InProgressCertificate[] = [

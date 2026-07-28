@@ -132,9 +132,11 @@ export interface BookmarkedCourse {
   category: string;
   title: string;
   description: string;
-  studentsCount: string;
+  studentsCount?: string;
   duration: string;
   isBookmarked: boolean;
+  status?: "in_progress" | "not_started" | "paid" | "free";
+  progressPercent?: number; // Optional progress percentage (e.g. 30, 50, 75)
 }
 export interface MyCourse {
   id: string;

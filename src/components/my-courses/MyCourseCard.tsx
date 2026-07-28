@@ -1,20 +1,22 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Users, Clock, ArrowRight, Play, CheckCircle2 } from "lucide-react";
+import { Bookmark, Clock, ArrowRight, Play, CheckCircle2, Tag } from "lucide-react";
 import { MyCourse } from "@/types/course";
 
 interface MyCourseCardProps {
   course: MyCourse & {
-    progressPercent?: number; 
+    progressPercent?: number;
+    isBookmarked?: boolean;
   };
 }
 
 export function MyCourseCard({ course }: MyCourseCardProps) {
-  // Default fallback if progress is not provided
+  const [bookmarked, setBookmarked] = useState(course.isBookmarked ?? true);
   const progress = course.progressPercent ?? 0;
   const isCompleted = progress === 100;
 
@@ -24,7 +26,8 @@ export function MyCourseCard({ course }: MyCourseCardProps) {
       transition={{ duration: 0.25, ease: "easeOut" }}
       className="h-full"
     >
-      <Card className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-xl hover:border-indigo-500/30 transition-all duration-300 h-full">
+      <Card className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-slate-200 dark:border-slate-800 bg-white
+       dark:bg-slate-900 shadow-md hover:shadow-xl hover:border-blue-50 transition-all duration-300 h-full p-0">
         
         {/* Thumbnail Image Container */}
         <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
@@ -35,102 +38,109 @@ export function MyCourseCard({ course }: MyCourseCardProps) {
           />
 
           {/* Dark Overlay Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-90" />
 
-          {/* Category Badge */}
-          <div className="absolute top-3 left-3">
-            <Badge className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md text-primary-color border-none px-3 py-1 text-base font-semibold shadow-xs">
-              {course.category}
-            </Badge>
-          </div>
+          {/* Top-Left Bookmark Ribbon (Yellow Accent) */}
+          <button
+            onClick={() => setBookmarked(!bookmarked)}
+            className="absolute top-0 left-4 z-20 transition-transform active:scale-90"
+            title={bookmarked ? "ដកចេញពីគម្រោង" : "រក្សាទុក"}
+          >
+            <div className="relative flex items-center p-3 justify-center">
+              <Bookmark
+                className={`h-7 w-7 drop-shadow-md  transition-colors duration-300 ${
+                  bookmarked
+                    ? "text-init-color fill-yellow-400"
+                    : "text-white/80 fill-black/30 hover:text-yellow-400"
+                }`}
+              />
+            </div>
+          </button>
 
-          {/* Pricing Tag */}
-          <div className="absolute top-3 right-3">
+          {/* Top-Right Access Status Badge (Red Secondary Color) */}
+          <div className="absolute top-3 right-3 z-10">
             <Badge
-              className={`text-lg font-medium px-3 py-1 border-none shadow-xs backdrop-blur-md ${
+              className={`border-none px-8 py-4 text-lg font-bold shadow-md transition-colors duration-300 ${
                 course.status === "in_progress"
-                  ? "bg-emerald-500/90 text-white"
-                  : "bg-init-color/90 text-white"
-              }`}
-            >
-              {course.status === "in_progress" ? "ឥតគិតថ្លៃ" : "ថ្នាក់បង់ថ្លៃ"}
+                  ? "bg-red-600 text-white"
+                  : "bg-yellow-400 text-slate-950"
+              }`}>
+              {course.status === "in_progress" ? "ឥតគិតថ្លៃ" : "ថ្នាក់គិតថ្លៃ"}
             </Badge>
           </div>
 
-          {/* Play Icon Overlay on Hover */}
-          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/20">
-            <div className="p-4 rounded-full bg-white/90 text-primary-color shadow-lg scale-90 group-hover:scale-100 transition-transform duration-300">
-              <Play className="h-6 w-6 fill-current ml-0.5" />
+          {/* Hover Play Button Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30 backdrop-blur-[2px]">
+            <div className="p-4 rounded-full bg-primary-color text-white shadow-xl scale-90 group-hover:scale-100 transition-transform duration-300">
+              <Play className="h-7 w-7 fill-current ml-0.5" />
             </div>
           </div>
         </div>
 
         {/* Card Content Section */}
-        <CardContent className="p-6 flex flex-col justify-between flex-1 gap-5">
+        <CardContent className="p-6 flex flex-col justify-between flex-1 space-y-2">
           
-          {/* Title & Description */}
-          <div className="space-y-2">
-            {/* Title set to text-2xl */}
-            <h3 className="font-bold text-lg text-primary-color dark:text-primary-100 line-clamp-1 group-hover:text-primary-600 transition-colors leading-snug">
+          {/* Category Tag & Title Details */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-2  rounded-xl bg-init-color/20 text-primary-color dark:text-init-color text-lg font-bold border border-yellow-400/40">
+                <Tag className="h-4 w-4 text-secondary-color" />
+                {course.category}
+              </span>
+            </div>
+
+            {/* Course Title (text-lg & text-primary-color) */}
+            <h3 className="font-bold text-lg text-primary-color dark:text-white line-clamp-2 leading-snug transition-colors duration-300">
               {course.title}
             </h3>
-            {/* Content description set to text-lg */}
-            <p className="text-lg text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">
-              {course.description}
-            </p>
           </div>
 
-          {/* Course Metadata (Students & Duration) */}
-          <div className="flex items-center gap-6 text-lg font-medium text-slate-500 dark:text-slate-400">
-            <span className="flex items-center gap-2">
-              <Users className="h-5 w-5 text-primary-color" />
-              {course.studentsCount} សិស្ស
-            </span>
-            <span className="flex items-center gap-2">
-              <Clock className="h-5 w-5 text-primary-color" />
-              {course.duration}
-            </span>
-          </div>
-
-          {/* Student Learning Progress Section */}
-          <div className="space-y-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
-            <div className="flex items-center justify-between text-lg font-semibold">
-              <span className="text-slate-700 dark:text-slate-200 flex items-center gap-1.5">
+          {/* Learning Progress Section */}
+          <div className="space-y-2 pt-1">
+            <div className="flex items-center justify-between text-lg font-bold">
+              <span className="text-primary-color dark:text-white flex items-center gap-2">
                 {isCompleted ? (
                   <>
-                    <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                    <CheckCircle2 className="h-5 w-5 text-blue-600 fill-blue-100" />
                     <span>បានបញ្ចប់</span>
                   </>
                 ) : (
                   <span>វឌ្ឍនភាពសិក្សា</span>
                 )}
               </span>
-              <span className="text-primary-color dark:text-primary-400">{progress}%</span>
+              <span className="text-secondary-color dark:text-red-400">{progress}%</span>
             </div>
 
             {/* Progress Bar */}
-            <div className="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
+            <div className="relative h-3.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-700">
               <div
-                className={`h-full transition-all duration-500 rounded-full ${
-                  isCompleted ? "bg-emerald-500" : "bg-indigo-600"
+                className={`h-full rounded-full transition-all duration-500 shadow-xs ${
+                  isCompleted 
+                    ? "bg-gradient-to-r from-yellow-400 to-amber-500" 
+                    : "bg-gradient-to-r from-blue-600 to-primary-color"
                 }`}
-                style={{ width: `${progress}%` }}
+                style={{ width: `${Math.min(progress, 100)}%` }}
               />
             </div>
           </div>
 
-          {/* Action Footer */}
-          <div className="pt-2">
+          {/* Footer: Time & Action Button in the Same Line */}
+          <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-4">
+            
+            {/* Duration Display */}
+            <div className="flex items-center gap-2 text-lg font-bold text-slate-700 dark:text-slate-300 shrink-0">
+              <Clock className="h-6 w-6 text-red-600" />
+              <span>{course.duration || "២០ ម៉ោង"}</span>
+            </div>
+
+            {/* Action Button */}
             <Button
-              className={`w-full h-12 justify-between rounded-xl font-medium text-lg px-5 shadow-xs group/btn ${
-                isCompleted
-                  ? "bg-slate-100 hover:bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-200"
-                  : "bg-indigo-950 hover:bg-indigo-900 text-white"
-              }`}
+              className="h-12 px-5 rounded-lg bg-primary-color hover:bg-blue-800 text-white font-bold text-lg shadow-md transition-all duration-300 group/btn shrink-0 flex items-center gap-2"
             >
-              <span>{isCompleted ? "ពិនិត្យឡើងវិញ" : progress > 0 ? "បន្តសិក្សា" : "ចាប់ផ្តើមសិក្សា"}</span>
+              <span>{isCompleted ? "ពិនិត្យឡើងវិញ" : "បន្តវគ្គសិក្សា"}</span>
               <ArrowRight className="h-5 w-5 transition-transform group-hover/btn:translate-x-1" />
             </Button>
+
           </div>
 
         </CardContent>

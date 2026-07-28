@@ -30,7 +30,7 @@ export function CertificateStatsRow({
               <div className={`h-9 w-9 rounded-lg flex items-center justify-center ${stat.color}`}>
                 <stat.icon className="h-4 w-4" />
               </div>
-              <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${stat.tagColor}`}>
+              <span className={`text-lg font-medium px-2 py-0.5 rounded-full ${stat.tagColor}`}>
                 {stat.tag}
               </span>
             </div>
