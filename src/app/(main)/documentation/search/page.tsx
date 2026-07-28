@@ -14,6 +14,7 @@ export default async function SearchDocsPage({
   const query = q ?? "variable";
 
   return (
+    <DocsShell>
       <div className="flex flex-col gap-6 mx-auto">
         <form className="relative w-full transition-all duration-300 ease-out focus-within:scale-[1.01] focus-within:drop-shadow-sm">
       <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-transform duration-300 ease-out font-semibold group-focus-within:scale-110" />
@@ -43,5 +44,6 @@ export default async function SearchDocsPage({
           ))}
         </div>
       </div>
+      </DocsShell>
   );
 }
