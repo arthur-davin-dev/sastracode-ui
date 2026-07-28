@@ -17,7 +17,9 @@ import {
   ChevronRight,
   BookOpen,
   Bookmark,
+  FileText,
   X,
+  Sparkles,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -39,6 +41,11 @@ const navItems = [
         icon: BookOpen,
       },
       { label: "ចំណាំ", href: "/courses/bookmark", icon: Bookmark },
+      {
+        label: "ឯកសារមេរៀន",
+        href: "/courses/materials",
+        icon: FileText,
+      },
     ],
   },
   { label: "សមិទ្ធិផល", href: "/leaderboard", icon: Trophy },
@@ -53,7 +60,7 @@ export default function AppSidebar({
   closeMobile,
 }: SidebarProps) {
   const pathname = usePathname();
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [openMenu, setOpenMenu] = useState<string | null>("ការសិក្សា");
 
   const goToLink = () => {
     if (window.innerWidth < 1024) closeMobile();
@@ -62,42 +69,57 @@ export default function AppSidebar({
   return (
     <aside
       className={`
-    h-full bg-white dark:bg-slate-900 border-r border-gray-100 dark:border-slate-800
-    flex flex-col py-6 transition-all duration-300 relative
-    ${isCollapsed ? "w-20" : "w-72"}
-  `}
+        relative h-full bg-white dark:bg-slate-900 border-r-2 border-slate-100 dark:border-slate-800
+        flex flex-col py-6 transition-all duration-300 shadow-xl z-40 select-none
+        ${isCollapsed ? "w-24" : "w-80"}
+      `}
     >
-      {/* Collapse Toggle (desktop) */}
+      {/* Top Gradient Ribbon Header */}
+      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-red-600 via-yellow-400 to-red-600" />
+
+      {/* Collapse Toggle Button (Desktop) */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="hidden lg:flex absolute -right-3 top-10 w-6 h-6 bg-white dark:bg-slate-800 border border-gray-200 dark:border-gray-700 rounded-full items-center justify-center shadow-sm z-50 text-gray-500 hover:text-indigo-600"
+        className="hidden lg:flex absolute -right-4 top-10 w-9 h-9 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 text-red-600 hover:bg-yellow-400 hover:text-slate-950 rounded-2xl items-center justify-center shadow-md z-50 transition-all duration-300 hover:scale-110 active:scale-95"
+        title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
       >
-        {isCollapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
+        {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
       </button>
 
-      {/* Mobile Close */}
+      {/* Mobile Close Button */}
       <button
         onClick={closeMobile}
-        className="lg:hidden absolute right-4 top-4 text-gray-400 dark:text-gray-500"
+        className="lg:hidden absolute right-4 top-4 p-2 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
       >
-        <X size={20} />
+        <X size={24} />
       </button>
 
-      {/* Logo */}
-      <div className="flex items-center justify-center mb-6 px-4">
-        <Link href="/">
-          <img
-            src="/images/sastra_code_logo.png"
-            alt="SastraCode Logo"
-            className={`cursor-pointer transition-all duration-300 ${
-              isCollapsed ? "h-10" : "h-20"
-            }`}
-          />
+      {/* Logo Section */}
+      <div className="flex flex-col items-center justify-center mb-6 px-4">
+        <Link href="/" className="group flex flex-col items-center gap-2">
+          <div className="relative p-1 rounded-2xl transition-transform duration-300 group-hover:scale-105">
+            <img
+              src="/images/sastra_code_logo.png"
+              alt="SastraCode Logo"
+              className={`cursor-pointer transition-all duration-300 object-contain ${
+                isCollapsed ? "h-12 w-12" : "h-20 w-auto"
+              }`}
+            />
+          </div>
+
+          {!isCollapsed && (
+            <div className="text-center mt-1">
+              <h1 className="text-2xl font-extrabold text-primary-color tracking-wide flex items-center justify-center gap-1.5">
+                <span>SastraCode</span>
+                <Sparkles className="h-5 w-5 text-yellow-400 fill-yellow-400 inline-block" />
+              </h1>
+            </div>
+          )}
         </Link>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex flex-col gap-1 flex-1 px-3 overflow-y-auto">
+      {/* Navigation Links */}
+      <nav className="flex flex-col gap-2 flex-1 px-4 overflow-y-auto custom-scrollbar">
         {navItems.map((item) => {
           const hasSubItems = "subItems" in item && item.subItems;
           const isOpen = openMenu === item.label;
@@ -110,58 +132,74 @@ export default function AppSidebar({
                 <button
                   onClick={() => setOpenMenu(isOpen ? null : item.label)}
                   className={`
-                    flex items-center justify-between w-full gap-3 px-3 py-2.5 rounded-xl transition-all
+                    flex items-center justify-between w-full gap-3 px-4 py-3.5 rounded-2xl transition-all duration-200 font-bold text-lg
                     ${
-                      isActive
-                        ? "bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
-                        : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800"
+                      isActive || isOpen
+                        ? "bg-yellow-400/20 text-red-600 dark:text-yellow-400 border border-yellow-400/40 shadow-sm"
+                        : "text-primary-color hover:bg-slate-100 dark:hover:bg-slate-800/80"
                     }
                   `}
                 >
-                  <div className="flex items-center gap-3">
-                    <item.icon size={20} className="shrink-0" />
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <item.icon
+                      size={24}
+                      className={`shrink-0 transition-colors ${
+                        isActive || isOpen ? "text-red-600 dark:text-yellow-400" : "text-red-500/80"
+                      }`}
+                    />
                     {!isCollapsed && (
-                      <span className="text-sm font-medium truncate">
+                      <span className="text-lg font-bold truncate text-primary-color">
                         {item.label}
                       </span>
                     )}
                   </div>
+
                   {!isCollapsed && (
                     <ChevronDown
-                      size={16}
-                      className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+                      size={20}
+                      className={`shrink-0 transition-transform duration-300 text-primary-color opacity-70 ${
+                        isOpen ? "rotate-180 text-red-600" : ""
+                      }`}
                     />
                   )}
                 </button>
 
-                {/* Tooltip when collapsed */}
+                {/* Collapsed Hover Tooltip */}
                 {isCollapsed && (
-                  <div className="absolute left-16 top-2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
+                  <div className="absolute left-20 top-3 bg-slate-900 text-white text-base font-semibold px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 whitespace-nowrap z-50 shadow-lg border border-slate-700">
                     {item.label}
                   </div>
                 )}
 
-                {/* Sub items */}
+                {/* Sub Menu Links */}
                 {isOpen && !isCollapsed && (
-                  <div className="ml-8 mt-1 flex flex-col gap-1">
-                    {item.subItems!.map((sub) => (
-                      <Link
-                        key={sub.href}
-                        href={sub.href}
-                        onClick={goToLink}
-                        className={`
-                          flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors
-                          ${
-                            pathname === sub.href
-                              ? "bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
-                              : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800"
-                          }
-                        `}
-                      >
-                        <sub.icon size={16} className="shrink-0" />
-                        <span className="truncate">{sub.label}</span>
-                      </Link>
-                    ))}
+                  <div className="ml-5 mt-2 pl-3 border-l-2 border-yellow-400/50 flex flex-col gap-1.5">
+                    {item.subItems!.map((sub) => {
+                      const isSubActive = pathname === sub.href;
+                      return (
+                        <Link
+                          key={sub.href}
+                          href={sub.href}
+                          onClick={goToLink}
+                          className={`
+                            flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-lg font-semibold transition-all duration-200
+                            ${
+                              isSubActive
+                                ? "bg-red-600 text-white shadow-md"
+                                : "text-primary-color hover:bg-yellow-400/15 hover:text-red-600"
+                            }
+                          `}
+                        >
+                          <sub.icon
+                            size={18}
+                            className={`shrink-0 ${
+                              isSubActive ? "text-white" : "text-red-500"
+                            }`}
+                          />
+                          <span className="truncate">{sub.label}</span>
+                        </Link>
+                      );
+                    })}
                   </div>
                 )}
               </div>
@@ -174,23 +212,29 @@ export default function AppSidebar({
               href={item.href}
               onClick={goToLink}
               className={`
-                relative group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all
+                relative group flex items-center gap-3.5 px-4 py-3.5 rounded-2xl transition-all duration-200 font-bold text-lg
                 ${
                   isActive
-                    ? "bg-indigo-50 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300"
-                    : "text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-800"
+                    ? "bg-red-600 text-white shadow-md shadow-red-600/20"
+                    : "text-primary-color hover:bg-slate-100 dark:hover:bg-slate-800/80"
                 }
               `}
             >
-              <item.icon size={20} className="shrink-0" />
+              <item.icon
+                size={24}
+                className={`shrink-0 ${
+                  isActive ? "text-white" : "text-red-500"
+                }`}
+              />
               {!isCollapsed && (
-                <span className="text-sm font-medium truncate">
+                <span className="text-lg font-bold truncate">
                   {item.label}
                 </span>
               )}
 
+              {/* Collapsed Hover Tooltip */}
               {isCollapsed && (
-                <div className="absolute left-16 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50">
+                <div className="absolute left-20 bg-slate-900 text-white text-base font-semibold px-3 py-1.5 rounded-xl opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 whitespace-nowrap z-50 shadow-lg border border-slate-700">
                   {item.label}
                 </div>
               )}
@@ -199,14 +243,21 @@ export default function AppSidebar({
         })}
       </nav>
 
-      {/* Footer */}
-      <div className="px-3 mt-4 border-t border-gray-100 dark:border-slate-800 pt-4 space-y-1">
-        <button className="flex items-center gap-3 px-3 py-2.5 text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 hover:bg-gray-50 dark:hover:bg-slate-800 rounded-xl w-full transition-colors">
-          <HelpCircle size={20} className="shrink-0" />
+      {/* Footer Section */}
+      <div className="px-4 mt-4 border-t-2 border-slate-100 dark:border-slate-800 pt-4 space-y-2">
+        <button
+          onClick={goToLink}
+          className="flex items-center gap-3.5 px-4 py-3 text-lg font-bold text-primary-color hover:bg-yellow-400/20 hover:text-red-600 rounded-2xl w-full transition-all duration-200"
+        >
+          <HelpCircle size={24} className="shrink-0 text-yellow-500" />
           {!isCollapsed && <span>ជំនួយ</span>}
         </button>
-        <button className="flex items-center gap-3 px-3 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl w-full transition-colors">
-          <LogOut size={20} className="shrink-0" />
+
+        <button
+          onClick={goToLink}
+          className="flex items-center gap-3.5 px-4 py-3 text-lg font-bold text-red-600 hover:bg-primary-color hover:text-white rounded-2xl w-full transition-all duration-200 shadow-sm"
+        >
+          <LogOut size={24} className="shrink-0" />
           {!isCollapsed && <span>ចាកចេញ</span>}
         </button>
       </div>

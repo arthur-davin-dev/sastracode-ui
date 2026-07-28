@@ -4,4 +4,11 @@ export interface UserProfile {
   avatarUrl: string;
   quote: string;
   email: string;
+
+  phone?: string;
+  university?: string;
+  major?: string;
+  studentId?: string;
+  nationalId?: string;
+  dob?: string;
 }
