@@ -1,11 +1,11 @@
 import { Star, Mail } from "lucide-react";
 
 const team = [
-  { name: "Soeurt Bomnorng", email: "soeurtbomnorng3@gmail.com", offset: "up", img: "/home/support-team/bomnorng.png" },
-  { name: "Chhay Kongkea", email: "chhaykongkea9@gmail.com", offset: "down", img: "/home/support-team/kongkea.png" },
-  { name: "Lot Los", email: "loslot100604@gmail.com", offset: "up", img: "/home/support-team/los.png" },
-  { name: "Vel SoThoun", email: "velsothoun@gmail.com", offset: "down", img:"/home/support-team/sothun.png" },
-  { name: "Ben Thona", email: "thonaben08@gmail.com", offset: "up", img: "/home/support-team/thona.png"  },
+  { name: "Soeurt Bomnorng", email: "soeurtbomnorng3@gmail.com", offset: "up", img: "/home/support-team/seourtBomnorng.jpg" },
+  { name: "Chhay Kongkea", email: "chhaykongkea9@gmail.com", offset: "down", img: "/home/support-team/chhayKongkea.jpg" },
+  { name: "Lot Los", email: "loslot100604@gmail.com", offset: "up", img: "/home/support-team/lotLos.jpg" },
+  { name: "Vel SoThoun", email: "velsothoun@gmail.com", offset: "down", img:"/home/support-team/velSoThun.jpg" },
+  { name: "Ben Thona", email: "thonaben08@gmail.com", offset: "up", img: "/home/support-team/benThona.jpg"  },
 ];
 
 function initials(name: string) {
@@ -48,7 +48,7 @@ export default function SupportTeam() {
             {team.map((member) => (
               <div
                 key={member.name}
-                className={`flex flex-col items-center gap-3 ${member.offset === "up" ? "md:-translate-y-6" : "md:translate-y-6"
+                className={`flex flex-col items-center gap-6 ${member.offset === "up" ? "md:-translate-y-6" : "md:translate-y-6"
                   }`}
               >
                 {member.offset === "up" && (
@@ -60,7 +60,7 @@ export default function SupportTeam() {
                   </div>
                 )}
                 <div
-                  className={`h-16 w-16 md:h-20 md:w-20 rounded-full 
+                  className={`h-16 w-16 md:h-40 md:w-40 rounded-full 
                           ring-4 ring-white dark:ring-gray-800 
                           shadow-lg flex items-center justify-center 
                           text-white font-semibold order-2`}

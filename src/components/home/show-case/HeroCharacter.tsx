@@ -55,17 +55,17 @@ export default function HeroCharacter() {
         {/* Photo collage - updated with dark mode borders */}
         <div className="relative mx-auto h-[260px] w-full max-w-xs sm:h-[340px] sm:max-w-md lg:h-[420px] lg:max-w-lg">
           <img
-            src="/home/image/image687.jpg"
+            src="/home/support-team/chatSovanney.jpg"
             alt="Team member"
-            className="absolute left-0 top-4 h-32 w-44 rounded-2xl border-[3px] border-white dark:border-gray-700 object-cover shadow-lg dark:shadow-gray-800/50 sm:top-6 sm:h-44 sm:w-60 sm:border-4 lg:top-8 lg:h-60 lg:w-80 lg:rounded-[25px] lg:border-[5px] transition-colors duration-300"
+            className="absolute left-0 top-4 h-32 w-44 rounded-2xl border-[3px] border-white dark:border-gray-700 object-cover shadow-lg dark:shadow-gray-800/50 sm:top-2 sm:h-44 sm:w-60 sm:border-4 lg:top-2 lg:h-60 lg:w-80 lg:rounded-[25px] lg:border-[5px] transition-colors duration-300"
           />
           <img
-            src="/home/image/image684.jpg"
+            src="/home/support-team/chhayDavin (2).jpg"
             alt="Team member"
             className="absolute right-0 top-0 h-44 w-36 rounded-2xl border-[3px] border-white dark:border-gray-700 object-cover shadow-lg dark:shadow-gray-800/50 sm:h-60 sm:w-48 sm:border-4 lg:h-80 lg:w-64 lg:rounded-[25px] lg:border-[5px] transition-colors duration-300"
           />
           <img
-            src="/home/image/image693.jpg"
+            src="/home/support-team/monNarea.jpg"
             alt="Team member"
             className="absolute bottom-0 left-1/4 h-40 w-36 rounded-2xl border-[3px] border-white dark:border-gray-700 object-cover shadow-lg dark:shadow-gray-800/50 sm:h-56 sm:w-48 sm:border-4 lg:h-72 lg:w-64 lg:rounded-[25px] lg:border-[5px] transition-colors duration-300"
           />
