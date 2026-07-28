@@ -28,8 +28,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Sastra Code",
-  description: "Learn programming with Sastra Code",
+  title: "KaveyCode",
+  description: "Programming Learning Platform",
 };
 
 export default function RootLayout({

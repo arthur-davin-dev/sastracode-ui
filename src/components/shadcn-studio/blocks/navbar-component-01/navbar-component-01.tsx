@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,9 +5,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
 
 import Logo from '@/components/shadcn-studio/logo'
-import { SearchIcon, MenuIcon } from "lucide-react"
+import { MenuIcon } from "lucide-react"
 import { ModeToggle } from '@/components/ui/mode-toggle'
 
 type NavigationItem = {
@@ -41,10 +41,11 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem }) => {
         <div className='flex items-center gap-6'>
           <ModeToggle/>
           <DropdownMenu>
-            <DropdownMenuTrigger className='md:hidden' render={<Button variant='outline' size='icon' />}>
-              <MenuIcon
-              />
-              <span className='sr-only'>Menu</span>
+            <DropdownMenuTrigger asChild className='md:hidden'>
+              <Button variant='outline' size='icon'>
+                <MenuIcon />
+                <span className='sr-only'>Menu</span>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className='w-56' align='end'>
               <DropdownMenuGroup>

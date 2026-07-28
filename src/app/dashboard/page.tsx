@@ -1,33 +1,55 @@
-// src/app/(dashboard)/certificates/page.tsx
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Award, Download } from "lucide-react"
+import { AppSidebar } from "@/components/app-sidebar"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+import { Separator } from "@/components/ui/separator"
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
 
-const certificates = [
-  { id: 1, course: "Khmer Grammar Basics", issuedOn: "2026-04-20", fileUrl: "/certs/1.pdf" },
-  { id: 2, course: "Intro to Web Development", issuedOn: "2026-06-15", fileUrl: "/certs/2.pdf" },
-]
-
-export default function CertificatesPage() {
+export default function Page() {
   return (
-    <div>
-      <h1 className="text-2xl font-semibold mb-6">វិញ្ញាបនបត្រ</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {certificates.map((c) => (
-          <Card key={c.id}>
-            <CardHeader className="flex flex-row items-center gap-3">
-              <Award className="text-primary" />
-              <CardTitle className="text-base">{c.course}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">Issued {c.issuedOn}</span>
-              <Button size="sm" variant="outline" render={<a href={c.fileUrl} download />}>
-                <Download className="mr-1 h-4 w-4" /> PDF
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
+                    Build Your Application
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+            <div className="aspect-video rounded-xl bg-muted/50" />
+          </div>
+          <div className="min-h-screen flex-1 rounded-xl bg-muted/50 md:min-h-min" />
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }
