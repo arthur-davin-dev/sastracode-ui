@@ -9,7 +9,7 @@ interface InstructorBarProps {
 
 const defaultInstructor = {
   name: "Dr. Sarah Chen",
-  avatar: "/assets/images/instructor-sarah.png",
+  avatar: "/davin.jpg",
   rating: 4.9,
   reviewCount: 1240,
   tags: ["Premium Access", "Advanced Level"],

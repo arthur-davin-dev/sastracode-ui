@@ -1,88 +1,89 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Code2, PlayCircle, Sparkles } from "lucide-react";
 import Image from "next/image";
 
 export default function CourseBanner() {
   return (
-    <section className="relative overflow-hidden border-b border-slate-200/80 dark:border-slate-800 bg-indigo-50/70 dark:bg-slate-900/80 py-12 sm:py-16 transition-colors duration-300">
-      <style>{`
-        @keyframes floatY {
-          0%, 100% { transform: translateY(0px) rotate(var(--rot, 0deg)); }
-          50% { transform: translateY(-14px) rotate(var(--rot, 0deg)); }
-        }
-        .float-badge {
-          animation: floatY 3.2s ease-in-out infinite;
-        }
-      `}</style>
+    <section className="relative overflow-hidden border-b border-slate-200/80 bg-gradient-to-b from-indigo-50/50 via-white to-slate-50 dark:border-slate-800 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-12 sm:py-20 transition-colors duration-300">
+      {/* Background Decorative Blur Blobs */}
+      <div className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[300px] w-[500px] -translate-x-1/2 rounded-full bg-indigo-500/10 blur-3xl dark:bg-indigo-500/20" />
+      <div className="pointer-events-none absolute -bottom-24 -right-10 -z-10 h-[250px] w-[250px] rounded-full bg-blue-500/10 blur-2xl dark:bg-blue-500/15" />
 
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid gap-10 items-center md:grid-cols-[1.15fr_0.85fr]">
-          {/* Left Text Column */}
-          <div className="space-y-6 md:space-y-8">
-            <h1 className="max-w-2xl text-4xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl transition-colors duration-300 leading-tight">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
+          {/* Left Text Column (7 cols) */}
+          <div className="space-y-6 sm:space-y-8 lg:col-span-7">
+            {/* Pill Tag */}
+            <div className="inline-flex items-center gap-2 rounded-full bg-indigo-100/80 px-3.5 py-1.5 text-xs font-semibold text-indigo-800 dark:bg-indigo-950/80 dark:text-indigo-300 dark:ring-1 dark:ring-indigo-800/50">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>វគ្គសិក្សាថ្មី ២០២៦</span>
+            </div>
+
+            {/* Title */}
+            <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl sm:leading-[1.25] leading-[1.3] transition-colors duration-300">
               ចាប់ផ្តើមដំណើរសិក្សាកម្មវិធីរបស់អ្នក
             </h1>
-            <p className="max-w-xl text-base leading-relaxed text-slate-600 dark:text-slate-300 sm:text-lg transition-colors duration-300">
+
+            {/* Description */}
+            <p className="max-w-2xl text-base sm:text-lg leading-relaxed text-slate-600 dark:text-slate-300 transition-colors duration-300">
               អភិវឌ្ឍជំនាញសរសេរកូដរបស់អ្នកជាមួយមេរៀនវីដេអូ ឯកសារសិក្សា
-              លំហាត់អនុវត្ត និងប្រព័ន្ធឡូម ដែលរៀបចំឡើងសម្រាប់អ្នកចាប់ផ្តើម
+              លំហាត់អនុវត្ត និងប្រព័ន្ធ LMS ដែលរៀបចំឡើងសម្រាប់អ្នកចាប់ផ្តើម
               និងអ្នកចង់ក្លាយជាអ្នកអភិវឌ្ឍន៍កម្មវិធីអាជីព។
             </p>
-            <div className="flex flex-wrap gap-4">
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-2">
               <Button
                 size="lg"
-                className="rounded-full bg-indigo-800 dark:bg-indigo-600 hover:bg-indigo-900 dark:hover:bg-indigo-500 text-white px-6 transition-all duration-300"
+                className="group rounded-full bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white px-7 py-6 text-base shadow-md shadow-indigo-500/20 transition-all duration-300 hover:shadow-indigo-500/30 active:scale-[0.98]"
               >
-                ចាប់ផ្តើមសិក្សា
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <span>ចាប់ផ្តើមសិក្សា</span>
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
+
               <Button
                 size="lg"
-                variant="outline"
-                className="rounded-full border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 px-6 transition-colors duration-300"
+                className="rounded-full bg-init-color hover:opacity-90 text-slate-950 font-medium px-7 py-6 text-base transition-all duration-300 active:scale-[0.98] shadow-sm shadow-amber-500/20"
               >
-                ស្វែងរកផែនការសិក្សា
+                <PlayCircle className="mr-2 h-4 w-4 text-slate-900" />
+                <span>ស្វែងរកផែនការសិក្សា</span>
               </Button>
             </div>
           </div>
 
-          {/* Right Illustration with Floating Badges */}
-          <div className="relative overflow-hidden rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xl bg-slate-950">
-            <Image
-              src="/assets/images/bannercourse.png"
-              alt="Student learning to code"
-              width={900}
-              height={600}
-              className="relative h-full w-full object-cover opacity-95 dark:opacity-85"
-            />
+          {/* Right Illustration Column (5 cols) */}
+          <div className="relative lg:col-span-5">
+            <div className="relative mx-auto max-w-md lg:max-w-none overflow-hidden rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-2xl bg-slate-900/90 group">
+              <Image
+                src="/assets/images/bannercourse.png"
+                alt="Student learning to code"
+                width={900}
+                height={600}
+                priority
+                sizes="(max-width: 1024px) 100vw, 45vw"
+                className="h-full w-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-[1.02]"
+              />
 
-            {/* Floating Badges */}
-            <div
-              className="float-badge absolute top-[14%] right-[28%] z-10 rounded-xl bg-emerald-500 px-4 py-2 text-sm font-bold text-white shadow-lg"
-              style={{ animationDelay: "0s", ["--rot" as any]: "-4deg" }}
-            >
-              JS
-            </div>
+              {/* Gradient Overlay for Vignette */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
 
-            <div
-              className="float-badge absolute top-[30%] right-[10%] z-10 rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white shadow-lg"
-              style={{ animationDelay: "0.6s", ["--rot" as any]: "3deg" }}
-            >
-              HTML
-            </div>
+              {/* Floating Badges */}
+              <div className="absolute top-[12%] left-[8%] sm:top-[14%] sm:left-[12%] z-10 animate-bounce [animation-duration:4s] rounded-xl bg-emerald-500/90 backdrop-blur-md px-3.5 py-1.5 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-emerald-500/20 -rotate-6 border border-white/20">
+                JavaScript
+              </div>
 
-            <div
-              className="float-badge absolute top-[52%] right-[8%] z-10 rounded-xl bg-pink-500 px-4 py-2 text-sm font-bold text-white shadow-lg"
-              style={{ animationDelay: "1.2s", ["--rot" as any]: "-2deg" }}
-            >
-              CSS
-            </div>
+              <div className="absolute top-[28%] right-[6%] z-10 animate-bounce [animation-duration:3.5s] [animation-delay:0.5s] rounded-xl bg-blue-600/90 backdrop-blur-md px-3.5 py-1.5 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-blue-600/20 rotate-6 border border-white/20">
+                HTML5
+              </div>
 
-            <div
-              className="float-badge absolute bottom-[18%] left-[10%] z-10 flex h-12 w-12 items-center justify-center rounded-xl bg-amber-400 text-lg font-bold text-slate-900 shadow-lg"
-              style={{ animationDelay: "0.3s", ["--rot" as any]: "5deg" }}
-            >
-              {"</>"}
+              <div className="absolute bottom-[28%] right-[10%] z-10 animate-bounce [animation-duration:4.2s] [animation-delay:1s] rounded-xl bg-pink-500/90 backdrop-blur-md px-3.5 py-1.5 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-pink-500/20 -rotate-3 border border-white/20">
+                CSS3
+              </div>
+
+              <div className="absolute bottom-[10%] left-[8%] z-10 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-amber-400/95 text-slate-900 shadow-lg shadow-amber-400/20 rotate-12 border border-white/30 animate-bounce [animation-duration:3.8s]">
+                <Code2 className="h-6 w-6 stroke-[2.5]" />
+              </div>
             </div>
           </div>
         </div>
