@@ -1,19 +1,16 @@
-// src/app/(main)/layout.tsx
-import SubNavbar from "@/components/layout/Sub-Navbar";
+import Navbar from "@/components/nav-bar";
 import Footer from "@/components/footer";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 
-export default function MainLayout({ children }: { children: React.ReactNode }) {
+export default function MainLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div>
-
-      <SidebarProvider className="flex-1">
-        {/* <AppSidebar /> */}
-        <SidebarInset>
-          <main >{children}</main>
-          <Footer /> 
-        </SidebarInset>
-      </SidebarProvider>
-    </div>
+    <>
+      <Navbar />
+      <main className="flex-1 pt-16">{children}</main>
+      <Footer />
+    </>
   );
 }

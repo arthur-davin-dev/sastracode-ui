@@ -66,49 +66,57 @@ export default function Notification() {
     activeTab === "unread" ? notifications.filter((n) => n.isUnread) : notifications;
 
   return (
-    <div className="space-y-6 p-6">
-      <p className="text-xs text-muted-foreground">ថ្នាំងគ្រប់គ្រង &gt; ការជូនដំណឹង</p>
+    <div className="relative w-full min-h-screen bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 px-4 py-16 overflow-hidden transition-colors duration-300">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <p className="text-xs text-muted-foreground dark:text-slate-400 transition-colors duration-300">
+          ថ្នាំងគ្រប់គ្រង &gt; ការជូនដំណឹង
+        </p>
 
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold text-indigo-950">ការរំលឹក និងការជូនដំណឹង</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            តាមដានសារជូនដំណឹងទាំងអស់ រួមទាំងព័ត៌មានថ្មីៗអំពីការសិក្សា
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-xl font-bold text-indigo-950 dark:text-white transition-colors duration-300">
+              ការរំលឹក និងការជូនដំណឹង
+            </h1>
+            <p className="text-sm text-muted-foreground dark:text-slate-400 mt-1 transition-colors duration-300">
+              តាមដានសារជូនដំណឹងទាំងអស់ រួមទាំងព័ត៌មានថ្មីៗអំពីការសិក្សា
+            </p>
+          </div>
+          <Button className="gap-2 text-white bg-indigo-950 hover:bg-indigo-900 dark:bg-indigo-600 dark:hover:bg-indigo-500 transition-colors duration-300 w-full sm:w-auto">
+            <CheckCheck className="h-4 w-4" /> សម្គាល់ថាបានអានទាំងអស់
+          </Button>
         </div>
-        <Button className="gap-2">
-          <CheckCheck className="h-4 w-4" /> សម្គាល់ថាបានអានទាំងអស់
-        </Button>
-      </div>
 
-      <NotificationTabs
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        counts={{ all: notifications.length, unread: unreadCount }}
-      />
+        <NotificationTabs
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          counts={{ all: notifications.length, unread: unreadCount }}
+        />
 
-      <div className="space-y-3">
-        <AnimatePresence mode="popLayout"> 
-          {filteredNotifications.map((n, i) => (
-            <motion.div
-              key={n.id}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -15 }} 
-              transition={{ delay: i * 0.08, duration: 0.3 }}
-            >
-              <NotificationItem notification={n} />
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+        <div className="space-y-3">
+          <AnimatePresence mode="popLayout"> 
+            {filteredNotifications.map((n, i) => (
+              <motion.div
+                key={n.id}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }} 
+                transition={{ delay: i * 0.08, duration: 0.3 }}
+              >
+                <NotificationItem notification={n} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
 
-      <div>
-        <p className="text-sm font-medium mb-3">សមិទ្ធផលថ្មីរបស់អ្នក</p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {suggestions.map((s) => (
-            <NotificationSuggestionCard key={s.id} suggestion={s} />
-          ))}
+        <div className="pt-4">
+          <p className="text-sm font-medium mb-3 text-slate-900 dark:text-white transition-colors duration-300">
+            សមិទ្ធផលថ្មីរបស់អ្នក
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {suggestions.map((s) => (
+              <NotificationSuggestionCard key={s.id} suggestion={s} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

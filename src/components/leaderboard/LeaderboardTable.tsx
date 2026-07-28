@@ -11,15 +11,15 @@ interface LeaderboardTableProps {
 
 export function LeaderboardTable({ entries, currentUser }: LeaderboardTableProps) {
   return (
-    <Card>
+    <Card className="dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
       <CardContent className="p-4">
-        <div className="flex justify-between px-3 pb-2 border-b text-xs font-medium text-muted-foreground">
+        <div className="flex justify-between px-3 pb-2 border-b dark:border-slate-800 text-xs font-medium text-muted-foreground dark:text-slate-400 transition-colors duration-300">
           <span>Rank</span>
           <span className="flex-1 ml-16">User</span>
           <span>XP</span>
         </div>
 
-        <div className="divide-y">
+        <div className="divide-y dark:divide-slate-800/60">
           {entries.map((entry, i) => (
             <motion.div
               key={entry.rank}
@@ -32,7 +32,7 @@ export function LeaderboardTable({ entries, currentUser }: LeaderboardTableProps
           ))}
         </div>
 
-        <div className="border-t-2 mt-2 pt-2">
+        <div className="border-t-2 dark:border-slate-800 mt-2 pt-2 transition-colors duration-300">
           <LeaderboardRow entry={currentUser} />
         </div>
       </CardContent>

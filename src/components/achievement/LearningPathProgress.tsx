@@ -11,32 +11,37 @@ interface LearningPathProgressProps {
 
 export function LearningPathProgress({ paths, completedCount, totalCount }: LearningPathProgressProps) {
   return (
-    <div>
-      <div className="flex items-center gap-6">
-        <div className="flex flex-col items-center">
-          <XpLevelBadge level={completedCount} size={80} />
-          <span className="text-lg text-primary-color text-muted-foreground mt-1">{completedCount}/{totalCount}</span>
+    <div className="space-y-4">
+      <div className="flex flex-col sm:flex-row items-center gap-6">
+        {/* Bracket ring showing X/Y */}
+        <div className="flex flex-col items-center shrink-0">
+          <XpLevelBadge level={completedCount} size={64} />
+          <span className="text-xs text-muted-foreground dark:text-slate-400 mt-1 transition-colors duration-300">
+            {completedCount}/{totalCount}
+          </span>
         </div>
 
-        <div className="flex-1 space-y-4">
+        <div className="flex-1 space-y-4 w-full">
           {paths.map((path) => (
             <div key={path.id}>
-              <div className="flex justify-between text-lg text-primary-color mb-1">
-                <span className="font-medium">{path.name}</span>
+              <div className="flex justify-between text-sm mb-1">
+                <span className="font-medium text-slate-900 dark:text-white transition-colors duration-300">
+                  {path.name}
+                </span>
                 <span
-                  className={
+                  className={`font-medium transition-colors duration-300 ${
                     path.progressPercent === 100
-                      ? "text-orange-700 font-medium"
-                      : "text-red-600 font-medium"
-                  }
+                      ? "text-orange-500 dark:text-amber-400"
+                      : "text-red-600 dark:text-red-400"
+                  }`}
                 >
                   {path.progressPercent === 100 ? path.status : `${path.progressPercent}%`}
                 </span>
               </div>
               <Progress
                 value={path.progressPercent}
-                className={`h-1.5 ${
-                  path.progressPercent === 100 ? "[&>div]:bg-init-color" : "[&>div]:bg-primary-color"
+                className={`h-1.5 dark:bg-slate-800 ${
+                  path.progressPercent === 100 ? "[&>div]:bg-orange-400" : "[&>div]:bg-blue-500"
                 }`}
               />
             </div>
@@ -44,9 +49,12 @@ export function LearningPathProgress({ paths, completedCount, totalCount }: Lear
         </div>
       </div>
 
-      <div className="flex justify-end mt-4">
-        <a href="#" className="text-lg text-primary-color font-medium text-foreground flex items-center gap-1 hover:underline">
-          បន្តការសិក្សា <ChevronRight className="h-6 w-6" />
+      <div className="flex justify-end pt-2">
+        <a 
+          href="#" 
+          className="text-xs font-medium text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white flex items-center gap-1 hover:underline transition-colors duration-300"
+        >
+          បន្តការសិក្សា <ChevronRight className="h-3 w-3" />
         </a>
       </div>
     </div>
