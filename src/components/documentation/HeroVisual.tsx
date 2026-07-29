@@ -1,75 +1,33 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link"; // 1. Imported Link component
-
-type LogoItem = {
-  name: string;
-  imgSrc: string; 
-  positionClass: string;
-  slug: string; // 2. Added slug property for dynamic path matching
-};
-
-const outerLogos: LogoItem[] = [
-  { 
-    name: "HTML", 
-    imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg", 
-    positionClass: "top-[-28px] left-1/2 -translate-x-1/2",
-    slug: "html-elements" // Renders link path: /documentation/lessons/html-elements
-  },
-  { 
-    name: "JS", 
-    imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg", 
-    positionClass: "top-1/2 right-[-28px] -translate-y-1/2",
-    slug: "javascript-basics" 
-  },
-  { 
-    name: "Python", 
-    imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg", 
-    positionClass: "bottom-[-28px] left-[20%]",
-    slug: "python-intro" 
-  },
-];
-
-const innerLogos: LogoItem[] = [
-  { 
-    name: "Java", 
-    imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg", 
-    positionClass: "top-[10%] left-[-28px]",
-    slug: "java-oop" 
-  },
-  { 
-    name: "CSS", 
-    imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg", 
-    positionClass: "bottom-[-20px] right-[10%]",
-    slug: "css-flexbox" 
-  },
-];
-
+import Link from "next/link";
+import { outerLogos } from "@/lib/data/documentation";
+import { innerLogos } from "@/lib/data/documentation";
 export default function HeroVisual() {
   return (
-    <div className="relative mx-auto h-80 w-80 sm:h-96 sm:w-96 animate-bob">
+    <div className="relative mx-auto h-100 w-100 sm:h-96 sm:w-96 animate-bob">
       {/* Character avatar */}
-      <div className="absolute inset-0 rounded-full overflow-hidden shadow-[0_20px_40px_rgba(30,100,200,0.15)] bg-gradient-to-br from-sky-100 to-blue-200 z-0">
+      <div className="absolute inset-0  overflow-hidden  z-0">
         <Image
-          src="/images/doc-hero.png"
+          src="/images/doc-hero-image.png"
           alt="សិស្សសាស្ត្រាកូដកំពុងកាន់កុំព្យូទ័រយួរដៃ"
           fill
-          className="object-contain"
+          className="object-contain shadow-[0_20px_40px_rgba(30,100,200,0.15)] h-80 w-80 "
           priority
         />
       </div>
 
-      {/* Outer orbit */}
-      <div className="absolute top-1/2 left-1/2 w-[110%] h-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full animate-spin-slow z-20">
+      {/* Outer orbit - Added pointer-events-none */}
+      <div className="absolute top-1/2 left-1/2 w-[110%] h-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full animate-spin-slow z-30 pointer-events-none">
         {outerLogos.map((logo) => (
-          /* 3. Changed from <div> to <Link> */
+          /* Added pointer-events-auto and raised z-index */
           <Link
             key={logo.name}
             href={`/documentation/lessons/${logo.slug}`}
-            className={`absolute w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center p-3 animate-counter-spin ${logo.positionClass} cursor-pointer hover:scale-110 transition-transform duration-200 z-30`}
+            className={`absolute w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center p-3 animate-counter-spin ${logo.positionClass} cursor-pointer hover:scale-110 transition-transform duration-200 pointer-events-auto z-50`}
           >
-            <div className="relative w-full h-full ">
+            <div className="relative w-full h-full">
               <Image
                 src={logo.imgSrc}
                 alt={`${logo.name} logo`}
@@ -82,14 +40,14 @@ export default function HeroVisual() {
         ))}
       </div>
 
-      {/* Inner orbit */}
-      <div className="absolute top-1/2 left-1/2 w-[85%] h-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full animate-spin-slow-reverse z-20">
+      {/* Inner orbit - Added pointer-events-none */}
+      <div className="absolute top-1/2 left-1/2 w-[85%] h-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full animate-spin-slow-reverse z-40 pointer-events-none">
         {innerLogos.map((logo) => (
-          /* 4. Changed from <div> to <Link> */
+          /* Added pointer-events-auto and raised z-index */
           <Link
             key={logo.name}
             href={`/documentation/lessons/${logo.slug}`}
-            className={`absolute w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center p-3 animate-counter-spin-reverse ${logo.positionClass} cursor-pointer hover:scale-110 transition-transform duration-200 z-30`}
+            className={`absolute w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center p-3 animate-counter-spin-reverse ${logo.positionClass} cursor-pointer hover:scale-110 transition-transform duration-200 pointer-events-auto z-50`}
           >
             <div className="relative w-full h-full">
               <Image

@@ -17,9 +17,12 @@ export default function DocumentationHomePage() {
         </section>
 
         <CourseGrid title="ភាសាទាំងអស់" courses={courses} seeAllHref="/documentation/search" />
+        <CourseGrid title="ណែនាំសម្រាប់អ្នក" courses={courses} seeAllHref="/documentation/search" />
+        <CourseGrid title="មេរៀនពេញនិយម" courses={courses} seeAllHref="/documentation/search" />
 
-        <ForumPostList title="ណែនាំសម្រាប់អ្នក" posts={forumPosts} />
-        <PromoBanner data={promoBanner} />
+        {/* <ForumPostList title="ណែនាំសម្រាប់អ្នក" posts={forumPosts} /> */}
+
+        {/* <PromoBanner data={promoBanner} /> */}
       </div>
     </main>
   );

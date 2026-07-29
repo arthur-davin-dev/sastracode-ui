@@ -1,5 +1,11 @@
 import { CardLevel, TrackSlug } from "@/types/course";
 
+export type LogoItem = {
+  name: string;
+  imgSrc: string; 
+  positionClass: string;
+  slug: string;
+};
 /** Left-hand "Learning Path" sidebar item (dashboard / lesson-list / search) */
 export interface DocsNavItem {
   id: string;

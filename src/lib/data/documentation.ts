@@ -5,6 +5,7 @@ import {
   LessonDocument,
   SavedLessonCard,
   SearchResultItem,
+  LogoItem,
 } from "@/types/documentation";
 
 export const docsNavItems: DocsNavItem[] = [
@@ -13,6 +14,42 @@ export const docsNavItems: DocsNavItem[] = [
   { id: "resources", label: "Resources", href: "/documentation/resources", icon: "folder" },
   { id: "bookmark", label: "Bookmark", href: "/documentation/bookmark", icon: "bookmark" },
   { id: "help", label: "Help Center", href: "/documentation/help", icon: "help" },
+];
+
+export const outerLogos: LogoItem[] = [
+  { 
+    name: "HTML", 
+    imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg", 
+    positionClass: "top-[-28px] left-1/2 -translate-x-1/2",
+    slug: "html-elements"
+  },
+  { 
+    name: "JS", 
+    imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg", 
+    positionClass: "top-1/2 right-[-28px] -translate-y-1/2",
+    slug: "javascript-basics" 
+  },
+  { 
+    name: "Python", 
+    imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg", 
+    positionClass: "bottom-[-28px] left-[20%]",
+    slug: "python-intro" 
+  },
+];
+
+export const innerLogos: LogoItem[] = [
+  { 
+    name: "Java", 
+    imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg", 
+    positionClass: "top-[10%] left-[-28px]",
+    slug: "java-oop" 
+  },
+  { 
+    name: "CSS", 
+    imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg", 
+    positionClass: "bottom-[-20px] right-[10%]",
+    slug: "css-flexbox" 
+  },
 ];
 
 export const javaTocGroups: CourseTocGroup[] = [
