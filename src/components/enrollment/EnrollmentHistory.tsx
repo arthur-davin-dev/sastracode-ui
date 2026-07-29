@@ -6,6 +6,9 @@ interface EnrollmentHistoryProps {
   items: EnrollmentHistoryItem[];
 }
 
+
+
+
 export function EnrollmentHistory({ items }: EnrollmentHistoryProps) {
   if (items.length === 0) return null;
 
