@@ -3,8 +3,10 @@
 import { SunMedium, Moon, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [lang, setLang] = useState<"km" | "en">("km");
   const [darkMode, setDarkMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -129,15 +131,23 @@ export default function Navbar() {
 
         {/* Desktop Center: Pill Navigation with Glass Effect */}
         <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-3 lg:gap-8 rounded-full border border-[#002455]/20 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md px-4 lg:px-8 py-2 lg:py-2.5 text-[#002455] dark:text-[#FFFFFF] shadow-xs dark:border-slate-700/50 max-w-[55%] lg:max-w-none">
-          {currentT.navItems.map((item, index) => (
-            <Link
-              key={index}
-              href={item.href}
-              className="text-[14px] lg:text-[18px] font-semibold whitespace-nowrap transition-colors hover:text-red-500"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {currentT.navItems.map((item, index) => {
+            const isActive = pathname === item.href;
+
+            return (
+              <Link
+                key={index}
+                href={item.href}
+                className={`text-[14px] lg:text-[18px] whitespace-nowrap transition-colors ${
+                  isActive
+                    ? "font-extrabold text-[#DC0000] dark:text-[#DC0000]"
+                    : "font-medium text-[#002455] dark:text-[#FFFFFF] hover:text-[#DC0000]"
+                }`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Right Controls */}
@@ -171,7 +181,11 @@ export default function Navbar() {
           {/* Register Link */}
           <Link
             href="/register"
-            className="hidden md:inline-block text-[14px] lg:text-[18px] font-semibold text-[#DC0000] whitespace-nowrap transition-colors hover:text-red-600 shrink-0"
+            className={`hidden md:inline-block text-[14px] lg:text-[18px] whitespace-nowrap transition-colors shrink-0 ${
+              pathname === "/register"
+                ? "font-extrabold text-[#DC0000]"
+                : "font-semibold text-[#DC0000] hover:text-red-600"
+            }`}
           >
             {currentT.register}
           </Link>
@@ -191,23 +205,35 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden border-t border-gray-200/30 bg-white/70 dark:border-slate-800/50 dark:bg-slate-950/70 backdrop-blur-xl px-6 py-4 transition-all">
           <div className="flex flex-col space-y-3">
-            {currentT.navItems.map((item, index) => (
-              <Link
-                key={index}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className="text-[18px] font-semibold text-[#002455] dark:text-[#FFFFFF] transition-colors hover:text-red-500 py-1"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {currentT.navItems.map((item, index) => {
+              const isActive = pathname === item.href;
+
+              return (
+                <Link
+                  key={index}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`text-[18px] py-1 transition-colors ${
+                    isActive
+                      ? "font-extrabold text-[#DC0000] dark:text-[#DC0000]"
+                      : "font-semibold text-[#002455] dark:text-[#FFFFFF] hover:text-[#DC0000]"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
 
             {/* Register Link inside mobile drawer */}
             <div className="pt-2 border-t border-gray-100/50 dark:border-slate-800/50">
               <Link
                 href="/register"
                 onClick={() => setIsOpen(false)}
-                className="text-[18px] font-semibold text-[#DC0000] whitespace-nowrap transition-colors hover:text-red-600"
+                className={`text-[18px] whitespace-nowrap transition-colors ${
+                  pathname === "/register"
+                    ? "font-extrabold text-[#DC0000]"
+                    : "font-semibold text-[#DC0000] hover:text-red-600"
+                }`}
               >
                 {currentT.register}
               </Link>
