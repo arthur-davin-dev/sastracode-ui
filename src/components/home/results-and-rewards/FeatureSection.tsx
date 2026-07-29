@@ -47,7 +47,7 @@ export type Feature = {
 
 const defaultFeatures: Feature[] = [
   {
-    icon: <img src="/home/feature-section/lessons.png" />,
+    icon: <img src="/home/feature-section/lessons.png"  className="hover:shadow-[0_0_40px_rgba(47,79,214,0.5),0_0_80px_rgba(47,79,214,0.2)] hover:scale-[1.05] transition duration-300"/>,
     lines: ["សិក្សាតាមរយៈមេរៀនដែលមានការពន្យល់", "និងឧទាហរណ៍ជាក់ស្តែងៗ"],
   },
   {
@@ -86,7 +86,7 @@ export default function FeatureSection({
   }));
 
   return (
-    <section className="w-full bg-gradient-to-b from-[#fdf3f3] to-white px-4 py-12 sm:px-6 sm:py-16 dark:from-[#0B1120] dark:to-[#111827]">
+    <section className="w-full bg-white px-4 py-12 sm:px-6 sm:py-16 dark:bg-gray-900">
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 sm:grid-cols-3 sm:gap-6 md:gap-8">
         {features.map((feature, index) => (
           <FeatureCard

@@ -176,7 +176,7 @@ export default function Showcase() {
           className="w-[40%] h-auto dark:opacity-50"
         />
         <img
-          src="/assets/home/image/center-dot-float.png"
+          src="/home/center-dot.svg"
           alt=""
           className="-mt-[10%] w-[1%] h-auto dark:opacity-50"
         />
@@ -491,8 +491,8 @@ export default function Showcase() {
   return (
     <section className="relative overflow-hidden pb-40 bg-white dark:bg-gray-900 py-6 lg:pt-20 pb-3.5 transition-colors duration-300">
       {/* Background Blur - updated for dark mode */}
-      <div className="absolute left-0 top-0 h-96 w-96 rounded-full blur-[140px] bg-purple-100/30 dark:bg-purple-900/20" />
-      <div className="absolute right-[-80px] top-32 h-56 w-56 sm:h-72 sm:w-72 lg:h-96 lg:w-96 rounded-full blur-[140px] bg-blue-100/30 dark:bg-blue-900/20" />
+      {/* <div className="absolute left-0 top-0 h-96 w-96 rounded-full blur-[140px] bg-purple-100/30 dark:bg-purple-900/20" />
+      <div className="absolute right-[-80px] top-32 h-56 w-56 sm:h-72 sm:w-72 lg:h-96 lg:w-96 rounded-full blur-[140px] bg-blue-100/30 dark:bg-blue-900/20" /> */}
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         {/* Mobile: Simple grid */}

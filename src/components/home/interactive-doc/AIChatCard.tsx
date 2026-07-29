@@ -3,6 +3,7 @@
 import React from 'react';
 import { current } from '@reduxjs/toolkit';
 import { useTranslation } from '@/hooks/useTranslations';
+import VectorLine from './VectorLine';
 
 
 
@@ -27,7 +28,12 @@ function AiCoachWidget() {
                         className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 animate-float object-contain"
                     />
                 </div>
-
+                <VectorLine />
+                {/* <img
+                    src="/home/Vector.svg"
+                    alt="AI Coach robot"
+                    className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 object-contain"
+                /> */}
                 <div className="flex-1 min-w-0 w-full">
                     <p className="text-[15px] md:text-base font-medium text-slate-800 dark:text-slate-200 leading-snug mb-3 transition-colors duration-300">
                         {currentT.interactiveDoc.aiChat}

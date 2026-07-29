@@ -1,17 +1,17 @@
 // HeroCharacter.tsx
+"use client"
+
 import Image from "next/image";
 import { useTranslation } from "@/hooks/useTranslations";
-
-
 
 export default function HeroCharacter() {
 
   const currentT = useTranslation();
 
   return (
-    <section className="relative mx-auto max-w-7xl px-6 py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+    <section className="relative mx-auto max-w-7xl px-6 py-20 bg-white dark:bg-gray-900 transition-colors duration-300 pt-40">
       {/* Corner decorations - updated for dark mode */}
-      <div className="pointer-events-none absolute left-0 top-0 h-[87px] w-[87px] rounded-tl-2xl border-l-[14px] border-t-[14px] border-[#ff383c] dark:border-red-500"></div>
+      <div className="pointer-events-none absolute left-0 top-20 h-[87px] w-[87px] rounded-tl-2xl border-l-[14px] border-t-[14px] border-[#ff383c] dark:border-red-500"></div>
       <div className="pointer-events-none absolute bottom-0 right-0 h-[87px] w-[87px] rotate-180 rounded-tl-2xl border-l-[14px] border-t-[14px] border-[#ff383c] dark:border-red-500"></div>
 
       <div className="grid items-center gap-12 lg:grid-cols-2">

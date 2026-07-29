@@ -205,7 +205,7 @@ export default function TechStackSection({
   if (!isClient) {
     // Return a static version for SSR
     return (
-      <section className="w-full overflow-hidden bg-white px-4 py-14 sm:px-8 dark:bg-[#0B1120] transition-colors duration-300">
+      <section className="w-full overflow-hidden bg-white px-4 py-14 sm:px-8 dark:bg-gray-900 transition-colors duration-300">
         <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
           <span className="mb-4 rounded-full border border-[#c9d3f5] dark:border-blue-700 bg-[#eef1fd] dark:bg-blue-950 px-4 py-1 text-[11px] font-semibold tracking-wide text-[#3a52c9] dark:text-blue-300 transition-colors duration-300">
             {currentT.technologyStack.badge}
@@ -227,7 +227,7 @@ export default function TechStackSection({
   }
 
   return (
-    <section className="w-full overflow-hidden bg-white px-4 py-14 sm:px-8 dark:bg-[#0B1120] transition-colors duration-300">
+    <section className="w-full overflow-hidden bg-white px-4 py-14 sm:px-8 dark:bg-gray-900 transition-colors duration-300">
       {/* header */}
       <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
         <span className="mb-4 rounded-full border border-[#c9d3f5] dark:border-blue-700 bg-[#eef1fd] dark:bg-blue-950 px-4 py-1 text-[11px] font-semibold tracking-wide text-[#3a52c9] dark:text-blue-300 transition-colors duration-300">

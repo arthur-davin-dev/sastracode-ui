@@ -47,7 +47,7 @@ export default function CoreFeatures() {
  const currentT = useTranslation();
 
   return (
-    <section className="bg-slate-50/80 dark:bg-gray-900 px-6 py-10 transition-colors duration-300">
+    <section className="bg-white dark:bg-gray-900 px-6 py-10 transition-colors duration-300">
       <div className="mx-auto max-w-7xl">
         <div className="text-center">
           <span className="inline-block rounded-full border border-blue-600/15 dark:border-blue-400/20 bg-blue-100 dark:bg-blue-950/30 px-5 py-2 font-khmer text-sm font-bold uppercase text-navy dark:text-blue-300 transition-colors duration-300">
