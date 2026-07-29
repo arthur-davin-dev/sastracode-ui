@@ -21,8 +21,8 @@ export default function TipsSection({ tips }: { tips: LessonTip[] }) {
             className={`border p-4 ${VARIANT_STYLES[tip.variant]}`}
             style={{ borderRadius: 16 }}
           >
-            <div className="font-medium text-sm mb-1">{tip.title}</div>
-            <div className="text-sm text-gray-700">{tip.body}</div>
+            <div className="font-medium text-[18px] mb-1">{tip.title}</div>
+            <div className="text-[16px] text-gray-700">{tip.body}</div>
           </div>
         ))}
       </div>

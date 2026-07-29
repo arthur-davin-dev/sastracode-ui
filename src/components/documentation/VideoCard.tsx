@@ -18,11 +18,11 @@ export default function VideoCard({
         <Play className="text-white" size={22} />
       </div>
       <div className="flex-1">
-        <div className="font-medium text-sm">{instructor.videoTitle}</div>
-        <div className="text-xs text-gray-500">{instructor.videoSubtitle}</div>
+        <div className="font-medium text-[18px]">{instructor.videoTitle}</div>
+        <div className="text-[14px] text-gray-500">{instructor.videoSubtitle}</div>
       </div>
       <button
-        className="text-xs px-3 py-1.5 text-white"
+        className="text-[14px] px-3 py-1.5 text-white"
         style={{ background: "#002455", borderRadius: 16 }}
       >
         មើលវីដេអូ

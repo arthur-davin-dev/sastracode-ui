@@ -37,8 +37,8 @@ export default function DocsToc({
           />
         </div>
         {/* Time Spent */}
-        <div className="flex items-center gap-1.5 text-gray-500 text-xs">
-          <Timer size={14} className="shrink-0" />
+        <div className="flex items-center gap-1.5 text-gray-500 text-[16px]">
+          <Timer size={16} className="shrink-0" />
           <span>{timeLabel}</span>
         </div>
       </div>

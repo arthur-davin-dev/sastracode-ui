@@ -29,7 +29,7 @@ export default function QuickQuiz({ quiz }: { quiz: LessonQuiz }) {
           <button
             key={opt.id}
             onClick={() => setSelected(opt.id)}
-            className="w-full text-left px-4 py-2 text-sm border"
+            className="w-full text-left px-4 py-2 text-[18px] border"
             style={{
               borderRadius: 16,
               borderColor: selected === opt.id ? "#002455" : "#E5E7EB",
@@ -41,7 +41,7 @@ export default function QuickQuiz({ quiz }: { quiz: LessonQuiz }) {
         ))}
       </div>
       <button
-        className="mt-4 px-4 py-2 text-sm text-white"
+        className="mt-4 px-4 py-2 text-[18px] text-white"
         style={{ background: "#002455", borderRadius: 16 }}
       >
         បញ្ជូនចម្លើយ

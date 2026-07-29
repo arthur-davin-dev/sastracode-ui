@@ -8,7 +8,7 @@ export default function HeroLesson({ lesson }: { lesson: LessonDocument }) {
       <div className="flex justify-between items-start gap-6">
         <div>
           {/* Badge */}
-          <span className="text-xs bg-white/15 px-2.5 py-1 rounded-full">
+          <span className="text-sm bg-white/15 px-2.5 py-1 rounded-full">
             {lesson.lessonIndexLabel}
           </span>
           
@@ -30,7 +30,7 @@ export default function HeroLesson({ lesson }: { lesson: LessonDocument }) {
       </div>
       
       {/* Action Button */}
-      <button className="mt-6 bg-white px-5 py-2 text-sm font-semibold text-[#002455] rounded-xl hover:bg-white/95 transition-colors">
+      <button className="mt-6 bg-white px-5 py-2 text-[16px] font-semibold text-[#002455] rounded-xl hover:bg-white/95 transition-colors">
         + បន្តការសិក្សា
       </button>
     </div>
