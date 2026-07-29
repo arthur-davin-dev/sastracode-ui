@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search } from "lucide-react";
 import { trackTabs } from "@/lib/data/courses";
-import { ModeToggle } from "@/components/ui/mode-toggle";
+
 
 export default function DocsHeader() {
   const pathname = usePathname();
@@ -52,7 +52,6 @@ export default function DocsHeader() {
             />
           </form>
 
-          <ModeToggle />
 
           <Link
             href="/register"

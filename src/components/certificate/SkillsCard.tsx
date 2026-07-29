@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Star, Clock } from "lucide-react";
@@ -11,44 +13,73 @@ interface SkillsCardProps {
   completionWeeks: string;
 }
 
-export function SkillsCard({ skills, qrCodeUrl, grade, quizScore, studyDuration, completionWeeks }: SkillsCardProps) {
+export function SkillsCard({
+  skills,
+  qrCodeUrl,
+  grade,
+  quizScore,
+  studyDuration,
+  completionWeeks,
+}: SkillsCardProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-sub-title font-semibold">ជំនាញដែលទទួលបាន</CardTitle>
+    <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
+      <CardHeader className="pb-3 border-b border-slate-100 dark:border-slate-800">
+        <CardTitle className="text-[18px] font-semibold text-slate-900 dark:text-slate-100">
+          ជំនាញដែលទទួលបាន
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+
+      <CardContent className="pt-4 space-y-4">
+        {/* Skills & QR Section */}
         <div className="flex items-start justify-between gap-4">
-          <div className="grid grid-cols-2 gap-2 flex-1">
+          <div className="flex flex-wrap gap-1.5 flex-1">
             {skills.map((skill) => (
               <Badge
                 key={skill}
                 variant="secondary"
-                className="justify-center py-1.5 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-50 font-normal"
+                className="py-1 px-3 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/80 border border-indigo-100 dark:border-indigo-900/50 font-normal text-xs"
               >
                 {skill}
               </Badge>
             ))}
           </div>
-          <img src={qrCodeUrl} alt="QR Code" className="h-20 w-20 shrink-0" />
+
+          <div className="h-20 w-20 p-1.5 rounded-xl bg-white border border-slate-200 dark:border-slate-700 shrink-0 shadow-xs">
+            <img
+              src={qrCodeUrl}
+              alt="QR Code"
+              className="h-full w-full object-contain"
+            />
+          </div>
         </div>
 
-        <div className="pt-3 border-t space-y-3">
-          <p className="text-content font-semibold text-indigo-950">សមិទ្ធផលសិក្សា</p>
+        {/* Academic Achievements Section */}
+        <div className="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-3">
+          <p className="text-[18px] font-semibold text-indigo-950 dark:text-indigo-300">
+            សមិទ្ធផលសិក្សា
+          </p>
 
-          <div className="flex items-start gap-2">
-            <Star className="h-4 w-4 text-yellow-500 mt-0.5 shrink-0" />
+          <div className="flex items-start gap-2.5">
+            <Star className="h-4 w-4 text-amber-500 mt-0.5 shrink-0" />
             <div>
-              <p className="text-content font-medium">គ្រោងបញ្ចប់ការសិក្សា</p>
-              <p className="text-xs text-muted-foreground">និទ្ទេស: {grade}</p>
+              <p className="text-[18px] font-medium text-slate-800 dark:text-slate-200">
+                គ្រោងបញ្ចប់ការសិក្សា
+              </p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                និទ្ទេស: {grade}
+              </p>
             </div>
           </div>
 
-          <div className="flex items-start gap-2">
-            <Clock className="h-4 w-4 text-blue-500 mt-0.5 shrink-0" />
+          <div className="flex items-start gap-2.5">
+            <Clock className="h-4 w-4 text-indigo-500 dark:text-indigo-400 mt-0.5 shrink-0" />
             <div>
-              <p className="text-content font-medium">រយៈពេលសិក្សា {studyDuration}</p>
-              <p className="text-xs text-muted-foreground">បញ្ចប់ក្នុងរយៈពេល {completionWeeks}</p>
+              <p className="text-[18px] font-medium text-slate-800 dark:text-slate-200">
+                រយៈពេលសិក្សា {studyDuration}
+              </p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                បញ្ចប់ក្នុងរយៈពេល {completionWeeks}
+              </p>
             </div>
           </div>
         </div>

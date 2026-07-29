@@ -1,11 +1,11 @@
 import { Star, Mail } from "lucide-react";
 
 const team = [
-  { name: "Chhay Davin", email: "Cmskgmail.Com", offset: "up", color: "bg-sky-500" },
-  { name: "Vel SoThoun", email: "Cmskgmail.Com", offset: "down", color: "bg-blue-600" },
-  { name: "Chhay Kongkea", email: "Cmskgmail.Com", offset: "up", color: "bg-teal-500" },
-  { name: "Soeurt Bomnorng", email: "Cmskgmail.Com", offset: "down", color: "bg-blue-600" },
-  { name: "Lot Los", email: "Cmskgmail.Com", offset: "up", color: "bg-sky-500" },
+  { name: "Soeurt Bomnorng", email: "soeurtbomnorng3@gmail.com", offset: "up", img: "/home/support-team/bomnorng.png" },
+  { name: "Chhay Kongkea", email: "chhaykongkea9@gmail.com", offset: "down", img: "/home/support-team/kongkea.png" },
+  { name: "Lot Los", email: "loslot100604@gmail.com", offset: "up", img: "/home/support-team/los.png" },
+  { name: "Vel SoThoun", email: "velsothoun@gmail.com", offset: "down", img:"/home/support-team/sothun.png" },
+  { name: "Ben Thona", email: "thonaben08@gmail.com", offset: "up", img: "/home/support-team/thona.png"  },
 ];
 
 function initials(name: string) {
@@ -63,9 +63,13 @@ export default function SupportTeam() {
                   className={`h-16 w-16 md:h-20 md:w-20 rounded-full 
                           ring-4 ring-white dark:ring-gray-800 
                           shadow-lg flex items-center justify-center 
-                          text-white font-semibold order-2 ${member.color}`}
+                          text-white font-semibold order-2`}
                 >
-                  {initials(member.name)}
+                  <img
+                    src={member.img}
+                    alt="member"
+                    className="h-full w-full object-cover rounded-full"
+                  />
                 </div>
                 {member.offset === "down" && (
                   <div className="text-center order-3">

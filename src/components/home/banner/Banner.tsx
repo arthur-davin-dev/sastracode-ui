@@ -1,10 +1,14 @@
 // Banner.tsx
-import React from 'react'
-import { CodeBracketIcon } from '@heroicons/react/24/outline'
+"use client"
+
 import Stats from './Stats'
 import CodeWindow from './CodeWindow'
+import { useTranslation } from '@/hooks/useTranslations'
 
 export default function Banner() {
+
+  const currentT = useTranslation();
+
   return (
     <section className="relative overflow-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 py-6 sm:py-20 lg:py-24">
@@ -17,49 +21,47 @@ export default function Banner() {
 
             <div className="inline-flex items-center rounded-full border px-3 sm:px-4 py-2 text-[10px] sm:text-xs tracking-wider text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 font-(family-name:--font-sans)">
               <span className="mr-2 h-2 w-2 rounded-full bg-purple-500"></span>
-              LEARN. CODE. BUILD THE FUTURE.
+              {currentT.banner.badge}
             </div>
 
             <h1 className="mt-6 sm:mt-8 text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight font-(family-name:--font-sans)">
               <span className="text-[#0B2B66] dark:text-blue-400">
-                ចាប់ផ្តើមរៀន
+                {currentT.banner.title1}
               </span>
 
               <br />
 
               <span className="text-[#0B2B66] dark:text-blue-400">
-                Coding
+                {currentT.banner.title2}
               </span>
 
               <br />
 
               <span className="text-[#0B2B66] dark:text-blue-400">
-                ជំនាញថ្មីៗ
+                {currentT.banner.title3}
               </span>
 
               <span className="text-red-600 dark:text-red-400">
-                សម្រាប់
+                {currentT.banner.title4}
               </span>
 
               <span className="ml-3 text-[#0B2B66] dark:text-blue-400">
-                Code
+                {currentT.banner.title5}
               </span>
             </h1>
 
             <p className="mt-6 sm:mt-8 max-w-xl mx-auto lg:mx-0 text-base sm:text-lg leading-7 sm:leading-8 text-gray-500 dark:text-gray-400">
-              សិក្សាការសរសេរកូដ និងអភិវឌ្ឍជំនាញថ្មីៗ
-              ជាមួយនឹង AI Assistant, Coding Exercise,
-              Interactive Lesson និង Online Compiler។
+            {currentT.banner.description}
             </p>
 
             <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
 
               <button className="rounded-xl bg-[#0B2B66] dark:bg-blue-600 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-white hover:bg-blue-900 dark:hover:bg-blue-700 transition-colors">
-                ចូលរៀនឥឡូវនេះ
+                {currentT.banner.start}
               </button>
 
               <button className="rounded-xl border border-gray-300 dark:border-gray-600 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-                {"</>"} Explore Code
+                {"</>"} {currentT.banner.explore}
               </button>
 
             </div>

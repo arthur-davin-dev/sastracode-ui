@@ -42,19 +42,23 @@ const paths: LearningPath[] = [
 
 export default function Achievement() {
   return (
-    <div className="min-h-screen bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 space-y-6 p-6 transition-colors duration-300">
-      <div className="max-w-6xl mx-auto space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold text-indigo-950 dark:text-white transition-colors duration-300">
+    <div className="min-h-screen bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 space-y-8 p-6 transition-colors duration-300">
+      <div className="max-w-6xl mx-auto space-y-8">
+        
+        {/* Page Header */}
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
             ផ្ទាំងគ្រប់គ្រងសមិទ្ធផល
           </h1>
-          <p className="text-base text-muted-foreground dark:text-slate-400 mt-1 transition-colors duration-300">
+          <p className="text-lg text-primary-color opacity-80 dark:text-slate-300 transition-colors duration-300">
             តាមដានវឌ្ឍនភាព ការសិក្សា និងផ្នែកសមិទ្ធផលដែលអ្នកទទួលបាន
           </p>
         </div>
 
+        {/* User Summary Section */}
         <ProfileSummaryCard user={userData} />
 
+        {/* XP Progress Card */}
         <XpLevelCard
           level={userData.nextLevel}
           currentXp={userData.currentXp}
@@ -65,11 +69,11 @@ export default function Achievement() {
         {/* Badges Section */}
         <Card className="dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-white transition-colors duration-300">
+            <CardTitle className="flex items-center gap-2 text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
               🏅 មេដាយដែលទទួលបាន
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {badges.map((b, i) => (
               <motion.div
                 key={b.id}
@@ -86,11 +90,11 @@ export default function Achievement() {
         {/* Recent Activities Section */}
         <Card className="dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-white transition-colors duration-300">
+            <CardTitle className="flex items-center gap-2 text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
               ✅ របស់កម្មដែលបានបញ្ចប់
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-4">
             {activities.map((a, i) => (
               <motion.div
                 key={a.id}
@@ -104,14 +108,14 @@ export default function Achievement() {
           </CardContent>
         </Card>
 
-        {/* Learning Paths / Certificates Section */}
+        {/* Learning Paths / Certificates Progress Section */}
         <Card className="dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg font-semibold text-indigo-950 dark:text-indigo-300 transition-colors duration-300">
+            <CardTitle className="flex items-center gap-2 text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
               🏅 រង្វានភាពវិញ្ញាបនបត្រ
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="text-lg text-primary-color">
             <LearningPathProgress
               paths={paths}
               completedCount={paths.filter((p) => p.progressPercent === 100).length}

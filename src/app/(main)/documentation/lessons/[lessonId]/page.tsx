@@ -1,3 +1,7 @@
-export default function LessonPage() {
-  return <div>Coming soon</div>;
+import React from 'react'
+
+export default function page() {
+  return (
+    <div>page</div>
+  )
 }

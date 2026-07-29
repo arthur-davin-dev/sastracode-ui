@@ -1,6 +1,8 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Share2 } from "lucide-react";
+import { Share2, Calendar, Tag, Users, Sparkles } from "lucide-react";
 
 interface BadgeStatsCardProps {
   completionPercent: number;
@@ -9,74 +11,125 @@ interface BadgeStatsCardProps {
   totalEarners: number;
 }
 
-export function BadgeStatsCard({ completionPercent, earnedDate, category, totalEarners }: BadgeStatsCardProps) {
+export function BadgeStatsCard({
+  completionPercent,
+  earnedDate,
+  category,
+  totalEarners,
+}: BadgeStatsCardProps) {
+  // SVG Radial Ring Parameters
+  const radius = 48;
+  const strokeWidth = 8;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference * (1 - completionPercent / 100);
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: "សមិទ្ធផលមេដាយ",
+        url: window.location.href,
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert("បានចម្លងតំណភ្ជាប់!");
+    }
+  };
+
   return (
-    <Card className="dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
-      <CardContent className="p-5 space-y-4">
-        <div className="flex flex-col items-center">
-          <div className="relative h-20 w-20 flex items-center justify-center">
-            <svg className="absolute -rotate-90" width="80" height="80" viewBox="0 0 80 80">
-              {/* Background Track Circle */}
-              <circle 
-                cx="40" 
-                cy="40" 
-                r="34" 
-                className="stroke-slate-100 dark:stroke-slate-800 transition-colors duration-300" 
-                strokeWidth="6" 
-                fill="none" 
-              />
-              {/* Progress Circle */}
+    <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-md hover:shadow-xl hover:border-blue-50 transition-all duration-300">
+      
+      {/* Background Decorative Ambient Glow */}
+      <div className="absolute -top-12 -right-12 h-36 w-36 rounded-full  blur-3xl" />
+      <div className="absolute -bottom-12 -left-12 h-36 w-36 rounded-full bg-blue-600/10 blur-3xl" />
+
+      <CardContent className="relative z-10 p-7 space-y-6">
+        
+        {/* Radial Progress Ring & Title Section */}
+        <div className="flex flex-col items-center text-center space-y-2">
+          <div className="relative h-28 w-28 flex items-center justify-center my-1">
+            <svg className="-rotate-90 w-full h-full" viewBox="0 0 110 110">
+              {/* Background Circle Track */}
               <circle
-                cx="40" 
-                cy="40" 
-                r="34"
-                stroke="#dc2626" 
-                strokeWidth="6" 
+                cx="55"
+                cy="55"
+                r={radius}
+                className="stroke-slate-100 dark:stroke-slate-800"
+                strokeWidth={strokeWidth}
                 fill="none"
-                strokeDasharray={2 * Math.PI * 34}
-                strokeDashoffset={2 * Math.PI * 34 * (1 - completionPercent / 100)}
+              />
+              {/* Progress Circle (Red Secondary Color) */}
+              <circle
+                cx="55"
+                cy="55"
+                r={radius}
+                className="stroke-secondary-color
+                 transition-all duration-700 ease-out"
+                strokeWidth={strokeWidth}
+                fill="none"
+                strokeDasharray={circumference}
+                strokeDashoffset={strokeDashoffset}
                 strokeLinecap="round"
               />
             </svg>
-            <span className="text-lg font-bold text-red-600 dark:text-red-400 transition-colors duration-300">
-              {completionPercent}%
-            </span>
+
+            {/* Percent Text (text-2xl) */}
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-2xl font-extrabold text-secondary-color dark:text-red-400">
+                {completionPercent}%
+              </span>
+            </div>
           </div>
-          <p className="text-xs text-muted-foreground dark:text-slate-400 mt-1 transition-colors duration-300">
-            បញ្ចប់
-          </p>
+
+          <h3 className="text-2xl font-bold text-primary-color dark:text-white flex items-center gap-1.5">
+            <Sparkles className="h-5 w-5 text-init-color fill-init-color" />
+            <span>វឌ្ឍនភាពសមិទ្ធផល</span>
+          </h3>
         </div>
 
-        <div className="space-y-2 text-sm">
-          <div className="flex justify-between">
-            <span className="text-muted-foreground dark:text-slate-400 transition-colors duration-300">
+        {/* Stats Details List (text-lg & text-primary-color) */}
+        <div className="space-y-3 p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+          
+          <div className="flex justify-between items-center text-lg">
+            <span className="flex items-center gap-2 font-medium text-slate-600 dark:text-slate-400">
+              <Calendar className="h-5 w-5 text-primary-color" />
               កាលបរិច្ឆេទទទួល
             </span>
-            <span className="font-medium text-slate-900 dark:text-white transition-colors duration-300">
+            <span className="font-bold text-primary-color dark:text-white">
               {earnedDate}
             </span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground dark:text-slate-400 transition-colors duration-300">
+
+          <div className="flex justify-between items-center text-lg">
+            <span className="flex items-center gap-2 font-medium text-slate-600 dark:text-slate-400">
+              <Tag className="h-5 w-5 text-init-color" />
               ប្រភេទ
             </span>
-            <span className="font-medium text-slate-900 dark:text-white transition-colors duration-300">
+            <span className="font-bold text-primary-color dark:text-white">
               {category}
             </span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-muted-foreground dark:text-slate-400 transition-colors duration-300">
+
+          <div className="flex justify-between items-center text-lg">
+            <span className="flex items-center gap-2 font-medium text-slate-600 dark:text-slate-400">
+              <Users className="h-5 w-5 text-secondary-color" />
               ចំនួនអ្នកទទួល
             </span>
-            <span className="font-medium text-slate-900 dark:text-white transition-colors duration-300">
+            <span className="font-bold text-secondary-color dark:text-red-400">
               {totalEarners.toLocaleString()} នាក់
             </span>
           </div>
+
         </div>
 
-        <Button className="w-full gap-2 dark:bg-indigo-600 dark:hover:bg-indigo-500 dark:text-white transition-colors duration-300">
-          <Share2 className="h-4 w-4" /> ចែករំលែកសមិទ្ធផល
+        {/* Action Button (Blue Primary Base -> Red Secondary Hover) */}
+        <Button
+          onClick={handleShare}
+          className="w-full h-12 rounded-2xl bg-primary-color hover:bg-blue-800 text-white text-lg font-bold shadow-md transition-all duration-300 gap-2"
+        >
+          <Share2 className="h-5 w-5" />
+          <span>ចែករំលែកសមិទ្ធផល</span>
         </Button>
+
       </CardContent>
     </Card>
   );
