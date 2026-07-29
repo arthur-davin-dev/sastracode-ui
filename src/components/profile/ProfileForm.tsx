@@ -91,7 +91,7 @@ export function ProfileForm({ profile }: { profile: UserProfile }) {
             {/* SECTION 1: Personal Information */}
             <div className="space-y-6">
               <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
-                <User className="h-6 w-6 text-red-600" />
+                <User className="h-6 w-6 text-secondary-color" />
                 <h3 className="text-2xl font-extrabold text-primary-color">
                   ព័ត៌មានផ្ទាល់ខ្លួន
                 </h3>
@@ -104,14 +104,14 @@ export function ProfileForm({ profile }: { profile: UserProfile }) {
                 <div className="space-y-2">
                   <Label htmlFor="firstName" className="text-lg font-bold text-primary-color flex items-center gap-1.5 min-h-[28px]">
                     <span>នាមខ្លួន (First Name)</span>
-                    <span className="text-red-600">*</span>
+                    <span className="text-secondary-color">*</span>
                   </Label>
                   <Input
                     id="firstName"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     className="h-14 rounded-2xl text-lg text-primary-color bg-slate-50 dark:bg-slate-950 border-2 border-slate-200 dark:border-slate-800 focus:border-yellow-400 focus:ring-yellow-400 transition-all duration-300"
-                    placeholder="ឧ. សុវណ្ណនី"
+                    placeholder="ឧ. សុវណ្ណី"
                   />
                 </div>
 
@@ -119,7 +119,7 @@ export function ProfileForm({ profile }: { profile: UserProfile }) {
                 <div className="space-y-2">
                   <Label htmlFor="lastName" className="text-lg font-bold text-primary-color flex items-center gap-1.5 min-h-[28px]">
                     <span>នាមត្រកូល (Last Name)</span>
-                    <span className="text-red-600">*</span>
+                    <span className="text-secondary-color">*</span>
                   </Label>
                   <Input
                     id="lastName"
@@ -231,7 +231,7 @@ export function ProfileForm({ profile }: { profile: UserProfile }) {
                 <div className="space-y-2">
                   <Label htmlFor="nationalId" className="text-lg font-bold text-primary-color flex items-center gap-2 min-h-[28px]">
                     <ShieldCheck className="h-5 w-5 text-red-600" />
-                    <span>អត្តសញ្ញាណប័ណ្ណ / លិខិតឆ្លងដែន</span>
+                    <span>អត្តសញ្ញាណប័ណ្ណ </span>
                   </Label>
                   <Input
                     id="nationalId"
@@ -249,7 +249,7 @@ export function ProfileForm({ profile }: { profile: UserProfile }) {
               
               <Button
                 type="submit"
-                className="flex-1 h-14 rounded-2xl text-lg font-bold text-white bg-red-600 hover:bg-yellow-400 hover:text-slate-950 shadow-md transition-all duration-300 gap-2.5 border border-red-500/40"
+                className="flex-1 h-14 rounded-2xl text-lg font-bold bg-secondary-color hover:bg-secondary-color/50 text-primary-color shadow-md transition-all duration-300 gap-2.5 border border-red-500/40"
               >
                 <Save className="h-6 w-6" />
                 <span>រក្សាទុកព័ត៌មាន</span>

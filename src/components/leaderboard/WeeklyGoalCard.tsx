@@ -30,7 +30,7 @@ export function WeeklyGoalCard({
         </div>
 
         {/* Counter Badge */}
-        <span className="text-base font-extrabold text-red-600 bg-red-50 dark:bg-red-950/50 px-3.5 py-1.5 rounded-full border border-red-200/50 dark:border-red-800/50">
+        <span className="text-lg font-extrabold text-secondary-color bg-red-50 dark:bg-red-950/50 px-8 py-1.5 rounded-full border border-red-200/50 dark:border-red-800/50">
           {completedCount} / {totalCount} ថ្ងៃ
         </span>
       </CardHeader>
@@ -40,11 +40,11 @@ export function WeeklyGoalCard({
         <div className="space-y-2">
           <div className="flex justify-between items-center text-lg font-bold text-primary-color">
             <span className="opacity-80">លទ្ធផលសម្រេចបាន</span>
-            <span className="text-red-600 font-extrabold">{progressPercentage}%</span>
+            <span className="text-secondary-color font-extrabold">{progressPercentage}%</span>
           </div>
           <div className="w-full bg-slate-100 dark:bg-slate-800 h-3.5 rounded-full overflow-hidden p-0.5 border border-slate-200/60 dark:border-slate-700/60">
             <div
-              className="bg-yellow-400 h-full rounded-full transition-all duration-500"
+              className="bg-init-color h-full rounded-full transition-all duration-500"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
@@ -61,9 +61,9 @@ export function WeeklyGoalCard({
                 <div
                   className={`h-11 w-11 rounded-2xl flex items-center justify-center text-lg font-extrabold transition-all duration-300 shadow-sm ${
                     isCompleted
-                      ? "bg-yellow-400 text-primary-color border-2 border-yellow-300 scale-105"
+                      ? "bg-init-color text-primary-color border-2 border-init-color scale-105"
                       : isToday
-                      ? "bg-red-600 text-white ring-4 ring-red-100 dark:ring-red-950 scale-110"
+                      ? "bg-secondary-color text-white ring-4 ring-red-100 dark:ring-red-950 scale-110"
                       : "bg-slate-100 text-primary-color opacity-50 dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700/50"
                   }`}
                 >
@@ -77,7 +77,7 @@ export function WeeklyGoalCard({
                 <span
                   className={`text-base font-bold transition-colors ${
                     isToday
-                      ? "text-red-600 font-black"
+                      ? "text-seccondary-color font-black"
                       : "text-primary-color opacity-70"
                   }`}
                 >

@@ -64,7 +64,7 @@ export default function Certificate() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg font-semibold flex items-center gap-2 text-primary-color">
+          <CardTitle className="text-2xl font-semibold flex items-center gap-2 text-primary-color">
             <span className="h-6 w-6 rounded-full bg-primary-color/20 flex items-center justify-center">
               <Lock className="h-3.5 w-3.5 text-primary-color" />
             </span>

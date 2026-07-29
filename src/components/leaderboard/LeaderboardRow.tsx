@@ -12,7 +12,7 @@ export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
     <div
       className={`flex items-center justify-between p-4 my-1.5 rounded-2xl transition-all duration-300 border ${
         entry.isCurrentUser
-          ? "bg-yellow-400/20 border-yellow-400/60 shadow-md"
+          ? "bg-init-color/10 border-init-color/60 shadow-md"
           : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60"
       }`}
     >
@@ -35,7 +35,7 @@ export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
       <div className="flex items-center gap-4 flex-1 min-w-0 ml-2">
         <Avatar className="h-12 w-12 border-2 border-slate-200 dark:border-slate-700 shrink-0">
           <AvatarImage src={entry.avatarUrl} alt={entry.name} />
-          <AvatarFallback className="bg-yellow-400/20 text-red-600 text-lg font-extrabold">
+          <AvatarFallback className="bg-init-color/20 text-secondary-color text-lg font-extrabold">
             {entry.name?.[0] || "U"}
           </AvatarFallback>
         </Avatar>
@@ -44,7 +44,7 @@ export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
           <p className="text-lg font-bold text-primary-color truncate leading-tight">
             {entry.name}
             {entry.isCurrentUser && (
-              <span className="ml-2 text-sm font-extrabold text-red-600 bg-red-100 dark:bg-red-950/50 px-2.5 py-0.5 rounded-full inline-block">
+              <span className="ml-2 text-lg font-extrabold text-secondary-color bg-red-100 dark:bg-red-950/50 px-3 py-2 rounded-full inline-block">
                 អ្នក
               </span>
             )}

@@ -28,10 +28,10 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
 
         <a
           href="#"
-          className="text-lg font-bold text-red-600 hover:text-yellow-500 hover:underline transition-colors duration-200 flex items-center gap-1"
+          className="text-lg font-bold text-secondary-color hover:text-secondary-color hover:underline transition-colors duration-200 flex items-center gap-1"
         >
           <span>មើលទាំងអស់</span>
-          <Sparkles size={18} className="inline-block" />
+          
         </a>
       </CardHeader>
 
@@ -50,9 +50,9 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
               {p.rank}
             </span>
             {/* Avatar */}
-            <Avatar className="h-11 w-11 border-2 border-yellow-400/60 shrink-0">
+            <Avatar className="h-11 w-11  border-slate-100 dark:border-slate-700">
               <AvatarImage src={p.avatarUrl} alt={p.name} />
-              <AvatarFallback className="bg-yellow-400/20 text-red-600 text-lg font-extrabold">
+              <AvatarFallback className="bg-init-color/20 text-secondary-color text-lg font-extrabold">
                 {p.name?.[0] || "U"}
               </AvatarFallback>
             </Avatar>
@@ -65,7 +65,7 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
             </div>
 
             {/* XP Badge */}
-            <span className="text-lg font-extrabold text-primary-color bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 px-3 py-1 rounded-xl shrink-0 shadow-sm">
+            <span className="text-lg font-extrabold text-primary-color bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 px-3 py-1 rounded-xl shrink-0 ">
               {p.xp.toLocaleString()} <span className="text-red-600 text-base font-bold">XP</span>
             </span>
           </div>

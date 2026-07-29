@@ -12,7 +12,7 @@ export function InProgressCertificateCard({
   certificate: InProgressCertificate;
 }) {
   return (
-    <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-100 dark:border-slate-800 shadow-xl bg-white dark:bg-slate-900 transition-all duration-300 hover:shadow-2xl hover:-translate-y-0.5 group">
+    <Card className="relative overflow-hidden rounded-3xl  border-slate-100 dark:border-slate-800  bg-white dark:bg-slate-900 transition-all duration-300  hover:-translate-y-0.5 group">
       
       {/* Top Accent Line (Red Secondary & Yellow Accent) */}
       <div className="absolute top-0 left-0 w-full h-2 
@@ -21,7 +21,7 @@ export function InProgressCertificateCard({
       <CardContent className="flex flex-col md:flex-row items-center gap-6 p-6">
         
         {/* Thumbnail Image Container */}
-        <div className="relative shrink-0 overflow-hidden rounded-2xl border-2 border-yellow-400/40 shadow-sm">
+        <div className="relative shrink-0 overflow-hidden rounded-2xl ">
           <img
             src={certificate.thumbnailUrl}
             alt={certificate.title}
@@ -71,7 +71,7 @@ export function InProgressCertificateCard({
         {/* Action Button (Red Secondary with Yellow Hover) */}
         <Button
           size="lg"
-          className="w-full md:w-auto h-14 px-6 rounded-2xl text-lg font-bold text-white bg-primary-color hover:bg-blue-400 hover:text-slate-950 shadow-md transition-all duration-300 gap-2 shrink-0 flex items-center justify-center group/btn"
+          className="w-full md:w-auto h-14 px-6 rounded-2xl text-lg font-bold text-white bg-primary-color hover:bg-blue-400 hover:text-slate-950  transition-all duration-300 gap-2 shrink-0 flex items-center justify-center group/btn"
         >
           <PlayCircle className="h-6 w-6 transition-transform duration-300 group-hover/btn:scale-110" />
           <span>បន្តការសិក្សា</span>

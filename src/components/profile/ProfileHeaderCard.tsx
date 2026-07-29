@@ -13,7 +13,7 @@ interface ProfileHeaderCardProps {
 
 export function ProfileHeaderCard({ profile, onEditClick }: ProfileHeaderCardProps) {
   return (
-    <Card className="relative overflow-hidden rounded-3xl  border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl transition-all duration-300 hover:shadow-2xl">
+    <Card className="relative overflow-hidden rounded-3xl   bg-white dark:bg-slate-900 transition-all duration-300 hover:shadow-lg">
       
       {/* Top Accent Ribbon */}
       <div className="absolute top-0 left-0 w-full h-2 " />
@@ -50,7 +50,7 @@ export function ProfileHeaderCard({ profile, onEditClick }: ProfileHeaderCardPro
         {/* Action Button - Scrolls and focuses on #firstName */}
         <Button
           onClick={onEditClick}
-          className="w-full sm:w-auto h-14 px-6 rounded-2xl text-lg font-bold text-white bg-red-600 hover:bg-primary-color hover:text-white   shadow-md transition-all duration-300 gap-2.5 shrink-0 flex items-center justify-center border border-red-500/40 group"
+          className="w-full sm:w-auto h-14 px-6 rounded-2xl text-lg font-bold text-white bg-primary-color hover:bg-primary-color/50 hover:text-white  transition-all duration-300 gap-2.5 shrink-0 flex items-center justify-center  group"
         >
           <Edit3 className="h-5 w-5 transition-transform duration-300 group-hover:rotate-12" />
           <span>កែប្រែការផ្លាស់ប្តូរ</span>

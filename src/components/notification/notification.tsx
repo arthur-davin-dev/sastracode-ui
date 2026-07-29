@@ -125,7 +125,7 @@ export default function Notification() {
             {/* Main Title (text-2xl) */}
             <h1 className="text-2xl font-extrabold text-primary-color flex items-center gap-3">
               <div className="p-3 rounded-2xl bg-yellow-400/20 border border-yellow-400/50 flex items-center justify-center">
-                <Bell className="h-7 w-7 text-red-600" />
+                <Bell className="h-7 w-7 text-secondary-color" />
               </div>
               ការរំលឹក និងការជូនដំណឹង
             </h1>
@@ -140,7 +140,7 @@ export default function Notification() {
           <Button
             onClick={markAllAsRead}
             disabled={unreadCount === 0}
-            className="h-14 px-6 rounded-2xl text-lg font-bold text-white bg-red-600 hover:bg-yellow-400 hover:text-slate-950 shadow-md transition-all duration-300 gap-2.5 shrink-0 flex items-center justify-center border border-red-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="h-14 px-6 rounded-2xl text-lg font-bold text-white bg-secondary-color hover:bg-secondary-color/50 shadow-md transition-all duration-300 gap-2.5 shrink-0 flex items-center justify-center border border-red-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <CheckCheck className="h-6 w-6" />
             <span>សម្គាល់ថាបានអានទាំងអស់</span>

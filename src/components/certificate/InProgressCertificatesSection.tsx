@@ -13,7 +13,7 @@ export function InProgressCertificatesSection({ certificates }: InProgressCertif
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg font-semibold flex items-center gap-2 text-primary-color">
+        <CardTitle className="text-2xl font-semibold flex items-center gap-2 text-primary-color">
           ⏳ វិញ្ញាបនបត្រកំពុងដំណើរការ
         </CardTitle>
       </CardHeader>

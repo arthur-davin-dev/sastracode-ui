@@ -46,7 +46,7 @@ export function CertificateStats() {
     <section className="relative overflow-hidden rounded-3xl bg-white dark:bg-slate-900 p-8 border-2 border-slate-100 dark:border-slate-800 shadow-xl space-y-6">
       
       {/* Top Accent Gradient Ribbon (Red Secondary & Yellow Accent) */}
-      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-red-600 via-yellow-400 to-red-600" />
+      <div className="absolute top-0 left-0 w-full h-2 " />
 
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
