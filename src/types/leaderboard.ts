@@ -24,4 +24,5 @@ export interface TopPerformer {
   rank: number;
   name: string;
   xp: number;
+  avatarUrl?: string;
 }

@@ -28,7 +28,9 @@ export default function SubNavbar({
     .filter((path) => pathname.startsWith(path))
     .sort((a, b) => b.length - a.length)[0];
 
-  const current = matchedPath ? pageConfig[matchedPath] : { title: "SastraCode", icon: null };
+  const current = matchedPath
+    ? pageConfig[matchedPath]
+    : { title: "SastraCode", icon: null };
   const Icon = current.icon;
 
   useEffect(() => {
@@ -77,112 +79,133 @@ export default function SubNavbar({
   };
 
   return (
-    <div className="sticky top-0 z-50 bg-white dark:bg-slate-950 transition-colors duration-200">
-      <div className="flex items-center justify-between gap-2 px-3 sm:px-6 py-3 sm:py-4">
-        {/* Sidebar toggle (mobile) + Title */}
-        <div className="flex items-center gap-2 shrink-0 min-w-0">
+    <header className="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b-2 border-slate-100 dark:border-slate-800 transition-all duration-300 shadow-sm">
+      <div className="flex items-center justify-between gap-4 px-4 sm:px-8 py-4">
+        
+        {/* Sidebar Toggle (Mobile) + Title (Text-2xl) */}
+        <div className="flex items-center gap-3 shrink-0 min-w-0">
           <button
             onClick={onOpenSidebar}
             aria-label="Open Sidebar"
-            className="lg:hidden rounded-lg p-1.5 -ml-1.5 text-indigo-900 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-slate-800/50 transition-colors shrink-0"
+            className="lg:hidden rounded-2xl p-2.5 text-primary-color hover:bg-yellow-400/20 transition-colors shrink-0 border border-slate-200 dark:border-slate-800"
           >
-            <PanelLeft className="h-5 w-5" />
+            <PanelLeft className="h-6 w-6 text-primary-color" />
           </button>
 
-          <div className="flex items-center gap-2 text-sm sm:text-sub-title font-bold text-indigo-950 dark:text-white min-w-0">
-            {Icon && <Icon className="h-4 w-4 sm:h-5 sm:w-5 shrink-0" />}
-            <span className="truncate max-w-[100px] sm:max-w-none">{current.title}</span>
+          <div className="flex items-center gap-3 min-w-0">
+            {Icon && (
+              <div className="p-2 bg-yellow-400/20 text-yellow-600 rounded-2xl shrink-0">
+                <Icon className="h-7 w-7 text-primary-color" />
+              </div>
+            )}
+            <h1 className="text-2xl font-black text-primary-color tracking-tight truncate max-w-[160px] sm:max-w-none">
+              {current.title}
+            </h1>
           </div>
         </div>
 
-        {/* Search: desktop only */}
-        <div className="relative w-full max-w-sm mx-2 sm:mx-6 hidden md:block">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-gray-400" />
+        {/* Search Bar: Desktop Only */}
+        <div className="relative w-full max-w-md mx-4 hidden md:block">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-color opacity-50" />
           <Input
             placeholder="ស្វែងរកអ្វីមួយ..."
-            className="pl-9 bg-muted/30 dark:bg-slate-900/40 dark:text-white dark:placeholder:text-gray-400 dark:border-slate-700"
+            className="pl-12 pr-4 py-6 text-lg rounded-2xl bg-slate-100 dark:bg-slate-800 text-primary-color placeholder:text-primary-color/50 border-2 border-slate-200/60 dark:border-slate-700/60 focus-visible:ring-yellow-400 font-bold transition-all"
           />
         </div>
 
-        {/* Desktop right side */}
-        <div className="hidden md:flex items-center gap-4 shrink-0">
+        {/* Desktop Controls & User Profile */}
+        <div className="hidden md:flex items-center gap-5 shrink-0">
+          
+          {/* Theme Toggle Button */}
           <button
             onClick={toggleTheme}
             aria-label="Toggle Theme"
-            className="rounded-full p-1.5 text-indigo-900 hover:bg-gray-100/50 dark:text-gray-300 dark:hover:bg-slate-800/50 transition-colors"
+            className="rounded-2xl p-3 text-primary-color bg-slate-100 dark:bg-slate-800 hover:bg-yellow-400/20 transition-all border border-slate-200 dark:border-slate-700"
           >
-            {darkMode ? <SunMedium className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {darkMode ? <SunMedium className="h-6 w-6 text-yellow-400" /> : <Moon className="h-6 w-6 text-primary-color" />}
           </button>
 
-          <div className="relative">
-            <Bell className="h-5 w-5 text-indigo-900 dark:text-gray-300" />
+          {/* Notifications Indicator */}
+          <button
+            aria-label="Notifications"
+            className="relative rounded-2xl p-3 text-primary-color bg-slate-100 dark:bg-slate-800 hover:bg-yellow-400/20 transition-all border border-slate-200 dark:border-slate-700"
+          >
+            <Bell className="h-6 w-6 text-primary-color" />
             {hasUnreadNotifications && (
-              <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-500" />
+              <span className="absolute top-2 right-2 h-3 w-3 rounded-full bg-red-600 ring-2 ring-white dark:ring-slate-900 animate-pulse" />
             )}
-          </div>
+          </button>
 
-          <div className="flex items-center gap-2">
-            <span className="text-content font-medium text-indigo-950 dark:text-white">
+          {/* User Profile Info */}
+          <div className="flex items-center gap-3 pl-2 border-l-2 border-slate-200 dark:border-slate-800">
+            <Avatar className="h-11 w-11 border-2 border-yellow-400 shadow-sm">
+              <AvatarImage src={userAvatarUrl} alt={userName} />
+              <AvatarFallback className="bg-yellow-400 text-red-600 font-extrabold text-lg">
+                {userName[0]}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-lg font-extrabold text-primary-color truncate max-w-[140px]">
               {userName}
             </span>
-            <Avatar className="h-9 w-9">
-              <AvatarImage src={userAvatarUrl} />
-              <AvatarFallback>{userName[0]}</AvatarFallback>
-            </Avatar>
           </div>
         </div>
 
-        {/* Mobile right side: theme toggle + dropdown hamburger */}
-        <div className="flex md:hidden items-center gap-1.5 shrink-0">
+        {/* Mobile Right Controls */}
+        <div className="flex md:hidden items-center gap-2 shrink-0">
           <button
             onClick={toggleTheme}
             aria-label="Toggle Theme"
-            className="rounded-full p-1.5 text-indigo-900 hover:bg-gray-100/50 dark:text-gray-300 dark:hover:bg-slate-800/50 transition-colors"
+            className="rounded-2xl p-2.5 text-primary-color bg-slate-100 dark:bg-slate-800 hover:bg-yellow-400/20 transition-all border border-slate-200 dark:border-slate-700"
           >
-            {darkMode ? <SunMedium className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {darkMode ? <SunMedium className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5 text-primary-color" />}
           </button>
 
           <button
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle Menu"
-            className="rounded-lg p-2 text-indigo-900 dark:text-gray-300 hover:bg-gray-100/50 dark:hover:bg-slate-800/50 transition-colors"
+            className="rounded-2xl p-2.5  transition-all shadow-md"
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile dropdown: search, notifications, user */}
+      {/* Mobile Dropdown Panel */}
       {isOpen && (
-        <div className="md:hidden border-t border-gray-200/30 dark:border-slate-800/50 px-4 py-4 space-y-4">
+        <div className="md:hidden border-t-2 border-slate-100 dark:border-slate-800 px-6 py-5 space-y-5 bg-white dark:bg-slate-900 animate-in slide-in-from-top duration-300">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-gray-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-color opacity-50" />
             <Input
               placeholder="ស្វែងរកអ្វីមួយ..."
-              className="pl-9 bg-muted/30 dark:bg-slate-900/40 dark:text-white dark:placeholder:text-gray-400 dark:border-slate-700"
+              className="pl-12 pr-4 py-5 text-lg rounded-2xl bg-slate-100 dark:bg-slate-800 text-primary-color placeholder:text-primary-color/50 border-2 border-slate-200 dark:border-slate-700 font-bold"
             />
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Avatar className="h-9 w-9">
-                <AvatarImage src={userAvatarUrl} />
-                <AvatarFallback>{userName[0]}</AvatarFallback>
+          <div className="flex items-center justify-between pt-2">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-12 w-12 ">
+                <AvatarImage src={userAvatarUrl} alt={userName} />
+                <AvatarFallback className="bg-init-color text-secondary-color font-extrabold text-lg">
+                  {userName[0]}
+                </AvatarFallback>
               </Avatar>
-              <span className="text-content font-medium text-indigo-950 dark:text-white">
+              <span className="text-lg font-extrabold text-primary-color">
                 {userName}
               </span>
             </div>
 
-            <div className="relative">
-              <Bell className="h-5 w-5 text-indigo-900 dark:text-gray-300" />
+            <button
+              aria-label="Notifications"
+              className="relative p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
+            >
+              <Bell className="h-6 w-6 text-primary-color" />
               {hasUnreadNotifications && (
-                <span className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-red-500" />
+                <span className="absolute top-2 right-2 h-3 w-3 rounded-full bg-red-600 ring-2 ring-white dark:ring-slate-900" />
               )}
-            </div>
+            </button>
           </div>
         </div>
       )}
-    </div>
+    </header>
   );
 }

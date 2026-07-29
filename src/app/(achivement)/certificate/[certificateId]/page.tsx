@@ -116,8 +116,8 @@ export default function CertificateViewPage({
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6 space-y-6 text-slate-900 dark:text-slate-100 transition-colors duration-300">
-      {/* Top Navigation & Actions Bar */}
+    <div className="space-y-6 p-6">
+      {/* Top Header Controls */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -126,32 +126,22 @@ export default function CertificateViewPage({
       >
         <Link
           href="/certificate"
-          className="inline-flex items-center gap-1.5 text-[18px] font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+          className="flex items-center gap-1.5 text-lg font-bold text-primary-color hover:text-red-600 transition-colors w-fit"
         >
           <ChevronLeft className="h-5 w-5" /> ត្រឡប់ទៅបញ្ជីវិញ្ញាបនបត្រ
         </Link>
 
-        <div className="flex items-center gap-2.5 w-full sm:w-auto">
-          <Button
-            onClick={handleShare}
-            variant="outline"
-            className="flex-1 sm:flex-initial gap-2 text-[18px] border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
-          >
-            {copied ? (
-              <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-            ) : (
-              <Share2 className="h-4 w-4 text-slate-500 dark:text-slate-400" />
-            )}
-            {copied ? "បានចម្លង Link" : "ចែករំលែក"}
+        <div className="flex gap-3">
+          <Button className="h-12 px-5 gap-2 bg-red-600 hover:bg-red-700 text-white text-lg font-bold shadow-md rounded-2xl transition-all">
+            <Download className="h-5 w-5" /> ទាញយកជា PDF
           </Button>
-
-          <Button className="flex-1 sm:flex-initial gap-2 text-[18px] bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white shadow-xs">
-            <Download className="h-4 w-4" /> ទាញយកជា PDF
+          <Button variant="outline" className="h-12 px-5 gap-2 text-lg font-bold rounded-2xl border-2 border-slate-200 dark:border-slate-800 text-primary-color hover:bg-slate-100">
+            <Share2 className="h-5 w-5" /> ចែករំលែក
           </Button>
         </div>
       </motion.div>
 
-      {/* Grid Display Details */}
+      {/* Main Grid: Certificate Image Preview & Verification Side-by-Side */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Certificate Preview Image Panel */}
         <motion.div
@@ -167,36 +157,35 @@ export default function CertificateViewPage({
           />
         </motion.div>
 
-        {/* Verification and Skills Cards */}
-        <div className="space-y-6">
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-          >
-            <VerificationCard
-              status={certificate.status}
-              issuedDate={certificate.issuedDate}
-              verificationId={certificate.verificationId}
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-          >
-            <SkillsCard
-              skills={certificate.skills}
-              qrCodeUrl={certificate.qrCodeUrl}
-              grade={certificate.grade}
-              quizScore={certificate.quizScore}
-              studyDuration={certificate.studyDuration}
-              completionWeeks={certificate.completionWeeks}
-            />
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+        >
+          <VerificationCard
+            status={certificate.status}
+            issuedDate={certificate.issuedDate}
+            verificationId={certificate.verificationId}
+          />
+        </motion.div>
       </div>
+
+      {/* Full-Width Section for SkillsCard */}
+      <motion.div
+        className="w-full"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.3 }}
+      >
+        <SkillsCard
+          skills={certificate.skills}
+          qrCodeUrl={certificate.qrCodeUrl}
+          grade={certificate.grade}
+          quizScore={certificate.quizScore}
+          studyDuration={certificate.studyDuration}
+          completionWeeks={certificate.completionWeeks}
+        />
+      </motion.div>
     </div>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Lock } from "lucide-react";
@@ -5,18 +7,39 @@ import { CertificateRequirement } from "@/types/certificate";
 
 export function RequirementCard({ requirement }: { requirement: CertificateRequirement }) {
   return (
-    <Card className="bg-muted/30 border-dashed">
-      <CardContent className="flex items-center gap-3 p-5">
-        <div className="h-10 w-10 rounded-md bg-muted flex items-center justify-center shrink-0">
-          <Lock className="h-4 w-4 text-muted-foreground" />
+    <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-100 dark:border-slate-800 shadow-lg bg-white dark:bg-slate-900 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 group">
+      
+      {/* Top Accent Line (Red Secondary & Yellow Accent) */}
+      <div className="absolute top-0 left-0 w-full h-2 " />
+
+      <CardContent className="flex flex-col sm:flex-row items-start sm:items-center gap-5 p-6">
+        
+        {/* Icon Container */}
+        <div className="h-14 w-14 rounded-lg bg-init-color/20 border border-yellow-400/50 flex items-center justify-center shrink-0 shadow-xs">
+          <Lock className="h-7 w-7 text-secondary-color" />
         </div>
-        <div className="flex-1">
-          <p className="text-content font-bold text-indigo-950">{requirement.title}</p> {/* ← ប្តូរពី text-sm */}
-          <p className="text-xs text-muted-foreground mt-0.5 mb-2">
-            បញ្ចប់ចំនេះដឹងមូលដ្ឋាន {requirement.progressPercent}%
-          </p>
-          <Progress value={requirement.progressPercent} className="h-1 bg-gray-200 [&>div]:bg-indigo-900" />
+
+        {/* Details & Progress Content */}
+        <div className="flex-1 w-full space-y-2">
+          
+          {/* Requirement Title (text-lg & text-primary-color) */}
+          <h3 className="text-lg font-bold text-primary-color">
+            {requirement.title}
+          </h3>
+
+          {/* Progress Percent Label (text-lg & text-primary-color) */}
+          <div className="flex items-center justify-between text-lg font-medium text-primary-color opacity-80 pt-1">
+            <span>បញ្ចប់ចំណេះដឹងមូលដ្ឋាន</span>
+            <span className="font-bold text-secondary-color">{requirement.progressPercent}%</span>
+          </div>
+
+          {/* Modern Progress Bar (Gradient Fill from Yellow Accent to Red Secondary) */}
+          <Progress
+            value={requirement.progressPercent}
+            className="h-2.5 bg-slate-100 dark:bg-slate-800 [&>div]:bg-gradient-to-r [&>div]:from-primary-color [&>div]:to-blue-400 rounded-full"
+          />
         </div>
+
       </CardContent>
     </Card>
   );

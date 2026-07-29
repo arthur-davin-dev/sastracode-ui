@@ -68,13 +68,13 @@ export default function Leaderboard() {
           </div>
 
           <div className="space-y-4">
-            <div className="relative">
+            {/* <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-slate-400" />
               <Input 
                 placeholder="Search for courses, lessons, topics..." 
                 className="pl-9 dark:bg-slate-900/80 dark:border-slate-800 dark:text-white dark:placeholder:text-slate-500 transition-colors duration-300" 
               />
-            </div>
+            </div> */}
 
             <WeeklyGoalCard days={weeklyDays} completedCount={4} totalCount={5} />
             <YourStatsCard stats={userStats} />
