@@ -213,7 +213,7 @@ export default function Showcase() {
           animationDelay: '0.5s',
         }}
       >
-        <NormalCard variant="grid" text={currentT.showCase.floatCard.text1} imagePath="/assets/image/play.png" />
+        <NormalCard variant="grid" text={currentT.showCase.floatCard.text1} imagePath="/home/float-card/play.svg" />
       </div>
 
       <div
@@ -227,7 +227,7 @@ export default function Showcase() {
           animationDelay: '1s',
         }}
       >
-        <NormalCard variant="grid" text={currentT.showCase.floatCard.text3} imagePath="/assets/image/play.png" />
+        <NormalCard variant="grid" text={currentT.showCase.floatCard.text3} imagePath="/home/float-card/stars.svg" />
       </div>
 
       <div
@@ -241,7 +241,7 @@ export default function Showcase() {
           animationDelay: '0.3s',
         }}
       >
-        <NormalCard variant="grid" text={currentT.showCase.floatCard.text4} imagePath="/assets/image/play.png" />
+        <NormalCard variant="grid" text={currentT.showCase.floatCard.text4} imagePath="/home/float-card/networkData.svg" />
       </div>
 
       <div
@@ -255,7 +255,7 @@ export default function Showcase() {
           animationDelay: '0.8s',
         }}
       >
-        <NormalCard variant="grid" text={currentT.showCase.floatCard.text5} imagePath="/assets/image/play.png" />
+        <NormalCard variant="grid" text={currentT.showCase.floatCard.text5} imagePath="/home/float-card/time.svg" />
       </div>
 
       <div
@@ -388,7 +388,7 @@ export default function Showcase() {
             }}
           >
             <div className="w-full h-full flex items-center justify-center">
-              <NormalCard variant="grid" text={currentT.showCase.floatCard.text1} imagePath="/assets/image/play.png" />
+              <NormalCard variant="grid" text={currentT.showCase.floatCard.text1} imagePath="/home/float-card/play.svg" />
             </div>
           </div>
 
@@ -400,7 +400,7 @@ export default function Showcase() {
             }}
           >
             <div className="w-full h-full flex items-center justify-center">
-              <NormalCard variant="grid" text={currentT.showCase.floatCard.text3} imagePath="/assets/image/play.png" />
+              <NormalCard variant="grid" text={currentT.showCase.floatCard.text3} imagePath="/home/float-card/stars.svg" />
             </div>
           </div>
 
