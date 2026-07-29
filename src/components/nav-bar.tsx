@@ -21,6 +21,7 @@ export default function Navbar() {
         { label: "កន្លែងសាកល្បងកូដ", href: "/playground" },
 
         { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
+        { label: "លំហាត់", href: "/quiz" },
       ],
       register: "ចុះឈ្មោះ",
       langName: "ខ្មែរ",
@@ -37,6 +38,7 @@ export default function Navbar() {
         { label: "Playground", href: "/playground" },
 
         { label: "About Sastra Code", href: "/about-us" },
+        { label: "Quiz", href: "/quiz" },
       ],
       register: "Register",
       langName: "English",
@@ -87,7 +89,7 @@ export default function Navbar() {
     // Calculate maximum radius (distance to the furthest corner of the screen)
     const endRadius = Math.hypot(
       Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
+      Math.max(y, window.innerHeight - y),
     );
 
     // Trigger state change inside the view transition callback
@@ -117,7 +119,7 @@ export default function Navbar() {
           duration: 1000,
           easing: "cubic-bezier(0.4, 0, 0.2, 1)",
           pseudoElement: "::view-transition-new(root)",
-        }
+        },
       );
     });
   };
