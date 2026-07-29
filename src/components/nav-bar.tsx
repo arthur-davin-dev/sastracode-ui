@@ -16,12 +16,11 @@ export default function Navbar() {
         { label: "មេរៀន", href: "/documentation" },
         { label: "វគ្គសិក្សា", href: "/courses" },
         { label: "បញ្ជីវីដេអូ", href: "/playlists" },
-
-        // Playground
         { label: "កន្លែងសាកល្បងកូដ", href: "/playground" },
-
         { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
-        { label: "លំហាត់", href: "/quiz" },
+
+        // Quiz
+        { label: "សំណួរតេស្ត", href: "/quiz" },
       ],
       register: "ចុះឈ្មោះ",
       langName: "ខ្មែរ",
@@ -33,11 +32,10 @@ export default function Navbar() {
         { label: "Lessons", href: "/documentation" },
         { label: "Courses", href: "/courses" },
         { label: "Playlists", href: "/playlists" },
-
-        // Playground
         { label: "Playground", href: "/playground" },
-
         { label: "About Sastra Code", href: "/about-us" },
+
+        // Quiz
         { label: "Quiz", href: "/quiz" },
       ],
       register: "Register",
@@ -126,7 +124,7 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 z-50 w-full border-b border-gray-200/30 bg-white/60 dark:border-slate-800/50 dark:bg-slate-950/60 backdrop-blur-xl shadow-xs transition-colors duration-200 font-khmer">
-      <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
+      <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-4 sm:px-6">
         {/* Left: Logo */}
         <div className="flex items-center shrink-0">
           <Link href="/">
@@ -139,16 +137,25 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Center: Pill Navigation with Glass Effect */}
-        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-3 lg:gap-8 rounded-full border border-[#002455]/20 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md px-4 lg:px-8 py-2 lg:py-2.5 text-[#002455] dark:text-[#FFFFFF] shadow-xs dark:border-slate-700/50 max-w-[55%] lg:max-w-none">
-          {currentT.navItems.map((item, index) => (
-            <Link
-              key={index}
-              href={item.href}
-              className="text-[14px] lg:text-[18px] font-semibold whitespace-nowrap transition-colors hover:text-red-500"
-            >
-              {item.label}
-            </Link>
-          ))}
+        <div className="hidden md:flex flex-1 min-w-0 justify-center overflow-x-auto no-scrollbar">
+          {/*
+            Fixed width here (instead of sizing to fit content) is intentional:
+            Khmer and English labels differ in length, so if the pill sized
+            itself to content, it would grow/shrink and visibly shift position
+            every time the language toggles. A fixed width keeps the pill's
+            box stable regardless of which language is showing.
+          */}
+          <div className="flex items-center justify-center gap-2 lg:gap-5 w-full md:w-140 lg:w-180 rounded-full border border-[#002455]/20 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md px-5 lg:px-10 py-2 lg:py-2.5 text-[#002455] dark:text-[#FFFFFF] shadow-xs dark:border-slate-700/50">
+            {currentT.navItems.map((item, index) => (
+              <Link
+                key={index}
+                href={item.href}
+                className="text-[14px] lg:text-[18px] font-semibold whitespace-nowrap transition-colors hover:text-red-500"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
         </div>
 
         {/* Right Controls */}

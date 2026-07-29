@@ -2,7 +2,6 @@
 
 import { Card } from "@/components/ui/card";
 import { Code2, LayoutTemplate, Sigma, Database } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
 
 const content = {
@@ -84,41 +83,32 @@ export default function ProjectsSection() {
       </div>
 
       {/* Project cards grid */}
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={lang}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.25, ease: "easeInOut" }}
-          className="grid sm:grid-cols-2 gap-4 mb-8"
-        >
-          {t.projects.map((project) => {
-            const Icon = project.icon;
-            return (
-              <Card
-                key={project.title}
-                className="flex flex-row items-center gap-4 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/80 backdrop-blur-sm hover:shadow-md dark:hover:border-slate-700 transition-all cursor-pointer"
-              >
-                <div className="h-12 w-12 shrink-0 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 flex items-center justify-center transition-colors duration-300">
-                  <Icon className="h-5 w-5 text-indigo-800 dark:text-indigo-400" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-slate-100 transition-colors duration-300">
-                    {project.title}
-                  </h3>
-                  <p className="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
-                    {project.desc} •{" "}
-                    <span className="text-indigo-800 dark:text-indigo-400 font-medium">
-                      {project.lang}
-                    </span>
-                  </p>
-                </div>
-              </Card>
-            );
-          })}
-        </motion.div>
-      </AnimatePresence>
+      <div className="grid sm:grid-cols-2 gap-4 mb-8">
+        {t.projects.map((project) => {
+          const Icon = project.icon;
+          return (
+            <Card
+              key={project.title}
+              className="flex flex-row items-center gap-4 p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/80 backdrop-blur-sm hover:shadow-md dark:hover:border-slate-700 transition-all cursor-pointer"
+            >
+              <div className="h-12 w-12 shrink-0 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 flex items-center justify-center transition-colors duration-300">
+                <Icon className="h-5 w-5 text-indigo-800 dark:text-indigo-400" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100 transition-colors duration-300">
+                  {project.title}
+                </h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
+                  {project.desc} •{" "}
+                  <span className="text-indigo-800 dark:text-indigo-400 font-medium">
+                    {project.lang}
+                  </span>
+                </p>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
 
       {/* Community banner */}
       <div className="rounded-3xl border border-indigo-200/60 dark:border-indigo-900/50 bg-indigo-50/80 dark:bg-indigo-950/40 p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 transition-colors duration-300">
