@@ -1,29 +1,33 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link"; // 1. Imported Link component
 
 type LogoItem = {
   name: string;
-  imgSrc: string; // Now accepts full browser URLs
+  imgSrc: string; 
   positionClass: string;
+  slug: string; // 2. Added slug property for dynamic path matching
 };
 
-// Example using direct browser links from a popular dev icon CDN
 const outerLogos: LogoItem[] = [
   { 
     name: "HTML", 
     imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg", 
-    positionClass: "top-[-28px] left-1/2 -translate-x-1/2" 
+    positionClass: "top-[-28px] left-1/2 -translate-x-1/2",
+    slug: "html-elements" // Renders link path: /documentation/lessons/html-elements
   },
   { 
     name: "JS", 
     imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg", 
-    positionClass: "top-1/2 right-[-28px] -translate-y-1/2" 
+    positionClass: "top-1/2 right-[-28px] -translate-y-1/2",
+    slug: "javascript-basics" 
   },
   { 
     name: "Python", 
     imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg", 
-    positionClass: "bottom-[-28px] left-[20%]" 
+    positionClass: "bottom-[-28px] left-[20%]",
+    slug: "python-intro" 
   },
 ];
 
@@ -31,12 +35,14 @@ const innerLogos: LogoItem[] = [
   { 
     name: "Java", 
     imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg", 
-    positionClass: "top-[10%] left-[-28px]" 
+    positionClass: "top-[10%] left-[-28px]",
+    slug: "java-oop" 
   },
   { 
     name: "CSS", 
     imgSrc: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg", 
-    positionClass: "bottom-[-20px] right-[10%]" 
+    positionClass: "bottom-[-20px] right-[10%]",
+    slug: "css-flexbox" 
   },
 ];
 
@@ -57,29 +63,33 @@ export default function HeroVisual() {
       {/* Outer orbit */}
       <div className="absolute top-1/2 left-1/2 w-[110%] h-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full animate-spin-slow z-20">
         {outerLogos.map((logo) => (
-          <div
+          /* 3. Changed from <div> to <Link> */
+          <Link
             key={logo.name}
-            className={`absolute w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center p-3 animate-counter-spin ${logo.positionClass}`}
+            href={`/documentation/lessons/${logo.slug}`}
+            className={`absolute w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center p-3 animate-counter-spin ${logo.positionClass} cursor-pointer hover:scale-110 transition-transform duration-200 z-30`}
           >
             <div className="relative w-full h-full ">
               <Image
                 src={logo.imgSrc}
                 alt={`${logo.name} logo`}
                 fill
-                className=" object-cover relative w-full h-full"
-                unoptimized // Optional: Skip Next.js optimization processing for external SVGs
+                className="object-contain"
+                unoptimized 
               />
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
       {/* Inner orbit */}
-      <div className="absolute top-1/2 left-1/2 w-[85%] h-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full animate-spin-slow-reverse z-30">
+      <div className="absolute top-1/2 left-1/2 w-[85%] h-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full animate-spin-slow-reverse z-20">
         {innerLogos.map((logo) => (
-          <div
+          /* 4. Changed from <div> to <Link> */
+          <Link
             key={logo.name}
-            className={`absolute w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center p-3 animate-counter-spin-reverse ${logo.positionClass}`}
+            href={`/documentation/lessons/${logo.slug}`}
+            className={`absolute w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center p-3 animate-counter-spin-reverse ${logo.positionClass} cursor-pointer hover:scale-110 transition-transform duration-200 z-30`}
           >
             <div className="relative w-full h-full">
               <Image
@@ -87,10 +97,10 @@ export default function HeroVisual() {
                 alt={`${logo.name} logo`}
                 fill
                 className="object-contain"
-                unoptimized // Optional: Skip Next.js optimization processing for external SVGs
+                unoptimized 
               />
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

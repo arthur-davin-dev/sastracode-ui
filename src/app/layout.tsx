@@ -31,9 +31,9 @@ export default function RootLayout({
   return (
     <html lang="km" suppressHydrationWarning className={`${googleSans.variable} ${inter.variable}`}>
       <body className="min-h-screen flex flex-col">
-        <Navbar/>
+     
         {children} 
-        <Footer/>
+     
       </body>
     </html>
   );
