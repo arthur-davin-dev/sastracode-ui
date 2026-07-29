@@ -412,7 +412,7 @@ export default function Showcase() {
             }}
           >
             <div className="w-full h-full flex items-center justify-center">
-              <NormalCard variant="grid" text={currentT.showCase.floatCard.text4} imagePath="/assets/image/play.png" />
+              <NormalCard variant="grid" text={currentT.showCase.floatCard.text4} imagePath="/home/float-card/networkData.svg" />
             </div>
           </div>
 
@@ -424,7 +424,7 @@ export default function Showcase() {
             }}
           >
             <div className="w-full h-full flex items-center justify-center">
-              <NormalCard variant="grid" text={currentT.showCase.floatCard.text5} imagePath="/assets/image/play.png" />
+              <NormalCard variant="grid" text={currentT.showCase.floatCard.text5} imagePath="/home/float-card/time.svg" />
             </div>
           </div>
 
