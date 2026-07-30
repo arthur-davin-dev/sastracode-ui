@@ -57,9 +57,9 @@ export default function Banner() {
 
             <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
 
-              <button className="rounded-xl bg-[#0B2B66] dark:bg-blue-600 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-white hover:bg-blue-900 dark:hover:bg-blue-700 transition-colors">
+              <a href="/register" className="rounded-xl bg-[#0B2B66] dark:bg-blue-600 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-white hover:bg-blue-900 dark:hover:bg-blue-700 transition-colors">
                 {currentT.banner.start}
-              </button>
+              </a>
 
               <button className="rounded-xl border border-gray-300 dark:border-gray-600 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                 {"</>"} {currentT.banner.explore}

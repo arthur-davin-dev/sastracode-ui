@@ -8,19 +8,24 @@ import Showcase from '@/components/home/show-case/Showcase'
 import SupportTeam from '@/components/home/support-team/SupportTeam'
 import TechStackSection from '@/components/home/technology-stack/TechStackSection'
 import HeroCharacter from '@/components/home/show-case/HeroCharacter'
+import WavyStack from '@/components/home/technology-stack/WavyStack'
+import InteractiveGrid from '@/components/home/interactive-grid/InteractiveGrid'
 
 export default function page() {
   return (
     <div className="dark:bg-gray-900">
-      <HeroCharacter />
+      
       <Banner />
+      <InteractiveGrid />
+      <HeroCharacter />
       {/* <Showcase /> */}
       {/* <InteractiveDoc /> */}
       <CoreFeatures />
-      {/* <TechStackSection /> */}
+      <TechStackSection />
       {/* <FeatureSection /> */}
       {/* <Rewards /> */}
-      {/* <SupportTeam /> */}
+      <SupportTeam />
+      {/* <WavyStack /> */}
     </div>
   )
 }
