@@ -1,24 +1,9 @@
-import React from 'react'
-import Banner from '@/components/home/banner/Banner'
-import CoreFeatures from '@/components/home/core-feature/CoreFeature'
-import InteractiveDoc from '@/components/home/interactive-doc/InteractiveDoc'
-import FeatureSection from '@/components/home/results-and-rewards/FeatureSection'
-import Rewards from '@/components/home/results-and-rewards/Rewards'
-import Showcase from '@/components/home/show-case/Showcase'
-import SupportTeam from '@/components/home/support-team/SupportTeam'
-import TechStackSection from '@/components/home/technology-stack/TechStackSection'
-
-export default function page() {
+export default function PlaylistDetailPage() {
   return (
-    <div>
-      <Banner />
-      <Showcase />
-      <InteractiveDoc />
-      <CoreFeatures />
-      <TechStackSection />
-      <FeatureSection />
-      <Rewards />
-      <SupportTeam />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+      <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+        Playlist Detail — Coming Soon
+      </h1>
     </div>
-  )
+  );
 }
