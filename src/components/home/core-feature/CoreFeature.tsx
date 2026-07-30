@@ -50,16 +50,16 @@ export default function CoreFeatures() {
     <section className="bg-white dark:bg-gray-900 px-6 py-10 transition-colors duration-300">
       <div className="mx-auto max-w-7xl">
         <div className="text-center">
-          <span className="inline-block rounded-full border border-blue-600/15 dark:border-blue-400/20 bg-blue-100 dark:bg-blue-950/30 px-5 py-2 font-khmer text-sm font-bold uppercase text-navy dark:text-blue-300 transition-colors duration-300">
+          <span className="inline-block rounded-full border border-blue-600/15 dark:border-blue-400/20 bg-blue-100 dark:bg-blue-950/30 px-5 py-2 font-khmer text-sm font-bold uppercase text-primary-color dark:text-blue-300 transition-colors duration-300">
             {currentT.coreFeature.badge}
           </span>
           <h2 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">
-            <span className="text-[#0d1b3e] dark:text-white">{currentT.coreFeature.headingPrefix}</span>
-            <span className="gradient-features dark:bg-gradient-to-r dark:from-purple-400 dark:to-blue-400 dark:bg-clip-text dark:text-transparent">
+            <span className="text-primary-color dark:text-white">{currentT.coreFeature.headingPrefix}</span>
+            <span className="text-secondary-color gradient-features dark:bg-gradient-to-r dark:from-purple-400 dark:to-blue-400 dark:bg-clip-text dark:text-transparent">
               {currentT.coreFeature.headingHighlight}
             </span>
           </h2>
-          <p className="mx-auto mt-4 max-w-xl font-khmer text-base leading-7 text-slate-body dark:text-gray-400 transition-colors duration-300">
+          <p className="mx-auto mt-4 max-w-xl font-khmer text-primary-color leading-7 text-slate-body dark:text-gray-400 transition-colors duration-300">
             {currentT.coreFeature.description}
           </p>
         </div>
@@ -78,10 +78,10 @@ export default function CoreFeatures() {
                 >
                   <img src={style.icon} alt="" className="size-[22px] dark:brightness-200" />
                 </div>
-                <h3 className="mt-5 text-2xl font-extrabold text-navy dark:text-white transition-colors duration-300">
+                <h3 className="mt-5 text-2xl font-extrabold text-primary-color dark:text-white transition-colors duration-300">
                   {card.title}
                 </h3>
-                <p className="mt-3 font-khmer text-base leading-6 text-slate-body dark:text-gray-400 transition-colors duration-300">
+                <p className="mt-3 font-khmer text-primary-color leading-6 text-slate-body dark:text-gray-400 transition-colors duration-300">
                   {card.description}
                 </p>
                 <a

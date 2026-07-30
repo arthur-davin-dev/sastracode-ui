@@ -15,11 +15,11 @@ export default function page() {
       <HeroCharacter />
       <Banner />
       {/* <Showcase /> */}
-      {/* <InteractiveDoc /> */}
+      <InteractiveDoc />
       <CoreFeatures />
-      {/* <TechStackSection /> */}
-      {/* <FeatureSection /> */}
-      {/* <Rewards /> */}
+      <TechStackSection />
+      <FeatureSection />
+      <Rewards />
       {/* <SupportTeam /> */}
     </div>
   )
