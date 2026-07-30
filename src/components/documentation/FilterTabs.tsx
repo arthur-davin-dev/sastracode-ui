@@ -12,7 +12,7 @@ export default function FilterTabs({ options, defaultActive, onChange }: FilterT
   const [active, setActive] = useState(defaultActive ?? options[0]);
 
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-2xl bg-muted p-1.5">
+    <div className="flex flex-wrap items-center gap-2 rounded-[16px] bg-muted p-1.5  ">
       {options.map((option) => (
         <button
           key={option}
@@ -20,9 +20,9 @@ export default function FilterTabs({ options, defaultActive, onChange }: FilterT
             setActive(option);
             onChange?.(option);
           }}
-          className={`rounded-2xl px-4 py-1.5 text-xs font-semibold transition-colors ${
+          className={`rounded-[16px] px-5 py-2 font-semibold text-[18px] max-sm:text-sm dark:text-white ${
             active === option
-              ? "bg-primary text-primary-foreground shadow-sm"
+              ? "bg-[#002455] text-primary-foreground "
               : "text-muted-foreground hover:text-foreground"
           }`}
         >

@@ -15,7 +15,6 @@ export default function Navbar() {
       navItems: [
         { label: "មេរៀន", href: "/documentation" },
         { label: "វគ្គសិក្សា", href: "/courses" },
-        { label: "បញ្ជីវីដេអូ", href: "/playlists" },
         { label: "កន្លែងសាកល្បងកូដ", href: "/playground" },
         { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
 
@@ -31,7 +30,6 @@ export default function Navbar() {
       navItems: [
         { label: "Lessons", href: "/documentation" },
         { label: "Courses", href: "/courses" },
-        { label: "Playlists", href: "/playlists" },
         { label: "Playground", href: "/playground" },
         { label: "About Sastra Code", href: "/about-us" },
 
