@@ -241,7 +241,7 @@ export const techOptions: TechOption[] = [
   { id: "html", label: "HTML", icon: "/icons/html.svg" },
 ];
 
-export const courses: Course[] = [
+export const lessons: Course[] = [
   {
     id: "html-lessons",
     title: "HTML Lessons",

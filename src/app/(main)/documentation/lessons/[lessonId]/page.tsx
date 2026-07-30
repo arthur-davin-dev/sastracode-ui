@@ -13,6 +13,7 @@ import QuickQuiz from "@/components/documentation/QuickQuiz";
 import LessonFooterNav from "@/components/documentation/LessonFooterNav";
 import { getLessonById, trackTabs } from "@/lib/data/lessions";
 import Quiz from "@/components/quiz/Quiz";
+import Backbutton from "@/components/documentation/Backbutton";
 export default async function LessonPage({
   params,
 }: {
@@ -50,9 +51,7 @@ export default async function LessonPage({
             );
           })}
         </div> */}
-        <Link href="/documentation" className="flex items-center gap-1 text-[16px] border border-gray-200 bg-white px-4 py-2 rounded-lg text-gray-500 mb-6 w-fit hover:bg-gray-50 transition-colors">
-          <ChevronLeft size={16} /> ទំព័រដើម
-        </Link>
+        <Backbutton/>
         <HeroLesson lesson={lesson} />
       
         <LearningGoals objectives={lesson.objectives} />
