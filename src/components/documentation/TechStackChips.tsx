@@ -47,7 +47,7 @@ export default function TechStackChips({ options }: TechStackChipsProps) {
               className="group flex items-center gap-2 rounded-full border border-slate-100 bg-white px-5 py-2.5 text-sm font-medium font-khmer text-slate-700 transition-all duration-200 hover:border-blue-300 hover:text-blue-700 hover:bg-slate-50/50"
             >
               {/* Dynamic Logo Replacement */}
-              <div className="relative h-7 w-7 shrink-0 transition-transform duration-200 group-hover:scale-110">
+              <div className="relative h-6 w-6 shrink-0 transition-transform duration-200 group-hover:scale-110">
                 <Image
                   src={iconUrl}
                   alt={`${option.label} logo`}

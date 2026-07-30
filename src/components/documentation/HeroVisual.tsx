@@ -13,7 +13,7 @@ export default function HeroVisual() {
           src="/images/doc-hero-image.png"
           alt="សិស្សសាស្ត្រាកូដកំពុងកាន់កុំព្យូទ័រយួរដៃ"
           fill
-          className="object-contain shadow-[0_20px_40px_rgba(30,100,200,0.15)] h-80 w-80 "
+          className="object-contain shadow-[0_20px_40px_rgba(30,100,200,0.15)]  "
           priority
         />
       </div>

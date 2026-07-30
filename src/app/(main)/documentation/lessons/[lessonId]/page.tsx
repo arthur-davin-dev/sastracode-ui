@@ -32,7 +32,7 @@ export default async function LessonPage({
       <main className="flex-1 max-w-5xl mx-auto py-5 px-4">
         
         {/* 1. HORIZONTAL TRACK NAVIGATION TABS (PLACED AT THE VERY TOP) */}
-        <div className="flex items-center gap-8 mb-8 flex-wrap px-2  border-gray-200 ">
+        {/* <div className="flex items-center gap-8 mb-8 flex-wrap px-2  border-gray-200 ">
           {trackTabs.map((tab) => {
             const isActive = tab.slug === lesson.trackSlug;
             return (
@@ -49,7 +49,7 @@ export default async function LessonPage({
               </Link>
             );
           })}
-        </div>
+        </div> */}
         <Link href="/documentation" className="flex items-center gap-1 text-[16px] border border-gray-200 bg-white px-4 py-2 rounded-lg text-gray-500 mb-6 w-fit hover:bg-gray-50 transition-colors">
           <ChevronLeft size={16} /> ទំព័រដើម
         </Link>
@@ -58,7 +58,7 @@ export default async function LessonPage({
         <LearningGoals objectives={lesson.objectives} />
         <KeyPoint summary={lesson.summary} />
         <CodeExample filename={lesson.codeFilename} code={lesson.code} />
-        <TipsSection tips={lesson.tips} />
+        {/* <TipsSection tips={lesson.tips} /> */}
         <VideoCard instructor={lesson.instructor} />
         <QuickQuiz quiz={lesson.quiz} />
         <LessonFooterNav lesson={lesson} />

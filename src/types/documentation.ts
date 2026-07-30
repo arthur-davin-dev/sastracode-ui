@@ -14,6 +14,13 @@ export interface DocsNavItem {
   icon: "home" | "book" | "folder" | "bookmark" | "help";
 }
 
+export interface InstructorProps {
+  instructor: {
+    videoTitle: string;
+    videoSubtitle: string;
+    studentsLabel: string; 
+  };
+}
 /** One entry inside a course table-of-contents group, e.g. "Variables & Data Types" */
 export interface CourseTocItem {
   id: string;

@@ -22,7 +22,7 @@ export default function HeroLesson({ lesson }: { lesson: LessonDocument }) {
             {lesson.intro}
           </p>
         </div>
-        
+        ``
         {/* Percentage Counter */}
         <div className="text-right text-sm font-semibold shrink-0">
           {lesson.percentComplete}%
