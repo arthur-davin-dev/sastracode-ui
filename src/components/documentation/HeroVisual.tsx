@@ -16,8 +16,6 @@ export default function HeroVisual() {
           alt="សិស្សសាស្ត្រាកូដកំពុងកាន់កុំព្យូទ័រយួរដៃ"
           fill
           className="object-contain"
-          priority
-          sizes="(max-w-7xl) 400px, 384px" 
         />
       </div>
 

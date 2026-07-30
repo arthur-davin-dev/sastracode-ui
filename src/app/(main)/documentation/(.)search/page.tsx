@@ -2,7 +2,7 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Search } from "lucide-react";
 import FilterTabs from "@/components/documentation/FilterTabs";
 import SearchResultCard from "@/components/documentation/SearchResultCard";
@@ -13,7 +13,6 @@ export default function SearchDocsModal() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
-  // 1. Initialize local state to track input changes instantly
   const initialQuery = searchParams.get("q") ?? "";
   const [inputValue, setInputValue] = useState(initialQuery);
 
@@ -28,6 +27,39 @@ export default function SearchDocsModal() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  // FIXED: Added initialization for URLSearchParams here
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      const params = new URLSearchParams(window.location.search);
+      
+      if (inputValue.trim()) {
+        params.set("q", inputValue);
+      } else {
+        params.delete("q");
+      }
+      
+      router.replace(`?${params.toString()}`, { scroll: false });
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [inputValue, router]);
+
+  // FIXED: Safer filtering without breaking on missing schema types
+  const filteredResults = useMemo(() => {
+    const query = inputValue.toLowerCase().trim();
+    if (!query) return [];
+
+    return searchResults.filter((result) => {
+      const matchTitle = result.title?.toLowerCase().includes(query);
+      const matchDescription = result.description?.toLowerCase().includes(query);
+      
+      // Using an optional fallback check in case 'content' isn't explicitly defined in your data types
+      const matchContent = (result as any).content?.toLowerCase().includes(query);
+
+      return matchTitle || matchDescription || matchContent;
+    });
+  }, [inputValue]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-[10vh] p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-200">
@@ -46,44 +78,44 @@ export default function SearchDocsModal() {
 
         <div className="overflow-y-auto p-6 pt-1 space-y-6 flex flex-col gap-1">
           
-          {/* Custom Form Input with onChange */}
-          <form 
-            onSubmit={(e) => e.preventDefault()} 
-            className="relative w-full transition-all duration-300 ease-out focus-within:scale-[1.01] focus-within:drop-shadow-sm"
-          >
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground transition-transform duration-300 ease-out font-semibold group-focus-within:scale-110" />
+          <form onSubmit={(e) => e.preventDefault()} className="relative w-full">
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
               name="q"
               value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)} // Update state on every keystroke
+              onChange={(e) => setInputValue(e.target.value)}
               placeholder="ស្វែងរកមេរៀន..."
               autoFocus
-              className="w-full rounded-[16px] border border-border bg-card py-3 pl-11 pr-4 text-[18px] outline-none placeholder:text-muted-foreground transition-all duration-300 focus:border-[#002455] focus:ring-1 focus:ring-[#002455] focus:bg-background"
+              className="w-full rounded-[16px] border border-border bg-card py-3 pl-11 pr-4 text-[18px] outline-none transition-all focus:border-[#002455] focus:ring-1 focus:ring-[#002455]"
             />
           </form>
 
-          {/* 2. Conditional Rendering: Only display if text has been entered */}
           {inputValue.trim().length > 0 ? (
-            <div className="space-y-6 flex flex-col gap-1 animate-in fade-in duration-200">
+            <div className="space-y-6 flex flex-col gap-1">
               <FilterTabs options={["កម្រិតមូលដ្ឋាន", "កម្រិតមធ្យម", "កម្រិតខ្ពស់"]} />
 
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <p className="text-[18px] text-muted-foreground">
-                  រកឃើញលទ្ធផល <span className="font-semibold text-foreground">24</span> សម្រាប់{" "}
+                  រកឃើញលទ្ធផល <span className="font-semibold text-foreground">{filteredResults.length}</span> សម្រាប់{" "}
                   <span className="font-semibold text-primary">&ldquo;{inputValue}&rdquo;</span>
                 </p>
                 <SortDropdown />
               </div>
 
-              <div className="flex flex-col gap-4 pb-2">
-                {searchResults.map((result) => (
-                  <SearchResultCard key={result.id} result={result} />
-                ))}
-              </div>
+              {filteredResults.length > 0 ? (
+                <div className="flex flex-col gap-4 pb-2">
+                  {filteredResults.map((result) => (
+                    <SearchResultCard key={result.id} result={result} />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+                  <p className="text-sm font-khmer text-destructive">មិនមានលទ្ធផលស្វែងរកទេ!</p>
+                </div>
+              )}
             </div>
           ) : (
-            // Optional: Replicates a clean empty state helper UI when no text is provided
             <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
               <p className="text-sm font-khmer">សូមបញ្ចូលពាក្យគន្លឹះដើម្បីស្វែងរកមេរៀន...</p>
             </div>

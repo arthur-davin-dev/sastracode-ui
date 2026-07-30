@@ -7,15 +7,10 @@ import { lessons, currentProgress, forumPosts, promoBanner } from "@/lib/data/co
 
 export default function DocumentationHomePage() {
   
-  // 1. FILTER: Grab courses tagged or sorted as "Latest" (e.g., sorting by recent or grabbing last 3)
   const latestCourses = lessons.slice(0, 3); 
 
-  // 2. FILTER: Grab courses that fit "Recommended" (e.g., matching user preferences or featured flags)
-  // If you don't have a flag yet, you can use .filter(c => c.isRecommended) or slice a different segment
   const recommendedCourses = lessons.slice(1, 4); 
 
-  // 3. FILTER: Grab courses that are "Popular" (e.g., highest views or enrollment counts)
-  // Example: lessons.filter(c => c.isPopular) or sorting them by an arbitrary value
   const popularCourses = [...lessons].reverse().slice(0, 3);
 
   return (

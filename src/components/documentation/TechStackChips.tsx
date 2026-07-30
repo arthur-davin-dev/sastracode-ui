@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { TechOption } from "@/types/course";
 
@@ -24,30 +23,20 @@ export default function TechStackChips({ options }: TechStackChipsProps) {
     <ul className="flex flex-wrap items-center gap-3">
       {options.map((option) => {
         const iconUrl = getIconUrl(option.label);
-        const cleanLabel = option.label.toLowerCase().trim();
-
-        const lessonIdMap: Record<string, string> = {
-          "html": "html-elements",       // Maps "html" -> /lessons/html-elements
-          "html elements": "html-elements",
-          "html tables": "html-tables",
-          "css": "css-flexbox",
-          "java": "java-oop",
-          "python": "python-intro",
-          "javascript": "javascript-basics",
-          "js": "javascript-basics"
-        };
-
-        // If the label matches a shortcut in the dictionary, use it. Otherwise, fall back to the formatted label.
-        const targetSlug = lessonIdMap[cleanLabel] || cleanLabel.replace(/\s+/g, "-");
 
         return (
           <li key={option.id}>
-            <Link
-              href={`/documentation/lessons/${targetSlug}`}
-              className="group flex items-center gap-2 rounded-full border border-slate-100 bg-white px-5 py-2.5 text-sm font-medium font-khmer text-slate-700 transition-all duration-200 hover:border-blue-300 hover:text-blue-700 hover:bg-slate-50/50"
+            {/* 
+              STATIC HOVER CHIP: 
+              - Uses standard `div` (not clickable)
+              - Has `cursor-default` so no hand pointer appears.
+              - Uses `group`, `hover`, and `transition` for the animations.
+            */}
+            <div
+              className="group flex items-center gap-2 rounded-full border border-slate-100 bg-white px-5 py-2.5 text-sm font-medium font-khmer text-slate-700  cursor-default transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md hover:border-blue-300 hover:text-blue-700"
             >
-              {/* Dynamic Logo Replacement */}
-              <div className="relative h-6 w-6 shrink-0 transition-transform duration-200 group-hover:scale-110">
+              {/* Logo container pulses slightly on group hover */}
+              <div className="relative h-6 w-6 shrink-0 transition-transform duration-300 ease-out group-hover:scale-110">
                 <Image
                   src={iconUrl}
                   alt={`${option.label} logo`}
@@ -58,7 +47,7 @@ export default function TechStackChips({ options }: TechStackChipsProps) {
               </div>
               
               <span className="text-[16px]">{option.label}</span>
-            </Link>
+            </div>
           </li>
         );
       })}
