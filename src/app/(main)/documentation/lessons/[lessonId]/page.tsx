@@ -12,7 +12,7 @@ import VideoCard from "@/components/documentation/VideoCard";
 import QuickQuiz from "@/components/documentation/QuickQuiz";
 import LessonFooterNav from "@/components/documentation/LessonFooterNav";
 import { getLessonById, trackTabs } from "@/lib/data/lessions";
-
+import Quiz from "@/components/quiz/Quiz";
 export default async function LessonPage({
   params,
 }: {
@@ -63,7 +63,6 @@ export default async function LessonPage({
         <QuickQuiz quiz={lesson.quiz} />
         <LessonFooterNav lesson={lesson} />
       </main>
-
       <DocsToc anchors={lesson.pageAnchors} />
     </div>
   );
