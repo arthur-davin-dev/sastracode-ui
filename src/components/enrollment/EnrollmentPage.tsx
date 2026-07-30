@@ -17,7 +17,7 @@ export default function EnrollmentPage({ course, enrollmentHistory }: Enrollment
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
           <div className="space-y-6">
             <EnrollmentHeader course={course} />
-            <WhatYoullGet course={course} />
+            <WhatYoullGet />
             <EnrollmentHistory items={enrollmentHistory} />
           </div>
 

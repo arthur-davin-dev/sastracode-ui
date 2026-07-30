@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { BookOpen, Clock, ShieldCheck } from "lucide-react";
 import { Course } from "@/lib/course/courses";
+import Link from "next/link";
 
 interface PurchaseCardProps {
   course: Course;
@@ -21,9 +22,12 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
       </div>
 
       <div className="space-y-3">
-        <Button className="w-full rounded-lg bg-primary-color py-5 text-sm font-semibold text-white hover:bg-primary-color/90">
+        <Link
+          href={`/courses/${course.id}/enroll`}
+          className="flex w-full items-center justify-center rounded-lg bg-primary-color py-3 text-sm font-semibold text-white transition hover:bg-primary-color/90"
+        >
           ចុះឈ្មោះឥឡូវនេះ
-        </Button>
+        </Link>
         <Button
           variant="outline"
           className="w-full rounded-lg border-blue-100 bg-blue-50 py-5 text-sm font-semibold text-primary-color hover:bg-blue-100 font-(family-name:--font-sans)"

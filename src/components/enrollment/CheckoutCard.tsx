@@ -39,10 +39,13 @@ export function CheckoutCard({ course }: CheckoutCardProps) {
         </button>
       </div>
 
-      <button className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-color py-3 text-sm font-semibold text-white transition hover:bg-primary-color/90">
+      <Link
+        href={`/courses/${course.id}/enroll`}
+        className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-color py-3 text-sm font-semibold text-white transition hover:bg-primary-color/90"
+      >
         <Lock className="h-3.5 w-3.5" />
-        Confirm Enrollment
-      </button>
+        បញ្ជាក់ការចុះឈ្មោះ
+      </Link>
 
       <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-gray-400 font-(family-name:--font-sans)">
         <Award className="h-3.5 w-3.5" />
@@ -62,15 +65,15 @@ export function CheckoutCard({ course }: CheckoutCardProps) {
         </div>
         <div className="flex items-center gap-2.5 text-sm text-gray-600 font-(family-name:--font-sans)">
           <Award className="h-4 w-4 text-gray-400" />
-          Certificate of Completion
+       វិញ្ញាបនបត្របញ្ជាក់ការបញ្ចប់
         </div>
         <div className="flex items-center gap-2.5 text-sm text-gray-600 font-(family-name:--font-sans)">
           <Monitor className="h-4 w-4 text-gray-400" />
-          Access on Mobile & Desktop
+        អាចប្រើប្រាស់បាននៅលើទូរស័ព្ទ និងកុំព្យូទ័រ
         </div>
         <div className="flex items-center gap-2.5 text-sm text-gray-600 font-(family-name:--font-sans)">
           <InfinityIcon className="h-4 w-4 text-gray-400" />
-          Lifetime Access
+          ការចូលប្រើប្រាស់បានពេញមួយជីវិត
         </div>
       </div>
 

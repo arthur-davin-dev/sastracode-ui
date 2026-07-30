@@ -7,8 +7,8 @@ interface EnrollmentHeaderProps {
 }
 
 const defaultInstructor = {
-  name: "Sokchea Eng",
-  avatar: "/assets/images/instructor-sokchea.png",
+  name: "Chhay Davin",
+  avatar: "/assets/images/Davin.DNG",
   tags: ["Premium Access", "Intermediate Level"],
 };
 
