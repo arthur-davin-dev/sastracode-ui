@@ -9,7 +9,6 @@ import { Course } from "@/lib/course/courses";
 interface CourseCardProps {
   course: Course;
 }
-
 export function CourseCard({ course }: CourseCardProps) {
   const isFree = Number(course.id) % 2 === 1;
   const buttonLabel = isFree ? "ឥតគិតថ្លៃ" : "ថ្នាក់បង់ថ្លៃ";
@@ -22,7 +21,7 @@ export function CourseCard({ course }: CourseCardProps) {
       href={`/courses/${course.id}`}
       className="group block w-full overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md"
     >
-      <div className="relative h-[150px] w-full">
+      <div className="relative h-37.5 w-full ">
         <Image
           src={course.image}
           alt={course.title}

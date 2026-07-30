@@ -36,7 +36,7 @@ export default function NextStepsCard() {
       <div className="space-y-5">
         {steps.map((step, idx) => (
           <div key={idx} className="flex gap-4 items-start">
-            <div className="flex-shrink-0 p-2.5 bg-blue-50 dark:bg-blue-950/40 rounded-xl mt-0.5">
+            <div className="shrink-0 p-2.5 bg-blue-50 dark:bg-blue-950/40 rounded-xl mt-0.5">
               {step.icon}
             </div>
             <div className="space-y-0.5">

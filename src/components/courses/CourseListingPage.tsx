@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { SearchBar } from "./SearchBar";
 import { CategoryFilter } from "./CategoryFilter";
 import { CourseGrid } from "./CourseGrid";
-import { Course } from "./Types";
+import { Course } from "@/lib/course/courses";
 
 const categories = [
   "ទាំងអស់",
@@ -109,6 +109,25 @@ const courses: Course[] = [
   },
 ];
 
+// Static homepage sections. Change the titles, links, or course IDs here.
+const courseSections = [
+  {
+    title: "ចុងក្រោយបំផុត",
+    seeAllHref: "/documentation/lessons?category=latest",
+    courseIds: ["1", "2", "3"],
+  },
+  {
+    title: "ណែនាំសម្រាប់អ្នក",
+    seeAllHref: "/documentation/lessons?category=recommended",
+    courseIds: ["4", "5", "6"],
+  },
+  {
+    title: "មេរៀនពេញនិយម",
+    seeAllHref: "/documentation/lessons?category=popular",
+    courseIds: ["7", "8", "9"],
+  },
+] as const;
+
 export default function CourseListingPage() {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState(categories[0]);
@@ -142,8 +161,22 @@ export default function CourseListingPage() {
           />
         </div>
 
-        {/* Course grid */}
-        <CourseGrid courses={filteredCourses} />
+        {search.trim() || activeCategory !== categories[0] ? (
+          <CourseGrid title="លទ្ធផលស្វែងរក" courses={filteredCourses} />
+        ) : (
+          <div className="space-y-12">
+            {courseSections.map((section) => (
+              <CourseGrid
+                key={section.title}
+                title={section.title}
+                courses={section.courseIds
+                  .map((id) => courses.find((course) => course.id === id))
+                  .filter((course): course is Course => Boolean(course))}
+                seeAllHref={section.seeAllHref}
+              />
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );
