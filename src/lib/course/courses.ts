@@ -5,6 +5,8 @@ export interface Lesson {
   title: string;
   duration: string;
   locked: boolean;
+  /** Public path (for example, /videos/intro.mp4) or an absolute video URL. */
+  videoUrl?: string;
 }
 
 export interface Chapter {

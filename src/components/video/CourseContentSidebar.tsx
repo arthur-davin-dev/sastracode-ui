@@ -109,8 +109,8 @@ export function CourseContentSidebar({ sections, totalLessons, courseId }: Cours
   return (
     <div className="rounded-2xl border border-gray-100 bg-white shadow-sm">
       <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
-        <h2 className="text-base font-semibold text-gray-900 font-(family-name:--font-sans)">
-          Course Content
+        <h2 className="text-2xl font-semibold text-gray-900 font-(family-name:--font-sans)">
+          ខ្លឹមសារវគ្គសិក្សា
         </h2>
         <span className="text-xs text-gray-400">{totalLessons} Lessons</span>
       </div>

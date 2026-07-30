@@ -2,7 +2,7 @@ import { DetailBanner } from "./DetailBanner";
 import { InstructorBar } from "./InstroctorBar";
 import { WhatYouLearn } from "./WhatYouLearn";
 import { CurriculumSection } from "./CurriculumSection";
-import { PurchaseCard } from "./PurchaseCard";
+import { CheckoutCard } from "@/components/enrollment/CheckoutCard";
 import { RelatedCourses } from "./RelatedCourses";
 import { Course, getRelatedCourses } from "@/lib/course/courses";
 
@@ -26,7 +26,7 @@ export default async function CourseDetailPage({ course }: CourseDetailPageProps
 
           <div className="relative">
             <div className="sticky top-8">
-              <PurchaseCard course={course} />
+              <CheckoutCard course={course} />
             </div>
           </div>
         </div>

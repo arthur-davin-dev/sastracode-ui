@@ -9,8 +9,9 @@ interface CheckoutCardProps {
 }
 
 export function CheckoutCard({ course }: CheckoutCardProps) {
-  const isFree = !course.price || course.price === 0;
-  const hasDiscount = course.originalPrice && course.originalPrice > (course.price ?? 0);
+  const displayPrice = course.price && course.price > 0 ? course.price : 12;
+  const hasDiscount =
+    course.originalPrice && course.originalPrice > displayPrice;
 
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm mt-15">
@@ -20,7 +21,7 @@ export function CheckoutCard({ course }: CheckoutCardProps) {
             <p className="text-sm text-gray-400 line-through">${course.originalPrice}.00</p>
           )}
           <p className="text-3xl font-bold text-gray-900">
-            {isFree ? "Free" : `$${course.price}.00`}
+            ${displayPrice}.00
           </p>
         </div>
         <button
