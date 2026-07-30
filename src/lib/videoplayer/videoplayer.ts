@@ -8,7 +8,10 @@ export const defaultSections: CourseSection[] = [
     title: "Section 1: HTML Basics",
     lessons: [
       { id: "l1", title: "1. Introduction to HTML", duration: "12:15", status: "completed" },
-      { id: "l2", title: "2. HTML Document Structure", duration: "10:32", status: "current" },
+      { id: "l2", title: "2. Introduction to CSS", duration: "10:32", status: "upcoming" },
+      { id: "l3", title: "3. CSS Selectors", duration: "10:32", status: "upcoming" },
+      { id: "l4", title: "4. Colors and Typography", duration: "10:32", status: "upcoming" },
+      { id: "l5", title: "5. The CSS Box Model", duration: "10:32", status: "upcoming" },
     ],
   },
 ];
@@ -16,16 +19,16 @@ export const defaultSections: CourseSection[] = [
 export const comments: Comment[] = [
   {
     id: "c1",
-    authorName: "Sokchea Eng",
-    authorAvatar: "/assets/images/user-1.png",
+    authorName: "Theoun Seyha",
+    authorAvatar: "/assets/images/photo_2024-09-03_12-13-14.jpg",
     postedAt: "2 hours ago",
     content: "Great explanation! Now I understand the basic structure of HTML.",
     likeCount: 12,
   },
   {
     id: "c2",
-    authorName: "Dara Vichea",
-    authorAvatar: "/assets/images/user-2.png",
+    authorName: "Theoun Seyha",
+    authorAvatar: "/assets/images/photo_2024-09-03_12-13-14.jpg",
     postedAt: "5 hours ago",
     content: "Can you make a video about HTML attributes next?",
     likeCount: 8,

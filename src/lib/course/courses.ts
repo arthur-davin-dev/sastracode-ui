@@ -5,6 +5,8 @@ export interface Lesson {
   title: string;
   duration: string;
   locked: boolean;
+  /** Public path (for example, /videos/intro.mp4) or an absolute video URL. */
+  videoUrl?: string;
 }
 
 export interface Chapter {
@@ -14,6 +16,7 @@ export interface Chapter {
   lessonCount: number;
   totalDuration: string;
   lessons: Lesson[];
+  
 }
 
 export interface Instructor {
@@ -33,12 +36,20 @@ export interface Course {
   duration: string;
   image: string;
   href?: string;
-  price?: number; // undefined/0 = free
+  price?: number;
   learningPoints?: string[];
   instructor?: Instructor;
   curriculum?: Chapter[];
+  originalPrice?: number;
+  totalDuration?: string;
+  benefits?: Benefit[];   
 }
-
+//-------enrollment------///
+export interface Benefit {
+  icon: "video" | "download" | "certificate" | "qa" | "pace" | "devices";
+  title: string;
+  description: string;
+}
 // ---- Data ----
 
 export const categories = [
@@ -71,17 +82,17 @@ export const courses: Course[] = [
       "ស្វែងយល់ពី Grid, Flexbox និង Responsive Patterns ដើម្បីបង្កើត UI រាបស្មើ",
     lessons: 24,
     duration: "៥ម៉ោង ១០នាទី",
-    image: "/assets/images/HTML & CSS.jpg",
+    image: "/assets/images/CSS.jpg",
   },
   {
     id: "3",
-    category: "HTML",
+    category: "FRONTEND",
     title: "HTML Structure & Semantics",
     description:
       "រៀនរចនាផ្ទៃក្នុង HTML ជាមួយ Semantic Elements និង Accessibility",
     lessons: 18,
     duration: "៤ម៉ោង ២០នាទី",
-    image: "/assets/images/HTML & CSS.jpg",
+    image: "/assets/images/HTML-course.jpg",
   },
   {
     id: "4",
@@ -101,7 +112,7 @@ export const courses: Course[] = [
       "ស្នើភាសាស្វ័យប្រវត្តិកម្ម JavaScript ដើម្បីបង្កើតព្រលឹង Web អន្តរកម្ម",
     lessons: 26,
     duration: "៦ម៉ោង ៣០នាទី",
-    image: "/assets/images/javascript-banner.png",
+    image: "/assets/images/javascript-course.png",
   },
   {
     id: "6",
@@ -120,7 +131,7 @@ export const courses: Course[] = [
       "ស្វែងយល់ពី ES6+, Async/Await និង Patterns សម័យថ្មីសម្រាប់ Web Development",
     lessons: 22,
     duration: "៦ម៉ោង ៤០នាទី",
-    image: "/images/javascript-banner.png",
+    image: "/assets/images/javascript-course.png",
   },
   {
     id: "8",
@@ -130,7 +141,7 @@ export const courses: Course[] = [
       "រៀនរចនាប្រព័ន្ធ UI ដោយប្រើ Principles និង Patterns ដូចជា Atomic Design",
     lessons: 18,
     duration: "៥ម៉ោង ២០នាទី",
-    image: "/images/frontend-banner.png",
+    image: "/assets/images/design-systems-course.png",
   },
   {
     id: "9",
@@ -140,7 +151,7 @@ export const courses: Course[] = [
       "បង្កើត RESTful និង GraphQL API ដែលអាចប្រើបានឆាប់ រហ័ស និងសុវត្ថិភាព",
     lessons: 26,
     duration: "៧ម៉ោង ៣០នាទី",
-    image: "/images/backend-banner.png",
+    image: "/assets/images/api-development-course.png",
   },
 ];
 
@@ -172,4 +183,19 @@ export async function getRelatedCourses(
   );
 
   return [...sameCategory, ...fallback].slice(0, limit);
+}
+//-------enrollment------///
+export interface Benefit {
+  icon: "video" | "download" | "certificate" | "qa" | "pace" | "devices";
+  title: string;
+  description: string;
+}
+
+export interface EnrollmentHistoryItem {
+  courseId: string;
+  title: string;
+  thumbnail: string;
+  status: "completed" | "in-progress";
+  progressPercent: number;
+  
 }

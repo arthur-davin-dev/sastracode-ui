@@ -24,8 +24,8 @@ export function DiscussionSection({ comments, totalCount }: DiscussionSectionPro
 
       {/* New Comment Input */}
       <div className="mb-6 flex items-start gap-3">
-        <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-          <Image src="/assets/images/current-user.png" alt="You" fill className="object-cover" />
+        <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-gray-200">
+          <Image src="/assets/images/Davin.png" alt="You" fill className="object-cover" />
         </div>
         <div className="flex flex-1 flex-col sm:flex-row items-stretch sm:items-center gap-2">
           <input

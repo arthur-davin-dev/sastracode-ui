@@ -23,16 +23,14 @@ export function CourseCard({ course }: CourseCardProps) {
       href={`/courses/${course.id}`}
       className="group block w-full overflow-hidden rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:border-slate-700"
     >
-      {/* Thumbnail Container */}
-      <div className="relative h-[160px] w-full overflow-hidden bg-slate-100 dark:bg-slate-950">
+      <div className="relative h-[150px] w-full">
         <Image
-          src={course.image || "/assets/images/HTML & CSS.jpg"}
+          src={course.image}
           alt={course.title}
-          width={900}
-          height={600}
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          fill
+          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+          className="object-cover"
         />
-        <div className="absolute inset-0 bg-slate-950/10 dark:bg-slate-950/20 transition-opacity group-hover:opacity-0" />
       </div>
 
       {/* Content Body */}

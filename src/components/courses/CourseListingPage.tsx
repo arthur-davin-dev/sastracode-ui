@@ -57,7 +57,7 @@ const courses: Course[] = [
     description:
       "ទទួលបានប្រាក់ចំណូលសម្រាប់ Server-side development ជាមួយ Node.js និង Express",
     lessons: 32,
-    duration: "៧ម៉ោង ១០នាទី",
+    duration: "៧ម៉ោង ૧૦នាទី",
     image: "/assets/images/Nodejs.jpg",
   },
   {
@@ -68,7 +68,7 @@ const courses: Course[] = [
       "ស្នើភាសាស្វ័យប្រវត្តិកម្ម JavaScript ដើម្បីបង្កើតព្រលឹង Web អន្តរកម្ម",
     lessons: 26,
     duration: "៦ម៉ោង ៣០នាទី",
-    image: "/assets/images/Nodejs.jpg",
+    image: "/assets/images/javascript-course.png",
   },
   {
     id: "6",
@@ -87,7 +87,7 @@ const courses: Course[] = [
       "ស្វែងយល់ពី ES6+, Async/Await និង Patterns សម័យថ្មីសម្រាប់ Web Development",
     lessons: 22,
     duration: "៦ម៉ោង ៤០នាទី",
-    image: "/assets/images/Python-card.jpg",
+    image: "/assets/images/javascript-course.png",
   },
   {
     id: "8",
@@ -97,7 +97,7 @@ const courses: Course[] = [
       "រៀនរចនាប្រព័ន្ធ UI ដោយប្រើ Principles និង Patterns ដូចជា Atomic Design",
     lessons: 18,
     duration: "៥ម៉ោង ២០នាទី",
-    image: "/assets/images/DataScience-card.jpg",
+    image: "/assets/images/design-systems-course.png",
   },
   {
     id: "9",
@@ -107,7 +107,7 @@ const courses: Course[] = [
       "បង្កើត RESTful និង GraphQL API ដែលអាចប្រើបានឆាប់ រហ័ស និងសុវត្ថិភាព",
     lessons: 26,
     duration: "៧ម៉ោង ៣០នាទី",
-    image: "/assets/images/react-card.jpg",
+    image: "/assets/images/api-development-course.png",
   },
 ];
 
