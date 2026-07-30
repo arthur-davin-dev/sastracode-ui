@@ -26,7 +26,7 @@ const courses: Course[] = [
       "រៀនបង្កើត Responsive Website ជាមួយ HTML និង CSS ចាប់ពីមូលដ្ឋានដល់កម្រិតខ្ពស់",
     lessons: 28,
     duration: "៦ម៉ោង ៤២នាទី",
-    image: "/images/frontend-banner.png",
+    image: "/assets/images/HTML & CSS.jpg",
   },
   {
     id: "2",
@@ -36,7 +36,7 @@ const courses: Course[] = [
       "ស្វែងយល់ពី Grid, Flexbox និង Responsive Patterns ដើម្បីបង្កើត UI រាបស្មើ",
     lessons: 24,
     duration: "៥ម៉ោង ១០នាទី",
-    image: "/images/css-banner.png",
+    image: "/assets/images/CSS.jpg",
   },
   {
     id: "3",
@@ -46,7 +46,7 @@ const courses: Course[] = [
       "រៀនរចនាផ្ទៃក្នុង HTML ជាមួយ Semantic Elements និង Accessibility",
     lessons: 18,
     duration: "៤ម៉ោង ២០នាទី",
-    image: "/images/html-banner.png",
+    image: "/assets/images/HTML-course.jpg",
   },
   {
     id: "4",
@@ -56,7 +56,7 @@ const courses: Course[] = [
       "ទទួលបានប្រាក់ចំណូលសម្រាប់ Server-side development ជាមួយ Node.js និង Express",
     lessons: 32,
     duration: "៧ម៉ោង ૧૦នាទី",
-    image: "/images/backend-banner.png",
+    image: "/assets/images/Nodejs.jpg",
   },
   {
     id: "5",
@@ -66,7 +66,7 @@ const courses: Course[] = [
       "ស្នើភាសាស្វ័យប្រវត្តិកម្ម JavaScript ដើម្បីបង្កើតព្រលឹង Web អន្តរកម្ម",
     lessons: 26,
     duration: "៦ម៉ោង ៣០នាទី",
-    image: "/images/javascript-banner.png",
+    image: "/assets/images/javascript-course.png",
   },
   {
     id: "6",
@@ -75,7 +75,7 @@ const courses: Course[] = [
     description: "ចាប់ផ្តើម React និង Components រួមទាំង Hooks និង Routing",
     lessons: 30,
     duration: "៨ម៉ោង ១៥នាទី",
-    image: "/images/react-banner.png",
+    image: "/assets/images/react-card.jpg",
   },
   {
     id: "7",
@@ -85,7 +85,7 @@ const courses: Course[] = [
       "ស្វែងយល់ពី ES6+, Async/Await និង Patterns សម័យថ្មីសម្រាប់ Web Development",
     lessons: 22,
     duration: "៦ម៉ោង ៤០នាទី",
-    image: "/images/javascript-banner.png",
+    image: "/assets/images/javascript-course.png",
   },
   {
     id: "8",
@@ -95,7 +95,7 @@ const courses: Course[] = [
       "រៀនរចនាប្រព័ន្ធ UI ដោយប្រើ Principles និង Patterns ដូចជា Atomic Design",
     lessons: 18,
     duration: "៥ម៉ោង ២០នាទី",
-    image: "/images/frontend-banner.png",
+    image: "/assets/images/design-systems-course.png",
   },
   {
     id: "9",
@@ -105,7 +105,7 @@ const courses: Course[] = [
       "បង្កើត RESTful និង GraphQL API ដែលអាចប្រើបានឆាប់ រហ័ស និងសុវត្ថិភាព",
     lessons: 26,
     duration: "៧ម៉ោង ៣០នាទី",
-    image: "/images/backend-banner.png",
+    image: "/assets/images/api-development-course.png",
   },
 ];
 

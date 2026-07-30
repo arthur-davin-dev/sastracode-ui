@@ -15,19 +15,19 @@ const defaultChapters: Chapter[] = [
     lessons: [
       {
         id: "l1",
-        title: "មេរៀនទី ០១ — សេចក្ដីណែនាំ",
+        title: "មេរៀនទី ០១ — សេចក្ដីណែនាំអំពីគ្រឹះមូលដ្ធាន React",
         duration: "10:00",
         locked: false,
       },
       {
         id: "l2",
-        title: "មេរៀនទី ០២ — សេចក្ដីណែនាំ",
+        title: "មេរៀនទី ០២ — សេចក្ដីណែនាំអំពី Next.js",
         duration: "10:00",
         locked: true,
       },
       {
         id: "l3",
-        title: "មេរៀនទី ០៣ — សេចក្ដីណែនាំ",
+        title: "មេរៀនទី ០៣ — សេចក្ដីណែនាំណែនាំអំពី JavaScript",
         duration: "10:00",
         locked: true,
       },

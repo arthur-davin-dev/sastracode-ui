@@ -1,6 +1,13 @@
 "use client";
-
-import { Heart, Lock, BookOpen, Clock, Award, Monitor, Infinity as InfinityIcon } from "lucide-react";
+import {
+  Heart,
+  Lock,
+  BookOpen,
+  Clock,
+  Award,
+  Monitor,
+  Infinity as InfinityIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { Course } from "@/lib/course/courses";
 
@@ -18,11 +25,11 @@ export function CheckoutCard({ course }: CheckoutCardProps) {
       <div className="mb-4 flex items-start justify-between">
         <div>
           {hasDiscount && (
-            <p className="text-sm text-gray-400 line-through">${course.originalPrice}.00</p>
+            <p className="text-sm text-gray-400 line-through">
+              ${course.originalPrice}.00
+            </p>
           )}
-          <p className="text-3xl font-bold text-gray-900">
-            ${displayPrice}.00
-          </p>
+          <p className="text-3xl font-bold text-gray-900">${displayPrice}.00</p>
         </div>
         <button
           aria-label="Save to wishlist"
@@ -69,9 +76,14 @@ export function CheckoutCard({ course }: CheckoutCardProps) {
 
       <p className="mt-5 text-center text-xs leading-relaxed text-gray-400 font-(family-name:--font-sans)">
         By enrolling, you agree to our{" "}
-        <Link href="/terms" className="text-primary-color hover:underline">Terms of Service</Link>{" "}
+        <Link href="/terms" className="text-primary-color hover:underline">
+          Terms of Service
+        </Link>{" "}
         and{" "}
-        <Link href="/privacy" className="text-primary-color hover:underline">Privacy Policy</Link>.
+        <Link href="/privacy" className="text-primary-color hover:underline">
+          Privacy Policy
+        </Link>
+        .
       </p>
     </div>
   );

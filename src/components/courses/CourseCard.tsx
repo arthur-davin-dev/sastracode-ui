@@ -23,19 +23,12 @@ export function CourseCard({ course }: CourseCardProps) {
       className="group block w-full overflow-hidden rounded-xl border border-gray-200 bg-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md"
     >
       <div className="relative h-[150px] w-full">
-        {/* <Image
+        <Image
           src={course.image}
           alt={course.title}
-          width={900}
-          height={600}
-          className="relative h-full w-full object-cover"
-        /> */}
-        <Image
-          src="/assets/images/HTML & CSS.jpg"
-          alt="Student learning to code"
-          width={900}
-          height={600}
-          className="relative h-full w-full object-cover"
+          fill
+          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+          className="object-cover"
         />
       </div>
 
