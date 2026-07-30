@@ -261,7 +261,7 @@ export const lessons: Course[] = [
       "CSS ជួយឱ្យទំព័ររបស់អ្នកមានភាពស្រស់ស្អាត តាមរយៈ Colors, Layouts, Animations និង Responsive Design។",
     tag: "CSS",
     href: "/documentation/lessons/css-selectors",
-    coverImage: "/images/html.png",
+    coverImage: "/images/css.webp",
     ctaLabel: "រៀនឥឡូវ",
   },
   {
@@ -272,7 +272,7 @@ export const lessons: Course[] = [
       "រៀនភាសាសរសេរកម្មវិធីលើគេហទំព័រ JavaScript ដើម្បីបង្កើត Interaction និងមុខងារឆ្លាតវៃ។",
     tag: "JavaScript",
     href: "/documentation/lessons/js-variables",
-    coverImage: "/images/html.png",
+    coverImage: "/images/javascript.png",
     ctaLabel: "រៀនឥឡូវ",
   },
   {
@@ -293,7 +293,7 @@ export const lessons: Course[] = [
     description: "រៀនមូលដ្ឋានគ្រឹះនៃ Python ចាប់ពី Syntax រហូតដល់ Automation ។",
     tag: "Python",
     href: "/documentation/lessons/python-variables",
-    coverImage: "/images/html.png",
+    coverImage: "/images/python.jpg",
     ctaLabel: "រៀនឥឡូវ",
   },
   {
@@ -304,7 +304,7 @@ export const lessons: Course[] = [
       "រៀនពីគោលការណ៍ជាមូលដ្ឋាននៃ UI/UX ដូចជា Wireframe, Prototype និងគោលការណ៍រចនា UI ដ៏ល្អ។",
     tag: "CSS",
     href: "/documentation/lessons/css-selectors",
-    coverImage: "/images/html.png",
+    coverImage: "/images/ux-ui.webp",
     ctaLabel: "រៀនឥឡូវ",
   },
 ];
