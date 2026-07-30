@@ -40,7 +40,7 @@ export function CheckoutCard({ course }: CheckoutCardProps) {
       </div>
 
       <Link
-        href={`/courses/${course.id}/enroll`}
+        href="/success"
         className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-color py-3 text-sm font-semibold text-white transition hover:bg-primary-color/90"
       >
         <Lock className="h-3.5 w-3.5" />
