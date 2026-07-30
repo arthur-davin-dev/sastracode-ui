@@ -8,25 +8,25 @@ export default function FloatingCard() {
             <NormalCard
                 variant="grid"
                 text="ចាប់ផ្ដើម"
-                imagePath="/assets/image/play.png"
+                imagePath="/home/float-card/play.svg"
             />
 
             <NormalCard
                 variant="grid"
                 text="ស្វែងយល់"
-                imagePath="/assets/image/play.png"
+                imagePath="/home/float-card/stars.svg"
             />
 
             <NormalCard
                 variant="grid"
                 text="online"
-                imagePath="/assets/image/play.png"
+               imagePath="/home/float-card/networkData.svg"
             />
 
             <NormalCard
                 variant="grid"
                 text="រៀនគ្មានដែនកំណត់"
-                imagePath="/assets/image/play.png"
+                imagePath="/home/float-card/time.svg"
             />
 
             <NormalCard

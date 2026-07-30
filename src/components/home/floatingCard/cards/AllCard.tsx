@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Props } from "./ClassNameProps";
 import { useTranslation } from "@/hooks/useTranslations";
 
-
 type Variant = "floating" | "grid";
 type VariantProps = { variant?: Variant };
 
@@ -34,7 +33,7 @@ export function BusinessCard({ className, variant = "floating" }: Props & Varian
           lg:h-8 lg:w-8 shrink-0 overflow-hidden rounded-full border-2 border-white/20"
         >
           <Image
-            src="/profile.jpg"
+            src="/home/support-team/vuthvatana.jpg"
             alt="Profile"
             fill
             className="object-cover"
@@ -42,7 +41,7 @@ export function BusinessCard({ className, variant = "floating" }: Props & Varian
         </div>
         <div className="min-w-0">
           <p className="truncate text-[9px] sm:text-[11px] lg:text-xs text-gray-400 dark:text-gray-500">
-            M.Hossein Moradi
+            Mr. Vuth Vatana
           </p>
           <h2 className="break-words text-[9px] sm:text-[11px] lg:text-xs font-bold leading-tight text-white dark:text-gray-100">
             {currentT.showCase.floatCard.businessCard}
