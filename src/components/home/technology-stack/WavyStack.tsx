@@ -1,93 +1,104 @@
-import { Star, Mail } from "lucide-react";
+'use client';
 
-const team = [
-  { name: "Soeurt Bomnorng", email: "soeurtbomnorng3@gmail.com", offset: "up", img: "/home/support-team/seourtBomnorng.jpg" },
-  { name: "Chhay Kongkea", email: "chhaykongkea9@gmail.com", offset: "down", img: "/home/support-team/chhayKongkea.jpg" },
-  { name: "Lot Los", email: "loslot100604@gmail.com", offset: "up", img: "/home/support-team/lotLos.jpg" },
-  { name: "Vel SoThoun", email: "velsothoun@gmail.com", offset: "down", img: "/home/support-team/velSoThun.jpg" },
-  { name: "Ben Thona", email: "thonaben08@gmail.com", offset: "up", img: "/home/support-team/benThona.jpg" },
+import React from 'react';
+import { motion } from 'framer-motion';
+
+// 1. Data for the technologies (matching your first image)
+const technologies = [
+  {
+    icon: <img src="/home/technology-stack/html5-svgrepo-com.svg" alt="html" />,
+    name:"Html",
+
+  },
+  {
+    icon: <img src="/home/technology-stack/css3-svgrepo-com.svg" alt="css" />,
+    name:"CSS",
+
+  },
+  {
+    icon: <img src="/home/technology-stack/java-svgrepo-com.svg" alt="java" />,
+    name:"Java",
+
+  },
+  {
+    icon: <img src="/home/technology-stack/javascript.png" alt="javascript" />,
+    name:"Javascript",
+
+  },
+  {
+    icon: <img src="/home/technology-stack/laravel-svgrepo-com.svg" alt="laravel" />,
+    name:"Vue",
+
+  },
+  {
+    icon: <img src="/home/technology-stack/mysql-logo-svgrepo-com.svg" alt="mySql" />,
+    name:"MySql",
+    
+  },
+  {
+    icon: <img src="/home/technology-stack/python-svgrepo-com.svg" alt="python" />,
+    name:"Python",
+
+  },
+  {
+    icon: <img src="/home/technology-stack/tailwind.svg" alt="tailwind" />,
+    name:"Tailwind",
+
+  },
+  {
+    icon: <img src="/home/technology-stack/vue.svg" alt="vue" />,
+    name:"vue",
+
+  },
 ];
 
-function initials(name: string) {
-  return name
-    .split(" ")
-    .map((w) => w[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
+// Duplicate data for seamless infinite scrolling
+const marqueeItems = [...technologies, ...technologies, ...technologies];
 
 export default function WavyStack() {
   return (
-    <section className="px-6 py-20 bg-white dark:bg-gray-900">
-      <div className="max-w-5xl mx-auto text-center">
-        <h2 className="text-2xl md:text-3xl font-extrabold text-navy dark:text-white">
-          Experienced Support Team
-        </h2>
-        <div className="mt-2 flex justify-center gap-1 text-amber-400">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star key={i} className="h-4 w-4 fill-amber-400" />
-          ))}
-        </div>
+    <div className="relative w-full overflow-hidden py-2 border-y">
 
-        <div className="mt-16 relative">
-          {/* <svg
-            viewBox="0 0 800 60"
-            preserveAspectRatio="none"
-            className="hidden md:block absolute left-0 right-0 top-1/2 -translate-y-1/2 w-full h-16 text-slate-200 dark:text-slate-700"
+      {/* ========================================== */}
+      {/* THE MARQUEE STRIP                             */}
+      {/* ========================================== */}
+      <motion.div
+        className="flex gap-30 w-max"
+        animate={{
+          x: ["0%", "-33.33%"], // Slides left continuously
+        }}
+        transition={{
+          x: {
+            duration: 30, // Adjust speed (Lower = faster)
+            repeat: Infinity,
+            ease: "linear",
+          },
+        }}
+      >
+        {marqueeItems.map((item, index) => (
+          <div
+            key={`${item.name}-${index}`}
+            className="flex items-center gap-4  rounded-xl px-2 py-3 transition-all hover:scale-105 hover:shadow-md"
           >
-            <path
-              d="M0,10 C 100,60 150,60 250,10 C 350,-40 450,-40 550,10 C 650,60 700,60 800,10"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-          </svg> */}
-          <div className="hidden md:block absolute left-0 right-0 -translate-y-10 w-full h-16 text-slate-200 dark:text-slate-700">
-            <img src="/home/wavyLine.svg" alt="wavyLine" />
-          </div>
+            {/* Icon / Logo wrapper */}
+            <div
+              className="flex items-center justify-center w-10 h-10 rounded-full text-xl font-bold"
+              // style={{ backgroundColor: `${item.color}20`, color: item.color }} // 20 = 12% opacity
+            >
+              {item.icon}
+            </div>
 
-          <div className="relative grid grid-cols-2 gap-y-10 md:grid-cols-5 md:gap-y-0">
-            {team.map((member) => (
-              <div
-                key={member.name}
-                className={`flex flex-col items-center gap-15 ${member.offset === "up" ? "md:-translate-y-5" : "md:translate-y-12"
-                  }`}
-              >
-                {member.offset === "up" && (
-                  <div className="text-center order-1">
-                    <p className="text-sm font-semibold text-navy dark:text-white">{member.name}</p>
-                    <p className="mt-0.5 flex items-center justify-center gap-1 text-xs text-slate-400 dark:text-gray-400">
-                      <Mail className="h-3 w-3" /> {member.email}
-                    </p>
-                  </div>
-                )}
-                <div
-                  className={`h-16 w-16 md:h-30 md:w-30 rounded-full 
-                          ring-4 ring-white dark:ring-gray-800 
-                          shadow-lg flex items-center justify-center 
-                          text-white font-semibold order-2`}
-                >
-                  <img
-                    src={member.img}
-                    alt="member"
-                    className="h-full w-full object-cover rounded-full"
-                  />
-                </div>
-                {member.offset === "down" && (
-                  <div className="text-center order-3">
-                    <p className="text-sm font-semibold text-navy dark:text-white">{member.name}</p>
-                    <p className="mt-0.5 flex items-center justify-center gap-1 text-xs text-slate-400 dark:text-gray-400">
-                      <Mail className="h-3 w-3" /> {member.email}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
+            {/* Text */}
+            <span className="font-semibold text-gray-800 dark:text-gray-200 whitespace-nowrap text-base">
+              {item.name}
+            </span>
           </div>
-        </div>
-      </div>
-    </section>
+        ))}
+      </motion.div>
 
+      {/* Fade Edges (Optional: Gives a smooth fade-out effect on the sides) */}
+      <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-gray-50 dark:from-[#05050A] to-transparent pointer-events-none z-10" />
+      <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-gray-50 dark:from-[#05050A] to-transparent pointer-events-none z-10" />
+    </div>
   );
 }

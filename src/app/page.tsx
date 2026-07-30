@@ -10,6 +10,8 @@ import TechStackSection from '@/components/home/technology-stack/TechStackSectio
 import HeroCharacter from '@/components/home/show-case/HeroCharacter'
 import WavyStack from '@/components/home/technology-stack/WavyStack'
 import InteractiveGrid from '@/components/home/interactive-grid/InteractiveGrid'
+// import CourseCard from '@/components/courses/CourseCard'
+import { MyCourseCard } from '@/components/my-courses/MyCourseCard'
 
 export default function page() {
   return (
@@ -21,11 +23,12 @@ export default function page() {
       {/* <Showcase /> */}
       {/* <InteractiveDoc /> */}
       <CoreFeatures />
-      <TechStackSection />
+      {/* <MyCourseCard /> */}
+      {/* <TechStackSection /> */}
       {/* <FeatureSection /> */}
       {/* <Rewards /> */}
-      <SupportTeam />
-      {/* <WavyStack /> */}
+      {/* <SupportTeam /> */}
+      <WavyStack />
     </div>
   )
 }
