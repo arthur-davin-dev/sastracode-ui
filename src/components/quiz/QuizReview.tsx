@@ -34,6 +34,7 @@ export default function QuizReview({ quizId }: { quizId: string }) {
       router.replace(`/quiz/${quizId}`);
       return;
     }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setResult(JSON.parse(raw));
   }, [quizId, router]);
 
