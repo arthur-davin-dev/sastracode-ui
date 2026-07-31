@@ -10,20 +10,23 @@ export function DetailBanner({ course }: DetailBannerProps) {
     <div className="relative overflow-hidden rounded-2xl bg-primary-color mt-15">
       <div className="absolute inset-0">
         <Image
-          src={course.image}
+          src={course.image || "/assets/images/HTML & CSS.jpg"}
           alt={course.title}
           fill
-          className="object-cover"
+          className="object-cover opacity-30"
           priority
         />
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-color via-primary-color/95 to-blue-900/60" />
-      <div className="relative px-8 py-10 sm:py-14">
-        <span className="mb-3 inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-blue-200 font-(family-name:--font-sans)">
+      {/* Gradient Overlay for Readable Text */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-950/90 via-indigo-950/85 to-indigo-900/70 backdrop-blur-[2px]" />
+
+      {/* Hero Content */}
+      <div className="relative z-10 px-6 py-10 sm:px-10 sm:py-14">
+        <span className="mb-3.5 inline-block rounded-full bg-indigo-500/20 border border-indigo-400/30 px-3.5 py-1 text-xs font-semibold text-indigo-200 backdrop-blur-md">
           {course.category}
         </span>
-        <h1 className="max-w-2xl text-xl font-bold leading-relaxed text-white sm:text-5xl font-(family-name:--font-sans)">
+        <h1 className="max-w-2xl text-2xl font-bold leading-snug text-white sm:text-4xl lg:text-5xl">
           {course.title}
         </h1>
       </div>

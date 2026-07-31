@@ -10,7 +10,7 @@ export default function Mission() {
           <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight font-sans">
             Mission <span className="text-blue-600 dark:text-blue-500">&amp;</span> Vision
           </h2>
-          <p className="mt-3 text-sm md:text-base text-slate-500 dark:text-slate-400 max-w-xl mx-auto font-sans">
+          <p className="mt-3 text-[18px] text-slate-500 dark:text-slate-400 max-w-xl mx-auto font-sans">
             The principles that guide every decision we make and every feature we build.
           </p>
         </div>
@@ -27,12 +27,12 @@ export default function Mission() {
               </div>
 
               {/* Title */}
-              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4 font-khmer">
+              <h3 className="text-[24px] font-bold text-slate-900 dark:text-slate-100 mb-4 font-khmer">
                 បេសកកម្មរបស់យើង
               </h3>
 
               {/* Description */}
-              <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-8 font-khmer">
+              <p className="text-[18px] text-slate-500 dark:text-slate-400 leading-relaxed mb-8 font-khmer">
                 ដើម្បីធ្វើឱ្យការរៀនសរសេរកូដ (Programming) កាន់តែងាយស្រួល 
                 មានអន្តរកម្ម និងអវត្តជាតិថ្លៃសម្រាប់អ្នករៀនគ្រប់កម្រិត—
                 ដោយបំបាត់ឧបសគ្គដែលរាំងស្ទះមនុស្សឃ្លានចង់បានពិភពបច្ចេកវិទ្យា។
@@ -41,13 +41,13 @@ export default function Mission() {
 
             {/* Tags */}
             <div className="flex flex-wrap gap-2 font-khmer">
-              <span className="px-3.5 py-1.5 rounded-full bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-[11px] font-medium">
+              <span className="px-3.5 py-1.5 rounded-full bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-[15px] font-medium">
                 ងាយស្រួលប្រើប្រាស់
               </span>
-              <span className="px-3.5 py-1.5 rounded-full bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-[11px] font-medium">
+              <span className="px-3.5 py-1.5 rounded-full bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-[15px] font-medium">
                 មានអន្តរកម្ម
               </span>
-              <span className="px-3.5 py-1.5 rounded-full bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-[11px] font-medium">
+              <span className="px-3.5 py-1.5 rounded-full bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 text-[15px] font-medium">
                 អវត្តជាតិថ្លៃ
               </span>
             </div>
@@ -62,12 +62,12 @@ export default function Mission() {
               </div>
 
               {/* Title */}
-              <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4 font-sans">
+              <h3 className="text-[24px] font-bold text-slate-900 dark:text-slate-100 mb-4 font-sans">
                 Our Vision
               </h3>
 
               {/* Description */}
-              <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-8 font-khmer">
+              <p className="text-[18px] text-slate-500 dark:text-slate-400 leading-relaxed mb-8 font-khmer">
                 ដើម្បីក្លាយជាដៃគូសង្គ្រោះជឿជាក់មួយ ដែលជួយសិស្សបង្កើតជំនាញ 
                 និងរៀបចំខ្លួនសម្រាប់អាជីពបច្ចេកវិទ្យា។
               </p>
@@ -75,10 +75,10 @@ export default function Mission() {
 
             {/* Tags */}
             <div className="flex flex-wrap gap-2">
-              <span className="px-3.5 py-1.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 text-[11px] font-medium border border-transparent dark:border-amber-800/40 font-khmer">
+              <span className="px-3.5 py-1.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 text-[15px] font-medium border border-transparent dark:border-amber-800/40 font-khmer">
                 គួរឱ្យទុកចិត្ត
               </span>
-              <span className="px-3.5 py-1.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 text-[11px] font-medium border border-transparent dark:border-amber-800/40 font-khmer">
+              <span className="px-3.5 py-1.5 rounded-full bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 text-[15px] font-medium border border-transparent dark:border-amber-800/40 font-khmer">
                 ផ្តោតលើជោគជ័យ
               </span>
             </div>

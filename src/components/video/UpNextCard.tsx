@@ -26,22 +26,24 @@ export function UpNextCard({
   href,
 }: UpNextCardProps) {
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm transition-colors duration-300">
+      {/* Header & Autoplay Toggle */}
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-base font-semibold text-gray-900 font-(family-name:--font-sans)">
           បន្ទាប់
         </h2>
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-400">Autoplay</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400">Autoplay</span>
           <button
             type="button"
             role="switch"
             aria-checked={autoplay}
             onClick={() => onAutoplayChange(!autoplay)}
-            className={`relative h-5 w-9 rounded-full transition ${
-              autoplay ? "bg-primary-color" : "bg-gray-200"
+            className={`relative h-5 w-9 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/40 ${
+              autoplay ? "bg-indigo-600 dark:bg-indigo-500" : "bg-slate-200 dark:bg-slate-700"
             }`}
           >
+            <span className="sr-only">Toggle autoplay</span>
             <span
               className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-transform ${
                 autoplay ? "translate-x-4" : "translate-x-0.5"
@@ -51,6 +53,7 @@ export function UpNextCard({
         </div>
       </div>
 
+      {/* Lesson Details */}
       <div className="flex gap-3">
         <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded-lg bg-primary-color">
           <Image
@@ -64,14 +67,14 @@ export function UpNextCard({
             {duration}
           </span>
         </div>
-        <div className="flex-1">
-          <p className="text-sm font-semibold text-gray-900 font-(family-name:--font-sans)">
+        <div className="flex-1 min-w-0">
+          <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
             {title}
           </p>
-          <p className="mt-0.5 line-clamp-2 text-xs text-gray-400 font-(family-name:--font-sans)">
+          <p className="mt-0.5 line-clamp-2 text-xs text-slate-500 dark:text-slate-400">
             {description}
           </p>
-          <p className="mt-1 text-xs text-gray-400">{lessonPosition}</p>
+          <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">{lessonPosition}</p>
         </div>
       </div>
 

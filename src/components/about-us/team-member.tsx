@@ -95,17 +95,17 @@ export default function TeamMember() {
                 </div>
 
                 {/* Member Name */}
-                <h3 className="font-bold text-[#002455] dark:text-slate-100 text-lg mb-1 mt-2 transition-colors duration-300 group-hover:text-red-500 dark:group-hover:text-blue-400">
+                <h3 className="font-bold text-[#002455] dark:text-slate-100 text-[24px] mb-1 mt-2 transition-colors duration-300 group-hover:text-red-500 dark:group-hover:text-blue-400 font-khmer">
                   {member.name}
                 </h3>
 
                 {/* Role / Tag */}
-                <span className="text-xs font-semibold text-[#002455] dark:text-slate-400 mb-3">
+                <span className="text-[22px] font-semibold text-[#002455] dark:text-slate-400 mb-3 font-khmer">
                   {member.position}
                 </span>
 
                 {/* Description / Bio */}
-                <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                <p className="text-[18px]​ font-khmer text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
                   {member.bio}
                 </p>
 

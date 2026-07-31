@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Mail, MapPin } from "lucide-react";
 
 export default function Footer() {
@@ -8,20 +9,28 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto">
         {/* Upper Footer Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-4 text-center md:text-left">
+          
           {/* Column 1: Brand Info */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-2">
-            <div className="flex items-center space-x-2">
-              {/* SastraCode logo */}
+            
+            {/* SastraCode Logo */}
+            <Link
+              href="/"
+              aria-label="Go to home"
+              className="flex items-center"
+            >
               <div className="w-20 h-20 relative shrink-0">
                 <Image
                   src="/images/sastra_code_logo.png"
                   alt="SastraCode Logo"
                   width={80}
                   height={80}
-                  className="object-contain"
+                  className="object-contain cursor-pointer transition-transform duration-200 hover:scale-105"
                 />
               </div>
-            </div>
+            </Link>
+
+            {/* Description */}
             <p className="text-xs font-khmer text-primary-color dark:text-slate-300 leading-relaxed max-w-xs text-[18px]">
               <span className="font-sans text-[18px] text-primary-color dark:text-slate-100 font-semibold">
                 SastraCode
@@ -31,11 +40,12 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Column 2: Quick Links (តំណភ្ជាប់រហ័ស) */}
+          {/* Column 2: Quick Links */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h3 className="font-bold font-khmer text-primary-color dark:text-slate-100 text-base mb-4 text-[22px]">
               តំណភ្ជាប់រហ័ស
             </h3>
+
             <ul className="space-y-2.5 text-xs text-primary-color dark:text-slate-300">
               <li>
                 <a
@@ -45,6 +55,7 @@ export default function Footer() {
                   អំពីសាស្ត្រាកូដ
                 </a>
               </li>
+
               <li>
                 <a
                   href="#"
@@ -53,6 +64,7 @@ export default function Footer() {
                   ក្រុមការងារ
                 </a>
               </li>
+
               <li>
                 <a
                   href="#"
@@ -64,11 +76,12 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Study / Courses (ការសិក្សា) */}
+          {/* Column 3: Study / Courses */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h3 className="font-bold text-[22px] text-primary-color dark:text-slate-100 mb-4 font-khmer">
               ការសិក្សា
             </h3>
+
             <ul className="space-y-2.5 text-xs text-primary-color dark:text-slate-300">
               <li>
                 <a
@@ -78,6 +91,7 @@ export default function Footer() {
                   វិញ្ញាបនបត្រ
                 </a>
               </li>
+
               <li>
                 <a
                   href="#"
@@ -86,6 +100,7 @@ export default function Footer() {
                   Full-Stack Track
                 </a>
               </li>
+
               <li>
                 <a
                   href="#"
@@ -94,6 +109,7 @@ export default function Footer() {
                   Data Science
                 </a>
               </li>
+
               <li>
                 <a
                   href="#"
@@ -105,12 +121,14 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: Contact (ទំនាក់ទំនង) */}
+          {/* Column 4: Contact */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h3 className="font-bold text-primary-color dark:text-slate-100 mb-4 font-khmer text-[22px]">
               ទំនាក់ទំនង
             </h3>
+
             <ul className="space-y-3 text-xs text-primary-color dark:text-slate-300 w-full flex flex-col items-center md:items-start">
+              
               {/* Email */}
               <li className="w-full flex justify-center md:justify-start">
                 <a
@@ -126,6 +144,7 @@ export default function Footer() {
               <li className="w-full flex justify-center md:justify-start">
                 <div className="inline-flex items-start gap-2.5 max-w-70 sm:max-w-none text-left">
                   <MapPin className="w-4 h-4 text-primary-color dark:text-blue-400 shrink-0 mt-1.5" />
+
                   <span className="font-khmer text-[18px] leading-snug">
                     ភូមិ ១៣, ផ្លូវលេខ ៥០, Street 273, Phnom Penh 12151
                   </span>
@@ -135,15 +154,15 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Middle Section: Organized & Sponsored By */}
+        {/* Middle Section */}
         <div className="pt-6 pb-6 border-t border-gray-100 dark:border-slate-800/80">
           <h4 className="text-center text-primary-color dark:text-slate-100 font-bold font-khmer text-[22px] pb-6">
             រៀបចំ និងឧបត្ថម្ភដោយ
           </h4>
-          
-          {/* Responsive Sponsors Grid: 1 col on phone, 2 on tablet, 3 on desktop */}
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-center justify-items-center">
-            {/* ISTAD Logo */}
+            
+            {/* ISTAD */}
             <div className="h-16 flex items-center justify-center">
               <Image
                 src="/images/istad_logo.png"
@@ -154,7 +173,7 @@ export default function Footer() {
               />
             </div>
 
-            {/* MPTC Logo */}
+            {/* MPTC */}
             <div className="h-16 flex items-center justify-center">
               <Image
                 src="/images/mptc_logo.png"
@@ -165,7 +184,7 @@ export default function Footer() {
               />
             </div>
 
-            {/* CBRD FUND Logo */}
+            {/* CBRD FUND */}
             <div className="h-16 flex items-center justify-center md:col-span-2 lg:col-span-1">
               <Image
                 src="/images/cbrd_logo.png"
@@ -178,22 +197,30 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar Section */}
-        <div className="pt-4 border-t border-gray-100 dark:border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-primary-color dark:text-slate-400 gap-4 font-khmer text-[18px] text-center sm:text-left">
-          <div>រក្សាសិទ្ធិគ្រប់យ៉ាង © ២០២៦ SastraCode</div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-center">
+        {/* Bottom Bar */}
+        <div className="pt-4 border-t border-gray-100 dark:border-slate-800/80 flex flex-col md:flex-row items-center justify-between text-xs text-primary-color dark:text-slate-400 gap-4 font-khmer text-[18px] text-center md:text-left">
+          
+          {/* Copyright */}
+          <div className="w-full md:w-auto text-center md:text-left">
+            រក្សាសិទ្ធិគ្រប់យ៉ាង © ២០២៦ SastraCode
+          </div>
+
+          {/* Policy Links */}
+          <div className="w-full md:w-auto flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 text-center">
             <a
               href="#"
               className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors text-[18px]"
             >
               គោលការណ៍ឯកជនភាព
             </a>
+
             <a
               href="#"
               className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors text-[18px]"
             >
               លក្ខខណ្ឌសេវាកម្ម
             </a>
+
             <a
               href="#"
               className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors text-[18px]"

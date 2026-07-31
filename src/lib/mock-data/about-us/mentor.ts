@@ -10,7 +10,7 @@ export type MentorType = {
 export const mockMentors: MentorType[] = [
   {
     id: '1',
-    name: 'Chan Chaya',
+    name: 'Chan Chhaya',
     role: 'Mentor',
     image: '/images/chan_chhaya.jpg',
     githubUrl: "https://github.com",

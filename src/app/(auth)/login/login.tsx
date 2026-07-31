@@ -34,7 +34,12 @@ const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
           className="flex items-center gap-2 bg-primary-color text-white px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-all shadow-md"
         >
           <ArrowLeft size={16} />
-          <span className="font-khmer">ត្រឡប់ក្រោយ</span>
+          {/* <span className="font-khmer">ត្រឡប់ក្រោយ</span> */}
+          {/* <link rel="stylesheet" href="/"> <span className="font-khmer">ត្រឡប់ក្រោយ</span></link> */}
+
+          <Link href="/">
+            <span className="font-khmer">ត្រឡប់ក្រោយ</span>
+          </Link>
         </button>
       </div>
 

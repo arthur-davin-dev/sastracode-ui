@@ -15,9 +15,11 @@ export function CourseGrid({
 }: CourseGridProps) {
   if (courses.length === 0) {
     return (
-      <p className="py-16 text-center text-sm text-gray-400 font-khmer">
-        មិនមានវគ្គសិក្សាដែលត្រូវនឹងលក្ខខណ្ឌស្វែងរកទេ
-      </p>
+      <div className="my-12 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 bg-white/40 dark:bg-slate-900/40 p-12 text-center transition-colors duration-300">
+        <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+          មិនមានវគ្គសិក្សាដែលត្រូវនឹងលក្ខខណ្ឌស្វែងរកទេ
+        </p>
+      </div>
     );
   }
 

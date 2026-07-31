@@ -5,6 +5,7 @@ import { SearchBar } from "./SearchBar";
 import { CategoryFilter } from "./CategoryFilter";
 import { CourseGrid } from "./CourseGrid";
 import { Course } from "@/lib/course/courses";
+import CourseBanner from "./course-banner";
 
 const categories = [
   "ទាំងអស់",
@@ -149,10 +150,14 @@ export default function CourseListingPage() {
   }, [search, activeCategory]);
 
   return (
-    <div className="min-h-screen bg-white">
-      <main className="mx-auto max-w-300 px-6 pb-16 pt-8">
-        {/* Search & filter row */}
-        <div className="mb-10.5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+      {/* Top Hero Banner */}
+      <CourseBanner/>
+
+      {/* Main Content Area */}
+      <main className="mx-auto max-w-7xl px-6 pb-16 pt-10">
+        {/* Search & Filter Row */}
+        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <SearchBar value={search} onChange={setSearch} />
           <CategoryFilter
             categories={categories}
