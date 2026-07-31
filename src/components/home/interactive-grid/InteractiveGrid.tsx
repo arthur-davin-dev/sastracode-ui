@@ -57,12 +57,16 @@ export default function InteractiveGrid() {
 
     if (!mounted) return null;
 
+    // for the path light
+    const bottomY = 500; // Adjust this value to control the gap
+    const bottomY2 = bottomY - 56; // Maintain the 56px difference
+
     return (
-        <div className="relative w-full min-h-screen overflow-hidden flex items-center justify-center py-16 transition-colors duration-500">
+        <div className="relative w-full min-h-screen overflow-hidden flex items-center justify-center transition-colors duration-500">
             {/* ========================================== */}
             {/* 3 VERTICAL FLASHES (Background) */}
             {/* ========================================== */}
-            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex flex-col items-center justify-evenly py-10">
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex flex-col items-center justify-evenly py-5 ">
                 {[0, 1, 2].map((index) => (
                     <div
                         key={index}
@@ -110,19 +114,20 @@ export default function InteractiveGrid() {
             {/* ========================================== */}
             <div className="absolute inset-0 pointer-events-none z-10 w-full h-full">
                 <svg
-                    width="100%"
-                    height="100%"
-                    viewBox="0 0 279 327"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                    width="30%"
+                    height="30%"
+                    viewBox={`0 0 279 ${bottomY + 27}`} // Adjust viewBox height dynamically
                     preserveAspectRatio="none"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                 >
-                    <g className="opacity-60 dark:opacity-50">
+                    {/* <g className="opacity-60 dark:opacity-50">
                         <path d="M0 0.570648C78.4 0.570648 78.4 76.9392 134.4 76.9392" stroke="#94A3B8" className="dark:stroke-white" strokeWidth="1.12" strokeLinecap="round" />
                         <path d="M144 76.9286C222.4 76.9286 222.4 0.560012 278.4 0.560012" stroke="#94A3B8" className="dark:stroke-white" strokeWidth="1.12" strokeLinecap="round" />
                         <path d="M0 304.758C78.4 304.758 78.4 248.758 134.4 248.758" stroke="#94A3B8" className="dark:stroke-white" strokeWidth="1.12" strokeLinecap="round" />
                         <path d="M278 304.758C199.6 304.758 199.6 248.758 143.6 248.758" stroke="#94A3B8" className="dark:stroke-white" strokeWidth="1.12" strokeLinecap="round" />
-                    </g>
+                    </g> */}
 
                     <g className="dark:stroke-[#60a5fa] stroke-[#3b82f6]">
                         <path d="M0 0.570648C78.4 0.570648 78.4 76.9392 134.4 76.9392" strokeWidth="2" strokeLinecap="round" fill="none" filter="url(#glow)" strokeDasharray="210 400">
@@ -133,13 +138,14 @@ export default function InteractiveGrid() {
                             <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.01;0.99;1" dur="3s" begin="-3s" repeatCount="indefinite" />
                             <animate attributeName="stroke-dashoffset" from="400" to="-210" dur="3s" begin="-3s" repeatCount="indefinite" />
                         </path>
-                        <path d="M278 304.758C199.6 304.758 199.6 248.758 143.6 248.758" strokeWidth="2" strokeLinecap="round" fill="none" filter="url(#glow)" strokeDasharray="210 400">
-                            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.01;0.99;1" dur="3s" begin="-6s" repeatCount="indefinite" />
-                            <animate attributeName="stroke-dashoffset" from="210" to="-400" dur="3s" begin="-6s" repeatCount="indefinite" />
+                        {/* Bottom paths with adjustable y values */}
+                        <path d={`M278 ${bottomY}C199.6 ${bottomY} 199.6 ${bottomY2} 143.6 ${bottomY2}`} strokeWidth="2" strokeLinecap="round" fill="none" filter="url(#glow)" strokeDasharray="210 400">
+                            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.01;0.99;1" dur="3s" begin="-3s" repeatCount="indefinite" />
+                            <animate attributeName="stroke-dashoffset" from="210" to="-400" dur="3s" begin="-3s" repeatCount="indefinite" />
                         </path>
-                        <path d="M0 304.758C78.4 304.758 78.4 248.758 134.4 248.758" strokeWidth="2" strokeLinecap="round" fill="none" filter="url(#glow)" strokeDasharray="210 400">
-                            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.01;0.99;1" dur="3s" begin="-9s" repeatCount="indefinite" />
-                            <animate attributeName="stroke-dashoffset" from="-400" to="210" dur="3s" begin="-9s" repeatCount="indefinite" />
+                        <path d={`M0 ${bottomY}C78.4 ${bottomY} 78.4 ${bottomY2} 134.4 ${bottomY2}`} strokeWidth="2" strokeLinecap="round" fill="none" filter="url(#glow)" strokeDasharray="210 400">
+                            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.01;0.99;1" dur="3s" begin="0s" repeatCount="indefinite" />
+                            <animate attributeName="stroke-dashoffset" from="-400" to="210" dur="3s" begin="0s" repeatCount="indefinite" />
                         </path>
                     </g>
 
@@ -286,7 +292,8 @@ export default function InteractiveGrid() {
                     <div className="grid grid-cols-12 gap-y-16 place-items-start w-full">
                         {/* LEFT SIDE (3 cols) */}
                         <div className="col-span-3 flex flex-col gap-6 w-full">
-                            <div className="relative group bg-white dark:bg-[#121826] border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-4 shadow-xl dark:shadow-2xl w-full flex flex-col items-start gap-2 transition-all hover:scale-105">
+                            {/* Make this card match AI card height - add min-h and adjust padding */}
+                            <div className="relative group bg-white dark:bg-gradient-to-br dark:from-[#1e293b] dark:to-[#0f172a] border border-gray-200 dark:border-purple-500/30 rounded-2xl py-6 px-4 shadow-xl dark:shadow-2xl w-full flex flex-col items-start gap-2 transition-all hover:scale-105 min-h-[180px]">
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">MH</div>
                                     <span className="text-xs text-gray-500 dark:text-gray-400">M.Hossain</span>
@@ -296,21 +303,23 @@ export default function InteractiveGrid() {
                                     <span className="mt-1 bg-gray-100 dark:bg-white/10 backdrop-blur-md px-4 py-1 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300 border border-transparent dark:border-white/5">College Case Studies</span>
                                 </div>
                             </div>
-                            <div className="bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-6 shadow-xl dark:shadow-2xl w-full flex flex-row items-center justify-between gap-4 transition-all hover:scale-105">
-                                <div className="flex items-center gap-3">
-                                    <div className="bg-gray-100 dark:bg-blue-500/20 p-3 rounded-full text-xl">🎓</div>
-                                    <div>
-                                        <div className="font-bold text-lg text-gray-900 dark:text-white">រៀនគ្រប់ទីកន្លែង</div>
-                                        <span className="text-sm text-gray-500 dark:text-gray-400">បានគ្រប់ពេល</span>
-                                    </div>
+
+                            {/* Make this card match AI card height */}
+                            <div className="relative group bg-white dark:bg-gradient-to-br dark:from-[#1e293b] dark:to-[#0f172a] border border-gray-200 dark:border-purple-500/30 rounded-2xl py-6 px-6 shadow-xl dark:shadow-2xl w-full flex flex-col items-start gap-2 transition-all hover:scale-105 min-h-[180px]">
+                                <div className="flex items-center gap-6 font-bold text-xl text-gray-900 dark:text-white">
+                                    <span className="bg-gray-100 dark:bg-blue-500/20 p-3 rounded-full text-xl">🎓</span>
+                                    <span className="font-bold text-lg text-gray-900 dark:text-white">រៀនគ្រប់ទីកន្លែង</span>
                                 </div>
-                                <span className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg">Live Coding</span>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">រៀនបានគ្រប់ពេល</div>
+                                <div className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg self-end">
+                                    Live Coding
+                                </div>
                             </div>
                         </div>
 
-                        {/* MIDDLE (6 cols) */}
-                        <motion.div className="col-span-6 flex justify-center w-full" animate={{ y: [0, -15, 0, 15, 0] }} transition={{ y: { duration: 6, repeat: Infinity, ease: "easeInOut" } }}>
-                            <div className="grid grid-cols-3 gap-4 w-full max-w-[500px]">
+                        {/* MIDDLE (6 cols) - unchanged */}
+                        <motion.div className="col-span-6 flex lg:pt-33 justify-center w-full" animate={{ y: [0, -15, 0, 15, 0] }} transition={{ y: { duration: 6, repeat: Infinity, ease: "easeInOut" } }}>
+                            <div className="grid grid-cols-3 gap-5 w-full max-w-[500px]">
                                 {TECH_DATA.map((tech, index) => (
                                     <TechCard key={index} icon={tech.icon} name={tech.name} />
                                 ))}
@@ -319,7 +328,8 @@ export default function InteractiveGrid() {
 
                         {/* RIGHT SIDE (3 cols) */}
                         <div className="col-span-3 flex flex-col gap-6 w-full">
-                            <div className="bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-6 shadow-xl dark:shadow-2xl w-full transition-all hover:scale-105">
+                            {/* Progress card - keep as is */}
+                            <div className="bg-white dark:bg-gradient-to-br dark:from-[#1e293b] dark:to-[#0f172a] border border-gray-200 dark:border-purple-500/30 rounded-2xl py-4 px-6 shadow-xl dark:shadow-2xl w-full transition-all hover:scale-105 min-h-[180px]">
                                 <div className="h-14 w-full relative">
                                     <svg width="100%" height="100%" viewBox="0 0 100 50" preserveAspectRatio="none">
                                         <path d="M0 40 Q 20 35, 40 30 T 80 10 L 100 15" stroke="#3b82f6" className="dark:stroke-[#60a5fa]" strokeWidth="2" fill="none" />
@@ -333,10 +343,12 @@ export default function InteractiveGrid() {
                                     <span className="text-xs text-gray-400 dark:text-gray-500">Progress</span>
                                 </div>
                             </div>
-                            <div className="relative group bg-white dark:bg-gradient-to-br dark:from-[#1e293b] dark:to-[#0f172a] border border-gray-200 dark:border-purple-500/30 rounded-2xl py-4 px-6 shadow-xl dark:shadow-2xl w-full flex flex-col items-start gap-2 transition-all hover:scale-105">
+
+                            {/* AI card - this is the reference */}
+                            <div className="relative group bg-white dark:bg-gradient-to-br dark:from-[#1e293b] dark:to-[#0f172a] border border-gray-200 dark:border-purple-500/30 rounded-2xl py-6 px-6 shadow-xl dark:shadow-2xl w-full flex flex-col items-start gap-2 transition-all hover:scale-105 min-h-[180px]">
                                 <div className="font-bold text-xl text-gray-900 dark:text-white">AI ជំនួយ</div>
                                 <div className="text-sm text-gray-500 dark:text-gray-400">AI បានជំនួយជួយដល់ការសិក្សារបស់យើងរហូតទៅដល់</div>
-                                <div className="w-full flex justify-end mt-1">
+                                <div className="w-full flex justify-end mt-auto">
                                     <span className="bg-gray-900 dark:bg-white text-white dark:text-black px-5 py-1.5 rounded-full text-sm font-bold">24 hours</span>
                                 </div>
                             </div>

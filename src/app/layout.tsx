@@ -7,6 +7,8 @@ import Navbar from "@/components/nav-bar";
 import Footer from "@/components/footer";
 import { LanguageProvider } from "./Context";
 
+import PrelineScriptWrapper from './components/PrelineScriptWrapper';
+
 const googleSans = localFont({
   src: [
     {
@@ -53,6 +55,7 @@ export default function RootLayout({
           <Footer />
         </LanguageProvider>
       </body>
+      <PrelineScriptWrapper />
     </html>
   );
 }

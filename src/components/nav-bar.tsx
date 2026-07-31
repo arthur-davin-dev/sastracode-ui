@@ -21,6 +21,7 @@ export default function Navbar() {
         { label: "កន្លែងសាកល្បងកូដ", href: "/playground" },
 
         { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
+        { label: "មុខងារ", href: "/function" },
       ],
       register: "ចុះឈ្មោះ",
       langName: "ខ្មែរ",
@@ -37,6 +38,7 @@ export default function Navbar() {
         { label: "Playground", href: "/playground" },
 
         { label: "About Sastra Code", href: "/about-us" },
+        { label: "Feature", href: "/function" },
       ],
       register: "Register",
       langName: "English",

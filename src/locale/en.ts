@@ -29,11 +29,11 @@ export const en = {
                 description:
                     "Write and run code directly in your browser with instant results — no installation required.",
             },
-            {
-                title: "AI Code Coach",
-                description:
-                    "Get smart guidance, explanations tailored to you, and real-time debugging help.",
-            },
+            // {
+            //     title: "AI Code Coach",
+            //     description:
+            //         "Get smart guidance, explanations tailored to you, and real-time debugging help.",
+            // },
             {
                 title: "Quiz & Assessment",
                 description:
@@ -44,11 +44,11 @@ export const en = {
                 description:
                     "Learn through systematically organized video lessons that support every learning plan.",
             },
-            {
-                title: "Learning Roadmaps",
-                description:
-                    "Follow carefully structured learning roadmaps that guide you from beginner to expert level.",
-            },
+            // {
+            //     title: "Learning Roadmaps",
+            //     description:
+            //         "Follow carefully structured learning roadmaps that guide you from beginner to expert level.",
+            // },
         ],
     },
     interactiveDoc: {
@@ -123,6 +123,13 @@ export const en = {
         description:
             "Modern technologies powering a next-generation learning experience.",
     },
+    popularDoc: {
+        title: "Most Visited Document"
+    },
+    popularCourse: {
+        title: "Most Watched Courses"
+    },
+
 
 
 

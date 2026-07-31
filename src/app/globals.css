@@ -2,10 +2,24 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+
+/* Preline */
+@import "../../node_modules/preline/variants.css";
+@source "../../node_modules/preline/dist/*.js";
+
+/* Optional Preline theme */
+/* @import "../../preline/css/themes/theme.css"; */
+
 @custom-variant dark (&:is(.dark *));
 
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 :root {
   --primary-color: #002455;

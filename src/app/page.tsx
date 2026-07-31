@@ -1,34 +1,31 @@
+
 import React from 'react'
 import Banner from '@/components/home/banner/Banner'
 import CoreFeatures from '@/components/home/core-feature/CoreFeature'
-import InteractiveDoc from '@/components/home/interactive-doc/InteractiveDoc'
-import FeatureSection from '@/components/home/results-and-rewards/FeatureSection'
-import Rewards from '@/components/home/results-and-rewards/Rewards'
-import Showcase from '@/components/home/show-case/Showcase'
-import SupportTeam from '@/components/home/support-team/SupportTeam'
-import TechStackSection from '@/components/home/technology-stack/TechStackSection'
 import HeroCharacter from '@/components/home/show-case/HeroCharacter'
-import WavyStack from '@/components/home/technology-stack/WavyStack'
+import {LeftWavyStack, RightWavyStack} from '@/components/home/technology-stack/WavyStack'
 import InteractiveGrid from '@/components/home/interactive-grid/InteractiveGrid'
-// import CourseCard from '@/components/courses/CourseCard'
-import { MyCourseCard } from '@/components/my-courses/MyCourseCard'
+import { courses, currentProgress, forumPosts, promoBanner } from "@/lib/data/courses";
+import CourseGrid from '@/components/documentation/CourseGrid'
+import { HomePopularCourse, HomePopularDoc } from '@/components/home/cards/HomePopularCourse'
+import TechStackSection from '@/components/home/technology-stack/TechStackSection'
+// import Hero from '@/components/home/hero-section/Hero'
 
 export default function page() {
   return (
     <div className="dark:bg-gray-900">
-      
+      {/* <Hero /> */}
       <Banner />
-      <InteractiveGrid />
-      <HeroCharacter />
-      {/* <Showcase /> */}
-      {/* <InteractiveDoc /> */}
+      <RightWavyStack />
+      {/* <InteractiveGrid /> */}
       <CoreFeatures />
-      {/* <MyCourseCard /> */}
-      {/* <TechStackSection /> */}
-      {/* <FeatureSection /> */}
-      {/* <Rewards /> */}
-      {/* <SupportTeam /> */}
-      <WavyStack />
+      <HomePopularDoc />
+      <HomePopularCourse />
+      {/* <HeroCharacter /> */}
+        {/* <TechStackSection /> */}
+      <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 pb-16 sm:px-6 lg:px-8 mt-10">
+        <CourseGrid title="ភាសាទាំងអស់" courses={courses} seeAllHref="/documentation/search" />
+      </div>
     </div>
   )
 }

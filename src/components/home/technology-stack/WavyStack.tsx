@@ -55,7 +55,7 @@ const technologies = [
 // Duplicate data for seamless infinite scrolling
 const marqueeItems = [...technologies, ...technologies, ...technologies];
 
-export default function WavyStack() {
+export function LeftWavyStack() {
   return (
     <div className="relative w-full overflow-hidden py-2">
 
@@ -97,8 +97,56 @@ export default function WavyStack() {
       </motion.div>
 
       {/* Fade Edges (Optional: Gives a smooth fade-out effect on the sides) */}
-      <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-gray-50 dark:from-[#05050A] to-transparent pointer-events-none z-10" />
-      <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-gray-50 dark:from-[#05050A] to-transparent pointer-events-none z-10" />
+      <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent pointer-events-none z-10" />
+      <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent pointer-events-none z-10" />
+    </div>
+  );
+}
+
+export function RightWavyStack() {
+  return (
+    <div className="relative w-full overflow-hidden py-2">
+
+      {/* ========================================== */}
+      {/* THE MARQUEE STRIP                             */}
+      {/* ========================================== */}
+      <motion.div
+        className="flex gap-30 w-max"
+        animate={{
+           x: ["-33.33%", "0%"], // Start from negative, end at 0
+        }}
+        transition={{
+          x: {
+            duration: 30, // Adjust speed (Lower = faster)
+            repeat: Infinity,
+            ease: "linear",
+          },
+        }}
+      >
+        {marqueeItems.map((item, index) => (
+          <div
+            key={`${item.name}-${index}`}
+            className="flex items-center gap-4  rounded-xl px-2 py-3 transition-all hover:scale-105 hover:shadow-md"
+          >
+            {/* Icon / Logo wrapper */}
+            <div
+              className="flex items-center justify-center w-10 h-10 rounded-full text-xl font-bold"
+              // style={{ backgroundColor: `${item.color}20`, color: item.color }} // 20 = 12% opacity
+            >
+              {item.icon}
+            </div>
+
+            {/* Text */}
+            <span className="font-semibold text-gray-800 dark:text-gray-200 whitespace-nowrap text-base">
+              {item.name}
+            </span>
+          </div>
+        ))}
+      </motion.div>
+
+      {/* Fade Edges (Optional: Gives a smooth fade-out effect on the sides) */}
+      <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent pointer-events-none z-10" />
+      <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent pointer-events-none z-10" />
     </div>
   );
 }
