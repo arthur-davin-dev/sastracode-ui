@@ -1,5 +1,17 @@
 import { CardLevel, TrackSlug } from "@/types/course";
+export interface SidebarSection {
+  id: number;
+  title: string;
+  orderIndex: number;
+}
 
+export interface SidebarDocument {
+  id: number;
+  title: string;
+  description: string;
+  orderIndex: number;
+  sections: SidebarSection[];
+}
 export type LogoItem = {
   name: string;
   imgSrc: string; 
