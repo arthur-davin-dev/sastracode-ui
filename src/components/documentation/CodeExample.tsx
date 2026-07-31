@@ -1,8 +1,4 @@
-"use client";
-
-import { div } from "framer-motion/client";
-
-export default function CodeExample({
+export function CodeExample({
   filename,
   code,
 }: {
@@ -10,26 +6,39 @@ export default function CodeExample({
   code: string;
 }) {
   if (!code) return null;
+
   return (
-    <>
-    <div className="text-[#1E1E1E] bg-gray-100 overflow-hidden mb-6 border  border-2" style={{ borderRadius: 16 }}>
-      <div className="flex items-center gap-1.5 px-4 pt-4 border-b border-white/10">
-        <span className="w-3 h-3 rounded-full bg-red-400" />
-        <span className="w-3 h-3 rounded-full bg-yellow-400" />
-        <span className="w-3 h-3 rounded-full bg-green-400" />
-        <span className="ml-2 text-[18px] text-gray-400">{filename}</span>
+    <div className="mb-6 space-y-3 font-khmer">
+      {/* Terminal Window Container */}
+      <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 text-slate-100 shadow-md">
+        
+        {/* Top Header Bar */}
+        <div className="flex items-center gap-1.5 border-b border-slate-800 bg-slate-950/50 px-4 py-3">
+          <span className="h-3 w-3 rounded-full bg-red-500/80" />
+          <span className="h-3 w-3 rounded-full bg-yellow-500/80" />
+          <span className="h-3 w-3 rounded-full bg-green-500/80" />
+          {filename && (
+            <span className="ml-2 text-sm font-mono text-slate-400">
+              {filename}
+            </span>
+          )}
+        </div>
+
+        {/* Code Content Area */}
+        <pre className="overflow-x-auto p-4 font-mono text-sm sm:text-base leading-relaxed text-slate-200">
+          <code>{code}</code>
+        </pre>
       </div>
-      <pre className="px-4 pb-5 pt-2 text-[16px] overflow-x-auto">{code}</pre>
-      
-    </div>
-    <div className=" pb-4">
+
+      {/* Action Button */}
+      <div className="flex justify-start">
         <button
-          className="px-4 py-2 text-[16px] font-medium text-white"
-          style={{ background: "#002455", borderRadius: 16 }}
+          type="button"
+          className="inline-flex items-center justify-center rounded-xl bg-[#002455] dark:bg-blue-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-all duration-200 hover:bg-blue-900 dark:hover:bg-blue-700 active:scale-[0.98]"
         >
           ដំណើរការកូដ
         </button>
       </div>
-    </>
+    </div>
   );
 }

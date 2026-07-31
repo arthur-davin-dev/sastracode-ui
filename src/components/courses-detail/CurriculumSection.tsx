@@ -15,7 +15,7 @@ const defaultChapters: Chapter[] = [
     lessons: [
       {
         id: "l1",
-        title: "មេរៀនទី ០១ — សេចក្ដីណែនាំអំពីគ្រឹះមូលដ្ធាន React",
+        title: "មេរៀនទី ០១ — សេចក្ដីណែនាំអំពីគ្រឹះមូលដ្ឋាន React",
         duration: "10:00",
         locked: false,
       },
@@ -27,7 +27,7 @@ const defaultChapters: Chapter[] = [
       },
       {
         id: "l3",
-        title: "មេរៀនទី ០៣ — សេចក្ដីណែនាំណែនាំអំពី JavaScript",
+        title: "មេរៀនទី ០៣ — សេចក្ដីណែនាំអំពី JavaScript",
         duration: "10:00",
         locked: true,
       },
@@ -36,7 +36,7 @@ const defaultChapters: Chapter[] = [
   {
     id: "ch2",
     number: "02",
-    title: "មូលដ្ធានគ្រឺះ Variable & DataType",
+    title: "មូលដ្ឋានគ្រឹះ Variable & DataType",
     lessonCount: 3,
     totalDuration: "៣ មេរៀន · ៤៥ នាទី",
     lessons: [
@@ -67,14 +67,18 @@ export function CurriculumSection({ course }: CurriculumSectionProps) {
   const totalLessons = chapters.reduce((sum, c) => sum + c.lessonCount, 0);
 
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-      <h2 className="text-2xl font-bold text-primary-color font-(family-name:--font-sans) pb-3">
+    <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 font-khmer transition-colors duration-300">
+      
+      {/* Header & Subtitle */}
+      <h2 className="text-xl sm:text-2xl font-bold text-[#002455] dark:text-blue-400">
         មាតិកាវគ្គសិក្សា
       </h2>
-      <p className="mb-5 text-base text-gray-400 font-(family-name:--font-sans)">
-         ជំពូកទី {chapters.length} ·  ចំនួនមេរៀនសរុប​ {totalLessons}
+      <p className="mt-1 mb-5 text-sm sm:text-base text-slate-500 dark:text-slate-400">
+        ចំនួន {chapters.length} ជំពូក · ចំនួនមេរៀនសរុប {totalLessons}
       </p>
-      <div className="space-y-3 ">
+
+      {/* Chapters Accordion Container */}
+      <div className="space-y-3">
         {chapters.map((chapter, i) => (
           <ChapterAccordion
             key={chapter.id}
@@ -84,7 +88,7 @@ export function CurriculumSection({ course }: CurriculumSectionProps) {
           />
         ))}
       </div>
-      
+
     </div>
   );
 }

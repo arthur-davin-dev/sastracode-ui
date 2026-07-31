@@ -30,9 +30,12 @@ export default function HeroLesson({ lesson }: { lesson: LessonDocument }) {
       </div>
       
       {/* Action Button */}
-      <button className="mt-6 bg-white px-5 py-2 text-[16px] font-semibold text-[#002455] rounded-xl hover:bg-white/95 transition-colors">
-        + បន្តការសិក្សា
-      </button>
+<button 
+  type="button"
+  className="mt-6 inline-flex items-center justify-center gap-1.5 rounded-xl bg-white px-5 py-2.5 text-base font-semibold text-[#002455] shadow-sm transition-all duration-200 hover:bg-slate-100 hover:scale-[1.02] active:scale-[0.98] dark:bg-slate-900 dark:text-blue-400 dark:border dark:border-slate-800 dark:hover:bg-slate-800 font-khmer cursor-pointer"
+>
+  <span>+ បន្តការសិក្សា</span>
+</button>
     </div>
   );
 }

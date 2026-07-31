@@ -1,6 +1,6 @@
 import Link from "next/link";
+import CourseCard from "@/components/documentation/CourseCard";
 import { Course } from "@/types/course";
-import CourseCard from "./CourseCard";
 
 interface CourseGridProps {
   title: string;
@@ -10,20 +10,29 @@ interface CourseGridProps {
 
 export default function CourseGrid({ title, courses, seeAllHref }: CourseGridProps) {
   return (
-    <section className="flex flex-col gap-4 font-khmer">
+    <section className="space-y-6">
+      {/* Header Row */}
       <div className="flex items-center justify-between">
-        <h2 className="text-[24px] font-semibold text-slate-800 ">{title}</h2>
+        
+        {/* FIX 1: Add dark:text-slate-100 or dark:text-white to the title */}
+        <h2 className="font-khmer text-xl font-bold text-[#002455] dark:text-primary-color sm:text-2xl transition-colors">
+          {title}
+        </h2>
+
+        {/* FIX 2: Make the "See All" link pop in dark mode */}
         {seeAllHref && (
           <Link
             href={seeAllHref}
-            className="text-[18px] font-medium text-blue-700 hover:underline"
+            className="font-khmer text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-primary-color dark:hover:text-blue-300 transition-colors flex items-center gap-1"
           >
-            មើលទាំងអស់ ›
+            <span>មើលទាំងអស់</span>
+            <span aria-hidden="true">&rsaquo;</span>
           </Link>
         )}
       </div>
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 ">
+      {/* Grid List */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {courses.map((course) => (
           <CourseCard key={course.id} course={course} />
         ))}
