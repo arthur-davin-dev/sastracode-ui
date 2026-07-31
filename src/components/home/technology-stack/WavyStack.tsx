@@ -57,7 +57,7 @@ const marqueeItems = [...technologies, ...technologies, ...technologies];
 
 export default function WavyStack() {
   return (
-    <div className="relative w-full overflow-hidden py-2 border-y">
+    <div className="relative w-full overflow-hidden py-2">
 
       {/* ========================================== */}
       {/* THE MARQUEE STRIP                             */}
