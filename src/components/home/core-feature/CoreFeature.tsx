@@ -10,41 +10,47 @@ const cardStyles = [
     icon: "/home/svg/icon-doc.svg",
     linkColor: "text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300",
     arrow: "/home/svg/arrow-blue.svg",
+    href: "/documentation",
   },
   {
     iconBg: "border-blue-600/15 dark:border-blue-400/20 bg-blue-100 dark:bg-blue-950/30",
     icon: "/home/svg/icon-playground.svg",
     linkColor: "text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300",
     arrow: "/home/svg/arrow-blue.svg",
+    href: "/playground/editor/",
   },
   {
     iconBg: "border-violet-600/15 dark:border-violet-400/20 bg-violet-100 dark:bg-violet-950/30",
     icon: "/home/svg/icon-ai.svg",
     linkColor: "text-violet-600 dark:text-violet-400 hover:text-violet-800 dark:hover:text-violet-300",
     arrow: "assets/svg/home/arrow-purple.svg",
+    href: "#3",
   },
   {
     iconBg: "border-cyan-500/15 dark:border-cyan-400/20 bg-[#e0f7fd] dark:bg-cyan-950/30",
     icon: "/home/svg/icon-quiz.svg",
     linkColor: "text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300",
     arrow: "assets/home/svg/arrow-blue.svg",
+    href: "#4",
   },
   {
     iconBg: "border-blue-600/15 dark:border-blue-400/20 bg-blue-100 dark:bg-blue-950/30",
     icon: "/home/svg/icon-video.svg",
     linkColor: "text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300",
     arrow: "/home/svg/arrow-blue.svg",
+    href: "/playlists",
   },
   {
     iconBg: "border-violet-600/15 dark:border-violet-400/20 bg-violet-100 dark:bg-violet-950/30",
     icon: "/home/svg/icon-roadmap.svg",
     linkColor: "text-violet-600 dark:text-violet-400 hover:text-violet-800 dark:hover:text-violet-300",
     arrow: "/home/svg/arrow-purple.svg",
+    href: "#6",
   },
 ];
 
 export default function CoreFeatures() {
- const currentT = useTranslation();
+  const currentT = useTranslation();
 
   return (
     <section className="bg-white dark:bg-gray-900 px-6 py-10 transition-colors duration-300">
@@ -85,17 +91,17 @@ export default function CoreFeatures() {
                   {card.description}
                 </p>
                 <a
-                href="#"
-                className={`mt-5 inline-flex items-center gap-1.5 text-xs font-bold transition-colors duration-300 ${style.linkColor}`}
+                  href={style.href}
+                  className={`mt-5 inline-flex items-center gap-1.5 text-xs font-bold transition-colors duration-300 ${style.linkColor}`}
                 >
-                {currentT.coreFeature.cta}
-                <img src={style.arrow} alt="" className="size-[13px] dark:brightness-200" />
-              </a>
+                  {currentT.coreFeature.cta}
+                  <img src={style.arrow} alt="" className="size-[13px] dark:brightness-200" />
+                </a>
               </article>
-        );
+            );
           })}
+        </div>
       </div>
-    </div>
     </section >
   );
 }

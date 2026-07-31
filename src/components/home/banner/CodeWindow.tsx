@@ -2,9 +2,9 @@
 export default function CodeWindow() {
   return (
     <div className="relative mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
-      <div className="relative rounded-2xl border border-white/50 dark:border-gray-700/50 bg-white/70 dark:bg-gray-800/70 p-px backdrop-blur-sm transition-colors duration-300">
+      <div className="relative rounded-2xl border border-gray-700/10 dark:border-gray-700/50 bg-white/70 dark:bg-gray-800/70 p-px backdrop-blur-sm transition-colors duration-300 shadow-xl">
         {/* <!-- Window chrome --> */}
-        <div className="flex items-center justify-between border-b border-white/20 dark:border-gray-700/30 px-3 sm:px-4 py-2 sm:py-3">
+        <div className="flex items-center justify-between border-b border-gray-700/10 dark:border-gray-700/30 px-3 sm:px-4 py-2 sm:py-3">
           <div className="flex items-center gap-1.5 sm:gap-2">
             <span className="size-2 sm:size-2.5 rounded-full bg-red-400"></span>
             <span className="size-2 sm:size-2.5 rounded-full bg-yellow-400"></span>
@@ -18,7 +18,7 @@ export default function CodeWindow() {
         </div>
 
         {/* <!-- Code --> */}
-        <div className="space-y-0 p-4 sm:p-6 lg:p-8 font-mono text-[10px] sm:text-[11px] lg:text-[13px] leading-[18px] sm:leading-[21px] overflow-x-auto">
+        <div className="space-y-0 p-4 sm:p-6 lg:p-8 font-mono text-[10px] sm:text-[11px] lg:text-[13px] leading-[18px] sm:leading-[21px] overflow-x-auto ">
           <p className="whitespace-nowrap">
             <span className="text-orange-500">document</span>
             <span className="text-gray-700 dark:text-gray-300">.</span>

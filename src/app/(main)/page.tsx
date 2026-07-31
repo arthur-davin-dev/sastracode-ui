@@ -8,19 +8,27 @@ import Rewards from '@/components/home/results-and-rewards/Rewards'
 import SupportTeam from '@/components/home/support-team/SupportTeam'
 import TechStackSection from '@/components/home/technology-stack/TechStackSection'
 import HeroCharacter from '@/components/home/show-case/HeroCharacter'
+import WavyStack from '@/components/home/technology-stack/WavyStack'
+import InteractiveGrid from '@/components/home/interactive-grid/InteractiveGrid'
+// import CourseCard from '@/components/courses/CourseCard'
+import { MyCourseCard } from '@/components/my-courses/MyCourseCard'
 
 export default function page() {
   return (
     <div className="dark:bg-gray-900">
-      <HeroCharacter />
+      
       <Banner />
+      <InteractiveGrid />
+      <HeroCharacter />
       {/* <Showcase /> */}
       <InteractiveDoc />
       <CoreFeatures />
-      <TechStackSection />
-      <FeatureSection />
-      <Rewards />
+      {/* <MyCourseCard /> */}
+      {/* <TechStackSection /> */}
+      {/* <FeatureSection /> */}
+      {/* <Rewards /> */}
       {/* <SupportTeam /> */}
+      <WavyStack />
     </div>
   )
 }
