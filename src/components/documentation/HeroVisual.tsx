@@ -12,7 +12,7 @@ export default function HeroVisual() {
       {/* Character avatar */}
       <div className="absolute inset-0 overflow-hidden z-0">
         <Image
-          src="/images/doc-hero-image.png"
+          src="/images/doc-hero-image-transparent.png"
           alt="សិស្សសាស្ត្រាកូដកំពុងកាន់កុំព្យូទ័រយួរដៃ"
           fill
           className="object-contain"
