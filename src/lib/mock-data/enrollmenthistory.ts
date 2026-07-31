@@ -1,22 +1,22 @@
-import { EnrollmentHistoryItem } from "@/lib/course/courses";
+import { EnrollmentHistoryItem } from "@/lib/course/enrollhistory";
 
 export const mockEnrollmentHistory: EnrollmentHistoryItem[] = [
   {
-    courseId: "1",
+    historyId: "1",
     title: "HTML & CSS Fundamentals",
     thumbnail: "/images/frontend-banner.png",
     status: "completed",
     progressPercent: 100,
   },
   {
-    courseId: "7",
+    historyId: "7",
     title: "Modern JavaScript",
     thumbnail: "/images/javascript-banner.png",
     status: "completed",
     progressPercent: 100,
   },
   {
-    courseId: "6",
+    historyId: "6",
     title: "React Basics",
     thumbnail: "/images/react-banner.png",
     status: "in-progress",

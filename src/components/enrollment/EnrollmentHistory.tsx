@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { EnrollmentHistoryItem } from "@/lib/course/courses";
+import { EnrollmentHistoryItem } from "@/lib/course/enrollhistory";
 
 interface EnrollmentHistoryProps {
   items: EnrollmentHistoryItem[];
@@ -22,7 +22,7 @@ export function EnrollmentHistory({ items }: EnrollmentHistoryProps) {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {items.map((item) => (
-          <Link key={item.courseId} href={`/courses/${item.courseId}`} className="group">
+          <Link key={item.historyId} href={`/courses/${item.historyId}`} className="group">
             <div className="relative mb-2 aspect-video overflow-hidden rounded-xl bg-gray-900">
               <Image
                 src={item.thumbnail}

@@ -114,7 +114,7 @@ const courseSections = [
   {
     title: "ចុងក្រោយបំផុត",
     seeAllHref: "/documentation/lessons?category=latest",
-    courseIds: ["1", "2", "3"],
+    courseIds: ["1", "2", "3", "4", "5", "6"],
   },
   {
     title: "ណែនាំសម្រាប់អ្នក",

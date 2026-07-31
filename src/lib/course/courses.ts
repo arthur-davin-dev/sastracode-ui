@@ -44,39 +44,35 @@ export interface Course {
   totalDuration?: string;
   benefits?: Benefit[];   
 }
-//-------enrollment------///
 export interface Benefit {
   icon: "video" | "download" | "certificate" | "qa" | "pace" | "devices";
   title: string;
   description: string;
 }
+
 // ---- Data ----
 
 export const categories = [
   "ទាំងអស់",
-  "HTML",
-  "CSS",
-  "Free Course",
-  "Frontend",
-  "Backend",
-  "JavaScript",
-  "UI/UX",
+  "ឥតគិតថ្លៃ",
+  "ថ្នាក់គិតថ្លៃ",
 ] as const;
 
 export const courses: Course[] = [
   {
     id: "1",
-    category: "FRONTEND",
+    category: "ឥតគិតថ្លៃ",
     title: "HTML & CSS Fundamentals",
     description:
       "រៀនបង្កើត Responsive Website ជាមួយ HTML និង CSS ចាប់ពីមូលដ្ឋានដល់កម្រិតខ្ពស់",
     lessons: 28,
     duration: "៦ម៉ោង ៤២នាទី",
+
     image: "/assets/images/HTML & CSS.jpg",
   },
   {
     id: "2",
-    category: "CSS",
+    category: "ឥតគិតថ្លៃ",
     title: "Advanced CSS Layouts",
     description:
       "ស្វែងយល់ពី Grid, Flexbox និង Responsive Patterns ដើម្បីបង្កើត UI រាបស្មើ",
@@ -86,7 +82,7 @@ export const courses: Course[] = [
   },
   {
     id: "3",
-    category: "FRONTEND",
+    category: "ឥតគិតថ្លៃ",
     title: "HTML Structure & Semantics",
     description:
       "រៀនរចនាផ្ទៃក្នុង HTML ជាមួយ Semantic Elements និង Accessibility",
@@ -96,7 +92,7 @@ export const courses: Course[] = [
   },
   {
     id: "4",
-    category: "Backend",
+    category: "ថ្នាក់គិតថ្លៃ",
     title: "Node.js Basics",
     description:
       "ទទួលបានប្រាក់ចំណូលសម្រាប់ Server-side development ជាមួយ Node.js និង Express",
@@ -106,7 +102,7 @@ export const courses: Course[] = [
   },
   {
     id: "5",
-    category: "Free Course",
+    category: "ថ្នាក់គិតថ្លៃ",
     title: "Intro to JavaScript",
     description:
       "ស្នើភាសាស្វ័យប្រវត្តិកម្ម JavaScript ដើម្បីបង្កើតព្រលឹង Web អន្តរកម្ម",
@@ -116,7 +112,7 @@ export const courses: Course[] = [
   },
   {
     id: "6",
-    category: "Frontend",
+    category: "ថ្នាក់គិតថ្លៃ",
     title: "React Basics",
     description: "ចាប់ផ្តើម React និង Components រួមទាំង Hooks និង Routing",
     lessons: 30,
@@ -125,7 +121,7 @@ export const courses: Course[] = [
   },
   {
     id: "7",
-    category: "JavaScript",
+    category: "ឥតគិតថ្លៃ",
     title: "Modern JavaScript",
     description:
       "ស្វែងយល់ពី ES6+, Async/Await និង Patterns សម័យថ្មីសម្រាប់ Web Development",
@@ -135,7 +131,7 @@ export const courses: Course[] = [
   },
   {
     id: "8",
-    category: "UI/UX",
+    category: "ថ្នាក់គិតថ្លៃ",
     title: "Design Systems",
     description:
       "រៀនរចនាប្រព័ន្ធ UI ដោយប្រើ Principles និង Patterns ដូចជា Atomic Design",
@@ -145,14 +141,15 @@ export const courses: Course[] = [
   },
   {
     id: "9",
-    category: "Backend",
-    title: "API Development",
+    category: "",
+    title: "ថ្នាក់គិតថ្លៃ",
     description:
       "បង្កើត RESTful និង GraphQL API ដែលអាចប្រើបានឆាប់ រហ័ស និងសុវត្ថិភាព",
     lessons: 26,
     duration: "៧ម៉ោង ៣០នាទី",
     image: "/assets/images/api-development-course.png",
   },
+  
 ];
 
 // ---- Data-access helpers ----
@@ -184,18 +181,22 @@ export async function getRelatedCourses(
 
   return [...sameCategory, ...fallback].slice(0, limit);
 }
-//-------enrollment------///
-export interface Benefit {
-  icon: "video" | "download" | "certificate" | "qa" | "pace" | "devices";
-  title: string;
-  description: string;
-}
 
-export interface EnrollmentHistoryItem {
-  courseId: string;
-  title: string;
-  thumbnail: string;
-  status: "completed" | "in-progress";
-  progressPercent: number;
+//-------enrollment------///
+
+// //-------enrollment------///
+// export interface Benefit {
+//   icon: "video" | "download" | "certificate" | "qa" | "pace" | "devices";
+//   title: string;
+//   description: string;
+// }
+
+
+// export interface EnrollmentHistoryItem {
+//   courseId: string;
+//   title: string;
+//   thumbnail: string;
+//   status: "completed" | "in-progress";
+//   progressPercent: number;
   
-}
+// }
