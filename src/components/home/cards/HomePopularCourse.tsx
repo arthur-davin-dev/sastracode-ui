@@ -41,23 +41,35 @@ function CourseCard({
     : description
 
   return (
-    <div className={`flex justify-center h-auto bg-surface py-6 ${className}`}>
-      <Card className="relative mx-auto w-full max-w-sm pt-0">
-        <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
+    <div className={`flex justify-center h-110 bg-surface py-6 transition-all duration-300 ease-in-out ${className}`}>
+      <Card className="relative mx-auto w-full max-w-sm pt-0 dark:bg-slate-800 dark:border-slate-700 transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-cyan-100 hover:scale-[1.02] dark:hover:shadow-slate-700/50 group flex flex-col">
+        <div className="absolute inset-0 z-30 aspect-video dark:bg-black/1 transition-opacity duration-300 group-hover:opacity-75" />
         <img
           src={image}
           alt={title}
-          className="relative z-20 aspect-video w-full object-cover brightness-60 grayscale dark:brightness-40"
+          className="relative z-20 aspect-video w-full brightness dark:brightness-60 object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
-        <CardHeader>
+        <CardHeader className="flex-1 flex flex-col">
           <CardAction>
-            <Badge variant="secondary">{badge}</Badge>
+            <Badge
+              variant="secondary"
+              className="dark:bg-slate-700 dark:text-slate-200 dark:border-slate-600 transition-all duration-300 hover:scale-105 hover:bg-slate-200 dark:hover:bg-slate-600"
+            >
+              {badge}
+            </Badge>
           </CardAction>
-          <CardTitle>{title}</CardTitle>
-          <CardDescription>{truncatedDescription}</CardDescription>
+          <CardTitle className="dark:text-white transition-colors duration-300 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+            {title}
+          </CardTitle>
+          <CardDescription className="dark:text-slate-300 transition-colors duration-300 group-hover:text-slate-700 dark:group-hover:text-slate-200 flex-1">
+            {truncatedDescription}
+          </CardDescription>
         </CardHeader>
-        <CardFooter>
-          <Button className="w-full" onClick={onView}>
+        <CardFooter className="mt-auto pt-4">
+          <Button
+            className="w-full dark:bg-primary-600 dark:hover:bg-primary-700 dark:text-white inline-flex items-center justify-center gap-2 rounded-xl bg-[#002455] px-4 py-3 text-sm font-medium text-white transition-all duration-300 ease-in-out hover:bg-blue-900 active:scale-[0.98] hover:shadow-lg hover:shadow-blue-500/25 dark:hover:shadow-blue-400/20"
+            onClick={onView}
+          >
             {buttonText}
           </Button>
         </CardFooter>
@@ -69,7 +81,7 @@ function CourseCard({
 const courses = [
   {
     id: 1,
-    image: "https://avatar.vercel.sh/shadcn1",
+    image: "/images/html.png",
     title: "Design systems meetup",
     description: "A practical talk on component APIs, accessibility, and shipping faster.",
     badge: "Featured",
@@ -77,7 +89,7 @@ const courses = [
   },
   {
     id: 2,
-    image: "https://avatar.vercel.sh/shadcn2",
+    image: "/images/html.png",
     title: "Advanced React patterns",
     description: "Learn advanced React patterns and best practices for scalable applications.",
     badge: "Popular",
@@ -85,7 +97,7 @@ const courses = [
   },
   {
     id: 3,
-    image: "https://avatar.vercel.sh/shadcn3",
+    image: "/images/html.png",
     title: "UI/UX fundamentals",
     description: "Master the fundamentals of user interface and user experience design.",
     badge: "New",
@@ -93,7 +105,7 @@ const courses = [
   },
   {
     id: 4,
-    image: "https://avatar.vercel.sh/shadcn4",
+    image: "/images/html.png",
     title: "TypeScript mastery",
     description: "Deep dive into TypeScript with practical examples and advanced types.",
     badge: "Advanced",
@@ -101,7 +113,7 @@ const courses = [
   },
   {
     id: 5,
-    image: "https://avatar.vercel.sh/shadcn5",
+    image: "/images/html.png",
     title: "Full-stack development",
     description: "Build complete web applications from frontend to backend.",
     badge: "Trending",
@@ -109,7 +121,7 @@ const courses = [
   },
   {
     id: 6,
-    image: "https://avatar.vercel.sh/shadcn6",
+    image: "/images/html.png",
     title: "Cloud architecture",
     description: "Design and deploy scalable cloud-native applications.",
     badge: "Expert",
@@ -130,15 +142,15 @@ export function HomePopularCourse() {
   return (
     <section>
       {/* Title - nearly touching the carousel */}
-      <h2 className="text-[24px] font-semibold text-slate-800 mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 mb-0 leading-tight">
-        {currentT.popularDoc.title}
+      <h2 className="text-[24px] font-semibold text-slate-800 dark:text-white mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 mb-0 leading-tight">
+        {currentT.popularCourse.title}
       </h2>
 
       {/* Carousel - pulled up to nearly touch */}
       <div
         id="hs-carousel"
         className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-4 -mt-3 pb-6 sm:pb-10 lg:pb-10"
-        data-hs-carousel='{"loadingClasses": "opacity-0", "dotsItemClasses": "hs-carousel-active:bg-primary-active hs-carousel-active:border-primary-active size-3 border border-line-4 rounded-full cursor-pointer", "isDraggable": true, "slidesQty": {"xs": 1,"sm": 3, "lg":3}}'
+        data-hs-carousel='{"loadingClasses": "opacity-0", "dotsItemClasses": "hs-carousel-active:bg-primary-active hs-carousel-active:border-primary-active size-3 border border-line-4 rounded-full cursor-pointer", "isDraggable": true, "slidesQty": {"xs": 1,"sm": 3, "lg":4}}'
       >
         <div className="hs-carousel relative w-full min-h-110 overflow-hidden">
           {/* Carousel Body */}
@@ -160,16 +172,27 @@ export function HomePopularCourse() {
         </div>
 
         {/* Arrows */}
-        <button type="button" className="hs-carousel-prev hs-carousel-disabled:opacity-50 hs-carousel-disabled:cursor-default absolute top-1/2 inset-s-2 inline-flex justify-center items-center size-10 bg-layer text-layer-foreground rounded-full shadow-2xs hover:bg-layer-hover -translate-y-1/2 focus:outline-hidden">
+        <button
+          type="button"
+          className="hs-carousel-prev hs-carousel-disabled:opacity-50 hs-carousel-disabled:cursor-default absolute top-1/2 inset-s-2 inline-flex justify-center items-center size-10 bg-layer dark:bg-slate-700 text-layer-foreground dark:text-white rounded-full shadow-2xs hover:bg-layer-hover dark:hover:bg-slate-600 -translate-y-1/2 focus:outline-hidden transition-colors duration-200"
+        >
           <span className="text-2xl" aria-hidden="true">
-            <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+            <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
           </span>
           <span className="sr-only">Previous</span>
         </button>
-        <button type="button" className="hs-carousel-next hs-carousel-disabled:opacity-50 hs-carousel-disabled:cursor-default absolute top-1/2 inset-e-2 inline-flex justify-center items-center size-10 bg-layer text-layer-foreground rounded-full shadow-2xs hover:bg-layer-hover -translate-y-1/2 focus:outline-hidden">
+
+        <button
+          type="button"
+          className="hs-carousel-next hs-carousel-disabled:opacity-50 hs-carousel-disabled:cursor-default absolute top-1/2 inset-e-2 inline-flex justify-center items-center size-10 bg-layer dark:bg-slate-700 text-layer-foreground dark:text-white rounded-full shadow-2xs hover:bg-layer-hover dark:hover:bg-slate-600 -translate-y-1/2 focus:outline-hidden transition-colors duration-200"
+        >
           <span className="sr-only">Next</span>
           <span className="text-2xl" aria-hidden="true">
-            <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+            <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
           </span>
         </button>
         {/* End Arrows */}
@@ -190,7 +213,7 @@ export function HomePopularDoc() {
   return (
     <section>
       {/* Title - nearly touching the carousel */}
-      <h2 className="text-[24px] font-semibold text-slate-800 mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 mb-0 leading-tight">
+      <h2 className="text-[24px] font-semibold dark:text-white mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 mb-0 leading-tight">
         {currentT.popularDoc.title}
       </h2>
 
@@ -198,7 +221,7 @@ export function HomePopularDoc() {
       <div
         id="hs-carousel"
         className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-4 -mt-3 pb-6 sm:pb-10 lg:pb-10"
-        data-hs-carousel='{"loadingClasses": "opacity-0", "dotsItemClasses": "hs-carousel-active:bg-primary-active hs-carousel-active:border-primary-active size-3 border border-line-4 rounded-full cursor-pointer", "isDraggable": true, "slidesQty": {"xs": 1,"sm": 3, "lg":3}}'
+        data-hs-carousel='{"loadingClasses": "opacity-0", "dotsItemClasses": "hs-carousel-active:bg-primary-active hs-carousel-active:border-primary-active size-3 border border-line-4 rounded-full cursor-pointer", "isDraggable": true, "slidesQty": {"xs": 1,"sm": 3, "lg":4}}'
       >
         <div className="hs-carousel relative w-full min-h-110 overflow-hidden">
           {/* Carousel Body */}
@@ -220,16 +243,27 @@ export function HomePopularDoc() {
         </div>
 
         {/* Arrows */}
-        <button type="button" className="hs-carousel-prev hs-carousel-disabled:opacity-50 hs-carousel-disabled:cursor-default absolute top-1/2 inset-s-2 inline-flex justify-center items-center size-10 bg-layer text-layer-foreground rounded-full shadow-2xs hover:bg-layer-hover -translate-y-1/2 focus:outline-hidden">
+        <button
+          type="button"
+          className="hs-carousel-prev hs-carousel-disabled:opacity-50 hs-carousel-disabled:cursor-default absolute top-1/2 inset-s-2 inline-flex justify-center items-center size-10 bg-layer dark:bg-slate-700 text-layer-foreground dark:text-white rounded-full shadow-2xs hover:bg-layer-hover dark:hover:bg-slate-600 -translate-y-1/2 focus:outline-hidden transition-colors duration-200"
+        >
           <span className="text-2xl" aria-hidden="true">
-            <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+            <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
           </span>
           <span className="sr-only">Previous</span>
         </button>
-        <button type="button" className="hs-carousel-next hs-carousel-disabled:opacity-50 hs-carousel-disabled:cursor-default absolute top-1/2 inset-e-2 inline-flex justify-center items-center size-10 bg-layer text-layer-foreground rounded-full shadow-2xs hover:bg-layer-hover -translate-y-1/2 focus:outline-hidden">
+
+        <button
+          type="button"
+          className="hs-carousel-next hs-carousel-disabled:opacity-50 hs-carousel-disabled:cursor-default absolute top-1/2 inset-e-2 inline-flex justify-center items-center size-10 bg-layer dark:bg-slate-700 text-layer-foreground dark:text-white rounded-full shadow-2xs hover:bg-layer-hover dark:hover:bg-slate-600 -translate-y-1/2 focus:outline-hidden transition-colors duration-200"
+        >
           <span className="sr-only">Next</span>
           <span className="text-2xl" aria-hidden="true">
-            <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+            <svg className="shrink-0 size-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
           </span>
         </button>
         {/* End Arrows */}

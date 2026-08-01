@@ -9,6 +9,8 @@ import { courses, currentProgress, forumPosts, promoBanner } from "@/lib/data/co
 import CourseGrid from '@/components/documentation/CourseGrid'
 import { HomePopularCourse, HomePopularDoc } from '@/components/home/cards/HomePopularCourse'
 import TechStackSection from '@/components/home/technology-stack/TechStackSection'
+import Review from '@/components/home/review/Review'
+import Resource from '@/components/home/resource/Resource'
 // import Hero from '@/components/home/hero-section/Hero'
 
 export default function page() {
@@ -16,7 +18,9 @@ export default function page() {
     <div className="dark:bg-gray-900">
       {/* <Hero /> */}
       <Banner />
+      {/* <SkillsCardCompact /> */}
       <RightWavyStack />
+      <Resource />
       {/* <InteractiveGrid /> */}
       <CoreFeatures />
       <HomePopularDoc />
@@ -26,6 +30,7 @@ export default function page() {
       <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 pb-16 sm:px-6 lg:px-8 mt-10">
         <CourseGrid title="ភាសាទាំងអស់" courses={courses} seeAllHref="/documentation/search" />
       </div>
+      <Review />
     </div>
   )
 }

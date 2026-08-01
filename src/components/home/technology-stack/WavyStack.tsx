@@ -26,8 +26,8 @@ const technologies = [
 
   },
   {
-    icon: <img src="/home/technology-stack/laravel-svgrepo-com.svg" alt="laravel" />,
-    name:"Vue",
+    icon: <img src="/home/technology-stack/spring-boot.svg" alt="Spring Boot" />,
+    name:"Spring Boot",
 
   },
   {
@@ -46,8 +46,8 @@ const technologies = [
 
   },
   {
-    icon: <img src="/home/technology-stack/vue.svg" alt="vue" />,
-    name:"vue",
+    icon: <img src="/home/technology-stack/next-js.svg" alt="NextJs" />,
+    name:"NextJs",
 
   },
 ];
