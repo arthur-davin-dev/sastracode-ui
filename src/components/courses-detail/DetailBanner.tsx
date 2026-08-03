@@ -7,8 +7,7 @@ interface DetailBannerProps {
 
 export function DetailBanner({ course }: DetailBannerProps) {
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-indigo-950 shadow-lg">
-      {/* Background Image */}
+    <div className="relative overflow-hidden rounded-2xl bg-primary-color mt-15">
       <div className="absolute inset-0">
         <Image
           src={course.image || "/assets/images/HTML & CSS.jpg"}

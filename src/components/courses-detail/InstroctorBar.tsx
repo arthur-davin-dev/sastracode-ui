@@ -8,8 +8,8 @@ interface InstructorBarProps {
 }
 
 const defaultInstructor = {
-  name: "Dr. Sarah Chen",
-  avatar: "/davin.jpg",
+  name: "Dr. Davin Chhay",
+  avatar: "/assets/images/Davin.DNG",
   rating: 4.9,
   reviewCount: 1240,
   tags: ["Premium Access", "Advanced Level"],
@@ -57,7 +57,7 @@ export function InstructorBar({ course }: InstructorBarProps) {
       {/* Enroll Button */}
       <Button className="rounded-xl bg-indigo-800 dark:bg-indigo-600 px-5 text-sm font-semibold text-white hover:bg-indigo-900 dark:hover:bg-indigo-500 transition-colors shadow-sm">
         <Play className="mr-2 h-3.5 w-3.5 fill-white" />
-        Enroll Now
+        ចុះឈ្មោះឥឡូវនេះ
       </Button>
     </div>
   );

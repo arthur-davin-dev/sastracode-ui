@@ -1,20 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { BookOpen, Clock, ShieldCheck } from "lucide-react";
 import { Course } from "@/lib/course/courses";
+import Link from "next/link";
 
 interface PurchaseCardProps {
   course: Course;
 }
 
 export function PurchaseCard({ course }: PurchaseCardProps) {
-  const isFree = !course.price || course.price === 0;
+  const isFree = Number(course.id) % 2 === 1;
 
   return (
-    <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 p-6 shadow-sm backdrop-blur-sm transition-colors duration-300">
-      {/* Price Header */}
-      <div className="mb-4 border-b border-slate-200/80 dark:border-slate-800 pb-4">
-        <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-          {isFree ? "Free" : `$${course.price}`}
+    <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm mt-15">
+      <div className="mb-4 border-b border-gray-100 pb-4">
+        <p className="text-2xl font-bold text-gray-900">
+          {isFree ? "Free" : "$12.00"}
         </p>
         <p className="text-xs text-slate-500 dark:text-slate-400">
           30-day money-back guarantee
@@ -23,9 +23,12 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
 
       {/* Primary & Secondary Buttons */}
       <div className="space-y-3">
-        <Button className="h-11 w-full rounded-xl bg-indigo-800 dark:bg-indigo-600 text-sm font-semibold text-white hover:bg-indigo-900 dark:hover:bg-indigo-500 transition-colors shadow-sm">
-          Enroll Now
-        </Button>
+        <Link
+          href={`/courses/${course.id}/enroll`}
+          className="flex w-full items-center justify-center rounded-lg bg-primary-color py-3 text-sm font-semibold text-white transition hover:bg-primary-color/90"
+        >
+          ចុះឈ្មោះឥឡូវនេះ
+        </Link>
         <Button
           variant="outline"
           className="h-11 w-full rounded-xl border-slate-200/80 dark:border-slate-700 bg-slate-100/80 dark:bg-slate-800/80 text-sm font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-200/80 dark:hover:bg-slate-700/80 transition-colors"

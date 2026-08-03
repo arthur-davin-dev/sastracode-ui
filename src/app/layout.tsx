@@ -2,7 +2,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
-
 import "./globals.css";
 import { LanguageProvider } from "@/lib/language-context";
 
@@ -28,8 +27,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SastraCode",
-  description: "Programming Learning Platform",
+  title: "Sastra Code",
+  description: "Learn programming with Sastra Code",
 };
 
 export default function RootLayout({

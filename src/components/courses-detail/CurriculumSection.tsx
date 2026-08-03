@@ -15,19 +15,19 @@ const defaultChapters: Chapter[] = [
     lessons: [
       {
         id: "l1",
-        title: "មេរៀនទី ០១ — សេចក្ដីណែនាំ",
+        title: "មេរៀនទី ០១ — សេចក្ដីណែនាំអំពីគ្រឹះមូលដ្ធាន React",
         duration: "10:00",
         locked: false,
       },
       {
         id: "l2",
-        title: "មេរៀនទី ០២ — សេចក្ដីណែនាំ",
+        title: "មេរៀនទី ០២ — សេចក្ដីណែនាំអំពី Next.js",
         duration: "10:00",
         locked: true,
       },
       {
         id: "l3",
-        title: "មេរៀនទី ០៣ — សេចក្ដីណែនាំ",
+        title: "មេរៀនទី ០៣ — សេចក្ដីណែនាំណែនាំអំពី JavaScript",
         duration: "10:00",
         locked: true,
       },
@@ -67,14 +67,14 @@ export function CurriculumSection({ course }: CurriculumSectionProps) {
   const totalLessons = chapters.reduce((sum, c) => sum + c.lessonCount, 0);
 
   return (
-    <div className="rounded-2xl border border-border bg-card/80 p-6 shadow-sm backdrop-blur-sm transition-colors duration-300">
-      <h2 className="text-lg font-bold text-foreground">
+    <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+      <h2 className="text-2xl font-bold text-primary-color font-(family-name:--font-sans) pb-3">
         មាតិកាវគ្គសិក្សា
       </h2>
-      <p className="mb-5 text-sm text-muted-foreground">
-        {chapters.length} chapters · {totalLessons} lessons total
+      <p className="mb-5 text-base text-gray-400 font-(family-name:--font-sans)">
+         ជំពូកទី {chapters.length} ·  ចំនួនមេរៀនសរុប​ {totalLessons}
       </p>
-      <div className="space-y-3">
+      <div className="space-y-3 ">
         {chapters.map((chapter, i) => (
           <ChapterAccordion
             key={chapter.id}
@@ -84,6 +84,7 @@ export function CurriculumSection({ course }: CurriculumSectionProps) {
           />
         ))}
       </div>
+      
     </div>
   );
 }
