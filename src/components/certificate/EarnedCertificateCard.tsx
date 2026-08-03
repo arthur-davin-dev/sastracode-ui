@@ -51,9 +51,9 @@ export function EarnedCertificateCard({
               left-4
               top-4
               rounded-full
-              bg-white/95
+              bg-init-color/95
               px-3
-              py-1
+              py-4
               text-lg
               font-semibold
               text-primary-color
@@ -96,8 +96,8 @@ export function EarnedCertificateCard({
                 rounded-full
                 bg-green-100
                 px-3
-                py-1
-                text-sm
+                py-4
+                text-lg
                 font-medium
                 text-green-700
                 hover:bg-green-100
@@ -114,7 +114,7 @@ export function EarnedCertificateCard({
               <p className="text-lg text-primary-color uppercase tracking-wider text-muted-foreground">
                 Certificate ID
               </p>
-              <p className="text-primary-color font-semibold">
+              <p className="text-primary-color text-lg font-semibold">
                 #{certificate.certificateId}
               </p>
             </div>

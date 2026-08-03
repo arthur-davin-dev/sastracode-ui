@@ -126,7 +126,7 @@ export default function CertificateViewPage({
       >
         <Link
           href="/certificate"
-          className="inline-flex items-center gap-1.5 text-[18px] font-medium text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+          className="flex items-center gap-1.5 text-lg font-bold text-primary-color hover:text-red-600 transition-colors w-fit"
         >
           <ChevronLeft className="h-5 w-5" /> ត្រឡប់ទៅបញ្ជីវិញ្ញាបនបត្រ
         </Link>
@@ -151,7 +151,7 @@ export default function CertificateViewPage({
         </div>
       </motion.div>
 
-      {/* Grid Display Details */}
+      {/* Main Grid: Certificate Image Preview & Verification Side-by-Side */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Certificate Preview Image Panel */}
         <motion.div
@@ -167,36 +167,35 @@ export default function CertificateViewPage({
           />
         </motion.div>
 
-        {/* Verification and Skills Cards */}
-        <div className="space-y-6">
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-          >
-            <VerificationCard
-              status={certificate.status}
-              issuedDate={certificate.issuedDate}
-              verificationId={certificate.verificationId}
-            />
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-          >
-            <SkillsCard
-              skills={certificate.skills}
-              qrCodeUrl={certificate.qrCodeUrl}
-              grade={certificate.grade}
-              quizScore={certificate.quizScore}
-              studyDuration={certificate.studyDuration}
-              completionWeeks={certificate.completionWeeks}
-            />
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+        >
+          <VerificationCard
+            status={certificate.status}
+            issuedDate={certificate.issuedDate}
+            verificationId={certificate.verificationId}
+          />
+        </motion.div>
       </div>
+
+      {/* Full-Width Section for SkillsCard */}
+      <motion.div
+        className="w-full"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.3 }}
+      >
+        <SkillsCard
+          skills={certificate.skills}
+          qrCodeUrl={certificate.qrCodeUrl}
+          grade={certificate.grade}
+          quizScore={certificate.quizScore}
+          studyDuration={certificate.studyDuration}
+          completionWeeks={certificate.completionWeeks}
+        />
+      </motion.div>
     </div>
   );
 }
