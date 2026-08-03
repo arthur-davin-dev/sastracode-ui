@@ -169,7 +169,7 @@ export default function Footer() {
             {/* ISTAD */}
             <div className="h-16 flex items-center justify-center">
               <Image
-                src="/images/istad_logo.png"
+                src="/images/logo_istad.png"
                 alt="ISTAD Logo"
                 width={180}
                 height={60}
@@ -191,7 +191,7 @@ export default function Footer() {
             {/* CBRD FUND */}
             <div className="h-16 flex items-center justify-center md:col-span-2 lg:col-span-1">
               <Image
-                src="/images/cbrd_logo.png"
+                src="/images/cbrd_logo.jpg"
                 alt="CBRD Fund Logo"
                 width={180}
                 height={60}

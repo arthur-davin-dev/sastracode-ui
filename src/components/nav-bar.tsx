@@ -1,26 +1,54 @@
 "use client";
 
-import { SunMedium, Moon, Menu, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import {
+  Moon,
+  Menu,
+  SunMedium,
+  X,
+} from "lucide-react";
+import {
+  useEffect,
+  useState,
+  type MouseEvent,
+} from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useLanguage } from "@/lib/language-context";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const { lang, setLang } = useLanguage();
+
   const [darkMode, setDarkMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   const t = {
     km: {
       navItems: [
-        { label: "មេរៀន", href: "/documentation" },
-        { label: "វគ្គសិក្សា", href: "/courses" },
-        { label: "បញ្ជីវីដេអូ", href: "/playlists" },
-        { label: "កន្លែងសាកល្បងកូដ", href: "/playground" },
-        { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
-
-        // Quiz
-        { label: "សំណួរតេស្ត", href: "/quiz" },
+        {
+          label: "មេរៀន",
+          href: "/documentation",
+        },
+        {
+          label: "វគ្គសិក្សា",
+          href: "/courses",
+        },
+        {
+          label: "បញ្ជីវីដេអូ",
+          href: "/playlists",
+        },
+        {
+          label: "កន្លែងសាកល្បងកូដ",
+          href: "/playground",
+        },
+        {
+          label: "អំពីសាស្ត្រាកូដ",
+          href: "/about-us",
+        },
+        {
+          label: "សំណួរតេស្ត",
+          href: "/quiz",
+        },
       ],
       register: "ចុះឈ្មោះ",
       langName: "ខ្មែរ",
@@ -29,14 +57,30 @@ export default function Navbar() {
 
     en: {
       navItems: [
-        { label: "Lessons", href: "/documentation" },
-        { label: "Courses", href: "/courses" },
-        { label: "Playlists", href: "/playlists" },
-        { label: "Playground", href: "/playground" },
-        { label: "About Sastra Code", href: "/about-us" },
-
-        // Quiz
-        { label: "Quiz", href: "/quiz" },
+        {
+          label: "Lessons",
+          href: "/documentation",
+        },
+        {
+          label: "Courses",
+          href: "/courses",
+        },
+        {
+          label: "Playlists",
+          href: "/playlists",
+        },
+        {
+          label: "Playground",
+          href: "/playground",
+        },
+        {
+          label: "About Sastra Code",
+          href: "/about-us",
+        },
+        {
+          label: "Quiz",
+          href: "/quiz",
+        },
       ],
       register: "Register",
       langName: "English",
@@ -46,7 +90,10 @@ export default function Navbar() {
 
   const currentT = t[lang];
 
-  // Load saved theme preference on mount
+  const isPathActive = (href: string) => {
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
 
@@ -60,58 +107,48 @@ export default function Navbar() {
   }, []);
 
   const toggleLanguage = () => {
-    setLang((prev) => (prev === "km" ? "en" : "km"));
+    setLang((previousLanguage) =>
+      previousLanguage === "km" ? "en" : "km",
+    );
   };
 
-  // Circular clip-path transition handler
-  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const nextDark = !darkMode;
+  const toggleTheme = (event: MouseEvent<HTMLButtonElement>) => {
+    const nextDarkMode = !darkMode;
 
-    // Fallback for browsers without View Transitions API support
-    if (!document.startViewTransition) {
-      setDarkMode(nextDark);
-      if (nextDark) {
+    const applyTheme = () => {
+      setDarkMode(nextDarkMode);
+
+      if (nextDarkMode) {
         document.documentElement.classList.add("dark");
         localStorage.setItem("theme", "dark");
       } else {
         document.documentElement.classList.remove("dark");
         localStorage.setItem("theme", "light");
       }
+    };
+
+    if (!document.startViewTransition) {
+      applyTheme();
       return;
     }
 
-    // Get click position (center of the transition circle)
     const x = event.clientX;
     const y = event.clientY;
 
-    // Calculate maximum radius (distance to the furthest corner of the screen)
     const endRadius = Math.hypot(
       Math.max(x, window.innerWidth - x),
       Math.max(y, window.innerHeight - y),
     );
 
-    // Trigger state change inside the view transition callback
-    const transition = document.startViewTransition(() => {
-      setDarkMode(nextDark);
-      if (nextDark) {
-        document.documentElement.classList.add("dark");
-        localStorage.setItem("theme", "dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-        localStorage.setItem("theme", "light");
-      }
-    });
+    const transition = document.startViewTransition(applyTheme);
 
-    // Animate clip-path with smooth timing and slower speed
     transition.ready.then(() => {
-      const clipPath = [
-        `circle(0px at ${x}px ${y}px)`,
-        `circle(${endRadius}px at ${x}px ${y}px)`,
-      ];
-
       document.documentElement.animate(
         {
-          clipPath: clipPath,
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`,
+          ],
         },
         {
           duration: 1000,
@@ -123,51 +160,53 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200/30 bg-white/60 dark:border-slate-800/50 dark:bg-slate-950/60 backdrop-blur-xl shadow-xs transition-colors duration-200 font-khmer">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200/30 bg-white/60 font-khmer shadow-xs backdrop-blur-xl transition-colors duration-200 dark:border-slate-800/50 dark:bg-slate-950/60">
       <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-4 sm:px-6">
-        {/* Left: Logo */}
-        <div className="flex items-center shrink-0">
+        {/* Logo */}
+        <div className="flex shrink-0 items-center">
           <Link href="/">
             <img
               src="/images/sastra_code_logo.png"
-              alt="satra-code-logo"
-              className="w-16 sm:w-20 h-auto shrink-0"
+              alt="Sastra Code logo"
+              className="h-auto w-16 shrink-0 sm:w-20"
             />
           </Link>
         </div>
 
-        {/* Desktop Center: Pill Navigation with Glass Effect */}
-        <div className="hidden md:flex flex-1 min-w-0 justify-center overflow-x-auto no-scrollbar">
-          {/*
-            Fixed width here (instead of sizing to fit content) is intentional:
-            Khmer and English labels differ in length, so if the pill sized
-            itself to content, it would grow/shrink and visibly shift position
-            every time the language toggles. A fixed width keeps the pill's
-            box stable regardless of which language is showing.
-          */}
-          <div className="flex items-center justify-center gap-2 lg:gap-5 w-full md:w-140 lg:w-180 rounded-full border border-[#002455]/20 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md px-5 lg:px-10 py-2 lg:py-2.5 text-[#002455] dark:text-[#FFFFFF] shadow-xs dark:border-slate-700/50">
-            {currentT.navItems.map((item, index) => (
-              <Link
-                key={index}
-                href={item.href}
-                className="text-[14px] lg:text-[18px] font-semibold whitespace-nowrap transition-colors hover:text-red-500"
-              >
-                {item.label}
-              </Link>
-            ))}
+        {/* Desktop Navigation */}
+        <div className="hidden min-w-0 flex-1 justify-center overflow-x-auto md:flex no-scrollbar">
+          <div className="flex w-full items-center justify-center gap-2 rounded-full border border-[#002455]/20 bg-white/40 px-5 py-2 text-[#002455] shadow-xs backdrop-blur-md md:w-140 lg:w-180 lg:gap-5 lg:px-10 lg:py-2.5 dark:border-slate-700/50 dark:bg-slate-900/40 dark:text-white">
+            {currentT.navItems.map((item) => {
+              const isActive = isPathActive(item.href);
+
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`whitespace-nowrap text-[14px] transition-colors lg:text-[18px] ${
+                    isActive
+                      ? "font-extrabold text-[#DC0000] dark:text-[#DC0000]"
+                      : "font-semibold text-[#002455] hover:text-[#DC0000] dark:text-white"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
           </div>
         </div>
 
         {/* Right Controls */}
-        <div className="flex items-center space-x-2 md:space-x-3 lg:space-x-5 shrink-0">
-          {/* Theme Toggle Button */}
+        <div className="flex shrink-0 items-center space-x-2 md:space-x-3 lg:space-x-5">
+          {/* Theme Toggle */}
           <button
+            type="button"
             onClick={toggleTheme}
-            aria-label="Toggle Theme"
-            className="rounded-full p-1.5 shrink-0 text-gray-700 hover:bg-gray-100/50 dark:text-gray-300 dark:hover:bg-slate-800/50 transition-colors hover:text-[#DC0000]"
+            aria-label="Toggle theme"
+            className="shrink-0 rounded-full p-1.5 text-gray-700 transition-colors hover:bg-gray-100/50 hover:text-[#DC0000] dark:text-gray-300 dark:hover:bg-slate-800/50"
           >
             {darkMode ? (
-              <SunMedium className="cursor-pointer text:dark-[#002455] hover:text-[#DC0000]" />
+              <SunMedium className="cursor-pointer hover:text-[#DC0000]" />
             ) : (
               <Moon className="cursor-pointer" />
             )}
@@ -175,57 +214,83 @@ export default function Navbar() {
 
           {/* Language Switcher */}
           <button
+            type="button"
             onClick={toggleLanguage}
-            className="flex items-center space-x-1.5 sm:space-x-2 rounded-full border border-[#002455] px-2.5 sm:px-3 py-1.5 sm:py-2 text-[14px] lg:text-[16px] font-medium text-[#002455] hover:text-[#DC0000] dark:border-slate-700 dark:text-gray-200 dark:hover:bg-slate-800/50 transition-colors cursor-pointer shrink-0 bg-white/30 dark:bg-slate-900/30 backdrop-blur-xs"
+            className="flex shrink-0 cursor-pointer items-center space-x-1.5 rounded-full border border-[#002455] bg-white/30 px-2.5 py-1.5 text-[14px] font-medium text-[#002455] backdrop-blur-xs transition-colors hover:text-[#DC0000] sm:space-x-2 sm:px-3 sm:py-2 lg:text-[16px] dark:border-slate-700 dark:bg-slate-900/30 dark:text-gray-200 dark:hover:bg-slate-800/50"
           >
             <img
               src={currentT.flagSrc}
-              alt="Flag"
-              className="h-3.5 w-5 sm:h-4 sm:w-6 rounded-xs object-cover shrink-0"
+              alt={`${currentT.langName} flag`}
+              className="h-3.5 w-5 shrink-0 rounded-xs object-cover sm:h-4 sm:w-6"
             />
-            <span className="whitespace-nowrap">{currentT.langName}</span>
+
+            <span className="whitespace-nowrap">
+              {currentT.langName}
+            </span>
           </button>
 
           {/* Register Link */}
           <Link
             href="/register"
-            className="hidden md:inline-block text-[14px] lg:text-[18px] font-semibold text-[#DC0000] whitespace-nowrap transition-colors hover:text-red-600 shrink-0"
+            className={`hidden shrink-0 whitespace-nowrap text-[14px] transition-colors md:inline-block lg:text-[18px] ${
+              pathname === "/register"
+                ? "font-extrabold text-[#DC0000]"
+                : "font-semibold text-[#DC0000] hover:text-red-600"
+            }`}
           >
             {currentT.register}
           </Link>
 
-          {/* Hamburger Button (Mobile only) */}
+          {/* Mobile Menu Button */}
           <button
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle Navigation Menu"
-            className="md:hidden rounded-lg p-2 shrink-0 text-gray-700 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-slate-800/50 transition-colors focus:outline-none"
+            type="button"
+            onClick={() => setIsOpen((previous) => !previous)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={isOpen}
+            className="shrink-0 rounded-lg p-2 text-gray-700 transition-colors hover:bg-gray-100/50 focus:outline-none md:hidden dark:text-gray-200 dark:hover:bg-slate-800/50"
           >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </button>
         </div>
       </nav>
 
-      {/* Mobile Dropdown Menu with Glassmorphism */}
+      {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden border-t border-gray-200/30 bg-white/70 dark:border-slate-800/50 dark:bg-slate-950/70 backdrop-blur-xl px-6 py-4 transition-all">
+        <div className="border-t border-gray-200/30 bg-white/70 px-6 py-4 backdrop-blur-xl transition-all md:hidden dark:border-slate-800/50 dark:bg-slate-950/70">
           <div className="flex flex-col space-y-3">
-            {currentT.navItems.map((item, index) => (
-              <Link
-                key={index}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className="text-[18px] font-semibold text-[#002455] dark:text-[#FFFFFF] transition-colors hover:text-red-500 py-1"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {currentT.navItems.map((item) => {
+              const isActive = isPathActive(item.href);
 
-            {/* Register Link inside mobile drawer */}
-            <div className="pt-2 border-t border-gray-100/50 dark:border-slate-800/50">
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`py-1 text-[18px] transition-colors ${
+                    isActive
+                      ? "font-extrabold text-[#DC0000] dark:text-[#DC0000]"
+                      : "font-semibold text-[#002455] hover:text-[#DC0000] dark:text-white"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+
+            {/* Mobile Register Link */}
+            <div className="border-t border-gray-100/50 pt-2 dark:border-slate-800/50">
               <Link
                 href="/register"
                 onClick={() => setIsOpen(false)}
-                className="text-[18px] font-semibold text-[#DC0000] whitespace-nowrap transition-colors hover:text-red-600"
+                className={`whitespace-nowrap text-[18px] transition-colors ${
+                  pathname === "/register"
+                    ? "font-extrabold text-[#DC0000]"
+                    : "font-semibold text-[#DC0000] hover:text-red-600"
+                }`}
               >
                 {currentT.register}
               </Link>

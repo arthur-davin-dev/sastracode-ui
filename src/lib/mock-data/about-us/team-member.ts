@@ -12,7 +12,7 @@ export const mockTeamMembers: TeamMemberType[] = [
   {
     id: "1",
     name: "បិន​ ថុនា",
-    position: "Front-End",
+    position: "Full-Stack",
     bio: "ខ្ញុំចេះតែ ហេឡូវើលទេ <3",
     image: "/images/ben_thona.png",
     githubUrl: "https://github.com",
@@ -20,8 +20,8 @@ export const mockTeamMembers: TeamMemberType[] = [
   },
   {
     id: "2",
-    name: "Soeurt Bomnorng",
-    position: "Back-End",
+    name: "សឿត បំណង",
+    position: "Full-Stack",
     bio: "Backend specialist focused on scalable cloud architecture and database performance.",
     image: "/images/soeurt_bomnorng.png",
     githubUrl: "https://github.com",
@@ -29,8 +29,8 @@ export const mockTeamMembers: TeamMemberType[] = [
   },
     {
     id: "3",
-    name: "Vel Sothoun",
-    position: "Back-End",
+    name: "វ៉ិល សុធន",
+    position: "Full-Stack",
     bio: "Backend specialist focused on scalable cloud architecture and database performance.",
     image: "/images/vel_sothoun.png",
     githubUrl: "https://github.com",
@@ -38,8 +38,8 @@ export const mockTeamMembers: TeamMemberType[] = [
   },
     {
     id: "4",
-    name: "Lot Los",
-    position: "Back-End",
+    name: "លត់ ឡោះ",
+    position: "Full-Stack",
     bio: "Backend specialist focused on scalable cloud architecture and database performance.",
     image: "/images/lot_los.png",
     githubUrl: "https://github.com",
@@ -47,8 +47,8 @@ export const mockTeamMembers: TeamMemberType[] = [
   },
    {
     id: "5",
-    name: "Mon Narea",
-    position: "Front-End",
+    name: "ម៉ុន ណារា",
+    position: "Full-Stack",
     bio: "ខ្ញុំចេះតែ ហេឡូវើលទេ <3",
     image: "/images/mon_narea.png",
     githubUrl: "https://github.com",
@@ -57,7 +57,7 @@ export const mockTeamMembers: TeamMemberType[] = [
   {
     id: "6",
     name: "ម៉េង គីមលាភ",
-    position: "Front-End",
+    position: "Full-Stack",
     bio: "គ្មាននរណាម្នាក់ល្អឥតខ្ចោះនោះទេ",
     image: "/images/meng_kimleap.png",
     githubUrl: "https://github.com",
@@ -66,7 +66,7 @@ export const mockTeamMembers: TeamMemberType[] = [
     {
     id: "7",
     name: "ឆាត​ សុវណ្ណី",
-    position: "Front-End",
+    position: "Full-Stack",
     bio: "អ្វីគ្រប់យ៉ាងអាចទៅរួច បើអ្នកជឿជាក់លើខ្លួនឯង",
     image: "/images/chhat_sovanney.png",
     githubUrl: "https://github.com",
@@ -74,8 +74,8 @@ export const mockTeamMembers: TeamMemberType[] = [
   },
     {
     id: "8",
-    name: "Vuth Vatana",
-    position: "Back-End",
+    name: "វុធ វឌ្ឍនា",
+    position: "Full-Stack",
     bio: "Backend specialist focused on scalable cloud architecture and database performance.",
     image: "/images/vuth_vatana.png",
     githubUrl: "https://github.com",
@@ -84,7 +84,7 @@ export const mockTeamMembers: TeamMemberType[] = [
   {
     id: "9",
     name: "ឆាយ​ គង្គា",
-    position: "Front-End",
+    position: "Full-Stack",
     bio: "Backend specialist focused on scalable cloud architecture and database performance.",
     image: "/images/chhay_kongkea.png",
     githubUrl: "https://github.com",
@@ -93,7 +93,7 @@ export const mockTeamMembers: TeamMemberType[] = [
     {
     id: "10",
     name: "ឆាយ​ ដាវីន",
-    position: "Back-End",
+    position: "Full-Stack",
     bio: "Backend specialist focused on scalable cloud architecture and database performance.",
     image: "/images/chhay_davin.png",
     githubUrl: "https://github.com",
