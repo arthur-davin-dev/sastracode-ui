@@ -46,8 +46,7 @@ export default function RootLayout({
     >
       <body>
         <LanguageProvider>
-          <Navbar />
-          {children}
+          <main>{children}</main>
         </LanguageProvider>
       </body>
     </html>
