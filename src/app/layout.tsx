@@ -1,4 +1,3 @@
-import Navbar from "@/components/nav-bar";
 
 import type { Metadata } from "next";
 import localFont from "next/font/local";
