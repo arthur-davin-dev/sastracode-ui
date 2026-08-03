@@ -105,6 +105,7 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
                     <ChevronDown size={20} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
                   )}
                 </button>
+                
 
                 {/* Submenu */}
                 {isOpen && !isCollapsed && (
@@ -162,3 +163,4 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
     </aside>
   );
 }
+

@@ -83,7 +83,7 @@ export const inProgressLessons: ProgressLessonCard[] = [
     lessonsTotal: 25,
     percent: 84,
     ctaLabel: "បន្តការសិក្សា",
-    href: "/documentation/java/lessons",
+    href: "/documentation/lessons/java-variables",
   },
   {
     id: "java-lessons-2",
@@ -94,7 +94,7 @@ export const inProgressLessons: ProgressLessonCard[] = [
     lessonsTotal: 25,
     percent: 84,
     ctaLabel: "បន្តការសិក្សា",
-    href: "/documentation/java/lessons",
+    href: "/documentation/lessons/java-variables",
   },
   {
     id: "java-lessons-3",
@@ -105,14 +105,14 @@ export const inProgressLessons: ProgressLessonCard[] = [
     lessonsTotal: 25,
     percent: 84,
     ctaLabel: "បន្តការសិក្សា",
-    href: "/documentation/java/lessons",
+    href: "/documentation/lessons/java-variables",
   },
 ];
 export const currentProgress: CourseProgress = {
   courseTitle: "Java Programming",
   lessonLabel: "មេរៀនទី ៦ លើ ១៥",
   percent: 40,
-  href: "/documentation/java-programming",
+  href: "/documentation/lessons/java-variables",
 };
 export const javaLessons: LessonCatalogItem[] = [
   {
@@ -241,7 +241,7 @@ export const techOptions: TechOption[] = [
   { id: "html", label: "HTML", icon: "/icons/html.svg" },
 ];
 
-export const courses: Course[] = [
+export const lessons: Course[] = [
   {
     id: "html-lessons",
     title: "HTML Lessons",
@@ -249,7 +249,7 @@ export const courses: Course[] = [
     description:
       "HTML (Markup Language) ជាភាសាមូលដ្ឋានសម្រាប់សាងសង់រចនាសម្ព័ន្ធគេហទំព័រ តាមរយៈ Elements, Tags និង Attributes។",
     tag: "HTML",
-    href: "/documentation/html-lesson",
+    href: "/documentation/lessons/html-elements",
     coverImage: "/images/html.png",
     ctaLabel: "រៀនឥឡូវ",
   },
@@ -260,8 +260,8 @@ export const courses: Course[] = [
     description:
       "CSS ជួយឱ្យទំព័ររបស់អ្នកមានភាពស្រស់ស្អាត តាមរយៈ Colors, Layouts, Animations និង Responsive Design។",
     tag: "CSS",
-    href: "/documentation/html-lesson",
-    coverImage: "/images/html.png",
+    href: "/documentation/lessons/css-selectors",
+    coverImage: "/images/css.webp",
     ctaLabel: "រៀនឥឡូវ",
   },
   {
@@ -271,8 +271,8 @@ export const courses: Course[] = [
     description:
       "រៀនភាសាសរសេរកម្មវិធីលើគេហទំព័រ JavaScript ដើម្បីបង្កើត Interaction និងមុខងារឆ្លាតវៃ។",
     tag: "JavaScript",
-    href: "/documentation/html-lesson",
-    coverImage: "/images/html.png",
+    href: "/documentation/lessons/js-variables",
+    coverImage: "/images/javascript.png",
     ctaLabel: "រៀនឥឡូវ",
   },
   {
@@ -282,7 +282,7 @@ export const courses: Course[] = [
     description:
       "រៀនពីមូលដ្ឋាននៃ Java Programming និង OOP សម្រាប់បង្កើតកម្មវិធីលើ Web, Mobile និង Desktop ព្រមទាំង Syntax ជាមូលដ្ឋាន។",
     tag: "Java",
-    href: "/documentation/html-lesson",
+    href: "/documentation/lessons/java-variables",
     coverImage: "/images/html.png",
     ctaLabel: "រៀនបន្ត",
   },
@@ -292,8 +292,8 @@ export const courses: Course[] = [
     titleKm: "Python Programming",
     description: "រៀនមូលដ្ឋានគ្រឹះនៃ Python ចាប់ពី Syntax រហូតដល់ Automation ។",
     tag: "Python",
-    href: "/documentation/html-lesson",
-    coverImage: "/images/html.png",
+    href: "/documentation/lessons/python-variables",
+    coverImage: "/images/python.jpg",
     ctaLabel: "រៀនឥឡូវ",
   },
   {
@@ -303,8 +303,8 @@ export const courses: Course[] = [
     description:
       "រៀនពីគោលការណ៍ជាមូលដ្ឋាននៃ UI/UX ដូចជា Wireframe, Prototype និងគោលការណ៍រចនា UI ដ៏ល្អ។",
     tag: "CSS",
-   href: "/documentation/html-lesson",
-    coverImage: "/images/html.png",
+    href: "/documentation/lessons/css-selectors",
+    coverImage: "/images/ux-ui.webp",
     ctaLabel: "រៀនឥឡូវ",
   },
 ];
