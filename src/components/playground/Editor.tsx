@@ -106,7 +106,7 @@ export default function Editor() {
       setOutput([
         "Compiling...",
         "Success! Output:",
-        "សូស្តី Khmer Coder! ចាប់ផ្តើមសរសេរកូដជាមួយ ChhabKodu",
+        "សូស្តី Davin Coder! ចាប់ផ្តើមសរសេរកូដជាមួយ Kavey Code",
         "",
         "Process finished with exit code 0",
       ]);

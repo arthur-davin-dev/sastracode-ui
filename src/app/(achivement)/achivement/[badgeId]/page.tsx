@@ -108,7 +108,7 @@ export default async function BadgeDetailPage({
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-base  text-lg text-primary-color">តម្រូវការសម្រាប់ទទួលបាន</CardTitle>
+              <CardTitle className="text-base text-primary-color">តម្រូវការសម្រាប់ទទួលបាន</CardTitle>
               <Badge className=" p-4 bg-green-50 text-green-600 hover:bg-green-50 text-lg">បានបញ្ចប់ទាំងអស់</Badge>
             </CardHeader>
             <CardContent>

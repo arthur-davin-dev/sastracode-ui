@@ -136,7 +136,7 @@ export default function ConsolePage() {
               <span className="text-xs text-slate-400">UTF-8</span>
             </div>
 
-            <div className="bg-white p-5 font-mono text-sm space-y-2 min-h-[420px]">
+            <div className="bg-white p-5 font-mono text-sm space-y-2 min-h-105">
               {terminalLines.map((line, i) => (
                 <TerminalLine key={i} line={line} />
               ))}
