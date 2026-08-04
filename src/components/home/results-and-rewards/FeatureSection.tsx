@@ -34,11 +34,7 @@ import React from "react";
  *   const khmer = Noto_Sans_Khmer({ subsets: ["khmer"], weight: ["400","600"] });
  *   <body className={khmer.className}>...
  */
-
-import { useLanguage } from "@/app/Context";
-
-import { en } from "./locale/en";
-import { km } from "./locale/km";
+import { useTranslation } from "@/hooks/useTranslations";
 
 export type Feature = {
   icon: React.ReactNode;
@@ -71,16 +67,9 @@ export default function FeatureSection({
 }: {
   features?: Feature[];
 }) {
-  const { lang } = useLanguage();
+ const currentT = useTranslation();
 
-  const translations = {
-    en,
-    km,
-  };
-
-  const currentT = translations[lang];
-
-  features = currentT.featureSection.features.map((feature, index) => ({
+  features = currentT.resultAndRewards.featureSection.features.map((feature, index) => ({
     icon: icons[index],
     lines: feature.lines,
   }));
