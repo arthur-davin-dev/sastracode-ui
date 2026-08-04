@@ -1,29 +1,37 @@
-import { FileCode2 } from "lucide-react";
-import { SearchResultItem } from "@/types/documentation";
-import { LevelBadge } from "./ui";
+// src/components/documentation/SearchResultCard.tsx
+import React from "react";
+import Link from "next/link";
 
-export default function SearchResultCard({ result }: { result: SearchResultItem }) {
+// 1. Update this interface to match your real data properties
+interface SearchResultItem {
+  id: string | number;
+  title: string;
+  description?: string;
+  // If your actual items don't have a slug, remove it from here or make it optional:
+  slug?: string; 
+}
+
+interface SearchResultCardProps {
+  result: SearchResultItem; // Matches your exact array type now
+}
+
+export default function SearchResultCard({ result }: SearchResultCardProps) {
+  // If your routing uses 'id' instead of 'slug', change this href to `/documentation/lessons/${result.id}`
+  const targetHref = `/documentation/lessons/${result.slug || result.id}`;
+
   return (
-    <div className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md sm:flex-row sm:items-start">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-accent text-primary">
-        <FileCode2 className="h-5 w-5" />
-      </div>
-
-      <div className="flex flex-1 flex-col gap-2">
-        <h3 className="text-sm font-semibold text-foreground">{result.title}</h3>
-        <p className="text-xs leading-relaxed text-muted-foreground">{result.description}</p>
-
-        <div className="mt-1 flex flex-wrap items-center gap-3">
-          <span className="rounded-2xl bg-muted px-2.5 py-1 text-[11px] font-semibold text-foreground">
-            {result.category}
-          </span>
-          <button className="rounded-2xl bg-primary px-4 py-1.5 text-[11px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90">
-            មើលមេរៀន
-          </button>
-        </div>
-      </div>
-
-      <LevelBadge level={result.level} />
-    </div>
+    <Link 
+      href={targetHref}
+      className="block p-4 rounded-xl border border-border bg-card hover:bg-accent/50 transition-colors shadow-sm"
+    >
+      <h4 className="text-base font-semibold text-foreground mb-1">
+        {result.title}
+      </h4>
+      {result.description && (
+        <p className="text-sm text-muted-foreground line-clamp-2">
+          {result.description}
+        </p>
+      )}
+    </Link>
   );
 }

@@ -1,7 +1,6 @@
 // Stats.tsx
+import { useLanguage } from "@/lib/language-context";
 
-import { useLanguage } from "@/app/Context";
-import { percent } from "framer-motion";
 
 const en ={
   stats: {

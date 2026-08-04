@@ -3,27 +3,23 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-// 1. Data for the technologies (matching your first image)
+// 1. Original technology array items
 const technologies = [
   {
-    icon: <img src="/home/technology-stack/html5-svgrepo-com.svg" alt="html" />,
-    name:"Html",
-
+    icon: <img src="/home/technology-stack/html5-svgrepo-com.svg" alt="html" className="w-7 h-7 object-contain" />,
+    name: "Html",
   },
   {
-    icon: <img src="/home/technology-stack/css3-svgrepo-com.svg" alt="css" />,
-    name:"CSS",
-
+    icon: <img src="/home/technology-stack/css3-svgrepo-com.svg" alt="css" className="w-7 h-7 object-contain" />,
+    name: "CSS",
   },
   {
-    icon: <img src="/home/technology-stack/java-svgrepo-com.svg" alt="java" />,
-    name:"Java",
-
+    icon: <img src="/home/technology-stack/java-svgrepo-com.svg" alt="java" className="w-7 h-7 object-contain" />,
+    name: "Java",
   },
   {
-    icon: <img src="/home/technology-stack/javascript.png" alt="javascript" />,
-    name:"Javascript",
-
+    icon: <img src="/home/technology-stack/javascript.png" alt="javascript" className="w-7 h-7 object-contain" />,
+    name: "Javascript",
   },
   {
     icon: <img src="/home/technology-stack/spring-boot.svg" alt="Spring Boot" />,
@@ -31,19 +27,16 @@ const technologies = [
 
   },
   {
-    icon: <img src="/home/technology-stack/mysql-logo-svgrepo-com.svg" alt="mySql" />,
-    name:"MySql",
-    
+    icon: <img src="/home/technology-stack/mysql-logo-svgrepo-com.svg" alt="mySql" className="w-7 h-7 object-contain" />,
+    name: "MySql",
   },
   {
-    icon: <img src="/home/technology-stack/python-svgrepo-com.svg" alt="python" />,
-    name:"Python",
-
+    icon: <img src="/home/technology-stack/python-svgrepo-com.svg" alt="python" className="w-7 h-7 object-contain" />,
+    name: "Python",
   },
   {
-    icon: <img src="/home/technology-stack/tailwind.svg" alt="tailwind" />,
-    name:"Tailwind",
-
+    icon: <img src="/home/technology-stack/tailwind.svg" alt="tailwind" className="w-7 h-7 object-contain" />,
+    name: "Tailwind",
   },
   {
     icon: <img src="/home/technology-stack/next-js.svg" alt="NextJs" />,
@@ -57,19 +50,28 @@ const marqueeItems = [...technologies, ...technologies, ...technologies];
 
 export function LeftWavyStack() {
   return (
-    <div className="relative w-full overflow-hidden py-2">
-
+    <div 
+      className="relative w-full overflow-hidden py-4 border-y-2"
+      style={{
+        backgroundColor: '#002455', // Primary Color
+        borderColor: '#f1b012',     // Init Color (Border)
+      }}
+    >
       {/* ========================================== */}
-      {/* THE MARQUEE STRIP                             */}
+      {/* THE MARQUEE STRIP                          */}
       {/* ========================================== */}
       <motion.div
-        className="flex gap-30 w-max"
+        className="flex gap-16 w-max items-center cursor-pointer"
         animate={{
-          x: ["0%", "-33.33%"], // Slides left continuously
+          x: ["0%", "-33.33%"],
+        }}
+        /* Pauses animation when hovered over, resumes when mouse leaves */
+        whileHover={{
+          animationPlayState: "paused",
         }}
         transition={{
           x: {
-            duration: 30, // Adjust speed (Lower = faster)
+            duration: 30,
             repeat: Infinity,
             ease: "linear",
           },
@@ -78,18 +80,15 @@ export function LeftWavyStack() {
         {marqueeItems.map((item, index) => (
           <div
             key={`${item.name}-${index}`}
-            className="flex items-center gap-4  rounded-xl px-2 py-3 transition-all hover:scale-105 hover:shadow-md"
+            className="flex items-center gap-3 rounded-xl px-3 py-2 transition-all duration-300 hover:scale-110 border border-transparent hover:border-[#dc0000]"
           >
             {/* Icon / Logo wrapper */}
-            <div
-              className="flex items-center justify-center w-10 h-10 rounded-full text-xl font-bold"
-              // style={{ backgroundColor: `${item.color}20`, color: item.color }} // 20 = 12% opacity
-            >
+            <div className="flex items-center justify-center w-8 h-8 shrink-0">
               {item.icon}
             </div>
 
-            {/* Text */}
-            <span className="font-semibold text-gray-800 dark:text-gray-200 whitespace-nowrap text-base">
+            {/* High-Contrast White Text */}
+            <span className="font-semibold text-white whitespace-nowrap text-base tracking-wide">
               {item.name}
             </span>
           </div>

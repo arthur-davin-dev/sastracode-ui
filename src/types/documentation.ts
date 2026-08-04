@@ -1,5 +1,23 @@
 import { CardLevel, TrackSlug } from "@/types/course";
+export interface SidebarSection {
+  id: number;
+  title: string;
+  orderIndex: number;
+}
 
+export interface SidebarDocument {
+  id: number;
+  title: string;
+  description: string;
+  orderIndex: number;
+  sections: SidebarSection[];
+}
+export type LogoItem = {
+  name: string;
+  imgSrc: string; 
+  positionClass: string;
+  slug: string;
+};
 /** Left-hand "Learning Path" sidebar item (dashboard / lesson-list / search) */
 export interface DocsNavItem {
   id: string;
@@ -8,6 +26,13 @@ export interface DocsNavItem {
   icon: "home" | "book" | "folder" | "bookmark" | "help";
 }
 
+export interface InstructorProps {
+  instructor: {
+    videoTitle: string;
+    videoSubtitle: string;
+    studentsLabel: string; 
+  };
+}
 /** One entry inside a course table-of-contents group, e.g. "Variables & Data Types" */
 export interface CourseTocItem {
   id: string;

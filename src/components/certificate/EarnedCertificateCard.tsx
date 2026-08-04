@@ -1,41 +1,142 @@
 "use client";
+
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Share2 } from "lucide-react";
-import Link from "next/link";
 import { EarnedCertificate } from "@/types/certificate";
 
-export function EarnedCertificateCard({ certificate }: { certificate: EarnedCertificate }) {
+export function EarnedCertificateCard({
+  certificate,
+}: {
+  certificate: EarnedCertificate;
+}) {
   return (
     <Link href={`/certificate/${certificate.id}`}>
-      <Card className="min-width: 240px  width: 240px shrink-0  shadow-sm flex flex-col
-      overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300
-      ">
-        <div className="relative">
-          <img src={certificate.thumbnailUrl} alt={certificate.title} className="w-full h-40 object-cover" />
-          <span className="absolute top-2 left-2 text-xs bg-white/90 px-2 py-0.5 rounded-md font-medium">
+      <Card
+        className="
+          group
+          w-[320px]
+          shrink-0
+          overflow-hidden
+          rounded-3xl
+          bg-background
+          shadow-sm
+          transition-all
+          duration-300
+          hover:-translate-y-2
+          hover:shadow-2xl
+          cursor-pointer
+        "
+      >
+        {/* Thumbnail */}
+        <div className="relative overflow-hidden">
+          <img
+            src={certificate.thumbnailUrl}
+            alt={certificate.title}
+            className="
+              h-48
+              w-full
+              object-cover
+              transition-transform
+              duration-500
+              group-hover:scale-105
+            "
+          />
+
+          {/* Category */}
+          <Badge
+            className="
+              absolute
+              left-4
+              top-4
+              rounded-full
+              bg-init-color/95
+              px-3
+              py-4
+              text-lg
+              font-semibold
+              text-primary-color
+              dark:bg-slate-200/95
+              dark:text-primary-100 
+              shadow
+              hover:bg-white
+            "
+          >
             {certificate.category}
-          </span>
+          </Badge>
         </div>
 
-        <CardContent className="p-4 space-y-2 flex-1 flex flex-col">
-          <p className="text-content font-medium line-clamp-2 min-height: 40px"> 
+        {/* Content */}
+        <CardContent className="flex h-full flex-col gap-5 p-6">
+          {/* Title */}
+          <h2
+            className="
+              min-height: 72px
+              line-clamp-2
+              text-lg
+              text-primary-color
+              dark:text-primary-100
+              font-bold
+              leading-tight
+              tracking-tight
+            "
+          >
             {certificate.title}
-          </p>
+          </h2>
 
+          {/* Date + Status */}
           <div className="flex items-center justify-between">
-            <p className="text-xs text-muted-foreground">{certificate.date}</p>
-            <Badge className="bg-green-50 text-green-600 text-xs gap-1 hover:bg-green-50">
-              <CheckCircle2 className="h-3 w-3" /> ជាបញ្ចប់
+            <span className="text-lg text-primary-color text-muted-foreground">
+              {certificate.date}
+            </span>
+
+            <Badge
+              className="
+                rounded-full
+                bg-green-100
+                px-3
+                py-4
+                text-lg
+                font-medium
+                text-green-700
+                hover:bg-green-100
+              "
+            >
+              <CheckCircle2 className="mr-1 h-4 w-4" />
+              Completed
             </Badge>
           </div>
 
-          <div className="flex items-center justify-between pt-2 border-t mt-auto">
-            <span className="text-xs text-muted-foreground">ID: #{certificate.certificateId}</span>
-            <Share2 className="h-3 w-3 text-muted-foreground cursor-pointer" />
+          {/* Footer */}
+          <div className="mt-auto flex items-center justify-between border-t pt-5">
+            <div>
+              <p className="text-lg text-primary-color uppercase tracking-wider text-muted-foreground">
+                Certificate ID
+              </p>
+              <p className="text-primary-color text-lg font-semibold">
+                #{certificate.certificateId}
+              </p>
+            </div>
+
+            <button
+              onClick={(e) => e.preventDefault()}
+              className="
+                text-primary-color
+                dark:text-primary-100
+                hover:text-primary-600
+                rounded-full
+                border
+                p-2.5
+                transition-colors
+                hover:bg-muted
+              "
+            >
+              <Share2 className="h-6 w-6" />
+            </button>
           </div>
         </CardContent>
-      </Card>  
+      </Card>
     </Link>
-    );  
+  );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLanguage } from "@/app/Context";
+import { useLanguage } from "@/lib/language-context";
 import { en } from "../locale/en";
 import { km } from "../locale/km";
 

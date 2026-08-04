@@ -45,7 +45,6 @@ user_input = input("បញ្ចូលឈ្មោះរបស់អ្នក: "
 print(greet_developer(user_input))
 `;
 
-// Fallback color for languages not in the map above (safety net)
 const DEFAULT_COLOR = "#3776AB";
 
 export default function Editor() {
@@ -78,7 +77,6 @@ export default function Editor() {
     return () => observer.disconnect();
   }, []);
 
-  // auto-scroll output to bottom on new lines, unless user pinned to Top
   useEffect(() => {
     if (!outputRef.current) return;
     if (outputAnchor === "Bottom") {
@@ -90,7 +88,11 @@ export default function Editor() {
     editorRef.current = editor;
   };
 
-  const handleSelectLanguage = (label: string, value: string, color: string) => {
+  const handleSelectLanguage = (
+    label: string,
+    value: string,
+    color: string,
+  ) => {
     setActiveLabel(label);
     setLanguage(value);
     setActiveColor(color);
@@ -103,7 +105,7 @@ export default function Editor() {
       setOutput([
         "Compiling...",
         "Success! Output:",
-        "សូស្តី Khmer Coder! ចាប់ផ្តើមសរសេរកូដជាមួយ ChhabKodu",
+        "សូស្តី Khmer Coder! ចាប់ផ្តើមសរសេរកូដជាមួយ SastraCode",
         "",
         "Process finished with exit code 0",
       ]);
@@ -146,15 +148,14 @@ export default function Editor() {
 
   const zoom = (
     setter: React.Dispatch<React.SetStateAction<number>>,
-    dir: 1 | -1
+    dir: 1 | -1,
   ) => setter((prev) => Math.min(28, Math.max(10, prev + dir)));
 
-  // JS yellow is low-contrast against white text — use dark text for it, white for the rest
   const activeTextColor = activeColor === "#F0DB4F" ? "#0f172a" : "#ffffff";
 
   return (
-    <div className="transition-colors duration-300 bg-white dark:bg-slate-950 px-4 sm:px-6 lg:px-8 pt-6 pb-8">
-      {/* Language tabs */}
+    <div className="transition-colors duration-300 bg-white dark:bg-slate-950 px-4 sm:px-6 lg:px-8 pt-6 pb-8 font-khmer">
+      {/* Language Tabs */}
       <div className="flex items-center gap-1 pb-3 overflow-x-auto no-scrollbar">
         {languages.map((lang) => {
           const isActive = activeLabel === lang.label;
@@ -203,14 +204,16 @@ export default function Editor() {
             </span>
             <button
               onClick={() => zoom(setEditorFontSize, -1)}
-              className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-1 rounded text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <ZoomOut className="h-3.5 w-3.5" />
             </button>
-            <span className="text-xs w-8 text-center">{editorFontSize}px</span>
+            <span className="text-xs w-8 text-center text-slate-700 dark:text-slate-300">
+              {editorFontSize}px
+            </span>
             <button
               onClick={() => zoom(setEditorFontSize, 1)}
-              className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-1 rounded text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <ZoomIn className="h-3.5 w-3.5" />
             </button>
@@ -222,14 +225,16 @@ export default function Editor() {
             </span>
             <button
               onClick={() => zoom(setOutputFontSize, -1)}
-              className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-1 rounded text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <ZoomOut className="h-3.5 w-3.5" />
             </button>
-            <span className="text-xs w-8 text-center">{outputFontSize}px</span>
+            <span className="text-xs w-8 text-center text-slate-700 dark:text-slate-300">
+              {outputFontSize}px
+            </span>
             <button
               onClick={() => zoom(setOutputFontSize, 1)}
-              className="p-1 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="p-1 rounded text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <ZoomIn className="h-3.5 w-3.5" />
             </button>
@@ -237,7 +242,7 @@ export default function Editor() {
 
           <button
             onClick={() => setShowLineNumbers((p) => !p)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-800 ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 ${
               showLineNumbers
                 ? "bg-slate-100 dark:bg-slate-800"
                 : "text-slate-500"
@@ -251,7 +256,7 @@ export default function Editor() {
             onClick={() =>
               setOutputAnchor((p) => (p === "Bottom" ? "Top" : "Bottom"))
             }
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-800"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300"
           >
             {outputAnchor === "Bottom" ? (
               <ChevronDown className="h-3.5 w-3.5" />
@@ -263,7 +268,7 @@ export default function Editor() {
 
           <button
             onClick={toggleFullscreen}
-            className="p-2 rounded-lg border border-slate-200 dark:border-slate-800"
+            className="p-2 rounded-lg border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300"
           >
             {isFullscreen ? (
               <Minimize2 className="h-3.5 w-3.5" />
@@ -295,28 +300,36 @@ export default function Editor() {
             <RotateCcw className="h-4 w-4" />
             Reset
           </Button>
-          <Button variant="outline" className="gap-2" onClick={handleClearEditor}>
+          <Button
+            variant="outline"
+            className="gap-2"
+            onClick={handleClearEditor}
+          >
             <Trash2 className="h-4 w-4" />
             Clear
           </Button>
-          <Button variant="outline" className="gap-2" onClick={handleClearOutput}>
+          <Button
+            variant="outline"
+            className="gap-2"
+            onClick={handleClearOutput}
+          >
             <Eraser className="h-4 w-4" />
             Clear Output
           </Button>
         </div>
       </div>
 
-      {/* Editor + Console grid */}
+      {/* Editor + Console Grid */}
       <div className="grid lg:grid-cols-2 gap-4 pt-4">
-        {/* Code editor panel */}
+        {/* Code Editor Panel */}
         <div
           className={
             isFullscreen
               ? "fixed inset-0 z-50 bg-white dark:bg-slate-950 flex flex-col"
-              : "border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-sm"
+              : "border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden bg-white dark:bg-slate-900 shadow-sm"
           }
         >
-          <div className="flex items-center justify-between px-4 py-2 border-b border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 shrink-0">
+          <div className="flex items-center justify-between px-4 py-2 border-b border-slate-200 dark:border-slate-800 bg-slate-100/90 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 shrink-0">
             <span className="text-sm font-semibold tracking-wide">EDITOR</span>
             <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
               <Copy
@@ -365,11 +378,11 @@ export default function Editor() {
           </div>
         </div>
 
-        {/* Console output panel */}
+        {/* Console Output Panel (Adaptive Light & Dark Mode) */}
         {!isFullscreen && (
-          <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden bg-slate-950 text-white shadow-sm">
-            <div className="flex items-center justify-between px-4 py-2 border-b border-slate-800 bg-slate-900/50">
-              <span className="text-sm font-semibold tracking-wide text-slate-300">
+          <div className="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white shadow-sm transition-colors duration-300">
+            <div className="flex items-center justify-between px-4 py-2 border-b border-slate-200 dark:border-slate-800 bg-slate-100/90 dark:bg-slate-900/50">
+              <span className="text-xs font-bold tracking-wider uppercase text-slate-600 dark:text-slate-300">
                 CONSOLE OUTPUT
               </span>
               <div className="flex items-center gap-3">
@@ -377,7 +390,7 @@ export default function Editor() {
                   onClick={() =>
                     outputRef.current?.scrollTo({ top: 0, behavior: "smooth" })
                   }
-                  className="text-xs flex items-center gap-1 text-slate-400 hover:text-white"
+                  className="text-xs flex items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   <ChevronUp className="h-3.5 w-3.5" /> Top
                 </button>
@@ -388,20 +401,21 @@ export default function Editor() {
                       behavior: "smooth",
                     })
                   }
-                  className="text-xs flex items-center gap-1 text-slate-400 hover:text-white"
+                  className="text-xs flex items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   <ChevronDown className="h-3.5 w-3.5" /> Bottom
                 </button>
               </div>
             </div>
+            
             <div
               ref={outputRef}
               style={{ fontSize: outputFontSize }}
               className="h-[500px] p-4 font-mono space-y-1 overflow-y-auto"
             >
               {output.length === 0 ? (
-                <p className="text-slate-500">
-                  Click "Run" to see output here.
+                <p className="text-slate-400 dark:text-slate-500 italic">
+                  Click &quot;Run&quot; to see output here.
                 </p>
               ) : (
                 output.map((line, i) => (
@@ -409,12 +423,12 @@ export default function Editor() {
                     key={i}
                     className={
                       line === "Success! Output:"
-                        ? "text-emerald-400 font-semibold"
+                        ? "text-emerald-600 dark:text-emerald-400 font-semibold"
                         : line.startsWith("Process finished")
-                          ? "text-slate-500"
+                          ? "text-slate-400 dark:text-slate-500"
                           : line.includes("Compiling")
-                            ? "text-slate-400"
-                            : "text-rose-400"
+                            ? "text-slate-500 dark:text-slate-400"
+                            : "text-slate-900 dark:text-slate-100"
                     }
                   >
                     {line}

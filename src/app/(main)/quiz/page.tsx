@@ -1,7 +1,5 @@
-import React from 'react'
+import Quiz from "@/components/quiz/Quiz";
 
-export default function page() {
-  return (
-    <div>page</div>
-  )
+export default function QuizPage() {
+  return <Quiz />;
 }

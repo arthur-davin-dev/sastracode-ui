@@ -71,7 +71,7 @@ const levelStyles: Record<CardLevel, string> = {
 
 export function LevelBadge({ level }: { level: CardLevel }) {
   return (
-    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-semibold ${levelStyles[level]}`}>
+    <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[14px] font-semibold ${levelStyles[level]}`}>
       {level}
     </span>
   );

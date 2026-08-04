@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
-import { useLanguage } from "@/app/Context";
-import { en } from "./locale/en";
-import { km } from "./locale/km";
+import { useLanguage } from "@/lib/language-context";
+import { en } from "@/locale/en";
+import { km } from "@/locale/km";
+
 
 /**
  * HeroSection

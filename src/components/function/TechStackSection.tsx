@@ -217,7 +217,7 @@ export default function TechStackSection({
             {currentT.technologyStack.description}
           </p>
         </div>
-        <div className="relative mx-auto w-full max-w-[900px]" style={{ aspectRatio: `${CANVAS_W} / ${CANVAS_H}` }}>
+        <div className="relative mx-auto w-full max-w-225" style={{ aspectRatio: `${CANVAS_W} / ${CANVAS_H}` }}>
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-gray-400 dark:text-gray-500">Loading...</span>
           </div>
@@ -243,7 +243,7 @@ export default function TechStackSection({
 
       {/* diagram */}
       <div
-        className="relative w-full max-w-[700px]"
+        className="relative mx-auto w-full max-w-[900px]"
         style={{ aspectRatio: `${CANVAS_W} / ${CANVAS_H}` }}
       >
         {/* Connecting lines - animated with pulse */}

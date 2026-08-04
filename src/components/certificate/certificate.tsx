@@ -1,4 +1,5 @@
 "use client";
+
 import { motion } from "framer-motion";
 import { PageHeader } from "@/components/ui/page-header";
 import { CertificateStatsRow } from "@/components/certificate/CertificateStatsRow";
@@ -16,10 +17,9 @@ import {
 } from "@/types/certificate";
 
 const earnedCertificates: EarnedCertificate[] = [
-  { id: "1", title: "HTML, CSS & JavaScript", thumbnailUrl: "/images/certificate2.png", level: "Beginner", date: "12/03/2025", certificateId: "SC-9821-XP", category: "Beginner Web" },
-  { id: "2", title: "React.js Fundamental", thumbnailUrl: "/images/certificate2.png", level: "Intermediate", date: "05/04/2025", certificateId: "SC-7712-XP", category: "Frontend" },
-  { id: "3", title: "Java Programming", thumbnailUrl: "/images/certificate2.png", level: "Advanced", date: "20/04/2025", certificateId: "SC-6611-XP", category: "Backend" },
-  { id: "4", title: "Spring Boot Basic", thumbnailUrl: "/images/certificate2.png", level: "Intermediate", date: "01/05/2025", certificateId: "SC-5583-XP", category: "Backend" },
+  { id: "1", title: "HTML, CSS & JavaScript", thumbnailUrl: "/images/certi.png", level: "Beginner", date: "12/03/2025", certificateId: "SC-9821-XP", category: "Beginner Web" },
+  { id: "2", title: "React.js Fundamental", thumbnailUrl: "/images/certi.png", level: "Intermediate", date: "05/04/2025", certificateId: "SC-7712-XP", category: "Frontend" },
+  { id: "3", title: "Java Programming", thumbnailUrl: "/images/certi.png", level: "Advanced", date: "20/04/2025", certificateId: "SC-6611-XP", category: "Backend" },
 ];
 
 const inProgressCertificates: InProgressCertificate[] = [
@@ -43,10 +43,14 @@ const checklistItems: RequirementChecklistItem[] = [
 export default function Certificate() {
   return (
     <div className="space-y-6 p-6">
-      <PageHeader
-        title="វិញ្ញាបនបត្រ"
+      {/* <PageHeader
+        title ="វិញ្ញាបនបត្រ"
         description="មើល និងគ្រប់គ្រងវិញ្ញាបនបត្រនិងវឌ្ឍនភាពសិក្សារបស់អ្នក"
-      />
+      /> */}
+      <h1 className="text-2xl font-bold text-primary-color">វិញ្ញាបនបត្រ</h1>
+      <p className="text-lg text-primary-color opacity-80">
+        មើល និងគ្រប់គ្រងវិញ្ញាបនបត្រនិងវឌ្ឍនភាពសិក្សារបស់អ្នក
+      </p>
 
       <CertificateStatsRow
         totalCourses={12}
@@ -61,9 +65,9 @@ export default function Certificate() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-sub-title font-semibold flex items-center gap-2 text-indigo-950">
-            <span className="h-6 w-6 rounded-full bg-indigo-100 flex items-center justify-center">
-              <Lock className="h-3.5 w-3.5 text-indigo-600" />
+          <CardTitle className="text-2xl font-semibold flex items-center gap-2 text-primary-color">
+            <span className="h-6 w-6 rounded-full bg-primary-color/20 flex items-center justify-center">
+              <Lock className="h-3.5 w-3.5 text-primary-color" />
             </span>
             វិញ្ញាបនបត្រមិនទាន់មានបញ្ចប់
           </CardTitle>

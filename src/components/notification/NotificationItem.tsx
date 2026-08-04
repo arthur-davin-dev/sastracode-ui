@@ -1,78 +1,99 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { GraduationCap, Award, Calendar, Settings } from "lucide-react";
+import { GraduationCap, Award, Calendar, Settings, Bell } from "lucide-react";
 import { NotificationItem as NotificationItemType } from "@/types/notification";
+import { cn } from "@/lib/utils";
 
 const typeConfig = {
   course: { 
     icon: GraduationCap, 
-    color: "bg-blue-500", 
-    tagColor: "bg-blue-50 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400" 
+    color: "bg-yellow-400/20 text-slate-900 dark:text-yellow-400 border border-yellow-400/50", 
+    tagColor: "bg-yellow-400/20 text-primary-color dark:text-yellow-300 border border-yellow-400/50" 
   },
   reward: { 
     icon: Award, 
-    color: "bg-yellow-500", 
-    tagColor: "bg-yellow-50 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-400" 
+    color: "bg-yellow-400/20 text-slate-900 dark:text-yellow-400 border border-yellow-400/50", 
+    tagColor: "bg-yellow-400/20 text-primary-color dark:text-yellow-300 border border-yellow-400/50" 
   },
   streak: { 
     icon: Calendar, 
-    color: "bg-red-500", 
-    tagColor: "bg-red-50 text-red-600 dark:bg-red-500/20 dark:text-red-400" 
+    color: "bg-red-600/10 text-red-600 dark:text-red-400 border border-red-600/30", 
+    tagColor: "bg-red-600/10 text-red-600 dark:text-red-400 border border-red-600/30" 
   },
   system: { 
     icon: Settings, 
-    color: "bg-indigo-900 dark:bg-indigo-600", 
-    tagColor: "bg-indigo-50 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300" 
+    color: "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700", 
+    tagColor: "bg-slate-100 dark:bg-slate-800 text-primary-color border border-slate-200 dark:border-slate-700" 
   },
 };
 
 export function NotificationItem({ notification }: { notification: NotificationItemType }) {
-  const config = typeConfig[notification.type];
-  const Icon = config.icon;
+  const config = typeConfig[notification.type] || typeConfig.system;
+  const Icon = config.icon || Bell;
 
   return (
     <Card 
-      className={`transition-colors duration-300 dark:bg-slate-900/80 dark:border-slate-800 ${
-        notification.isUnread ? "border-l-4 border-l-blue-500 dark:border-l-blue-500" : ""
-      }`}
+      className={cn(
+        "relative overflow-hidden rounded-3xl border-2 border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-0.5 group",
+        notification.isUnread && "border-l-8 "
+      )}
     >
-      <CardContent className="flex gap-3 p-4">
-        <div className={`h-9 w-9 rounded-lg flex items-center justify-center shrink-0 ${config.color} transition-colors duration-300`}>
-          <Icon className="h-4 w-4 text-white" />
+      {/* Top Gradient Ribbon */}
+      <div className="absolute top-0 left-0 w-full h-1.5 " />
+
+      <CardContent className="flex flex-col sm:flex-row items-start gap-5 p-6">
+        
+        {/* Type Icon Container */}
+        <div className={cn("h-14 w-14 rounded-2xl flex items-center justify-center shrink-0 shadow-xs transition-transform duration-300 group-hover:scale-105", config.color)}>
+          <Icon className="h-7 w-7" strokeWidth={2.2} />
         </div>
 
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1">
-            <Badge className={`text-[10px] ${config.tagColor} border-transparent transition-colors duration-300 hover:opacity-80`}>
+        {/* Content Details */}
+        <div className="flex-1 min-w-0 w-full space-y-3">
+          
+          {/* Header Row: Category Badge, Timestamp & Unread Indicator */}
+          <div className="flex items-center justify-between gap-3">
+            <Badge className={cn("text-lg font-bold px-3.5 py-4 rounded-full shadow-xs", config.tagColor)}>
               {notification.category}
             </Badge>
-            <span className="text-xs text-muted-foreground dark:text-slate-400 ml-auto shrink-0 transition-colors duration-300">
-              {notification.time}
-            </span>
-            {notification.isUnread && (
-              <span className="h-2 w-2 rounded-full bg-blue-500 shrink-0" />
-            )}
+
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="text-lg font-medium text-primary-color opacity-70">
+                {notification.time}
+              </span>
+              {notification.isUnread && (
+                <span className="h-3 w-3 rounded-full bg-red-600 animate-pulse" />
+              )}
+            </div>
           </div>
 
-          <p className="font-semibold text-sm mb-1 text-slate-900 dark:text-white transition-colors duration-300">
+          {/* Title (text-2xl & text-primary-color) */}
+          <h3 className="text-2xl font-extrabold text-primary-color leading-tight">
             {notification.title}
-          </p>
-          <p className="text-xs text-muted-foreground dark:text-slate-400 transition-colors duration-300">
+          </h3>
+
+          {/* Description (text-lg & text-primary-color) */}
+          <p className="text-lg font-medium text-primary-color opacity-85 leading-relaxed">
             {notification.description}
           </p>
 
+          {/* Streak Data / Progress Bar Section */}
           {notification.streakData && (
-            <div className="mt-2">
+            <div className="mt-3 pt-2 space-y-2 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-between text-lg font-bold text-primary-color">
+                <span className="text-init-600">{notification.streakData.label}</span>
+                <span>{notification.streakData.progressPercent}%</span>
+              </div>
               <Progress 
                 value={notification.streakData.progressPercent} 
-                className="h-1.5 [&>div]:bg-red-500 dark:bg-slate-800" 
+                className="h-2.5 bg-slate-100 dark:bg-slate-800  rounded-full" 
               />
-              <p className="text-[10px] text-red-600 dark:text-red-400 mt-1 transition-colors duration-300">
-                {notification.streakData.label}
-              </p>
             </div>
           )}
+
         </div>
       </CardContent>
     </Card>

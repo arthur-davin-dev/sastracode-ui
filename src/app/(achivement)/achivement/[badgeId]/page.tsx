@@ -87,17 +87,17 @@ export default async function BadgeDetailPage({
   const badge = badgeDetails[badgeId];
 
   if (!badge) {
-    return <div className="p-6">រកមិនឃើញព័ត៌មានមេដាយនេះទេ</div>;
+    return <div className="p-6 text-lg">រកមិនឃើញព័ត៌មានមេដាយនេះទេ</div>;
   }
 
   return (
     <div className="space-y-6 p-6">
-      <Link href="/achivement" className="flex items-center gap-1 text-sm text-muted-foreground hover:underline w-fit">
+      <Link href="/achivement" className="flex items-center gap-1 text-lg text-primary-color text-muted-foreground hover:underline w-fit">
         <ChevronLeft className="h-4 w-4" /> ត្រឡប់ក្រោយ
       </Link>
 
       <div>
-        <h1 className="text-xl font-bold text-indigo-950 border-b-2 border-red-500 inline-block pb-1">
+        <h1 className="text-2xl font-bold text-primary-color border-b-2 border-red-500 inline-block pb-1">
           ព័ត៌មានលម្អិតអំពីមេដាយ
         </h1>
       </div>
@@ -108,8 +108,8 @@ export default async function BadgeDetailPage({
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-base">តម្រូវការសម្រាប់ទទួលបាន</CardTitle>
-              <Badge className="bg-green-50 text-green-600 hover:bg-green-50">បានបញ្ចប់ទាំងអស់</Badge>
+              <CardTitle className="text-base  text-lg text-primary-color">តម្រូវការសម្រាប់ទទួលបាន</CardTitle>
+              <Badge className=" p-4 bg-green-50 text-green-600 hover:bg-green-50 text-lg">បានបញ្ចប់ទាំងអស់</Badge>
             </CardHeader>
             <CardContent>
               {badge.requirements.map((req) => (

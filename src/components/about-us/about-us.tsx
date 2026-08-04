@@ -5,7 +5,7 @@ import Timeline from "./timeline";
 import Mentor from "./mentor";
 import TeamLeader from "./team-leader";
 import TeamMember from "./team-member";
-import { Section } from "lucide-react";
+
 
 export default function AboutUs() {
   return (

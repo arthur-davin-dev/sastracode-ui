@@ -18,7 +18,7 @@ export default function SortDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <button className="flex items-center gap-2 rounded-2xl border border-border bg-card px-3.5 py-2 text-xs font-medium text-foreground hover:bg-muted">
+          <button className="flex items-center gap-2 rounded-2xl border border-border bg-card px-3.5 py-2 text-[14px] font-medium text-foreground hover:bg-muted">
             <ArrowUpDown className="h-3.5 w-3.5 text-muted-foreground" />
             តម្រៀបតម៖ <span className="font-semibold">{active}</span>
             <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />

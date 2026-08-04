@@ -10,7 +10,7 @@ import Link from "next/link";
 export default function InteractiveDoc() {
     const currentT = useTranslation();
     return (
-        <section className="py-[10px] sm:py-[20px] lg:py-[30px]  bg-white dark:bg-gray-900 transition-colors duration-300">
+        <section className="py-2.5 sm:py-5 lg:py-7.5  bg-white dark:bg-gray-900 transition-colors duration-300">
             <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-center">
                     {/* LEFT */}
