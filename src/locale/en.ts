@@ -1,7 +1,7 @@
 export const en = {
     banner: {
         badge: "LEARN. CODE. BUILD THE FUTURE.",
-        title1: "Start Learning",
+        title1: "Start Learning ",
         title2: "Coding",
         title3: "New Skills",
         title4: "for",

@@ -1,10 +1,10 @@
 export const km = {
     banner: {
-        badge: "រៀន។ សរសេរកូដ។ បង្កើតអនាគត។",
-        title1: "ចាប់ផ្តើមរៀន",
+        badge: "ចាប់ផ្ដើមរៀន សរសេរកូដ បង្កើតអនាគត",
+        title1: "ចាប់ផ្តើមរៀន ",
         title2: "Coding",
-        title3: "ជំនាញថ្មីៗ",
-        title4: "សម្រាប់",
+        title3: "ថ្ងៃនេះជាមួយ",
+        title4: "សាស្ត្រា",
         title5: "Code",
         description:
             "សិក្សាការសរសេរកូដ និងអភិវឌ្ឍជំនាញថ្មីៗ ជាមួយនឹង AI Assistant, Coding Exercise, Interactive Lesson និង Online Compiler។",

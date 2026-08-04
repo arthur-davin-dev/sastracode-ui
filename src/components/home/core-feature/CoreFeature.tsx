@@ -8,7 +8,7 @@ import Link from "next/link";
 const cardStyles = [
   {
     iconBg: "border-cyan-500/15 dark:border-cyan-400/20 bg-[#e0f7fd] dark:bg-cyan-950/30",
-    icon: "/home/svg/icon-doc.svg",
+    icon: "/home/svg/doc.svg",
     linkColor: "text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300",
     arrow: "/home/svg/arrow-blue.svg",
     href: "/documentation",
