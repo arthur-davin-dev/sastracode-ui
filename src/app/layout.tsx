@@ -2,13 +2,18 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/nav-bar";
-import Footer from "@/components/footer";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 
 const googleSans = localFont({
   src: [
-    { path: "../../public/font/GoogleSans-VariableFont_GRAD,opsz,wght.ttf", style: "normal" },
-    { path: "../../public/font/GoogleSans-Italic-VariableFont_GRAD,opsz,wght.ttf", style: "italic" },
+    {
+      path: "../../public/font/GoogleSans-VariableFont_GRAD,opsz,wght.ttf",
+      style: "normal",
+    },
+    {
+      path: "../../public/font/GoogleSans-Italic-VariableFont_GRAD,opsz,wght.ttf",
+      style: "italic",
+    },
   ],
   variable: "--font-google-sans",
   display: "swap",
@@ -29,11 +34,20 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="km" suppressHydrationWarning className={`${googleSans.variable} ${inter.variable}`}>
+    <html
+      lang="km"
+      suppressHydrationWarning
+      className={`${googleSans.variable} ${inter.variable}`}
+    >
       <body className="min-h-screen flex flex-col">
-     
-        {children} 
-     
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
