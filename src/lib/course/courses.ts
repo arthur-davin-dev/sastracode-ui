@@ -16,7 +16,6 @@ export interface Chapter {
   lessonCount: number;
   totalDuration: string;
   lessons: Lesson[];
-  
 }
 
 export interface Instructor {
@@ -37,12 +36,13 @@ export interface Course {
   image: string;
   href?: string;
   price?: number;
+  locked?: boolean;
   learningPoints?: string[];
   instructor?: Instructor;
   curriculum?: Chapter[];
   originalPrice?: number;
   totalDuration?: string;
-  benefits?: Benefit[];   
+  benefits?: Benefit[];
 }
 export interface Benefit {
   icon: "video" | "download" | "certificate" | "qa" | "pace" | "devices";
@@ -52,11 +52,7 @@ export interface Benefit {
 
 // ---- Data ----
 
-export const categories = [
-  "ទាំងអស់",
-  "ឥតគិតថ្លៃ",
-  "ថ្នាក់គិតថ្លៃ",
-] as const;
+export const categories = ["ទាំងអស់", "ឥតគិតថ្លៃ", "ថ្នាក់គិតថ្លៃ"] as const;
 
 export const courses: Course[] = [
   {
@@ -99,6 +95,7 @@ export const courses: Course[] = [
     lessons: 32,
     duration: "៧ម៉ោង ១០នាទី",
     image: "/assets/images/Nodejs.jpg",
+    locked: true,
   },
   {
     id: "5",
@@ -149,7 +146,6 @@ export const courses: Course[] = [
     duration: "៧ម៉ោង ៣០នាទី",
     image: "/assets/images/api-development-course.png",
   },
-  
 ];
 
 // ---- Data-access helpers ----
@@ -165,18 +161,19 @@ export async function getCourseById(id: string): Promise<Course | undefined> {
 export async function getRelatedCourses(
   currentId: string,
   category?: string,
-  limit = 4
+  limit = 4,
 ): Promise<Course[]> {
   const normalizedCategory = category?.toLowerCase();
 
   const sameCategory = courses.filter(
-    (c) => c.id !== currentId && c.category.toLowerCase() === normalizedCategory
+    (c) =>
+      c.id !== currentId && c.category.toLowerCase() === normalizedCategory,
   );
 
   if (sameCategory.length >= limit) return sameCategory.slice(0, limit);
 
   const fallback = courses.filter(
-    (c) => c.id !== currentId && !sameCategory.includes(c)
+    (c) => c.id !== currentId && !sameCategory.includes(c),
   );
 
   return [...sameCategory, ...fallback].slice(0, limit);
@@ -191,12 +188,11 @@ export async function getRelatedCourses(
 //   description: string;
 // }
 
-
 // export interface EnrollmentHistoryItem {
 //   courseId: string;
 //   title: string;
 //   thumbnail: string;
 //   status: "completed" | "in-progress";
 //   progressPercent: number;
-  
+
 // }

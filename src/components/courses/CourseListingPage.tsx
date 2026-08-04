@@ -58,6 +58,7 @@ const courses: Course[] = [
     lessons: 32,
     duration: "៧ម៉ោង ૧૦នាទី",
     image: "/assets/images/Nodejs.jpg",
+    locked: true,
   },
   {
     id: "5",
@@ -152,7 +153,7 @@ export default function CourseListingPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       {/* Top Hero Banner */}
-      <CourseBanner/>
+      <CourseBanner />
 
       {/* Main Content Area */}
       <main className="mx-auto max-w-7xl px-6 pb-16 pt-10">
