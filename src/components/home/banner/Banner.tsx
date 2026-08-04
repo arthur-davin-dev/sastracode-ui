@@ -27,7 +27,7 @@ export default function Banner() {
               {currentT.banner.badge}
             </div>
 
-            <h1 className="mt-6 sm:mt-8 text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight font-(family-name:--font-sans) line-clamp-2">
+            <h1 className="mt-6 sm:mt-8 text-4xl sm:text-5xl lg:text-5xl font-bold leading-tight font-(family-name:--font-sans) line-clamp-2">
               <span className="text-[#0B2B66] dark:text-blue-400">
                 {currentT.banner.title1}
               </span>
