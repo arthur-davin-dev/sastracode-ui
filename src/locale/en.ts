@@ -127,6 +127,29 @@ export const en = {
       businessCard: "Start Online Business",
       liveCoding: "Learn Anytime, Anywhere",
     },
+    featureSection: {
+    features: [
+      {
+        lines: [
+          "Learn with structured lessons",
+          "Practice with real examples",
+        ],
+      },
+      {
+        lines: [
+          "Track your learning progress",
+          "Continue from where you stopped",
+        ],
+      },
+      {
+        lines: [
+          "Build practical projects",
+          "Improve your programming skills",
+        ],
+      },
+    ],
+  },
+
   },
   technologyStack: {
     badge: "UNDER THE HOOD",
