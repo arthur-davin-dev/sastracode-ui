@@ -79,20 +79,11 @@ export function VideoPlayer({
 
   if (!src) {
     return (
-      <div className="relative flex aspect-video items-center justify-center overflow-hidden rounded-2xl bg-slate-950 p-6 shadow-lg">
-        <div className="absolute inset-0 bg-linear-to-br from-slate-900 via-slate-900/90 to-indigo-950" />
-
-        <div className="relative z-10 text-center">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-indigo-300 sm:text-sm">
-            Introduction to
-          </p>
-
-          <h2 className="text-3xl font-bold text-white sm:text-5xl lg:text-6xl">
-            {title}
-          </h2>
-
-          <p className="mt-4 text-sm text-slate-300">
-            Video unavailable. Add a video URL to this lesson.
+      <div className="flex aspect-video items-center justify-center overflow-hidden rounded-2xl bg-gray-900 px-6 text-center">
+        <div>
+          <p className="text-lg font-semibold text-white">Video unavailable</p>
+          <p className="mt-2 text-sm text-gray-300">
+            Add a video URL to this lesson to start playing it.
           </p>
 
           <button

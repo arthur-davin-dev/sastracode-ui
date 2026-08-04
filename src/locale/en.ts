@@ -11,6 +11,14 @@ export const en = {
     start: "Start Learning",
     explore: "Explore Code",
   },
+  popularDoc: {
+    badge: "Popular Documentation",
+    title: "Explore Popular Documentation",
+    description:
+      "Learn programming concepts through clear and practical documentation.",
+    viewAll: "View All Documentation",
+    startLearning: "Start Learning",
+  },
   coreFeature: {
     badge: "What We Offer",
     headingPrefix: "Core ",
@@ -51,59 +59,49 @@ export const en = {
       },
     ],
   },
+  popularCourse: {
+    badge: "Popular Courses",
+    title: "Explore Popular Courses",
+    description: "Choose a course and start learning today.",
+    viewAll: "View All Courses",
+    enrollNow: "Enroll Now",
+  },
   interactiveDoc: {
     title: "Interactive Documentation",
+
     description:
       "Explore structured lessons with Live Code Examples, Syntax Highlighting, Embedded Exercises, and Quizzes that transform knowledge into practical skills.",
+
     link: "View Documentation",
     aiChat: "Explanations and help in studying errors in the code.",
   },
-  // Key accessible directly via currentT.featureSection
   featureSection: {
     features: [
       {
         lines: [
-          "Learn through structured lessons",
-          "with practical examples",
+          "Learn through clearly explained lessons",
+          "and practical examples",
         ],
       },
       {
-        lines: [
-          "Write, test, and run code",
-          "directly in your browser",
-        ],
+        lines: ["Write, test, and run code", "directly inside your browser"],
       },
       {
         lines: [
-          "Get AI guidance and code explanations",
+          "Receive helpful hints and code explanations",
           "to improve your programming skills",
         ],
       },
     ],
   },
+  rewards: {
+    headingMain: "Learn, Practice, and",
+    headingAccent: "Earn Rewards",
+    description:
+      "Complete lessons, improve your skills, and earn certificates and achievements.",
+    ctaLabel: "Start Learning",
+  },
   resultAndRewards: {
-    featureSection: {
-      features: [
-        {
-          lines: [
-            "Learn through structured lessons",
-            "with practical examples",
-          ],
-        },
-        {
-          lines: [
-            "Write, test, and run code",
-            "directly in your browser",
-          ],
-        },
-        {
-          lines: [
-            "Get AI guidance and code explanations",
-            "to improve your programming skills",
-          ],
-        },
-      ],
-    },
     rewards: {
       headingMain: "Achievements &",
       headingAccent: "Rewards",
@@ -112,21 +110,17 @@ export const en = {
       ctaLabel: "Start Learning",
     },
   },
-  rewards: {
-    headingMain: "Achievements &",
-    headingAccent: "Rewards",
-    description:
-      "SastraCode rewards your learning journey with XP, badges, and certificates as you complete lessons, practice coding, and track your progress.",
-    ctaLabel: "Start Learning",
-  },
   showCase: {
     heroCharacter: {
       badge: "Your Journey To The Future",
+
       title1: "Welcome To ",
       title2: "Sastra",
       title3: "Code",
+
       description:
         "From beginner to professional developer - easy lessons, challenges, and fun learning experiences. No complicated software installation is required to run code.",
+
       button: "Try Coding",
     },
     floatCard: {
@@ -140,22 +134,49 @@ export const en = {
       businessCard: "Start Online Business",
       liveCoding: "Learn Anytime, Anywhere",
     },
+    featureSection: {
+      features: [
+        {
+          lines: [
+            "Learn with structured lessons",
+            "Practice with real examples",
+          ],
+        },
+        {
+          lines: [
+            "Track your learning progress",
+            "Continue from where you stopped",
+          ],
+        },
+        {
+          lines: [
+            "Build practical projects",
+            "Improve your programming skills",
+          ],
+        },
+      ],
+    },
   },
   technologyStack: {
     badge: "UNDER THE HOOD",
+
     title1: "Technology Stack",
     description:
       "Modern technologies powering a next-generation learning experience.",
   },
+
+  // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.
   footer: {
     description:
       "Built to empower developers through high-quality, easy-to-understand technology education.",
+
     quickLinks: {
       title: "Quick Links",
       about: "About SastraCode",
       team: "Our Team",
       partners: "Partners",
     },
+
     study: {
       title: "Study",
       certificate: "Certificates",
@@ -163,13 +184,18 @@ export const en = {
       dataScience: "Data Science",
       systemDesign: "System Design",
     },
+
     contact: {
       title: "Contact",
       address: "Village 13, Street 50, Street 273, Phnom Penh 12151",
     },
+
     email: "contact@sastracode.tech",
+
     sponsor: "Organized & Sponsored By",
+
     copyright: "© 2026 SastraCode. All rights reserved.",
+
     privacy: "Privacy Policy",
     terms: "Terms of Service",
     legal: "Legal",

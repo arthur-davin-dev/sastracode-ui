@@ -1,4 +1,4 @@
-import { Timer } from "lucide-react"; // Import necessary UI icon
+import { Timer } from "lucide-react";
 import { LessonPageAnchor } from "@/types/documentation";
 
 interface DocsTocProps {
@@ -16,54 +16,55 @@ export default function DocsToc({
 }: DocsTocProps) {
   
   return (
-    // Clean, wider layout container matching the UI styling
-    <aside className="w-64 shrink-0 p-4 hidden lg:block border-l border-gray-100 bg-[#eff4ff] space-y-6">
+    <aside className="sticky top-0 h-screen w-64 shrink-0 overflow-y-auto p-4 hidden lg:block border-l border-slate-200/80 dark:border-slate-800 bg-[#eff4ff] dark:bg-slate-900 font-khmer space-y-6 transition-colors duration-300">
       
       {/* 1. TOP SECTION: PROGRESS CARD */}
-      <div className="bg-[#EDF3FC] rounded-2xl p-4 border border-[#D9E6F7]">
+      <div className="bg-[#EDF3FC] dark:bg-slate-800/80 rounded-2xl p-4 border border-[#D9E6F7] dark:border-slate-700/60 transition-colors">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-gray-600 font-medium text-[16px]">
+          <span className="text-slate-600 dark:text-slate-300 font-medium text-sm">
             {levelLabel}
           </span>
-          <span className="text-[#002455] font-bold text-sm">
+          <span className="text-[#002455] dark:text-blue-400 font-bold text-sm">
             {progressPercent}%
           </span>
         </div>
+        
         {/* Progress Bar Track */}
-        <div className="w-full bg-[#E1ECFA] h-1.5 rounded-full mb-3 overflow-hidden">
+        <div className="w-full bg-[#E1ECFA] dark:bg-slate-700 h-1.5 rounded-full mb-3 overflow-hidden">
           <div 
-            className="bg-[#002455] h-full rounded-full transition-all duration-300"
+            className="bg-[#002455] dark:bg-blue-500 h-full rounded-full transition-all duration-300"
             style={{ width: `${progressPercent}%` }}
           />
         </div>
+        
         {/* Time Spent */}
-        <div className="flex items-center gap-1.5 text-gray-500 text-[16px]">
-          <Timer size={16} className="shrink-0" />
+        <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 text-sm">
+          <Timer className="h-4 w-4 shrink-0 text-slate-400 dark:text-slate-500" />
           <span>{timeLabel}</span>
         </div>
       </div>
 
       {/* 2. MIDDLE SECTION: TABLE OF CONTENTS */}
       <div>
-        <div className="text-[16px] font-bold text-[#002455] mb-4 px-3">
+        <div className="text-sm font-bold text-[#002455] dark:text-slate-100 mb-3 px-3">
           នៅក្នុងទំព័រនេះ
         </div>
         
         {anchors && anchors.length > 0 && (
-          <ul className="text-[16px] space-y-1">
+          <ul className="text-sm space-y-1">
             {anchors.map((a) => (
               <li key={a.id} className="relative group">
                 {/* Active left indicator line */}
                 {a.active && (
-                  <div className="absolute left-0 top-1 bottom-1 w-[3px] bg-[#002455] rounded-r" />
+                  <div className="absolute left-0 top-1 bottom-1 w-1 bg-[#002455] dark:bg-blue-500 rounded-r" />
                 )}
                 
                 <a 
                   href={`#${a.id}`} 
-                  className={`block pl-4 pr-3 py-2 rounded-r transition-colors duration-150 ${
+                  className={`block pl-4 pr-3 py-2 rounded-r text-sm transition-colors duration-150 ${
                     a.active 
-                      ? "font-semibold text-[#002455]" 
-                      : "text-gray-600 hover:text-[#002455] hover:bg-gray-100/70"
+                      ? "font-semibold text-[#002455] dark:text-blue-400 bg-white/60 dark:bg-slate-800/60" 
+                      : "text-slate-600 dark:text-slate-400 hover:text-[#002455] dark:hover:text-slate-100 hover:bg-white/40 dark:hover:bg-slate-800/40"
                   }`}
                 >
                   {a.label}

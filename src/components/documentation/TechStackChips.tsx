@@ -26,16 +26,10 @@ export default function TechStackChips({ options }: TechStackChipsProps) {
 
         return (
           <li key={option.id}>
-            {/* 
-              STATIC HOVER CHIP: 
-              - Uses standard `div` (not clickable)
-              - Has `cursor-default` so no hand pointer appears.
-              - Uses `group`, `hover`, and `transition` for the animations.
-            */}
             <div
-              className="group flex items-center gap-2 rounded-full border border-slate-100 bg-white px-5 py-2.5 text-sm font-medium font-khmer text-slate-700  cursor-default transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-md hover:border-blue-300 hover:text-blue-700"
+              className="group flex cursor-default items-center gap-2.5 rounded-full border border-slate-200/80 bg-white px-5 py-2.5 text-base font-medium text-slate-700 font-khmer shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-blue-400 hover:text-blue-600 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-blue-500 dark:hover:text-blue-400 dark:shadow-slate-950/50"
             >
-              {/* Logo container pulses slightly on group hover */}
+              {/* Logo Icon Container */}
               <div className="relative h-6 w-6 shrink-0 transition-transform duration-300 ease-out group-hover:scale-110">
                 <Image
                   src={iconUrl}
@@ -46,7 +40,7 @@ export default function TechStackChips({ options }: TechStackChipsProps) {
                 />
               </div>
               
-              <span className="text-[16px]">{option.label}</span>
+              <span>{option.label}</span>
             </div>
           </li>
         );

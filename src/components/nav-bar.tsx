@@ -25,30 +25,12 @@ export default function Navbar() {
   const t = {
     km: {
       navItems: [
-        {
-          label: "មេរៀន",
-          href: "/documentation",
-        },
-        {
-          label: "វគ្គសិក្សា",
-          href: "/courses",
-        },
-        {
-          label: "បញ្ជីវីដេអូ",
-          href: "/playlists",
-        },
-        {
-          label: "កន្លែងសាកល្បងកូដ",
-          href: "/playground",
-        },
-        {
-          label: "អំពីសាស្ត្រាកូដ",
-          href: "/about-us",
-        },
-        {
-          label: "សំណួរតេស្ត",
-          href: "/quiz",
-        },
+        { label: "មេរៀន", href: "/documentation" },
+        { label: "វគ្គសិក្សា", href: "/courses" },
+        { label: "កន្លែងសាកល្បងកូដ", href: "/playground" },
+        { label: "សំណួរតេស្ត", href: "/quiz" },
+        { label: "មុខងារ", href: "/function" },
+        { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
       ],
       register: "ចុះឈ្មោះ",
       langName: "ខ្មែរ",
@@ -57,30 +39,14 @@ export default function Navbar() {
 
     en: {
       navItems: [
-        {
-          label: "Lessons",
-          href: "/documentation",
-        },
-        {
-          label: "Courses",
-          href: "/courses",
-        },
-        {
-          label: "Playlists",
-          href: "/playlists",
-        },
-        {
-          label: "Playground",
-          href: "/playground",
-        },
-        {
-          label: "About Sastra Code",
-          href: "/about-us",
-        },
-        {
-          label: "Quiz",
-          href: "/quiz",
-        },
+        { label: "Lessons", href: "/documentation" },
+        { label: "Courses", href: "/courses" },
+        { label: "Playground", href: "/playground" },
+        { label: "Quiz", href: "/quiz" },
+        {label: "Function", href: "/function" },
+        { label: "About Sastra Code", href: "/about-us" },
+
+        // Quiz
       ],
       register: "Register",
       langName: "English",

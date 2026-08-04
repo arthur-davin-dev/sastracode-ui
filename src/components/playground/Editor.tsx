@@ -45,7 +45,6 @@ user_input = input("បញ្ចូលឈ្មោះរបស់អ្នក: "
 print(greet_developer(user_input))
 `;
 
-// Fallback color for languages not in the map above (safety net)
 const DEFAULT_COLOR = "#3776AB";
 
 export default function Editor() {
@@ -106,7 +105,7 @@ export default function Editor() {
       setOutput([
         "Compiling...",
         "Success! Output:",
-        "សូស្តី Davin Coder! ចាប់ផ្តើមសរសេរកូដជាមួយ Kavey Code",
+        "សូស្តី Khmer Coder! ចាប់ផ្តើមសរសេរកូដជាមួយ SastraCode",
         "",
         "Process finished with exit code 0",
       ]);
@@ -155,13 +154,8 @@ export default function Editor() {
   const activeTextColor = activeColor === "#F0DB4F" ? "#0f172a" : "#ffffff";
 
   return (
-    <div className="transition-colors duration-300 bg-white dark:bg-slate-950 px-4 sm:px-6 lg:px-8 pt-6 pb-8">
-      {/* TEMP TEST MARKER - remove once we confirm this file is rendering */}
-      {/* <h1 style={{ color: "red", fontSize: "40px" }}>
-        TEST 123 - IS THIS SHOWING?
-      </h1> */}
-
-      {/* Language tabs */}
+    <div className="transition-colors duration-300 bg-white dark:bg-slate-950 px-4 sm:px-6 lg:px-8 pt-6 pb-8 font-khmer">
+      {/* Language Tabs */}
       <div className="flex items-center gap-1 pb-3 overflow-x-auto no-scrollbar">
         {languages.map((lang) => {
           const isActive = activeLabel === lang.label;
@@ -325,17 +319,17 @@ export default function Editor() {
         </div>
       </div>
 
-      {/* Editor + Console grid */}
+      {/* Editor + Console Grid */}
       <div className="grid lg:grid-cols-2 gap-4 pt-4">
-        {/* Code editor panel */}
+        {/* Code Editor Panel */}
         <div
           className={
             isFullscreen
               ? "fixed inset-0 z-50 bg-white dark:bg-slate-950 flex flex-col"
-              : "border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden bg-white dark:bg-slate-900 shadow-sm"
+              : "border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden bg-white dark:bg-slate-900 shadow-sm"
           }
         >
-          <div className="flex items-center justify-between px-4 py-2 border-b border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 shrink-0">
+          <div className="flex items-center justify-between px-4 py-2 border-b border-slate-200 dark:border-slate-800 bg-slate-100/90 dark:bg-slate-800/80 text-slate-800 dark:text-slate-200 shrink-0">
             <span className="text-sm font-semibold tracking-wide">EDITOR</span>
             <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
               <Copy
@@ -384,11 +378,11 @@ export default function Editor() {
           </div>
         </div>
 
-        {/* Console output panel */}
+        {/* Console Output Panel (Adaptive Light & Dark Mode) */}
         {!isFullscreen && (
-          <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden bg-slate-950 text-white shadow-sm">
-            <div className="flex items-center justify-between px-4 py-2 border-b border-slate-800 bg-slate-900/50">
-              <span className="text-sm font-semibold tracking-wide text-slate-300">
+          <div className="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-white shadow-sm transition-colors duration-300">
+            <div className="flex items-center justify-between px-4 py-2 border-b border-slate-200 dark:border-slate-800 bg-slate-100/90 dark:bg-slate-900/50">
+              <span className="text-xs font-bold tracking-wider uppercase text-slate-600 dark:text-slate-300">
                 CONSOLE OUTPUT
               </span>
               <div className="flex items-center gap-3">
@@ -396,7 +390,7 @@ export default function Editor() {
                   onClick={() =>
                     outputRef.current?.scrollTo({ top: 0, behavior: "smooth" })
                   }
-                  className="text-xs flex items-center gap-1 text-slate-400 hover:text-white"
+                  className="text-xs flex items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   <ChevronUp className="h-3.5 w-3.5" /> Top
                 </button>
@@ -407,19 +401,20 @@ export default function Editor() {
                       behavior: "smooth",
                     })
                   }
-                  className="text-xs flex items-center gap-1 text-slate-400 hover:text-white"
+                  className="text-xs flex items-center gap-1 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
                 >
                   <ChevronDown className="h-3.5 w-3.5" /> Bottom
                 </button>
               </div>
             </div>
+            
             <div
               ref={outputRef}
               style={{ fontSize: outputFontSize }}
-              className="h-125 p-4 font-mono space-y-1 overflow-y-auto"
+              className="h-[500px] p-4 font-mono space-y-1 overflow-y-auto"
             >
               {output.length === 0 ? (
-                <p className="text-slate-500">
+                <p className="text-slate-400 dark:text-slate-500 italic">
                   Click &quot;Run&quot; to see output here.
                 </p>
               ) : (
@@ -428,12 +423,12 @@ export default function Editor() {
                     key={i}
                     className={
                       line === "Success! Output:"
-                        ? "text-emerald-400 font-semibold"
+                        ? "text-emerald-600 dark:text-emerald-400 font-semibold"
                         : line.startsWith("Process finished")
-                          ? "text-slate-500"
+                          ? "text-slate-400 dark:text-slate-500"
                           : line.includes("Compiling")
-                            ? "text-slate-400"
-                            : "text-rose-400"
+                            ? "text-slate-500 dark:text-slate-400"
+                            : "text-slate-900 dark:text-slate-100"
                     }
                   >
                     {line}

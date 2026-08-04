@@ -77,7 +77,7 @@
 "use client";
 
 import { useState } from "react";
-import Footer from "@/components/footer";
+
 import AppSidebar from "@/components/layout/AppSidebar";
 import SubNavbar from "@/components/layout/Sub-Navbar";
 

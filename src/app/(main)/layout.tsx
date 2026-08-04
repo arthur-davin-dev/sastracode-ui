@@ -1,4 +1,4 @@
-import NavbarPage from "../../components/navbar-component-01/page";
+
 import Navbar from "@/components/nav-bar";
 import Footer from "@/components/footer";
 
@@ -10,7 +10,9 @@ export default function MainLayout({
   return (
     <>
       <Navbar />
-      {children}
+      <main className="flex-1 pt-14">
+        {children}
+      </main>
       <Footer />
     </>
   );

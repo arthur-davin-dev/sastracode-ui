@@ -1,31 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
-import { outerLogos, innerLogos } from "@/lib/data/documentation"; // Grouped imports nicely
+import { outerLogos, innerLogos } from "@/lib/data/documentation";
 
 export default function HeroVisual() {
   return (
-    /* FIXED: Swapped h-100 w-100 for proper arbitrary bracket sizes h-[400px] w-[400px] */
-    <div className="relative mx-auto h-[350px] w-[350px] sm:h-96 sm:w-96 md:h-[400px] md:w-[400px] animate-bob">
+    <div className="relative mx-auto h-[350px] w-[350px] sm:h-96 sm:w-96 md:h-[400px] md:w-[400px] animate-bob pointer-events-none select-none">
       
-      {/* Character avatar */}
+      {/* Character / Main Hero Illustration */}
       <div className="absolute inset-0 overflow-hidden z-0">
         <Image
           src="/images/doc-hero-image-transparent.png"
           alt="សិស្សសាស្ត្រាកូដកំពុងកាន់កុំព្យូទ័រយួរដៃ"
           fill
+          priority
           className="object-contain"
         />
       </div>
 
-      {/* Outer orbit */}
-      <div className="absolute top-1/2 left-1/2 w-[110%] h-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full animate-spin-slow z-30 pointer-events-none">
+      {/* Outer Orbit Ring */}
+      <div className="absolute top-1/2 left-1/2 w-[110%] h-[110%] -translate-x-1/2 -translate-y-1/2 rounded-full animate-spin-slow z-30">
         {outerLogos.map((logo) => (
-          <Link
+          <div
             key={logo.name}
-            href={`/documentation/lessons/${logo.slug}`}
-            className={`absolute w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center p-3 animate-counter-spin ${logo.positionClass} cursor-pointer hover:scale-110 transition-transform duration-200 pointer-events-auto z-50`}
+            className={`absolute w-14 h-14 rounded-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-lg dark:shadow-slate-950/50 flex items-center justify-center p-3 animate-counter-spin ${logo.positionClass}`}
           >
             <div className="relative w-full h-full">
               <Image
@@ -36,17 +34,16 @@ export default function HeroVisual() {
                 unoptimized 
               />
             </div>
-          </Link>
+          </div>
         ))}
       </div>
 
-      {/* Inner orbit */}
-      <div className="absolute top-1/2 left-1/2 w-[85%] h-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full animate-spin-slow-reverse z-40 pointer-events-none">
+      {/* Inner Orbit Ring */}
+      <div className="absolute top-1/2 left-1/2 w-[85%] h-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full animate-spin-slow-reverse z-40">
         {innerLogos.map((logo) => (
-          <Link
+          <div
             key={logo.name}
-            href={`/documentation/lessons/${logo.slug}`}
-            className={`absolute w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center p-3 animate-counter-spin-reverse ${logo.positionClass} cursor-pointer hover:scale-110 transition-transform duration-200 pointer-events-auto z-50`}
+            className={`absolute w-14 h-14 rounded-full bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-lg dark:shadow-slate-950/50 flex items-center justify-center p-3 animate-counter-spin-reverse ${logo.positionClass}`}
           >
             <div className="relative w-full h-full">
               <Image
@@ -57,9 +54,10 @@ export default function HeroVisual() {
                 unoptimized 
               />
             </div>
-          </Link>
+          </div>
         ))}
       </div>
+
     </div>
   );
 }

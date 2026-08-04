@@ -1,16 +1,14 @@
-import React from 'react';
-import Link from 'next/link'; // 1. Added Next.js Link import
-import { ChevronLeft } from 'lucide-react'; // 2. Added Lucide icon import
+import Link from "next/link";
+import { ChevronLeft } from "lucide-react";
 
 export default function Backbutton() {
   return (
-    <div>
-      <Link 
-        href="/documentation" 
-        className="flex items-center gap-1 text-[16px] bg-white px-4 py-2 rounded-lg text-gray-500 mb-6 w-fit   transition-all duration-200 hover:scale-[1.02] active:scale-[0.99]"
-      >
-        <ChevronLeft size={16} /> ទំព័រដើម
-      </Link>    
-    </div>
+    <Link 
+      href="/documentation" 
+      className="inline-flex h-10 items-center gap-1.5 rounded-xl border border-slate-200/80 bg-white px-4 text-sm font-medium text-slate-600 shadow-sm transition-all duration-200 hover:scale-[1.02] hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 active:scale-[0.99] font-khmer w-fit"
+    >
+      <ChevronLeft className="h-4 w-4" />
+      <span>ទំព័រដើម</span>
+    </Link>
   );
 }

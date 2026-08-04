@@ -104,11 +104,11 @@ export default function QuizAttempt({ quizId }: QuizAttemptProps) {
   const [secondsLeft, setSecondsLeft] = useState(20 * 60); // 20 min countdown
   const [totalXp, setTotalXp] = useState(0);
 
-  const current = questions[current_index_safe(currentIndex, questions.length)];
-
   function current_index_safe(index: number, len: number) {
     return Math.min(index, Math.max(len - 1, 0));
   }
+
+  const current = questions[current_index_safe(currentIndex, questions.length)];
 
   // Timer countdown
   useEffect(() => {
@@ -159,178 +159,180 @@ export default function QuizAttempt({ quizId }: QuizAttemptProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-      {/* Top bar: timer + XP */}
-      <div className="flex items-center justify-end gap-3 mb-6">
-        <span className="flex items-center gap-1.5 rounded-full border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/40 px-4 py-1.5 text-sm font-semibold text-indigo-700 dark:text-indigo-400">
-          <Clock className="h-4 w-4" />
-          {formatTime(secondsLeft)}
-        </span>
-        <span className="flex items-center gap-1.5 rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 px-4 py-1.5 text-sm font-semibold text-amber-700 dark:text-amber-400">
-          <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
-          +{totalXp} XP
-        </span>
-      </div>
-
-      {/* Topic badge + question counter */}
-      <div className="flex items-center justify-between mb-3">
-        <span className="flex items-center gap-1.5 rounded-lg bg-[#002455] text-white text-sm font-semibold px-3 py-1.5">
-          <Zap className="h-3.5 w-3.5" />
-          {current.topic}
-        </span>
-        <span className="text-sm text-slate-500 dark:text-slate-400">
-          Question {currentIndex + 1} of {questions.length}
-        </span>
-      </div>
-
-      {/* Progress bar + dots */}
-      <div className="mb-8">
-        <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden mb-3">
-          <div
-            className="h-full bg-[#002455] transition-all duration-300"
-            style={{
-              width: `${(answeredCount / questions.length) * 100}%`,
-            }}
-          />
+    <div className="w-full min-h-screen bg-slate-50 dark:bg-[#0f172a] text-slate-900 dark:text-slate-100 transition-colors duration-300">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+        {/* Top bar: timer + XP */}
+        <div className="flex items-center justify-end gap-3 mb-6">
+          <span className="flex items-center gap-1.5 rounded-full border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-950/40 px-4 py-1.5 text-sm font-semibold text-indigo-700 dark:text-indigo-400">
+            <Clock className="h-4 w-4" />
+            {formatTime(secondsLeft)}
+          </span>
+          <span className="flex items-center gap-1.5 rounded-full border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 px-4 py-1.5 text-sm font-semibold text-amber-700 dark:text-amber-400">
+            <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+            +{totalXp} XP
+          </span>
         </div>
-        <div className="flex items-center justify-between">
-          {questions.map((_, i) => {
-            const ans = answers[i];
-            const isCurrent = i === currentIndex;
-            const isWrong = ans !== null && ans !== questions[i].correctIndex;
-            const isCorrect = ans !== null && ans === questions[i].correctIndex;
 
-            return (
-              <button
-                key={i}
-                onClick={() => setCurrentIndex(i)}
-                className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
-                  isCurrent
-                    ? "bg-[#002455] text-white"
-                    : isWrong
-                      ? "bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400"
-                      : isCorrect
-                        ? "bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400"
-                        : "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600"
-                }`}
-              >
-                {isWrong ? "✕" : isCorrect ? "✓" : i + 1}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Question card */}
-      <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm mb-6">
-        <div className="flex items-center justify-between mb-4">
+        {/* Topic badge + question counter */}
+        <div className="flex items-center justify-between mb-3">
+          <span className="flex items-center gap-1.5 rounded-lg bg-[#002455] dark:bg-indigo-600 text-white text-sm font-semibold px-3 py-1.5">
+            <Zap className="h-3.5 w-3.5" />
+            {current.topic}
+          </span>
           <span className="text-sm text-slate-500 dark:text-slate-400">
-            Answer correctly to earn:
-          </span>
-          <span className="flex items-center gap-1.5 rounded-full bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 text-sm font-bold px-3 py-1.5">
-            <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
-            +{current.xpReward} XP
+            Question {currentIndex + 1} of {questions.length}
           </span>
         </div>
 
-        <h2 className="text-xl sm:text-2xl font-bold text-[#002455] dark:text-slate-100 mb-6">
-          {current.question}
-        </h2>
-
-        <div className="space-y-3">
-          {current.choices.map((choice, i) => {
-            const selected = answers[currentIndex];
-            const isSelected = selected === i;
-            const isCorrectChoice = i === current.correctIndex;
-            const showFeedback = selected !== null;
-
-            let stateClasses =
-              "bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700";
-            if (showFeedback) {
-              if (isCorrectChoice) {
-                stateClasses =
-                  "bg-emerald-100 dark:bg-emerald-950/50 border border-emerald-400 dark:border-emerald-700";
-              } else if (isSelected && !isCorrectChoice) {
-                stateClasses =
-                  "bg-rose-100 dark:bg-rose-950/50 border border-rose-400 dark:border-rose-700";
-              } else {
-                stateClasses = "bg-slate-50 dark:bg-slate-800/50 opacity-60";
-              }
-            }
-
-            return (
-              <button
-                key={i}
-                onClick={() => handleSelect(i)}
-                disabled={showFeedback}
-                className={`w-full flex items-center gap-4 rounded-xl px-5 py-4 text-left transition-colors ${stateClasses} ${
-                  showFeedback ? "cursor-default" : "cursor-pointer"
-                }`}
-              >
-                <span className="h-8 w-8 shrink-0 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center text-sm font-bold text-slate-500 dark:text-slate-300">
-                  {String.fromCharCode(65 + i)}
-                </span>
-                <span className="font-mono text-slate-800 dark:text-slate-100">
-                  {choice}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {answers[currentIndex] !== null && (
-          <div className="mt-6 rounded-xl bg-slate-50 dark:bg-slate-800/50 p-4 text-sm text-slate-600 dark:text-slate-300">
-            <p className="mb-2">{current.explanation}</p>
-            {current.codeExample && (
-              <pre className="mt-2 rounded-lg bg-slate-950 text-slate-100 p-3 overflow-x-auto font-mono text-xs">
-                {current.codeExample}
-              </pre>
-            )}
+        {/* Progress bar + dots */}
+        <div className="mb-8">
+          <div className="h-2 w-full rounded-full bg-slate-200 dark:bg-slate-800 overflow-hidden mb-3">
+            <div
+              className="h-full bg-[#002455] dark:bg-blue-500 transition-all duration-300"
+              style={{
+                width: `${(answeredCount / questions.length) * 100}%`,
+              }}
+            />
           </div>
-        )}
-      </div>
+          <div className="flex items-center justify-between">
+            {questions.map((_, i) => {
+              const ans = answers[i];
+              const isCurrent = i === currentIndex;
+              const isWrong = ans !== null && ans !== questions[i].correctIndex;
+              const isCorrect = ans !== null && ans === questions[i].correctIndex;
 
-      {/* Bottom nav */}
-      <div className="flex items-center justify-between gap-3">
-        <button
-          onClick={() => setCurrentIndex((i) => Math.max(0, i - 1))}
-          disabled={currentIndex === 0}
-          className="flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-700 px-5 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-        >
-          <ChevronLeft className="h-4 w-4" />
-          ថយក្រោយ
-        </button>
-
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() =>
-              setCurrentIndex((i) => Math.min(questions.length - 1, i + 1))
-            }
-            disabled={currentIndex === questions.length - 1}
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-700 px-5 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-          >
-            បន្ទាប់
-            <ChevronRight className="h-4 w-4" />
-          </button>
-
-          <button
-            onClick={handleSubmit}
-            disabled={!allAnswered}
-            className={`flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-colors ${
-              allAnswered
-                ? "bg-[#002455] hover:bg-[#001a3d] text-white cursor-pointer"
-                : "bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400 cursor-not-allowed"
-            }`}
-          >
-            <Trophy className="h-4 w-4" />
-            បញ្ចប់ Quiz
-          </button>
+              return (
+                <button
+                  key={i}
+                  onClick={() => setCurrentIndex(i)}
+                  className={`h-8 w-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
+                    isCurrent
+                      ? "bg-[#002455] dark:bg-blue-600 text-white"
+                      : isWrong
+                        ? "bg-rose-100 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400"
+                        : isCorrect
+                          ? "bg-emerald-100 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400"
+                          : "bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400"
+                  }`}
+                >
+                  {isWrong ? "✕" : isCorrect ? "✓" : i + 1}
+                </button>
+              );
+            })}
+          </div>
         </div>
-      </div>
 
-      <p className="text-center text-sm text-slate-400 dark:text-slate-500 mt-4">
-        Answer all {questions.length} questions to submit — {remaining} remaining
-      </p>
+        {/* Question card */}
+        <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 sm:p-8 shadow-sm mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm text-slate-500 dark:text-slate-400">
+              Answer correctly to earn:
+            </span>
+            <span className="flex items-center gap-1.5 rounded-full bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 text-sm font-bold px-3 py-1.5">
+              <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+              +{current.xpReward} XP
+            </span>
+          </div>
+
+          <h2 className="text-xl sm:text-2xl font-bold text-[#002455] dark:text-white mb-6">
+            {current.question}
+          </h2>
+
+          <div className="space-y-3">
+            {current.choices.map((choice, i) => {
+              const selected = answers[currentIndex];
+              const isSelected = selected === i;
+              const isCorrectChoice = i === current.correctIndex;
+              const showFeedback = selected !== null;
+
+              let stateClasses =
+                "bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700";
+              if (showFeedback) {
+                if (isCorrectChoice) {
+                  stateClasses =
+                    "bg-emerald-100 dark:bg-emerald-950/50 border border-emerald-400 dark:border-emerald-700";
+                } else if (isSelected && !isCorrectChoice) {
+                  stateClasses =
+                    "bg-rose-100 dark:bg-rose-950/50 border border-rose-400 dark:border-rose-700";
+                } else {
+                  stateClasses = "bg-slate-50 dark:bg-slate-800/50 opacity-60";
+                }
+              }
+
+              return (
+                <button
+                  key={i}
+                  onClick={() => handleSelect(i)}
+                  disabled={showFeedback}
+                  className={`w-full flex items-center gap-4 rounded-xl px-5 py-4 text-left transition-colors ${stateClasses} ${
+                    showFeedback ? "cursor-default" : "cursor-pointer"
+                  }`}
+                >
+                  <span className="h-8 w-8 shrink-0 rounded-full bg-white dark:bg-slate-700 flex items-center justify-center text-sm font-bold text-slate-500 dark:text-slate-300">
+                    {String.fromCharCode(65 + i)}
+                  </span>
+                  <span className="font-mono text-slate-800 dark:text-slate-100">
+                    {choice}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {answers[currentIndex] !== null && (
+            <div className="mt-6 rounded-xl bg-slate-50 dark:bg-slate-800/50 p-4 text-sm text-slate-600 dark:text-slate-300">
+              <p className="mb-2">{current.explanation}</p>
+              {current.codeExample && (
+                <pre className="mt-2 rounded-lg bg-slate-950 text-slate-100 p-3 overflow-x-auto font-mono text-xs">
+                  {current.codeExample}
+                </pre>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Bottom nav */}
+        <div className="flex items-center justify-between gap-3">
+          <button
+            onClick={() => setCurrentIndex((i) => Math.max(0, i - 1))}
+            disabled={currentIndex === 0}
+            className="flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            ថយក្រោយ
+          </button>
+
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() =>
+                setCurrentIndex((i) => Math.min(questions.length - 1, i + 1))
+              }
+              disabled={currentIndex === questions.length - 1}
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-5 py-3 text-sm font-semibold text-slate-700 dark:text-slate-300 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+            >
+              បន្ទាប់
+              <ChevronRight className="h-4 w-4" />
+            </button>
+
+            <button
+              onClick={handleSubmit}
+              disabled={!allAnswered}
+              className={`flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold transition-colors ${
+                allAnswered
+                  ? "bg-[#002455] dark:bg-blue-600 hover:bg-[#001a3d] dark:hover:bg-blue-700 text-white cursor-pointer"
+                  : "bg-slate-300 dark:bg-slate-800 text-slate-500 dark:text-slate-500 cursor-not-allowed"
+              }`}
+            >
+              <Trophy className="h-4 w-4" />
+              បញ្ចប់ Quiz
+            </button>
+          </div>
+        </div>
+
+        <p className="text-center text-sm text-slate-400 dark:text-slate-500 mt-4">
+          Answer all {questions.length} questions to submit — {remaining} remaining
+        </p>
+      </div>
     </div>
   );
 }

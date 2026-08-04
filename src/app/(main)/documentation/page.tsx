@@ -1,8 +1,6 @@
 import Hero from "@/components/documentation/Hero";
 import CourseProgressCard from "@/components/documentation/CourseProgressCard";
 import CourseGrid from "@/components/documentation/CourseGrid";
-import ForumPostList from "@/components/documentation/ForumPostList";
-import PromoBanner from "@/components/documentation/PromoBanner";
 import { lessons, currentProgress, forumPosts, promoBanner } from "@/lib/data/courses";
 
 export default function DocumentationHomePage() {
@@ -21,9 +19,7 @@ export default function DocumentationHomePage() {
         
         {/* Continue Learning Area */}
         <section className="flex flex-col gap-4">
-          <h2 className="text-base font-semibold text-slate-900 dark:text-white transition-colors duration-300">
-            បន្តការសិក្សា
-          </h2>
+
           <h2 className="text-[24px] font-semibold text-primary-color">បន្តការសិក្សា</h2>
           <CourseProgressCard progress={currentProgress} />
         </section>

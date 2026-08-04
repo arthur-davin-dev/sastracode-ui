@@ -4,8 +4,8 @@ const team = [
   { name: "Soeurt Bomnorng", email: "soeurtbomnorng3@gmail.com", offset: "up", img: "/home/support-team/seourtBomnorng.jpg" },
   { name: "Chhay Kongkea", email: "chhaykongkea9@gmail.com", offset: "down", img: "/home/support-team/chhayKongkea.jpg" },
   { name: "Lot Los", email: "loslot100604@gmail.com", offset: "up", img: "/home/support-team/lotLos.jpg" },
-  { name: "Vel SoThoun", email: "velsothoun@gmail.com", offset: "down", img:"/home/support-team/velSoThun.jpg" },
-  { name: "Ben Thona", email: "thonaben08@gmail.com", offset: "up", img: "/home/support-team/benThona.jpg"  },
+  { name: "Vel SoThoun", email: "velsothoun@gmail.com", offset: "down", img: "/home/support-team/velSoThun.jpg" },
+  { name: "Ben Thona", email: "thonaben08@gmail.com", offset: "up", img: "/home/support-team/benThona.jpg" },
 ];
 
 function initials(name: string) {
@@ -31,7 +31,7 @@ export default function SupportTeam() {
         </div>
 
         <div className="mt-16 relative">
-          <svg
+          {/* <svg
             viewBox="0 0 800 60"
             preserveAspectRatio="none"
             className="hidden md:block absolute left-0 right-0 top-1/2 -translate-y-1/2 w-full h-16 text-slate-200 dark:text-slate-700"
@@ -42,13 +42,16 @@ export default function SupportTeam() {
               stroke="currentColor"
               strokeWidth="2"
             />
-          </svg>
+          </svg> */}
+          <div className="hidden md:block absolute left-0 right-0 -translate-y-10 w-full h-16 text-slate-200 dark:text-slate-700">
+            <img src="/home/wavyLine.svg" alt="wavyLine" />
+          </div>
 
           <div className="relative grid grid-cols-2 gap-y-10 md:grid-cols-5 md:gap-y-0">
             {team.map((member) => (
               <div
                 key={member.name}
-                className={`flex flex-col items-center gap-6 ${member.offset === "up" ? "md:-translate-y-6" : "md:translate-y-6"
+                className={`flex flex-col items-center gap-15 ${member.offset === "up" ? "md:-translate-y-5" : "md:translate-y-12"
                   }`}
               >
                 {member.offset === "up" && (
@@ -60,7 +63,7 @@ export default function SupportTeam() {
                   </div>
                 )}
                 <div
-                  className={`h-16 w-16 md:h-40 md:w-40 rounded-full 
+                  className={`h-16 w-16 md:h-30 md:w-30 rounded-full 
                           ring-4 ring-white dark:ring-gray-800 
                           shadow-lg flex items-center justify-center 
                           text-white font-semibold order-2`}
