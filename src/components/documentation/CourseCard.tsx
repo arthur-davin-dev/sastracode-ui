@@ -1,6 +1,8 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import { Course } from "@/types/course";
+import React from "react";
 
 interface CourseCardProps {
   course: {

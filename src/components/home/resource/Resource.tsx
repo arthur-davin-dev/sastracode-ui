@@ -1,4 +1,5 @@
 import { Layers, GitBranch, Server, Route, ShieldCheck, Rocket } from "lucide-react";
+import { motion } from "framer-motion";
 
 const resources = [
   {
@@ -64,45 +65,194 @@ const resources = [
   },
 ];
 
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+    scale: 0.95,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 200,
+      damping: 15,
+      duration: 0.5,
+    },
+  },
+};
+
+// Subtle floating animation for icons
+const iconFloatVariants = {
+  initial: { y: 0, rotate: 0 },
+  animate: (i: number) => ({
+    y: [0, -3, 0, 3, 0],
+    rotate: [0, 2, 0, -2, 0],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      ease: "easeInOut",
+      delay: i * 0.2,
+    },
+  }),
+  hover: {
+    scale: 1.2,
+    rotate: [0, -5, 5, -3, 3, 0],
+    transition: {
+      duration: 0.5,
+      ease: "easeInOut",
+    },
+  },
+};
+
+// Subtle card float animation
+const cardFloatVariants = {
+  initial: { y: 0 },
+  animate: (i: number) => ({
+    y: [0, -4, 0, 4, 0],
+    transition: {
+      duration: 3.5,
+      repeat: Infinity,
+      ease: "easeInOut",
+      delay: i * 0.25,
+    },
+  }),
+};
+
+// Text shimmer effect on hover
+const textVariants = {
+  hover: {
+    scale: 1.02,
+    transition: {
+      duration: 0.2,
+    },
+  },
+};
+
+// Container pulse effect
+const containerPulseVariants = {
+  initial: { scale: 1 },
+  hover: {
+    scale: 1.02,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 20,
+    },
+  },
+};
+
 export default function NextjsResourceCards() {
   return (
-    <div className="w-full flex items-start justify-center py-8 px-6 transition-colors duration-200 my-10">
-      <div className="w-full max-w-4xl">
-        <h1 className="text-center text-3xl md:text-4xl font-extrabold text-[#1E1B4B] dark:text-[#F5F6FA] mb-8 transition-colors duration-200">
-          Free resources to learn Next.js
-        </h1>
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      viewport={{ once: true, amount: 0.2 }}
+      className="w-full flex items-start justify-center py-8 px-6 my-10"
+    >
+      <div className="w-full flex items-start justify-center py-8 px-6 transition-colors duration-200 my-10">
+        <div className="w-full max-w-4xl">
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={{ once: true }}
+            className="text-center text-3xl md:text-4xl font-extrabold text-[#1E1B4B] dark:text-[#F5F6FA] mb-8 transition-colors duration-200"
+          >
+            Free resources to learn Next.js
+          </motion.h1>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          {resources.map(({ 
-            name, 
-            icon: Icon, 
-            iconClass, 
-            iconBgClass,
-            borderClass,
-            bgClass,
-            hoverClass,
-            textClass
-          }) => (
-            <button
-              key={name}
-              className={`group flex items-center gap-3 rounded-xl px-4 py-4 text-left border
-                ${bgClass} ${borderClass}
-                ${hoverClass}
-                transition-all duration-200 hover:-translate-y-1 hover:shadow-lg`}
-            >
-              <span
-                className={`flex items-center justify-center w-9 h-9 rounded-lg shrink-0
-                  ${iconBgClass}`}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid grid-cols-2 sm:grid-cols-3 gap-4"
+          >
+            {resources.map(({
+              name,
+              icon: Icon,
+              iconClass,
+              iconBgClass,
+              borderClass,
+              bgClass,
+              hoverClass,
+              textClass
+            }, index) => (
+              <motion.button
+                key={name}
+                variants={cardVariants}
+                custom={index}
+                initial="initial"
+                animate="animate"
+                whileHover="hover"
+                className={`group flex items-center gap-3 rounded-xl px-4 py-4 text-left border
+                  ${bgClass} ${borderClass}
+                  ${hoverClass}
+                  transition-all duration-200 hover:-translate-y-1 hover:shadow-lg relative overflow-hidden`}
               >
-                <Icon size={18} className={iconClass} strokeWidth={2.2} />
-              </span>
-              <span className={`font-semibold text-[15px] ${textClass} transition-colors duration-200`}>
-                {name}
-              </span>
-            </button>
-          ))}
+                {/* Subtle gradient overlay on hover */}
+                <motion.div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))",
+                  }}
+                />
+                
+                <motion.span
+                  variants={iconFloatVariants}
+                  custom={index}
+                  initial="initial"
+                  animate="animate"
+                  whileHover="hover"
+                  className={`flex items-center justify-center w-9 h-9 rounded-lg shrink-0 relative z-10
+                    ${iconBgClass}`}
+                >
+                  <Icon size={18} className={iconClass} strokeWidth={2.2} />
+                </motion.span>
+                
+                <motion.span
+                  variants={textVariants}
+                  className={`font-semibold text-[15px] ${textClass} transition-colors duration-200 relative z-10`}
+                >
+                  {name}
+                </motion.span>
+                
+                {/* Subtle shine effect on hover */}
+                <motion.div
+                  className="absolute inset-0 pointer-events-none"
+                  initial={{ x: "-100%" }}
+                  whileHover={{
+                    x: "100%",
+                    transition: {
+                      duration: 0.6,
+                      ease: "easeInOut",
+                    },
+                  }}
+                  style={{
+                    background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
+                  }}
+                />
+              </motion.button>
+            ))}
+          </motion.div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

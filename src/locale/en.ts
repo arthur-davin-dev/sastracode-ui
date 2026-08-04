@@ -1,58 +1,58 @@
 export const en = {
-    banner: {
-        badge: "LEARN. CODE. BUILD THE FUTURE.",
-        title1: "Start Learning ",
-        title2: "Coding",
-        title3: "New Skills ",
-        title4: "for",
-        title5: "Code",
-        description:
-            "Learn programming and develop new skills with AI Assistant, Coding Exercises, Interactive Lessons, and an Online Compiler.",
-        start: "Start Learning",
-        explore: "Explore Code",
-    },
-    coreFeature: {
-        badge: "What We Offer",
-        headingPrefix: "Core ",
-        headingHighlight: "Features",
-        description:
-            "Everything you need to grow from an absolute beginner into a confident developer, all on one platform.",
-        cta: "Explore feature",
-        cards: [
-            {
-                title: "Interactive Documentation",
-                description:
-                    "Systematically organized lessons with live code examples and hands-on exercises built into every lesson.",
-            },
-            {
-                title: "Coding Playground",
-                description:
-                    "Write and run code directly in your browser with instant results — no installation required.",
-            },
-            // {
-            //     title: "AI Code Coach",
-            //     description:
-            //         "Get smart guidance, explanations tailored to you, and real-time debugging help.",
-            // },
-            {
-                title: "Quiz & Assessment",
-                description:
-                    "Assess your learning progress through interactive quizzes with instant, detailed feedback.",
-            },
-            {
-                title: "Video Learning",
-                description:
-                    "Learn through systematically organized video lessons that support every learning plan.",
-            },
-            // {
-            //     title: "Learning Roadmaps",
-            //     description:
-            //         "Follow carefully structured learning roadmaps that guide you from beginner to expert level.",
-            // },
-        ],
-    },
-    interactiveDoc: {
+  banner: {
+    badge: "LEARN. CODE. BUILD THE FUTURE.",
+    title1: "Start Learning ",
+    title2: "Coding",
+    title3: "New Skills ",
+    title4: "for",
+    title5: "Code",
+    description:
+      "Learn programming and develop new skills with AI Assistant, Coding Exercises, Interactive Lessons, and an Online Compiler.",
+    start: "Start Learning",
+    explore: "Explore Code",
+  },
+  coreFeature: {
+    badge: "What We Offer",
+    headingPrefix: "Core ",
+    headingHighlight: "Features",
+    description:
+      "Everything you need to grow from an absolute beginner into a confident developer, all on one platform.",
+    cta: "Explore feature",
+    cards: [
+      {
         title: "Interactive Documentation",
+        description:
+          "Systematically organized lessons with live code examples and hands-on exercises built into every lesson.",
+      },
+      {
+        title: "Coding Playground",
+        description:
+          "Write and run code directly in your browser with instant results — no installation required.",
+      },
+      // {
+      //     title: "AI Code Coach",
+      //     description:
+      //         "Get smart guidance, explanations tailored to you, and real-time debugging help.",
+      // },
+      {
+        title: "Quiz & Assessment",
+        description:
+          "Assess your learning progress through interactive quizzes with instant, detailed feedback.",
+      },
+      {
+        title: "Video Learning",
+        description:
+          "Learn through systematically organized video lessons that support every learning plan.",
+      },
+      // {
+      //     title: "Learning Roadmaps",
+      //     description:
+      //         "Follow carefully structured learning roadmaps that guide you from beginner to expert level.",
+      // },
+    ],
+  },
+  interactiveDoc: {
+    title: "Interactive Documentation",
 
     description:
       "Explore structured lessons with Live Code Examples, Syntax Highlighting, Embedded Exercises, and Quizzes that transform knowledge into practical skills.",
@@ -149,6 +149,17 @@ export const en = {
     description:
       "Modern technologies powering a next-generation learning experience.",
   },
+  popularCourses: {
+    title: "Popular Courses",
+    description:
+      "Explore our most popular courses and advance your skills with hands-on projects and real-world applications.",
+  },
+  popularDoc: {
+    title: "Popular Documentation",
+  },
+
+
+
 
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.
   footer: {
