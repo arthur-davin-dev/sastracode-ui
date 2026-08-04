@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useTranslation } from "@/hooks/useTranslations";
+import Link from "next/link";
 
 export default function HeroCharacter() {
   const currentT = useTranslation();
@@ -45,16 +46,16 @@ export default function HeroCharacter() {
               {currentT.showCase.heroCharacter.description}
             </p>
 
-            <a
-              href="#"
-              className="inline-flex items-center gap-2 rounded-xl border border-[#bfc8d5] dark:border-gray-700 bg-white dark:bg-gray-800 px-5 py-3 text-sm font-medium text-black dark:text-white transition-all duration-300 hover:bg-slate-50 dark:hover:bg-gray-700"
-            >
-              <img src="/home/svg/coding.svg" alt="" className="size-6 dark:invert" />
-              <span className="font-khmer">
-                {currentT.showCase.heroCharacter.button}
-              </span>
-            </a>
-          </div>
+          <Link
+            href="/playground/editor"
+            className="inline-flex items-center gap-2 rounded-xl border border-[#bfc8d5] dark:border-gray-700 bg-white dark:bg-gray-800 px-5 py-3 text-sm font-medium text-black dark:text-white transition-all duration-300 hover:bg-slate-50 dark:hover:bg-gray-700"
+          >
+            <img src="/home/svg/coding.svg" alt="" className="size-6 dark:invert" />
+            <span className="font-khmer">
+              {currentT.showCase.heroCharacter.button}
+            </span>
+          </Link>
+        </div>
 
           {/* Right Column: Photo Collage */}
           <div className="relative mx-auto h-[260px] w-full max-w-xs sm:h-[340px] sm:max-w-md lg:h-[420px] lg:max-w-lg">

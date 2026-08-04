@@ -60,6 +60,8 @@ import "./globals.css";
 // 1. Import LanguageProvider here
 import { LanguageProvider } from "@/lib/language-context"; 
 
+import PrelineScriptWrapper from './components/PrelineScriptWrapper';
+
 const googleSans = localFont({
   src: [
     {
@@ -102,6 +104,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
         </LanguageProvider>
       </body>
+      <PrelineScriptWrapper />
     </html>
   );
 }
