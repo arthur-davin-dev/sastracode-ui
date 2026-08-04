@@ -75,26 +75,33 @@ export const en = {
     link: "View Documentation",
     aiChat: "Explanations and help in studying errors in the code.",
   },
+  featureSection: {
+    features: [
+      {
+        lines: [
+          "Learn through clearly explained lessons",
+          "and practical examples",
+        ],
+      },
+      {
+        lines: ["Write, test, and run code", "directly inside your browser"],
+      },
+      {
+        lines: [
+          "Receive helpful hints and code explanations",
+          "to improve your programming skills",
+        ],
+      },
+    ],
+  },
+  rewards: {
+    headingMain: "Learn, Practice, and",
+    headingAccent: "Earn Rewards",
+    description:
+      "Complete lessons, improve your skills, and earn certificates and achievements.",
+    ctaLabel: "Start Learning",
+  },
   resultAndRewards: {
-    featureSection: {
-      features: [
-        {
-          lines: [
-            "Learn through structured lessons",
-            "with practical examples",
-          ],
-        },
-        {
-          lines: ["Write, test, and run code", "directly in your browser"],
-        },
-        {
-          lines: [
-            "Get AI guidance and code explanations",
-            "to improve your programming skills",
-          ],
-        },
-      ],
-    },
     rewards: {
       headingMain: "Achievements &",
       headingAccent: "Rewards",
@@ -128,28 +135,27 @@ export const en = {
       liveCoding: "Learn Anytime, Anywhere",
     },
     featureSection: {
-    features: [
-      {
-        lines: [
-          "Learn with structured lessons",
-          "Practice with real examples",
-        ],
-      },
-      {
-        lines: [
-          "Track your learning progress",
-          "Continue from where you stopped",
-        ],
-      },
-      {
-        lines: [
-          "Build practical projects",
-          "Improve your programming skills",
-        ],
-      },
-    ],
-  },
-
+      features: [
+        {
+          lines: [
+            "Learn with structured lessons",
+            "Practice with real examples",
+          ],
+        },
+        {
+          lines: [
+            "Track your learning progress",
+            "Continue from where you stopped",
+          ],
+        },
+        {
+          lines: [
+            "Build practical projects",
+            "Improve your programming skills",
+          ],
+        },
+      ],
+    },
   },
   technologyStack: {
     badge: "UNDER THE HOOD",
