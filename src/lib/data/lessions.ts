@@ -1,6 +1,30 @@
 import { CourseTocGroup, LessonDocument } from "@/types/documentation";
 import { TrackSlug } from "@/types/course";
+import { SidebarDocument } from "@/types/documentation";
 
+// The true database-aligned JSON dataset
+export const databaseSidebarDocuments: SidebarDocument[] = [
+  {
+    id: 1,
+    title: "Introduction to Spring Framework",
+    description: "Learn core concepts of dependency injection and IoC container.",
+    orderIndex: 1,
+    sections: [
+      { id: 1, title: "What is Spring Framework?", orderIndex: 1 },
+      { id: 2, title: "Spring Boot vs Spring MVC", orderIndex: 2 }
+    ]
+  },
+  {
+    id: 2,
+    title: "Java Variables and Data Types",
+    description: "Master primitives, reference types, and type casting mechanics.",
+    orderIndex: 2,
+    sections: [
+      { id: 3, title: "Primitive Types", orderIndex: 1 },
+      { id: 4, title: "Reference Types", orderIndex: 2 }
+    ]
+  }
+];
 /**
  * Every lesson lives here, keyed by its id.
  * The route /documentation/lessons/[lessonId] looks up its data

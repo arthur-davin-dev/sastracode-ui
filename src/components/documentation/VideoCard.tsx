@@ -48,7 +48,7 @@ export default function VideoCard({ instructor }: InstructorProps) {
             <div className="flex items-center gap-3">
               <div className="relative w-9 h-9 rounded-full overflow-hidden ring-2 ring-slate-100 dark:ring-slate-800">
                 <Image
-                  src="/images/ben_thona.JPG" 
+                  src="/davin.jpg" 
                   alt="Instructor Avatar"
                   fill
                   sizes="36px"
@@ -57,7 +57,7 @@ export default function VideoCard({ instructor }: InstructorProps) {
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="font-semibold text-sm text-[#002455] dark:text-slate-200 truncate">
-                  Vibol Meas
+                  Chhay Davin
                 </span>
                 <span className="text-xs text-slate-400 dark:text-slate-500">
                   គ្រូបង្រៀន
