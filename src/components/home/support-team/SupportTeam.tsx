@@ -17,7 +17,7 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-export default function WavyStack() {
+export default function SupportTeam() {
   return (
     <section className="px-6 py-20 bg-white dark:bg-gray-900">
       <div className="max-w-5xl mx-auto text-center">

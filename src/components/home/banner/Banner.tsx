@@ -6,7 +6,7 @@ import Stats from './Stats'
 import CodeWindow from './CodeWindow'
 import { useTranslation } from '@/hooks/useTranslations'
 import Link from 'next/link'
-import {LeftWavyStack} from '../technology-stack/WavyStack'
+import { LeftWavyStack } from '../technology-stack/WavyStack'
 
 export default function Banner() {
 
@@ -56,14 +56,18 @@ export default function Banner() {
 
             <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
 
-              <Link href="/register" className="lg:w-64 lg:py-4 rounded-[16px] bg-[#0B2B66] dark:bg-blue-600 px-6 sm:px-10 py-3 sm:py-4 text-xs sm:text-base font-semibold text-white hover:bg-blue-900 dark:hover:bg-blue-700 transition-colors text-center">
+              <Link
+                href="/register"
+                className="min-w-[12rem] lg:min-w-[16rem] rounded-[16px] bg-[#0B2B66] dark:bg-blue-600 px-6 sm:px-10 py-3 sm:py-4 text-xs sm:text-base font-semibold text-white hover:bg-blue-900 dark:hover:bg-blue-700 transition-colors text-center"
+              >
                 {currentT.banner.start}
               </Link>
 
-              <button className="lg:w-40 rounded-[16px] border border-gray-300 dark:border-gray-600 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+              <button
+                className="min-w-[8rem] lg:min-w-[10rem] rounded-[16px] border border-gray-300 dark:border-gray-600 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-center"
+              >
                 {"</>"} {currentT.banner.explore}
               </button>
-
             </div>
 
             <Stats />
@@ -77,7 +81,7 @@ export default function Banner() {
         </div>
 
       </div>
-        <LeftWavyStack />
+      <LeftWavyStack />
     </section>
 
   )

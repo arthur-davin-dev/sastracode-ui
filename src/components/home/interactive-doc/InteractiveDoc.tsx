@@ -3,6 +3,7 @@
 import { useTranslation } from "@/hooks/useTranslations";
 import AIChatCard from "./AIChatCard";
 import PreviewCard from "./PreviewCard";
+import Link from "next/link";
 
 
 
@@ -19,7 +20,7 @@ export default function InteractiveDoc() {
                                 lg:mx-0
                                 relative
                                 top-0
-                                lg:-top-[150px]">
+                                lg:-top-[100px]">
                             <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-white mb-4 sm:mb-6 transition-colors duration-300">
                                {currentT.interactiveDoc.title}
                             </h1>
@@ -28,10 +29,10 @@ export default function InteractiveDoc() {
                                {currentT.interactiveDoc.description}
                             </p>
 
-                            <a href="#" className="inline-flex items-center gap-2 text-sm sm:text-base text-slate-800 dark:text-white font-medium hover:text-slate-600 dark:hover:text-gray-300 transition-colors duration-300">
+                            <Link href="/documentation" className="inline-flex items-center gap-2 text-sm sm:text-base text-slate-800 dark:text-white font-medium hover:text-slate-600 dark:hover:text-gray-300 transition-colors duration-300">
                                 {currentT.interactiveDoc.link}
                                 <span aria-hidden="true">→</span>
-                            </a>
+                            </Link>
                         </div>
                         <div className="mt-10 lg:mt-0 flex justify-center lg:justify-start">
                             <PreviewCard />

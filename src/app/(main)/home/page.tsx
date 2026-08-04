@@ -6,7 +6,7 @@ import FeatureSection from '@/components/home/results-and-rewards/FeatureSection
 import Rewards from '@/components/home/results-and-rewards/Rewards'
 import Showcase from '@/components/home/show-case/Showcase'
 import SupportTeam from '@/components/home/support-team/SupportTeam'
-import TechStackSection from '@/components/home/technology-stack/TechStackSection'
+import TechStackSection from '@/components/function/TechStackSection'
 import React from 'react'
 
 export default function page() {

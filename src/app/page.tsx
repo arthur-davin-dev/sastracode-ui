@@ -8,7 +8,7 @@ import InteractiveGrid from '@/components/home/interactive-grid/InteractiveGrid'
 import { courses, currentProgress, forumPosts, promoBanner } from "@/lib/data/courses";
 import CourseGrid from '@/components/documentation/CourseGrid'
 import { HomePopularCourse, HomePopularDoc } from '@/components/home/cards/HomePopularCourse'
-import TechStackSection from '@/components/home/technology-stack/TechStackSection'
+import TechStackSection from '@/components/function/TechStackSection'
 import Review from '@/components/home/review/Review'
 import Resource from '@/components/home/resource/Resource'
 // import Hero from '@/components/home/hero-section/Hero'
@@ -18,7 +18,6 @@ export default function page() {
     <div className="dark:bg-gray-900">
       {/* <Hero /> */}
       <Banner />
-      {/* <SkillsCardCompact /> */}
       <RightWavyStack />
       <Resource />
       {/* <InteractiveGrid /> */}

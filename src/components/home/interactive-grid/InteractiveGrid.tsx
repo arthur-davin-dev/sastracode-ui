@@ -62,7 +62,7 @@ export default function InteractiveGrid() {
     const bottomY2 = bottomY - 56; // Maintain the 56px difference
 
     return (
-        <div className="relative w-full min-h-screen overflow-hidden flex items-center justify-center transition-colors duration-500">
+        <div className="relative w-full min-h-screen overflow-hidden flex items-center justify-center transition-colors duration-500 mb-2">
             {/* ========================================== */}
             {/* 3 VERTICAL FLASHES (Background) */}
             {/* ========================================== */}

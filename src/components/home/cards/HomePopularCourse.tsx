@@ -42,7 +42,8 @@ function CourseCard({
 
   return (
     <div className={`flex justify-center h-110 bg-surface py-6 transition-all duration-300 ease-in-out ${className}`}>
-      <Card className="relative mx-auto w-full max-w-sm pt-0 dark:bg-slate-800 dark:border-slate-700 transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-cyan-100 hover:scale-[1.02] dark:hover:shadow-slate-700/50 group flex flex-col">
+      <Card className="relative mx-auto w-full max-w-sm pt-0 dark:bg-slate-800 dark:border-slate-700 transition-all duration-300 ease-in-out  hover:shadow-[0_4px_12px_2px_rgba(34,211,238,0.5)]
+  dark:hover:shadow-[0_4px_12px_2px_theme(colors.cyan.500)] hover:scale-[1.02] dark:hover:shadow-slate-700/50 group flex flex-col">
         <div className="absolute inset-0 z-30 aspect-video dark:bg-black/1 transition-opacity duration-300 group-hover:opacity-75" />
         <img
           src={image}
@@ -154,7 +155,7 @@ export function HomePopularCourse() {
       >
         <div className="hs-carousel relative w-full min-h-110 overflow-hidden">
           {/* Carousel Body */}
-          <div className="px-6 hs-carousel-body flex flex-nowrap absolute top-0 bottom-0 inset-s-0 transition-transform duration-700 -mx-1 cursor-grab hs-carousel-dragging:transition-none hs-carousel-dragging:cursor-grabbing opacity-0">
+          <div className="px-6 hs-carousel-body flex flex-nowrap absolute top-0 bottom-0 inset-s-0 transition-transform duration-700 -mx-1 cursor-grab hs-carousel-dragging:transition-none hs-carousel-dragging:cursor-grabbing opacity-0 gap-1.5">
             {courses.map((course) => (
               <div key={course.id} className="hs-carousel-slide px-1">
                 <CourseCard
@@ -225,7 +226,7 @@ export function HomePopularDoc() {
       >
         <div className="hs-carousel relative w-full min-h-110 overflow-hidden">
           {/* Carousel Body */}
-          <div className="px-6 hs-carousel-body flex flex-nowrap absolute top-0 bottom-0 inset-s-0 transition-transform duration-700 -mx-1 cursor-grab hs-carousel-dragging:transition-none hs-carousel-dragging:cursor-grabbing opacity-0">
+          <div className="px-6 hs-carousel-body flex flex-nowrap absolute top-0 bottom-0 inset-s-0 transition-transform duration-700 -mx-1 cursor-grab hs-carousel-dragging:transition-none hs-carousel-dragging:cursor-grabbing opacity-0 gap-1.5">
             {courses.map((course) => (
               <div key={course.id} className="hs-carousel-slide px-1">
                 <CourseCard
