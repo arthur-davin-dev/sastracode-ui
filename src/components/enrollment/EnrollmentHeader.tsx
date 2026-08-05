@@ -19,10 +19,10 @@ export function EnrollmentHeader({ course }: EnrollmentHeaderProps) {
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm mt-15">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 font-(family-name:--font-sans)">
+          <h1 className="text-2xl font-bold text-gray-900 font-sans">
             {course.title}
           </h1>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-gray-500 font-(family-name:--font-sans)">
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-gray-500 font-sans">
             {course.description}
           </p>
         </div>
@@ -40,7 +40,7 @@ export function EnrollmentHeader({ course }: EnrollmentHeaderProps) {
             <Image src={instructor.avatar} alt={instructor.name} fill className="object-cover" />
           </div>
           <div>
-            <p className="text-xs text-gray-400 font-(family-name:--font-sans)">Instructor</p>
+            <p className="text-xs text-gray-400 font-sans">Instructor</p>
             <p className="text-sm font-semibold text-gray-900">{instructor.name}</p>
           </div>
         </div>

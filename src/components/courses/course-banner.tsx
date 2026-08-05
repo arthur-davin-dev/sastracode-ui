@@ -5,10 +5,10 @@ import Image from "next/image";
 
 export default function CourseBanner() {
   return (
-    <section className="relative overflow-hidden border-b border-slate-200/80 bg-gradient-to-b from-indigo-50/50 via-white to-slate-50 dark:border-slate-800 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-12 sm:py-20 transition-colors duration-300">
+    <section className="relative overflow-hidden border-b border-slate-200/80 bg-linear-to-b from-indigo-50/50 via-white to-slate-50 dark:border-slate-800 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 py-12 sm:py-20 transition-colors duration-300">
       {/* Background Decorative Blur Blobs */}
-      <div className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-[300px] w-[500px] -translate-x-1/2 rounded-full bg-indigo-500/10 blur-3xl dark:bg-indigo-500/20" />
-      <div className="pointer-events-none absolute -bottom-24 -right-10 -z-10 h-[250px] w-[250px] rounded-full bg-blue-500/10 blur-2xl dark:bg-blue-500/15" />
+      <div className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-75 w-125 -translate-x-1/2 rounded-full bg-indigo-500/10 blur-3xl dark:bg-indigo-500/20" />
+      <div className="pointer-events-none absolute -bottom-24 -right-10 -z-10 h-62.5 w-62.5 rounded-full bg-blue-500/10 blur-2xl dark:bg-blue-500/15" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
@@ -21,7 +21,7 @@ export default function CourseBanner() {
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl sm:leading-[1.25] leading-[1.3] transition-colors duration-300">
+            <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-5xl sm:leading-tight leading-[1.3] transition-colors duration-300">
               ចាប់ផ្តើមដំណើរសិក្សាកម្មវិធីរបស់អ្នក
             </h1>
 
@@ -66,22 +66,22 @@ export default function CourseBanner() {
               />
 
               {/* Gradient Overlay for Vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-linear-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
 
               {/* Floating Badges */}
-              <div className="absolute top-[12%] left-[8%] sm:top-[14%] sm:left-[12%] z-10 animate-bounce [animation-duration:4s] rounded-xl bg-emerald-500/90 backdrop-blur-md px-3.5 py-1.5 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-emerald-500/20 -rotate-6 border border-white/20">
+              <div className="absolute top-[12%] left-[8%] sm:top-[14%] sm:left-[12%] z-10 animate-bounce animation-duration-[4s] rounded-xl bg-emerald-500/90 backdrop-blur-md px-3.5 py-1.5 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-emerald-500/20 -rotate-6 border border-white/20">
                 JavaScript
               </div>
 
-              <div className="absolute top-[28%] right-[6%] z-10 animate-bounce [animation-duration:3.5s] [animation-delay:0.5s] rounded-xl bg-blue-600/90 backdrop-blur-md px-3.5 py-1.5 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-blue-600/20 rotate-6 border border-white/20">
+              <div className="absolute top-[28%] right-[6%] z-10 animate-bounce animation-duration-[3.5s] [animation-delay:0.5s] rounded-xl bg-blue-600/90 backdrop-blur-md px-3.5 py-1.5 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-blue-600/20 rotate-6 border border-white/20">
                 HTML5
               </div>
 
-              <div className="absolute bottom-[28%] right-[10%] z-10 animate-bounce [animation-duration:4.2s] [animation-delay:1s] rounded-xl bg-pink-500/90 backdrop-blur-md px-3.5 py-1.5 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-pink-500/20 -rotate-3 border border-white/20">
+              <div className="absolute bottom-[28%] right-[10%] z-10 animate-bounce animation-duration-[4.2s] [animation-delay:1s] rounded-xl bg-pink-500/90 backdrop-blur-md px-3.5 py-1.5 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-pink-500/20 -rotate-3 border border-white/20">
                 CSS3
               </div>
 
-              <div className="absolute bottom-[10%] left-[8%] z-10 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-amber-400/95 text-slate-900 shadow-lg shadow-amber-400/20 rotate-12 border border-white/30 animate-bounce [animation-duration:3.8s]">
+              <div className="absolute bottom-[10%] left-[8%] z-10 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-amber-400/95 text-slate-900 shadow-lg shadow-amber-400/20 rotate-12 border border-white/30 animate-bounce animation-duration-[3.8s]">
                 <Code2 className="h-6 w-6 stroke-[2.5]" />
               </div>
             </div>

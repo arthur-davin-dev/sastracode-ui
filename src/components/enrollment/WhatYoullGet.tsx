@@ -20,7 +20,7 @@ const benefits = [
 export function WhatYoullGet() {
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-      <h2 className="mb-5 text-lg font-bold text-gray-900 font-(family-name:--font-sans)">
+      <h2 className="mb-5 text-lg font-bold text-gray-900 font-sans">
         អ្វីដែលអ្នកទទួលបាន
       </h2>
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -32,10 +32,10 @@ export function WhatYoullGet() {
                 <Icon className="h-3.5 w-3.5" />
               </span>
               <div>
-                <p className="text-sm font-medium text-gray-900 font-(family-name:--font-sans)">
+                <p className="text-sm font-medium text-gray-900 font-sans">
                   {benefit.title}
                 </p>
-                <p className="text-xs text-gray-400 font-(family-name:--font-sans)">
+                <p className="text-xs text-gray-400 font-sans">
                   {benefit.description}
                 </p>
               </div>

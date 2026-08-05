@@ -47,7 +47,7 @@ export function CheckoutCard({ course }: CheckoutCardProps) {
         បញ្ជាក់ការចុះឈ្មោះ
       </Link>
 
-      <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-gray-400 font-(family-name:--font-sans)">
+      <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-gray-400 font-sans">
         <Award className="h-3.5 w-3.5" />
         30-day money-back guarantee
       </p>
@@ -55,29 +55,29 @@ export function CheckoutCard({ course }: CheckoutCardProps) {
       <div className="my-5 border-t border-gray-100" />
 
       <div className="space-y-3">
-        <div className="flex items-center gap-2.5 text-sm text-gray-600 font-(family-name:--font-sans)">
+        <div className="flex items-center gap-2.5 text-sm text-gray-600 font-sans">
           <BookOpen className="h-4 w-4 text-gray-400" />
           {course.lessons} Lessons
         </div>
-        <div className="flex items-center gap-2.5 text-sm text-gray-600 font-(family-name:--font-sans)">
+        <div className="flex items-center gap-2.5 text-sm text-gray-600 font-sans">
           <Clock className="h-4 w-4 text-gray-400" />
           {course.totalDuration ?? course.duration} Total Length
         </div>
-        <div className="flex items-center gap-2.5 text-sm text-gray-600 font-(family-name:--font-sans)">
+        <div className="flex items-center gap-2.5 text-sm text-gray-600 font-sans">
           <Award className="h-4 w-4 text-gray-400" />
        វិញ្ញាបនបត្របញ្ជាក់ការបញ្ចប់
         </div>
-        <div className="flex items-center gap-2.5 text-sm text-gray-600 font-(family-name:--font-sans)">
+        <div className="flex items-center gap-2.5 text-sm text-gray-600 font-sans">
           <Monitor className="h-4 w-4 text-gray-400" />
         អាចប្រើប្រាស់បាននៅលើទូរស័ព្ទ និងកុំព្យូទ័រ
         </div>
-        <div className="flex items-center gap-2.5 text-sm text-gray-600 font-(family-name:--font-sans)">
+        <div className="flex items-center gap-2.5 text-sm text-gray-600 font-sans">
           <InfinityIcon className="h-4 w-4 text-gray-400" />
           ការចូលប្រើប្រាស់បានពេញមួយជីវិត
         </div>
       </div>
 
-      <p className="mt-5 text-center text-xs leading-relaxed text-gray-400 font-(family-name:--font-sans)">
+      <p className="mt-5 text-center text-xs leading-relaxed text-gray-400 font-sans">
         By enrolling, you agree to our{" "}
         <Link href="/terms" className="text-primary-color hover:underline">
           Terms of Service

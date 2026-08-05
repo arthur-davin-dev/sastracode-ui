@@ -137,12 +137,11 @@ export default function CheckoutPage() {
               <div className="md:col-span-7 p-6 md:p-8 border-b md:border-b-0 md:border-r border-slate-200 bg-white">
                 {/* Billing Information */}
                 <section className="space-y-4">
-                  <h3 className="text-lg font-semibold text-slate-900">
-                    Billing Information
-                  </h3>
+                  <h3 className="text-lg font-semibold text-primary-color">
+                   ព័ត៌មាន​អំពី​វិក្កយបត្រ</h3>
 
                   <div className="space-y-2 text-primary-color">
-                    <Label htmlFor="fullName">Full Name</Label>
+                    <Label htmlFor="fullName">ឈ្មោះពេញ</Label>
                     <Input
                       id="fullName"
                       placeholder="John Doe"
@@ -236,8 +235,8 @@ export default function CheckoutPage() {
 
                 {/* Payment Method */}
                 <section className="space-y-4">
-                  <h3 className="text-lg font-semibold text-slate-900">
-                    Payment Method
+                  <h3 className="text-lg font-semibold text-primary-color">
+                    វិធីសាស្ត្រទូទាត់
                   </h3>
 
                   <RadioGroup
@@ -246,7 +245,7 @@ export default function CheckoutPage() {
                     onValueChange={setPaymentMethod}
                     className="grid grid-cols-2 gap-3"
                   >
-                    <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-slate-50 [&:has(:checked)]:border-blue-600 [&:has(:checked)]:bg-blue-50/20">
+                    <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-slate-50 has-checked:border-blue-600 has-checked:bg-blue-50/20">
                       <RadioGroupItem value="visa" id="visa" />
                       <Label
                         htmlFor="visa"
@@ -256,7 +255,7 @@ export default function CheckoutPage() {
                       </Label>
                     </div>
 
-                    <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-slate-50 [&:has(:checked)]:border-blue-600 [&:has(:checked)]:bg-blue-50/20">
+                    <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-slate-50 has-checked:border-blue-600 has-checked:bg-blue-50/20">
                       <RadioGroupItem value="mastercard" id="mastercard" />
                       <Label
                         htmlFor="mastercard"
@@ -266,7 +265,7 @@ export default function CheckoutPage() {
                       </Label>
                     </div>
 
-                    <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-slate-50 [&:has(:checked)]:border-blue-600 [&:has(:checked)]:bg-blue-50/20">
+                    <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-slate-50 has-checked:border-blue-600 has-checked:bg-blue-50/20">
                       <RadioGroupItem value="aba" id="aba" />
                       <Label
                         htmlFor="aba"
@@ -276,7 +275,7 @@ export default function CheckoutPage() {
                       </Label>
                     </div>
 
-                    <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-slate-50 [&:has(:checked)]:border-blue-600 [&:has(:checked)]:bg-blue-50/20">
+                    <div className="flex items-center space-x-2 border rounded-md p-3 cursor-pointer hover:bg-slate-50 has-checked:border-blue-600 has-checked:bg-blue-50/20">
                       <RadioGroupItem value="paypal" id="paypal" />
                       <Label
                         htmlFor="paypal"
