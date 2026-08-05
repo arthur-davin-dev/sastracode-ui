@@ -7,7 +7,10 @@ interface DiscussionSectionProps {
   totalCount: number;
 }
 
-export function DiscussionSection({ comments, totalCount }: DiscussionSectionProps) {
+export function DiscussionSection({
+  comments,
+  totalCount,
+}: DiscussionSectionProps) {
   return (
     <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm transition-colors duration-300">
       {/* Header & Filter */}
@@ -24,13 +27,13 @@ export function DiscussionSection({ comments, totalCount }: DiscussionSectionPro
 
       {/* New Comment Input */}
       <div className="mb-6 flex items-start gap-3">
-<<<<<<< HEAD
-        <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-gray-200">
-          <Image src="/assets/images/Davin.DNG" alt="You" fill className="object-cover" />
-=======
-        <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-          <Image src="/assets/images/current-user.png" alt="You" fill className="object-cover" />
->>>>>>> 0d9eb9f9439272ef5da7417ae3d9d69c50e19e22
+        <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-gray-200 dark:bg-slate-800">
+          <Image
+            src="/assets/images/Davin.DNG"
+            alt="You"
+            fill
+            className="object-cover"
+          />
         </div>
         <div className="flex flex-1 flex-col sm:flex-row items-stretch sm:items-center gap-2">
           <input
@@ -49,7 +52,12 @@ export function DiscussionSection({ comments, totalCount }: DiscussionSectionPro
         {comments.map((comment) => (
           <div key={comment.id} className="flex gap-3">
             <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-              <Image src={comment.authorAvatar} alt={comment.authorName} fill className="object-cover" />
+              <Image
+                src={comment.authorAvatar}
+                alt={comment.authorName}
+                fill
+                className="object-cover"
+              />
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2">
@@ -71,7 +79,10 @@ export function DiscussionSection({ comments, totalCount }: DiscussionSectionPro
                 <button className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400">
                   Reply
                 </button>
-                <button aria-label="More options" className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400">
+                <button
+                  aria-label="More options"
+                  className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400"
+                >
                   <MoreVertical className="h-3 w-3" />
                 </button>
               </div>
