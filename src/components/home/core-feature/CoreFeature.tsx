@@ -3,12 +3,13 @@
 
 import { useTranslation } from "@/hooks/useTranslations";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 // Static per-card visuals — not language dependent
 const cardStyles = [
   {
     iconBg: "border-cyan-500/15 dark:border-cyan-400/20 bg-[#e0f7fd] dark:bg-cyan-950/30",
-    icon: "/home/svg/icon-doc.svg",
+    icon: "/home/svg/doc.svg",
     linkColor: "text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300",
     arrow: "/home/svg/arrow-blue.svg",
     href: "/documentation",
@@ -50,28 +51,181 @@ const cardStyles = [
   },
 ];
 
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 50,
+    scale: 0.95,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 12,
+      duration: 0.6,
+    },
+  },
+};
+
+const badgeVariants = {
+  hidden: { opacity: 0, scale: 0.8, y: -20 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 200,
+      damping: 15,
+      duration: 0.5,
+    },
+  },
+};
+
+const titleVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 12,
+      delay: 0.1,
+    },
+  },
+};
+
+const descriptionVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+      damping: 12,
+      delay: 0.2,
+    },
+  },
+};
+
+// Subtle floating animation for icons
+const iconFloatVariants = {
+  initial: { y: 0 },
+  animate: {
+    y: [0, -4, 0, 4, 0],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      ease: "easeInOut",
+    },
+  },
+  hover: {
+    scale: 1.15,
+    rotate: [0, -5, 5, -3, 3, 0],
+    transition: {
+      duration: 0.6,
+      ease: "easeInOut",
+    },
+  },
+};
+
+// Subtle card float animation (different delays per card)
+const cardFloatVariants = {
+  initial: { y: 0 },
+  animate: (i: number) => ({
+    y: [0, -6, 0, 6, 0],
+    transition: {
+      duration: 4,
+      repeat: Infinity,
+      ease: "easeInOut",
+      delay: i * 0.3, // Stagger the floating
+    },
+  }),
+};
+
+const arrowVariants = {
+  hover: {
+    x: 6,
+    transition: {
+      duration: 0.3,
+      type: "spring",
+      stiffness: 300,
+      damping: 10,
+    },
+  },
+};
+
+// Subtle pulse for the CTA text
+const ctaVariants = {
+  hover: {
+    scale: 1.05,
+    transition: {
+      duration: 0.2,
+    },
+  },
+};
+
 export default function CoreFeatures() {
   const currentT = useTranslation();
 
   return (
-    <section className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 py-6 sm:py-20 lg:pt-20 lg:pb-10">
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
+      className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 py-6 sm:py-20 lg:pt-20 lg:pb-10"
+    >
       <div className="mx-auto max-w-7xl">
         <div className="text-center">
-          <span className="inline-block rounded-full border border-blue-600/15 dark:border-blue-400/20 bg-blue-100 dark:bg-blue-950/30 px-5 py-2 font-khmer text-sm font-bold uppercase text-primary-color dark:text-blue-300 transition-colors duration-300">
+          <motion.span
+            variants={badgeVariants}
+            className="inline-block rounded-full border border-blue-600/15 dark:border-blue-400/20 bg-blue-100 dark:bg-blue-950/30 px-5 py-2 font-khmer text-sm font-bold uppercase text-primary-color dark:text-blue-300 transition-colors duration-300"
+          >
             {currentT.coreFeature.badge}
-          </span>
-          <h2 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">
+          </motion.span>
+          
+          <motion.h2
+            variants={titleVariants}
+            className="mt-4 text-4xl font-black tracking-tight sm:text-5xl"
+          >
             <span className="text-primary-color dark:text-white">{currentT.coreFeature.headingPrefix}</span>
             <span className="text-secondary-color gradient-features dark:bg-gradient-to-r dark:from-purple-400 dark:to-blue-400 dark:bg-clip-text dark:text-transparent">
               {currentT.coreFeature.headingHighlight}
             </span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl font-khmer text-primary-color leading-7 text-slate-body dark:text-gray-400 transition-colors duration-300">
+          </motion.h2>
+          
+          <motion.p
+            variants={descriptionVariants}
+            className="mx-auto mt-4 max-w-xl font-khmer text-primary-color leading-7 text-slate-body dark:text-gray-400 transition-colors duration-300"
+          >
             {currentT.coreFeature.description}
-          </p>
+          </motion.p>
         </div>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-2"
+        >
           {currentT.coreFeature.cards.map((card, i) => {
             const style = cardStyles[i];
             // Define colors for each card
@@ -117,34 +271,77 @@ export default function CoreFeatures() {
             const colors = cardColors[i] || cardColors[0];
 
             return (
-              <article
+              <motion.article
                 key={card.title}
+                variants={cardVariants}
+                custom={i}
+                initial="initial"
+                animate="animate"
+                whileHover={{
+                  scale: 1.03,
+                  y: -10,
+                  transition: {
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 15,
+                  },
+                }}
                 className={`rounded-[22px] border ${colors.border} ${colors.bg} p-8 shadow-[0_4px_10px_rgba(13,27,62,0.07)] dark:shadow-[0_4px_10px_rgba(0,0,0,0.3)]
-            transition-all duration-300 hover:-translate-y-2 hover:shadow-lg ${colors.shadow}`}
+                  transition-all duration-300 hover:shadow-lg ${colors.shadow} cursor-pointer`}
               >
-                <div
+                <motion.div
+                  variants={iconFloatVariants}
+                  initial="initial"
+                  animate="animate"
+                  whileHover="hover"
                   className={`flex size-[52px] items-center justify-center rounded-[14px] border ${colors.border} ${colors.iconBg} transition-colors duration-300`}
                 >
                   <img src={style.icon} alt="" className={`size-[22px] ${colors.iconColor}`} />
-                </div>
-                <h3 className={`mt-5 text-2xl font-extrabold ${colors.titleColor} transition-colors duration-300`}>
-                  {card.title}
-                </h3>
-                <p className="mt-3 font-khmer text-primary-color leading-6 text-slate-body dark:text-gray-400 transition-colors duration-300">
-                  {card.description}
-                </p>
-                <Link
-                  href={style.href}
-                  className={`mt-5 inline-flex items-center gap-1.5 text-xs font-bold transition-colors duration-300 ${colors.linkColor}`}
+                </motion.div>
+                
+                <motion.h3
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className={`mt-5 text-2xl font-extrabold ${colors.titleColor} transition-colors duration-300`}
                 >
-                  {currentT.coreFeature.cta}
-                  <img src={style.arrow} alt="" className={`size-[13px] ${colors.iconColor}`} />
-                </Link>
-              </article>
+                  {card.title}
+                </motion.h3>
+                
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="mt-3 font-khmer text-primary-color leading-6 text-slate-body dark:text-gray-400 transition-colors duration-300"
+                >
+                  {card.description}
+                </motion.p>
+                
+                <motion.div
+                  whileHover="hover"
+                  variants={ctaVariants}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <Link
+                    href={style.href}
+                    className={`mt-5 inline-flex items-center gap-1.5 text-xs font-bold transition-colors duration-300 ${colors.linkColor}`}
+                  >
+                    {currentT.coreFeature.cta}
+                    <motion.img
+                      variants={arrowVariants}
+                      src={style.arrow}
+                      alt=""
+                      className={`size-[13px] ${colors.iconColor}`}
+                    />
+                  </Link>
+                </motion.div>
+              </motion.article>
             );
           })}
-        </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

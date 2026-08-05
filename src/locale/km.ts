@@ -1,101 +1,58 @@
 export const km = {
-  banner: {
-    badge: "រៀន។ សរសេរកូដ។ បង្កើតអនាគត។",
-    title1: "ចាប់ផ្តើមរៀន",
-    title2: "Coding",
-    title3: "ជំនាញថ្មីៗ",
-    title4: "សម្រាប់",
-    title5: "Code",
-    description:
-      "សិក្សាការសរសេរកូដ និងអភិវឌ្ឍជំនាញថ្មីៗ ជាមួយនឹង AI Assistant, Coding Exercise, Interactive Lesson និង Online Compiler។",
-    start: "ចូលរៀនឥឡូវនេះ",
-    explore: "ស្វែងរកកូដ",
-  },
-
-  popularDoc: {
-    badge: "ឯកសារពេញនិយម",
-    title: "ស្វែងរកឯកសារពេញនិយម",
-    description:
-      "សិក្សាគោលគំនិតសរសេរកម្មវិធីតាមរយៈឯកសារដែលច្បាស់លាស់ និងងាយអនុវត្ត។",
-    viewAll: "មើលឯកសារទាំងអស់",
-    startLearning: "ចាប់ផ្ដើមសិក្សា",
-  },
-
-  featureSection: {
-    features: [
-      {
-        lines: ["សិក្សាតាមរយៈមេរៀនដែលមានការពន្យល់", "និងឧទាហរណ៍ជាក់ស្តែងៗ"],
-      },
-      {
-        lines: ["សរសេរ សាកល្បង", "និងដំណើរការកូដបានភ្លាមៗនៅក្នុង Browser"],
-      },
-      {
-        lines: [
-          "ទទួលបានព័ត៌មានជំនួយ និងការពន្យល់កូដ",
-          "ដើម្បីអភិវឌ្ឍជំនាញរបស់អ្នក",
+    banner: {
+        badge: "ចាប់ផ្ដើមរៀន សរសេរកូដ បង្កើតអនាគត",
+        title1: "ចាប់ផ្តើមរៀន ",
+        title2: "Coding",
+        title3: "ថ្ងៃនេះជាមួយ",
+        title4: "សាស្ត្រា",
+        title5: "Code",
+        description:
+            "សិក្សាការសរសេរកូដ និងអភិវឌ្ឍជំនាញថ្មីៗ ជាមួយនឹង AI Assistant, Coding Exercise, Interactive Lesson និង Online Compiler។",
+        start: "ចូលរៀនឥឡូវនេះ",
+        explore: "ស្វែងរកកូដ",
+    },
+    coreFeature: {
+        badge: "អ្វីដែលយើងផ្តល់ជូន",
+        headingPrefix: "Core ",
+        headingHighlight: "Features",
+        description:
+            "អ្វីគ្រប់យ៉ាងដែលអ្នកត្រូវការ ដើម្បីអភិវឌ្ឍពីអ្នកចាប់ផ្តើមដំបូង ទៅជាអ្នកអភិវឌ្ឍន៍ដែលមានទំនុកចិត្ត នៅលើវេទិកាតែមួយ។",
+        cta: "Explore feature",
+        cards: [
+            {
+                title: "Interactive Documentation",
+                description:
+                    "មេរៀនដែលរៀបចំជាប្រព័ន្ធ ជាមួយឧទាហរណ៍កូដផ្ទាល់ និងលំហាត់អនុវត្តដែលបញ្ចូលក្នុងមេរៀននីមួយៗ។",
+            },
+            {
+                title: "Coding Playground",
+                description:
+                    "សរសេរ និងដំណើរការ Code ដោយផ្ទាល់ក្នុង Browser ជាមួយការបង្ហាញលទ្ធផលភ្លាមៗ ដោយមិនចាំបាច់ដំឡើងអ្វីទាំងអស់។",
+            },
+            // {
+            //     title: "AI Code Coach",
+            //     description:
+            //         "ទទួលបានការណែនាំឆ្លាតវៃ ការពន្យល់ដែលសមស្របទៅតាមអ្នក និងជំនួយ Debug Code ជាក់ស្តែងភ្លាមៗ។",
+            // },
+            {
+                title: "Quiz & Assessment",
+                description:
+                    "វាយតម្លៃវឌ្ឍនភាពនៃការសិក្សាតាមរយៈកម្រងសំណួរអន្តរកម្ម ជាមួយមតិកែលម្អលម្អិតភ្លាមៗ។",
+            },
+            {
+                title: "Video Learning",
+                description:
+                    "សិក្សាតាមរយៈមេរៀនវីដេអូដែលរៀបចំជាប្រព័ន្ធ ដើម្បីគាំទ្រគ្រប់ផែនការសិក្សា។",
+            },
+            // {
+            //     title: "Learning Roadmaps",
+            //     description:
+            //         "អនុវត្តតាមផែនទីដំណើរសិក្សាដែលបានរៀបចំយ៉ាងប្រុងប្រយ័ត្ន ដើម្បីណែនាំអ្នកសិក្សាពីកម្រិតចាប់ផ្តើមរហូតដល់កម្រិតជំនាញ។",
+            // },
         ],
-      },
-    ],
-  },
-
-  rewards: {
-    headingMain: "សិក្សា អនុវត្ត និង",
-    headingAccent: "ទទួលបានរង្វាន់",
-    description:
-      "បញ្ចប់មេរៀន បង្កើនជំនាញ និងទទួលបានវិញ្ញាបនបត្រ និងសមិទ្ធផលផ្សេងៗ។",
-    ctaLabel: "ចាប់ផ្ដើមសិក្សា",
-  },
-
-  coreFeature: {
-    badge: "អ្វីដែលយើងផ្តល់ជូន",
-    headingPrefix: "Core ",
-    headingHighlight: "Features",
-    description:
-      "អ្វីគ្រប់យ៉ាងដែលអ្នកត្រូវការ ដើម្បីអភិវឌ្ឍពីអ្នកចាប់ផ្តើមដំបូង ទៅជាអ្នកអភិវឌ្ឍន៍ដែលមានទំនុកចិត្ត នៅលើវេទិកាតែមួយ។",
-    cta: "Explore feature",
-    cards: [
-      {
-        title: "Interactive Documentation",
-        description:
-          "មេរៀនដែលរៀបចំជាប្រព័ន្ធ ជាមួយឧទាហរណ៍កូដផ្ទាល់ និងលំហាត់អនុវត្តដែលបញ្ចូលក្នុងមេរៀននីមួយៗ។",
-      },
-      {
-        title: "Coding Playground",
-        description:
-          "សរសេរ និងដំណើរការ Code ដោយផ្ទាល់ក្នុង Browser ជាមួយការបង្ហាញលទ្ធផលភ្លាមៗ ដោយមិនចាំបាច់ដំឡើងអ្វីទាំងអស់។",
-      },
-      {
-        title: "AI Code Coach",
-        description:
-          "ទទួលបានការណែនាំឆ្លាតវៃ ការពន្យល់ដែលសមស្របទៅតាមអ្នក និងជំនួយ Debug Code ជាក់ស្តែងភ្លាមៗ។",
-      },
-      {
-        title: "Quiz & Assessment",
-        description:
-          "វាយតម្លៃវឌ្ឍនភាពនៃការសិក្សាតាមរយៈកម្រងសំណួរអន្តរកម្ម ជាមួយមតិកែលម្អលម្អិតភ្លាមៗ។",
-      },
-      {
-        title: "Video Learning",
-        description:
-          "សិក្សាតាមរយៈមេរៀនវីដេអូដែលរៀបចំជាប្រព័ន្ធ ដើម្បីគាំទ្រគ្រប់ផែនការសិក្សា។",
-      },
-      {
-        title: "Learning Roadmaps",
-        description:
-          "អនុវត្តតាមផែនទីដំណើរសិក្សាដែលបានរៀបចំយ៉ាងប្រុងប្រយ័ត្ន ដើម្បីណែនាំអ្នកសិក្សាពីកម្រិតចាប់ផ្តើមរហូតដល់កម្រិតជំនាញ។",
-      },
-    ],
-  },
-
-  popularCourse: {
-    badge: "វគ្គសិក្សាពេញនិយម",
-    title: "ស្វែងរកវគ្គសិក្សាពេញនិយម",
-    description: "ជ្រើសរើសវគ្គសិក្សា និងចាប់ផ្ដើមរៀនថ្ងៃនេះ។",
-    viewAll: "មើលវគ្គសិក្សាទាំងអស់",
-    enrollNow: "ចុះឈ្មោះឥឡូវនេះ",
-  },
-  interactiveDoc: {
-    title: "ឯកសារ Interactive Documentation",
+    },
+    interactiveDoc: {
+        title: "ឯកសារ Interactive Documentation",
 
     description:
       "ស្វែងយល់ពីមេរៀនដែលរៀបចំជាព័ន្ធ ជាមួយ Live Code Examples, Syntax Highlighting, Embedded Exercises និង Quiz ដែលជួយប្លែងចំណេះដឹងស្ទឹះទៅជាការអនុវត្តជាក់ស្តែងៗ",
@@ -159,6 +116,21 @@ export const km = {
     title1: "Technology Stack",
     description: "បច្ចេកវិទ្យាទំនើបៗជំរុញបទពិសោធន៍សិក្សាជំនាន់ក្រោយ។",
   },
+  popularCourses: {
+    title: "វគ្គសិក្សាដែលពេញនិយម",
+    description:
+      "សិក្សាវគ្គសិក្សាដែលពេញនិយម និងមានប្រជាប្រិយភាពខ្ពស់ ដើម្បីអភិវឌ្ឍជំនាញថ្មីៗ និងបង្កើតអនាគតរបស់អ្នក។",
+  },
+  popularDoc: {
+    title: "ឯកសារដែលពេញនិយម",
+  },
+
+
+
+
+
+
+
 
   // ដាក់​ transaltion ឲនៅពីលើ footer។។។​ សូមអរគុណ
   footer: {

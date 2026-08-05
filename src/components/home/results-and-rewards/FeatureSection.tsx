@@ -1,11 +1,40 @@
 "use client";
 
 import React from "react";
-import { useLanguage } from "@/lib/language-context";
-import { en } from "@/locale/en";
-import { km } from "@/locale/km";
 
-
+/**
+ * FeatureSection
+ * A responsive 3-column feature layout with corner-bracket frames
+ * and captions, matching the reference design.
+ *
+ * Plug in your own icons via the `icon` prop for each feature —
+ * pass your SVG components, <img> tags, or Next <Image /> elements.
+ *
+ * Usage (Next.js App Router):
+ *   import FeatureSection from "@/components/FeatureSection";
+ *   import DocIcon from "@/icons/doc.svg";
+ *   import LaptopIcon from "@/icons/laptop.svg";
+ *   import RobotIcon from "@/icons/robot.svg";
+ *
+ *   export default function Page() {
+ *     return (
+ *       <FeatureSection
+ *         features={[
+ *           { icon: <DocIcon />, lines: ["សិក្សាតាមរយៈមេរៀនដែលមានការពន្យល់", "និងឧទាហរណ៍ជាក់ស្តែងៗ"] },
+ *           { icon: <LaptopIcon />, lines: ["សរសេរ សាកល្បង", "និងដំណើរការកូដបានភ្លាមៗនៅក្នុង Browserៗ"] },
+ *           { icon: <RobotIcon />, lines: ["ទទួលបានព័ត៌មានជំនួយ និងការពន្យល់កូដ", "ដើម្បីអភិវឌ្ឍជំនាញរបស់អ្នកៗ"] },
+ *         ]}
+ *       />
+ *     );
+ *   }
+ *
+ * Fonts: the captions use Khmer glyphs, so make sure a Khmer-capable
+ * font is loaded, e.g. in app/layout.tsx:
+ *   import { Noto_Sans_Khmer } from "next/font/google";
+ *   const khmer = Noto_Sans_Khmer({ subsets: ["khmer"], weight: ["400","600"] });
+ *   <body className={khmer.className}>...
+ */
+import { useTranslation } from "@/hooks/useTranslations";
 
 export type Feature = {
   icon: React.ReactNode;
@@ -38,16 +67,9 @@ export default function FeatureSection({
 }: {
   features?: Feature[];
 }) {
-  const { lang } = useLanguage();
+ const currentT = useTranslation();
 
-  const translations = {
-    en,
-    km,
-  };
-
-  const currentT = translations[lang];
-
-  features = currentT.featureSection.features.map((feature, index) => ({
+  features = currentT.resultAndRewards.featureSection.features.map((feature, index) => ({
     icon: icons[index],
     lines: feature.lines,
   }));

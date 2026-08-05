@@ -1,23 +1,15 @@
 export const en = {
   banner: {
     badge: "LEARN. CODE. BUILD THE FUTURE.",
-    title1: "Start Learning",
+    title1: "Start Learning ",
     title2: "Coding",
-    title3: "New Skills",
+    title3: "New Skills ",
     title4: "for",
     title5: "Code",
     description:
       "Learn programming and develop new skills with AI Assistant, Coding Exercises, Interactive Lessons, and an Online Compiler.",
     start: "Start Learning",
     explore: "Explore Code",
-  },
-  popularDoc: {
-    badge: "Popular Documentation",
-    title: "Explore Popular Documentation",
-    description:
-      "Learn programming concepts through clear and practical documentation.",
-    viewAll: "View All Documentation",
-    startLearning: "Start Learning",
   },
   coreFeature: {
     badge: "What We Offer",
@@ -37,11 +29,11 @@ export const en = {
         description:
           "Write and run code directly in your browser with instant results — no installation required.",
       },
-      {
-        title: "AI Code Coach",
-        description:
-          "Get smart guidance, explanations tailored to you, and real-time debugging help.",
-      },
+      // {
+      //     title: "AI Code Coach",
+      //     description:
+      //         "Get smart guidance, explanations tailored to you, and real-time debugging help.",
+      // },
       {
         title: "Quiz & Assessment",
         description:
@@ -52,19 +44,12 @@ export const en = {
         description:
           "Learn through systematically organized video lessons that support every learning plan.",
       },
-      {
-        title: "Learning Roadmaps",
-        description:
-          "Follow carefully structured learning roadmaps that guide you from beginner to expert level.",
-      },
+      // {
+      //     title: "Learning Roadmaps",
+      //     description:
+      //         "Follow carefully structured learning roadmaps that guide you from beginner to expert level.",
+      // },
     ],
-  },
-  popularCourse: {
-    badge: "Popular Courses",
-    title: "Explore Popular Courses",
-    description: "Choose a course and start learning today.",
-    viewAll: "View All Courses",
-    enrollNow: "Enroll Now",
   },
   interactiveDoc: {
     title: "Interactive Documentation",
@@ -164,6 +149,17 @@ export const en = {
     description:
       "Modern technologies powering a next-generation learning experience.",
   },
+  popularCourses: {
+    title: "Popular Courses",
+    description:
+      "Explore our most popular courses and advance your skills with hands-on projects and real-world applications.",
+  },
+  popularDoc: {
+    title: "Popular Documentation",
+  },
+
+
+
 
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.
   footer: {

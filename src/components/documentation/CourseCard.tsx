@@ -1,12 +1,36 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import { Course } from "@/types/course";
+import React from "react";
 
 interface CourseCardProps {
-  course: Course;
+  course: {
+    id?: number
+    coverImage: string
+    title: string
+    description: string
+    href: string
+    ctaLabel: string
+    isFree?: boolean
+  }
+  showPlayButton?: boolean
+  onPlay?: () => void
 }
 
-export default function CourseCard({ course }: CourseCardProps) {
+export default function CourseCard({ course, showPlayButton = false, onPlay }: CourseCardProps) {
+  const [isHovered, setIsHovered] = React.useState(false)
+
+  const handlePlayClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    if (onPlay) {
+      onPlay()
+    } else {
+      console.log("Play video for:", course.title)
+    }
+  }
+
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 font-khmer transition-all duration-300 ease-in-out hover:border-blue-200 dark:hover:border-blue-800 hover:shadow-lg hover:shadow-slate-200/50 dark:hover:shadow-none">
       
@@ -39,7 +63,7 @@ export default function CourseCard({ course }: CourseCardProps) {
           {course.description}
         </p>
 
-        {/* Action Button Link */}
+        {/* Action Button Link - Dark mode */}
         <Link
           href={course.href}
           className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#002455] dark:bg-blue-600 px-4 py-3 text-sm font-medium text-white transition-all duration-300 ease-in-out hover:bg-blue-900 dark:hover:bg-blue-700 active:scale-[0.98]"
@@ -59,5 +83,5 @@ export default function CourseCard({ course }: CourseCardProps) {
         
       </div>
     </article>
-  );
+  )
 }
