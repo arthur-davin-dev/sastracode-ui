@@ -17,11 +17,10 @@ export function CourseCard({ course }: CourseCardProps) {
     ? "h-8 rounded-md bg-indigo-800 dark:bg-indigo-600 hover:bg-indigo-900 dark:hover:bg-indigo-500 text-white px-3 text-[13px] font-medium transition-colors"
     : "h-8 rounded-md bg-amber-400 dark:bg-amber-500 text-slate-950 hover:bg-amber-300 dark:hover:bg-amber-400 px-3 text-[13px] font-medium transition-colors";
 
-  return (
-    <Link
-      href="/private-course"
-      className="group block w-full overflow-hidden rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:border-slate-700"
-    >
+  const cardWrapperClass =
+    "group block w-full overflow-hidden rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:border-slate-700";
+  const cardContent = (
+    <>
       <div className="relative h-37.5 w-full ">
         <Image
           src={course.image}
@@ -92,6 +91,16 @@ export function CourseCard({ course }: CourseCardProps) {
           </div>
         )}
       </div>
+    </>
+  );
+
+  const cardHref = course.locked
+    ? "/private-course"
+    : (course.href ?? `/courses/${course.id}`);
+
+  return (
+    <Link href={cardHref} className={cardWrapperClass}>
+      {cardContent}
     </Link>
   );
 }

@@ -36,7 +36,7 @@ export default function CourseBanner() {
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-2">
               <Button
                 size="lg"
-                className="group rounded-full bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white px-7 py-6 text-base shadow-md shadow-indigo-500/20 transition-all duration-300 hover:shadow-indigo-500/30 active:scale-[0.98]"
+                className="group rounded-full bg-primary-color hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white px-7 py-6 text-base shadow-md shadow-indigo-500/20 transition-all duration-300 hover:shadow-indigo-500/30 active:scale-[0.98]"
               >
                 <span>ចាប់ផ្តើមសិក្សា</span>
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
