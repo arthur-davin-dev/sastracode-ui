@@ -7,17 +7,22 @@ import {
   ArrowLeft,
   CheckCircle2,
   CircleHelp,
-  Lightbulb,
+  LockKeyhole,
   Menu,
   PanelLeftClose,
   PanelLeftOpen,
   Play,
   RefreshCcw,
-  Send,
   Sparkles,
   X,
+  Check,
+  ChevronDown,
 } from "lucide-react";
-import { useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import {
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
 
 const starterCode = `<!doctype html>
 <html lang="en">
@@ -44,8 +49,19 @@ export default function ExerciseWorkspace() {
   const [instructionsOpen, setInstructionsOpen] = useState(false);
   const [instructionsCollapsed, setInstructionsCollapsed] = useState(false);
   const [activeTab, setActiveTab] = useState<"preview" | "tests">("preview");
-  const [botPosition, setBotPosition] = useState<{ x: number; y: number } | null>(null);
-  const botDrag = useRef({ startX: 0, startY: 0, offsetX: 0, offsetY: 0, moved: false });
+  const [botPosition, setBotPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
+
+  const botDrag = useRef({
+    startX: 0,
+    startY: 0,
+    offsetX: 0,
+    offsetY: 0,
+    moved: false,
+  });
+
   const suppressBotClick = useRef(false);
 
   const runCode = () => {
@@ -53,8 +69,11 @@ export default function ExerciseWorkspace() {
     setActiveTab("preview");
   };
 
-  const handleBotPointerDown = (event: ReactPointerEvent<HTMLButtonElement>) => {
+  const handleBotPointerDown = (
+    event: ReactPointerEvent<HTMLButtonElement>,
+  ) => {
     const rect = event.currentTarget.getBoundingClientRect();
+
     botDrag.current = {
       startX: event.clientX,
       startY: event.clientY,
@@ -62,29 +81,47 @@ export default function ExerciseWorkspace() {
       offsetY: event.clientY - rect.top,
       moved: false,
     };
-    setBotPosition({ x: rect.left, y: rect.top });
+
+    setBotPosition({
+      x: rect.left,
+      y: rect.top,
+    });
+
     event.currentTarget.setPointerCapture(event.pointerId);
   };
 
-  const handleBotPointerMove = (event: ReactPointerEvent<HTMLButtonElement>) => {
+  const handleBotPointerMove = (
+    event: ReactPointerEvent<HTMLButtonElement>,
+  ) => {
     if (!event.currentTarget.hasPointerCapture(event.pointerId)) return;
 
     const distance = Math.hypot(
       event.clientX - botDrag.current.startX,
       event.clientY - botDrag.current.startY,
     );
-    if (distance > 4) botDrag.current.moved = true;
+
+    if (distance > 4) {
+      botDrag.current.moved = true;
+    }
 
     const size = event.currentTarget.offsetWidth;
     const edgeGap = 8;
+
     setBotPosition({
-      x: Math.min(Math.max(edgeGap, event.clientX - botDrag.current.offsetX), window.innerWidth - size - edgeGap),
-      y: Math.min(Math.max(edgeGap, event.clientY - botDrag.current.offsetY), window.innerHeight - size - edgeGap),
+      x: Math.min(
+        Math.max(edgeGap, event.clientX - botDrag.current.offsetX),
+        window.innerWidth - size - edgeGap,
+      ),
+      y: Math.min(
+        Math.max(edgeGap, event.clientY - botDrag.current.offsetY),
+        window.innerHeight - size - edgeGap,
+      ),
     });
   };
 
   const handleBotPointerUp = (event: ReactPointerEvent<HTMLButtonElement>) => {
     suppressBotClick.current = botDrag.current.moved;
+
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
@@ -101,55 +138,87 @@ export default function ExerciseWorkspace() {
         >
           <Menu className="size-5" />
         </button>
+
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <Link
               href="/documentation/lessons/html-elements"
               className="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 transition hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
             >
-              <ArrowLeft className="size-3.5" /> HTML Elements
+              <ArrowLeft className="size-3.5" />
+              HTML Elements
             </Link>
+
             <span className="rounded-full bg-slate-200/70 px-2 py-0.5 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
               Coding exercise
             </span>
           </div>
-          <h1 className="mt-1.5 truncate text-lg font-extrabold leading-tight sm:text-xl">Build a semantic profile card</h1>
+
+          <h1 className="mt-1.5 truncate text-lg leading-tight font-extrabold sm:text-xl">
+            Build a semantic profile card
+          </h1>
         </div>
       </header>
 
       <div className="relative flex min-h-0 flex-1">
-        <div className={`relative hidden shrink-0 overflow-hidden border-r border-slate-200 bg-white transition-[width] duration-300 md:block dark:border-slate-800 dark:bg-slate-900 ${instructionsCollapsed ? "w-14" : "w-72"}`}>
+        <div
+          className={`relative hidden shrink-0 overflow-hidden border-r border-slate-200 bg-white transition-[width] duration-300 md:block dark:border-slate-800 dark:bg-slate-900 ${
+            instructionsCollapsed ? "w-14" : "w-72"
+          }`}
+        >
           <button
             type="button"
             onClick={() => setInstructionsCollapsed((collapsed) => !collapsed)}
-            className={`absolute top-3 z-10 inline-flex rounded-lg border border-slate-200 bg-white p-2 shadow-sm transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 ${instructionsCollapsed ? "left-2.5" : "right-3"}`}
-            aria-label={instructionsCollapsed ? "Show exercise instructions" : "Hide exercise instructions"}
+            className={`absolute top-3 z-10 inline-flex rounded-lg border border-slate-200 bg-white p-2 shadow-sm transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800 ${
+              instructionsCollapsed ? "left-2.5" : "right-3"
+            }`}
+            aria-label={
+              instructionsCollapsed
+                ? "Show exercise instructions"
+                : "Hide exercise instructions"
+            }
             title={instructionsCollapsed ? "Show problem" : "Minimize problem"}
           >
-            {instructionsCollapsed ? <PanelLeftOpen className="size-5" /> : <PanelLeftClose className="size-5" />}
+            {instructionsCollapsed ? (
+              <PanelLeftOpen className="size-5" />
+            ) : (
+              <PanelLeftClose className="size-5" />
+            )}
           </button>
-          <ExerciseInstructions className={`h-full w-72 transition-opacity duration-200 ${instructionsCollapsed ? "pointer-events-none opacity-0" : "opacity-100"}`} />
+
+          <ExerciseInstructions
+            className={`h-full w-72 transition-opacity duration-200 ${
+              instructionsCollapsed
+                ? "pointer-events-none opacity-0"
+                : "opacity-100"
+            }`}
+          />
         </div>
 
         <section className="flex min-w-0 flex-1 flex-col bg-white dark:bg-slate-950">
           <div className="flex h-13 items-center justify-end border-b border-slate-200 px-3 dark:border-slate-800">
             <div className="flex gap-2">
               <div className="hidden items-center gap-1.5 px-2 text-xs text-slate-500 sm:flex dark:text-slate-400">
-                <CheckCircle2 className="size-4 text-emerald-500" /> Saved locally
+                <CheckCircle2 className="size-4 text-emerald-500" />
+                Saved locally
               </div>
+
               <button
                 type="button"
                 onClick={() => setCode(starterCode)}
                 className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-semibold hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
               >
-                <RefreshCcw className="size-4" /><span className="hidden sm:inline">Reset</span>
+                <RefreshCcw className="size-4" />
+                <span className="hidden sm:inline">Reset</span>
               </button>
+
               <button
                 type="button"
                 onClick={runCode}
                 className="inline-flex items-center gap-2 rounded-lg bg-[#002455] px-4 py-1.5 text-sm font-semibold text-white hover:bg-blue-900"
               >
-                <Play className="size-4 fill-current" /> Run
+                <Play className="size-4 fill-current" />
+                Run
               </button>
             </div>
           </div>
@@ -174,11 +243,38 @@ export default function ExerciseWorkspace() {
 
           <div className="flex min-h-64 flex-2 flex-col border-t border-slate-200 dark:border-slate-800">
             <div className="flex h-12 items-center gap-1 border-b border-slate-200 px-4 dark:border-slate-800">
-              <button type="button" onClick={() => setActiveTab("preview")} className={`h-full border-b-2 px-3 text-sm font-semibold ${activeTab === "preview" ? "border-blue-700 text-blue-700 dark:text-blue-400" : "border-transparent text-slate-500"}`}>Live output</button>
-              <button type="button" onClick={() => setActiveTab("tests")} className={`h-full border-b-2 px-3 text-sm font-semibold ${activeTab === "tests" ? "border-blue-700 text-blue-700 dark:text-blue-400" : "border-transparent text-slate-500"}`}>Test results</button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("preview")}
+                className={`h-full border-b-2 px-3 text-sm font-semibold ${
+                  activeTab === "preview"
+                    ? "border-blue-700 text-blue-700 dark:text-blue-400"
+                    : "border-transparent text-slate-500"
+                }`}
+              >
+                Live output
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveTab("tests")}
+                className={`h-full border-b-2 px-3 text-sm font-semibold ${
+                  activeTab === "tests"
+                    ? "border-blue-700 text-blue-700 dark:text-blue-400"
+                    : "border-transparent text-slate-500"
+                }`}
+              >
+                Test results
+              </button>
             </div>
+
             {activeTab === "preview" ? (
-              <iframe title="Exercise output" srcDoc={preview} sandbox="allow-scripts" className="min-h-52 w-full flex-1 bg-white" />
+              <iframe
+                title="Exercise output"
+                srcDoc={preview}
+                sandbox="allow-scripts"
+                className="min-h-52 w-full flex-1 bg-white"
+              />
             ) : (
               <div className="grid flex-1 content-start gap-3 p-4 sm:grid-cols-3">
                 <ResultCard label="Passed" value="2" tone="green" />
@@ -189,7 +285,9 @@ export default function ExerciseWorkspace() {
           </div>
         </section>
 
-        {assistantOpen && <AssistantPanel onClose={() => setAssistantOpen(false)} />}
+        {assistantOpen && (
+          <AssistantPanel onClose={() => setAssistantOpen(false)} />
+        )}
 
         {!assistantOpen && (
           <button
@@ -199,6 +297,7 @@ export default function ExerciseWorkspace() {
                 suppressBotClick.current = false;
                 return;
               }
+
               setAssistantOpen(true);
             }}
             onPointerDown={handleBotPointerDown}
@@ -206,8 +305,17 @@ export default function ExerciseWorkspace() {
             onPointerUp={handleBotPointerUp}
             onPointerCancel={handleBotPointerUp}
             onDragStart={(event) => event.preventDefault()}
-            style={botPosition ? { left: botPosition.x, top: botPosition.y } : undefined}
-            className={`group fixed z-40 grid size-16 touch-none cursor-grab place-items-center rounded-full border-4 border-white bg-linear-to-br from-blue-700 to-indigo-500 text-white shadow-xl transition-shadow hover:shadow-2xl active:cursor-grabbing dark:border-slate-800 ${botPosition ? "" : "right-6 bottom-6"}`}
+            style={
+              botPosition
+                ? {
+                    left: botPosition.x,
+                    top: botPosition.y,
+                  }
+                : undefined
+            }
+            className={`group fixed z-40 grid size-16 touch-none cursor-grab place-items-center rounded-full border-4 border-white bg-linear-to-br from-blue-700 to-indigo-500 text-white shadow-xl transition-shadow hover:shadow-2xl active:cursor-grabbing dark:border-slate-800 ${
+              botPosition ? "" : "right-6 bottom-6"
+            }`}
             aria-label="Open AI Assistance Bot"
             title="Drag to move or click to open"
           >
@@ -219,6 +327,7 @@ export default function ExerciseWorkspace() {
               draggable={false}
               className="pointer-events-none size-14 select-none object-contain transition group-hover:scale-110"
             />
+
             <span className="pointer-events-none absolute -top-1 -right-1 size-4 rounded-full border-2 border-white bg-emerald-500 dark:border-slate-800" />
           </button>
         )}
@@ -226,41 +335,109 @@ export default function ExerciseWorkspace() {
 
       {instructionsOpen && (
         <div className="fixed inset-0 z-50 flex md:hidden">
-          <button type="button" aria-label="Close instructions" onClick={() => setInstructionsOpen(false)} className="absolute inset-0 bg-slate-950/50" />
-          <ExerciseInstructions className="relative h-full w-[88%] max-w-sm overflow-y-auto bg-white shadow-2xl dark:bg-slate-900" onClose={() => setInstructionsOpen(false)} />
+          <button
+            type="button"
+            aria-label="Close instructions"
+            onClick={() => setInstructionsOpen(false)}
+            className="absolute inset-0 bg-slate-950/50"
+          />
+
+          <ExerciseInstructions
+            className="relative h-full w-[88%] max-w-sm overflow-y-auto bg-white shadow-2xl dark:bg-slate-900"
+            onClose={() => setInstructionsOpen(false)}
+          />
         </div>
       )}
     </div>
   );
 }
 
-function ExerciseInstructions({ className, onClose }: { className?: string; onClose?: () => void }) {
+function ExerciseInstructions({
+  className,
+  onClose,
+}: {
+  className?: string;
+  onClose?: () => void;
+}) {
   return (
     <aside className={`${className ?? ""} overflow-y-auto p-5`}>
       <div className="mb-5 flex items-center justify-between">
-        <span className="text-xs font-bold uppercase tracking-widest text-blue-700 dark:text-blue-400">Problem</span>
-        {onClose && <button type="button" onClick={onClose} aria-label="Close instructions"><X className="size-5" /></button>}
+        <span className="text-xs font-bold tracking-widest text-blue-700 uppercase dark:text-blue-400">
+          Problem
+        </span>
+
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close instructions"
+          >
+            <X className="size-5" />
+          </button>
+        )}
       </div>
-      <h2 className="text-2xl font-bold leading-tight">Build a semantic profile card</h2>
-      <p className="mt-4 text-sm leading-6 text-slate-600 dark:text-slate-300">Create a small profile card using meaningful HTML elements. Your result should introduce a developer and include a link to their portfolio.</p>
-      <h3 className="mt-7 text-xs font-bold uppercase tracking-wider text-slate-500">Your task</h3>
+
+      <h2 className="text-2xl leading-tight font-bold">
+        Build a semantic profile card
+      </h2>
+
+      <p className="mt-4 text-sm leading-6 text-slate-600 dark:text-slate-300">
+        Create a small profile card using meaningful HTML elements. Your result
+        should introduce a developer and include a link to their portfolio.
+      </p>
+
+      <h3 className="mt-7 text-xs font-bold tracking-wider text-slate-500 uppercase">
+        Your task
+      </h3>
+
       <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-6 text-slate-700 dark:text-slate-300">
-        <li>Use an <code>&lt;article&gt;</code> as the card container.</li>
+        <li>
+          Use an <code>&lt;article&gt;</code> as the card container.
+        </li>
         <li>Add one heading and one paragraph.</li>
         <li>Add a portfolio link with useful link text.</li>
       </ul>
+
       <div className="mt-7 rounded-xl border border-blue-100 bg-blue-50 p-4 dark:border-blue-900 dark:bg-blue-950/40">
-        <div className="flex items-center gap-2 text-sm font-bold text-blue-900 dark:text-blue-200"><CircleHelp className="size-4" /> Expected structure</div>
-        <p className="mt-2 text-xs leading-5 text-blue-800 dark:text-blue-300">The page must contain an article, h1, paragraph, and anchor element.</p>
+        <div className="flex items-center gap-2 text-sm font-bold text-blue-900 dark:text-blue-200">
+          <CircleHelp className="size-4" />
+          Expected structure
+        </div>
+
+        <p className="mt-2 text-xs leading-5 text-blue-800 dark:text-blue-300">
+          The page must contain an article, h1, paragraph, and anchor element.
+        </p>
       </div>
-      <h3 className="mt-7 text-xs font-bold uppercase tracking-wider text-slate-500">Constraints</h3>
-      <div className="mt-3 rounded-xl bg-slate-100 p-4 text-sm leading-6 dark:bg-slate-800">Do not use JavaScript for this exercise. Keep your content accessible and readable.</div>
+
+      <h3 className="mt-7 text-xs font-bold tracking-wider text-slate-500 uppercase">
+        Constraints
+      </h3>
+
+      <div className="mt-3 rounded-xl bg-slate-100 p-4 text-sm leading-6 dark:bg-slate-800">
+        Do not use JavaScript for this exercise. Keep your content accessible
+        and readable.
+      </div>
     </aside>
   );
 }
 
 function AssistantPanel({ onClose }: { onClose: () => void }) {
-  const [message, setMessage] = useState("");
+  const [activeSection, setActiveSection] = useState<
+    "hints" | "tools" | "history"
+  >("hints");
+
+  const [hintStep, setHintStep] = useState(0);
+  const [selectedHintStep, setSelectedHintStep] = useState(0);
+
+  const handleGetHint = () => {
+    if (hintStep >= 5) return;
+
+    const nextStep = hintStep + 1;
+
+    setHintStep(nextStep);
+    setSelectedHintStep(nextStep);
+  };
+
   return (
     <aside className="fixed inset-y-0 right-0 z-40 flex w-[92%] max-w-sm flex-col border-l border-slate-200 bg-white shadow-2xl xl:static xl:z-auto xl:w-88 xl:shrink-0 xl:shadow-none dark:border-slate-800 dark:bg-slate-900">
       <div className="flex h-16 items-center gap-3 border-b border-slate-200 px-4 dark:border-slate-800">
@@ -273,31 +450,395 @@ function AssistantPanel({ onClose }: { onClose: () => void }) {
             className="size-10 object-contain"
           />
         </div>
-        <div className="min-w-0 flex-1"><h2 className="font-bold">AI Assistance Bot</h2><p className="truncate text-xs text-slate-500">Guidance without giving away the answer</p></div>
-        <button type="button" onClick={onClose} className="rounded-lg p-2 hover:bg-slate-100 dark:hover:bg-slate-800" aria-label="Close AI Assistance Bot"><X className="size-5" /></button>
-      </div>
-      <div className="flex-1 space-y-4 overflow-y-auto p-4">
-        <div className="rounded-2xl rounded-tl-sm bg-slate-100 p-4 text-sm leading-6 dark:bg-slate-800">
-          Hi! I can explain the task, review your approach, or give you a small hint. I’ll help you learn without immediately revealing the solution.
+
+        <div className="min-w-0 flex-1">
+          <h2 className="font-bold">AI Assistance Bot</h2>
+          <p className="truncate text-xs text-slate-500">
+            Guidance without giving away the answer
+          </p>
         </div>
-        <button type="button" className="flex w-full items-start gap-3 rounded-xl border border-slate-200 p-3 text-left hover:border-blue-300 hover:bg-blue-50 dark:border-slate-700 dark:hover:bg-blue-950/30">
-          <Lightbulb className="mt-0.5 size-5 shrink-0 text-amber-500" /><span><strong className="block text-sm">Give me a hint</strong><span className="text-xs text-slate-500">Get help with the next step</span></span>
-        </button>
-        <button type="button" className="flex w-full items-start gap-3 rounded-xl border border-slate-200 p-3 text-left hover:border-blue-300 hover:bg-blue-50 dark:border-slate-700 dark:hover:bg-blue-950/30">
-          <Sparkles className="mt-0.5 size-5 shrink-0 text-violet-500" /><span><strong className="block text-sm">Review my code</strong><span className="text-xs text-slate-500">Find issues and suggest improvements</span></span>
+
+        <button
+          type="button"
+          onClick={onClose}
+          className="rounded-lg p-2 hover:bg-slate-100 dark:hover:bg-slate-800"
+          aria-label="Close AI Assistance Bot"
+        >
+          <X className="size-5" />
         </button>
       </div>
-      <form onSubmit={(event) => { event.preventDefault(); setMessage(""); }} className="border-t border-slate-200 p-3 dark:border-slate-800">
-        <div className="flex items-end gap-2 rounded-xl border border-slate-300 bg-white p-2 focus-within:ring-2 focus-within:ring-blue-600 dark:border-slate-700 dark:bg-slate-950">
-          <textarea value={message} onChange={(event) => setMessage(event.target.value)} rows={2} placeholder="Ask about this exercise…" className="min-h-10 flex-1 resize-none bg-transparent px-2 py-1 text-sm outline-none" />
-          <button type="submit" disabled={!message.trim()} className="grid size-9 shrink-0 place-items-center rounded-lg bg-[#002455] text-white disabled:opacity-40" aria-label="Send message"><Send className="size-4" /></button>
-        </div>
-      </form>
+
+      <div
+        className="grid grid-cols-3 border-b border-slate-200 px-2 dark:border-slate-800"
+        role="tablist"
+        aria-label="AI assistance sections"
+      >
+        {(["hints", "tools", "history"] as const).map((section) => (
+          <button
+            key={section}
+            type="button"
+            role="tab"
+            aria-selected={activeSection === section}
+            onClick={() => setActiveSection(section)}
+            className={`border-b-2 px-2 py-3 text-xs font-bold transition-colors ${
+              activeSection === section
+                ? "border-primary-color text-primary-color dark:border-blue-400 dark:text-blue-400"
+                : "border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+            }`}
+          >
+            {section === "hints"
+              ? "Hints"
+              : section === "tools"
+                ? "AI tools"
+                : "History"}
+          </button>
+        ))}
+      </div>
+
+      <div className="min-h-0 flex-1 overflow-y-auto p-4">
+        {activeSection === "hints" && (
+          <HintsSection
+            hintStep={hintStep}
+            selectedHintStep={selectedHintStep}
+            onSelectHint={setSelectedHintStep}
+          />
+        )}
+
+        {activeSection === "tools" && <AiToolsSection hintStep={hintStep} />}
+        {activeSection === "history" && <HistorySection />}
+
+        <AssistantActions hintStep={hintStep} onGetHint={handleGetHint} />
+      </div>
     </aside>
   );
 }
 
-function ResultCard({ label, value, tone }: { label: string; value: string; tone?: "green" | "blue" }) {
-  const color = tone === "green" ? "text-emerald-600" : tone === "blue" ? "text-blue-700 dark:text-blue-400" : "";
-  return <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-800"><div className="text-xs text-slate-500">{label}</div><div className={`mt-2 text-2xl font-bold ${color}`}>{value}</div></div>;
+function HintsSection({
+  hintStep,
+  selectedHintStep,
+  onSelectHint,
+}: {
+  hintStep: number;
+  selectedHintStep: number;
+  onSelectHint: (step: number) => void;
+}) {
+  const hints = [
+    "Look closely at the HTML structure. Ask yourself whether every opening element has the correct closing element.",
+    "Start with one semantic article element and place all profile content inside it.",
+    "Your article needs a heading, a paragraph, and a portfolio link with descriptive text.",
+    "Check that the heading uses h1 and that the link has a valid href attribute.",
+    "Replace the card div with article, then verify the required h1, p, and a elements are nested inside it.",
+  ];
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-xl border border-violet-100 bg-violet-50 p-4 dark:border-violet-900 dark:bg-violet-950/30">
+        <h3 className="text-sm font-bold">Work through it step by step</h3>
+
+        <p className="mt-2 text-xs leading-5 text-slate-500 dark:text-slate-400">
+          Each hint becomes more specific. The full fix unlocks after five
+          hints.
+        </p>
+      </div>
+
+      <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+        <div className="flex justify-between text-xs">
+          <span className="text-slate-500">Hint progress</span>
+          <strong>{hintStep} / 5 used</strong>
+        </div>
+
+        <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+          <div
+            className="bg-primary-color h-full rounded-full transition-[width] duration-300 dark:bg-blue-500"
+            style={{ width: `${hintStep * 20}%` }}
+          />
+        </div>
+
+        <div className="mt-3 flex justify-between">
+          {[1, 2, 3, 4, 5].map((step) => {
+            const isUnlocked = step <= hintStep;
+            const isSelected = step === selectedHintStep;
+
+            return (
+              <button
+                key={step}
+                type="button"
+                disabled={!isUnlocked}
+                onClick={() => onSelectHint(step)}
+                aria-label={`View hint ${step}`}
+                aria-pressed={isSelected}
+                className={`grid size-7 place-items-center rounded-full border text-xs font-bold transition-colors ${
+                  isSelected
+                    ? "border-primary-color bg-primary-color text-white ring-2 ring-blue-200 dark:border-blue-500 dark:bg-blue-500 dark:ring-blue-900"
+                    : isUnlocked
+                      ? "text-primary-color border-primary-color cursor-pointer bg-blue-50 hover:bg-blue-100 dark:border-blue-500 dark:bg-blue-950 dark:text-blue-300"
+                      : "cursor-not-allowed border-slate-200 text-slate-400 dark:border-slate-700"
+                }`}
+              >
+                {step}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {selectedHintStep > 0 && (
+        <div className="rounded-xl border border-violet-100 bg-violet-50/60 p-4 dark:border-violet-900 dark:bg-violet-950/20">
+          <div className="flex items-center justify-between">
+            <strong className="text-primary-color text-xs dark:text-blue-400">
+              HINT {selectedHintStep}
+            </strong>
+
+            <span className="text-[11px] text-slate-400">07:00 PM</span>
+          </div>
+
+          <p className="mt-2 text-xs leading-5 text-slate-600 dark:text-slate-300">
+            {hints[selectedHintStep - 1]}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AiToolsSection({ hintStep }: { hintStep: number }) {
+  const [codeScope, setCodeScope] = useState<"whole" | "selected">("whole");
+  const [scopeOpen, setScopeOpen] = useState(false);
+
+  const scopeLabel = codeScope === "whole" ? "Whole document" : "Selected code";
+  const isFixUnlocked = hintStep >= 5;
+  return (
+    <div className="space-y-4">
+      <ToolCard
+        title="Explain my code"
+        description="Ask AI to explain the whole document, one element, or selected code."
+      >
+        <div className="grid grid-cols-[1fr_auto] gap-2">
+          <div
+            className="relative min-w-0"
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node)) {
+                setScopeOpen(false);
+              }
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                setScopeOpen(false);
+              }
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setScopeOpen((open) => !open)}
+              aria-haspopup="listbox"
+              aria-expanded={scopeOpen}
+              className="flex h-11 w-full items-center justify-between rounded-xl border border-slate-200 bg-white px-4 text-left text-xs font-semibold shadow-sm transition hover:border-blue-300 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900"
+            >
+              <span>{scopeLabel}</span>
+
+              <ChevronDown
+                className={`size-4 text-slate-500 transition-transform ${
+                  scopeOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {scopeOpen && (
+              <div
+                role="listbox"
+                aria-label="Choose code scope"
+                className="absolute top-full right-0 left-0 z-50 mt-2 space-y-1 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl dark:border-slate-700 dark:bg-slate-900"
+              >
+                {[
+                  { value: "whole" as const, label: "Whole document" },
+                  { value: "selected" as const, label: "Selected code" },
+                ].map((option) => {
+                  const isSelected = codeScope === option.value;
+
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      role="option"
+                      aria-selected={isSelected}
+                      onClick={() => {
+                        setCodeScope(option.value);
+                        setScopeOpen(false);
+                      }}
+                      className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-xs font-semibold transition-colors ${
+                        isSelected
+                          ? "bg-[#002455] text-white"
+                          : "text-slate-700 hover:bg-blue-50 hover:text-[#002455] dark:text-slate-200 dark:hover:bg-blue-950 dark:hover:text-blue-300"
+                      }`}
+                    >
+                      {option.label}
+
+                      {isSelected && <Check className="size-4" />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          <button
+            type="button"
+            className="h-11 rounded-xl bg-primary-color px-4 text-xs font-bold text-white hover:opacity-90 dark:bg-blue-600"
+          >
+            Explain
+          </button>
+        </div>
+      </ToolCard>
+
+      <ToolCard
+        title="Improve my code"
+        description="Get suggestions for readability, structure, and accessibility without changing the task goal."
+      >
+        <button
+          type="button"
+          className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
+        >
+          Suggest improvements
+        </button>
+      </ToolCard>
+
+      <ToolCard
+        title="Fix code"
+        description={
+          isFixUnlocked
+            ? "All five hints have been used. The fixed-code option is now available."
+            : `Locked until all five hints are used. ${5 - hintStep} remaining.`
+        }
+      >
+        <button
+          type="button"
+          disabled={!isFixUnlocked}
+          className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-bold transition-colors ${
+            isFixUnlocked
+              ? "cursor-pointer border-primary-color bg-primary-color text-white hover:opacity-90 dark:border-blue-500 dark:bg-blue-600"
+              : "cursor-not-allowed border-slate-200 text-slate-400 dark:border-slate-700"
+          }`}
+        >
+          {!isFixUnlocked && <LockKeyhole className="size-3.5" />}
+          {isFixUnlocked ? "Fix my code" : "Fix my code"}
+        </button>
+      </ToolCard>
+    </div>
+  );
+}
+
+function ToolCard({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+      <h3 className="text-sm font-bold">{title}</h3>
+
+      <p className="mt-1.5 text-xs leading-5 text-slate-500 dark:text-slate-400">
+        {description}
+      </p>
+
+      <div className="mt-3">{children}</div>
+    </div>
+  );
+}
+
+function HistorySection() {
+  const entries = [
+    [
+      "IMPROVEMENT · Improve code",
+      "Keep the document simple and use semantic elements that match the task requirements.",
+    ],
+    [
+      "EXPLANATION · Code explanation",
+      "The page begins with a document declaration, then groups its visible content inside the body.",
+    ],
+    [
+      "HINT · Hint 1",
+      "Look closely at the HTML structure and check whether every opening element is closed.",
+    ],
+  ];
+
+  return (
+    <div className="space-y-3">
+      {entries.map(([title, body]) => (
+        <div
+          key={title}
+          className="rounded-xl border border-slate-200 p-4 dark:border-slate-700"
+        >
+          <h3 className="text-xs font-bold">{title}</h3>
+
+          <p className="mt-2 text-xs leading-5 text-slate-500 dark:text-slate-400">
+            {body}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function AssistantActions({
+  hintStep,
+  onGetHint,
+}: {
+  hintStep: number;
+  onGetHint: () => void;
+}) {
+  const ordinals = ["first", "second", "third", "fourth", "fifth"];
+  const remainingHints = 5 - hintStep;
+
+  return (
+    <div className="mt-4 space-y-2 pt-2">
+      <button
+        type="button"
+        onClick={onGetHint}
+        disabled={hintStep === 5}
+        className="bg-primary-color inline-flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold text-white hover:opacity-90 disabled:cursor-default disabled:opacity-60 dark:bg-blue-600"
+      >
+        <Sparkles className="size-4" />
+
+        {hintStep === 5
+          ? "You used all hints"
+          : `Get ${ordinals[hintStep]} hint`}
+      </button>
+
+      <p className="text-center text-[11px] text-slate-400">
+        {remainingHints === 0
+          ? "“Fix my code” is now unlocked."
+          : `Use ${remainingHints} more ${
+              remainingHints === 1 ? "hint" : "hints"
+            } to unlock “Fix my code”.`}
+      </p>
+    </div>
+  );
+}
+
+function ResultCard({
+  label,
+  value,
+  tone,
+}: {
+  label: string;
+  value: string;
+  tone?: "green" | "blue";
+}) {
+  const color =
+    tone === "green"
+      ? "text-emerald-600"
+      : tone === "blue"
+        ? "text-blue-700 dark:text-blue-400"
+        : "";
+
+  return (
+    <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-800">
+      <div className="text-xs text-slate-500">{label}</div>
+      <div className={`mt-2 text-2xl font-bold ${color}`}>{value}</div>
+    </div>
+  );
 }

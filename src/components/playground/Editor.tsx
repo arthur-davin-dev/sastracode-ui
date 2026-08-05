@@ -411,7 +411,7 @@ export default function Editor() {
             <div
               ref={outputRef}
               style={{ fontSize: outputFontSize }}
-              className="h-[500px] p-4 font-mono space-y-1 overflow-y-auto"
+              className="h-125 p-4 font-mono space-y-1 overflow-y-auto"
             >
               {output.length === 0 ? (
                 <p className="text-slate-400 dark:text-slate-500 italic">
