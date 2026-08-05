@@ -2,6 +2,7 @@
 
 import { HelpCircle, ArrowRight } from "lucide-react";
 import { LessonQuiz } from "@/types/documentation";
+import Link from "next/link";
 
 interface QuickQuizProps {
   quiz?: LessonQuiz;
@@ -43,12 +44,12 @@ export default function QuickQuiz({ quiz, trackLabel }: QuickQuizProps) {
           </div>
 
           {/* Dynamic Header Text */}
-          <h3 className="text-base sm:text-lg font-bold text-[#002455] dark:text-slate-100 leading-snug break-words mt-0.5">
+          <h3 className="text-base sm:text-lg font-bold text-[#002455] dark:text-slate-100 leading-snug wrap-break-word mt-0.5">
             សាកល្បងសមត្ថភាព {currentTrack} របស់អ្នកជាមួយកម្រងសំណួរ {currentTrack} របស់យើង!
           </h3>
 
           {/* Description */}
-          <p className="max-w-2xl text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed break-words">
+          <p className="max-w-2xl text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed wrap-break-word">
             ចុចប៊ូតុងខាងក្រោមដើម្បីចាប់ផ្តើមឆ្លើយសំណួរអនុវត្តន៍ និងពង្រឹងការចងចាំមេរៀនរបស់អ្នក។
           </p>
 

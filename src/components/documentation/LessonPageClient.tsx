@@ -38,7 +38,7 @@ export default function LessonPageClient({ lesson }: LessonPageClientProps) {
           <span>{mobileSidebarOpen ? "បិទ" : "មេរៀន"}</span>
         </button>
 
-        <div className="text-sm font-semibold truncate max-w-[180px]">
+        <div className="text-sm font-semibold truncate max-w-45">
           {lesson.title || "មេរៀន"}
         </div>
 
@@ -58,9 +58,9 @@ export default function LessonPageClient({ lesson }: LessonPageClientProps) {
         {/* 2. MOBILE PARTIAL OVERLAY SIDEBAR (W3Schools-style Slide)  */}
         {/* ========================================================== */}
         {mobileSidebarOpen && (
-          <div className="fixed inset-0 z-40 flex md:hidden top-[53px]">
+          <div className="fixed inset-0 z-40 flex md:hidden top-13.25">
             {/* Left Sliding Menu Panel (Width ~ 75% like W3Schools) */}
-            <div className="relative w-[78%] max-w-[300px] h-full bg-[#F2F6FF] dark:bg-slate-900 shadow-2xl border-r border-slate-200 dark:border-slate-800 overflow-y-auto z-10 transition-transform duration-300">
+            <div className="relative w-[78%] max-w-75 h-full bg-[#F2F6FF] dark:bg-slate-900 shadow-2xl border-r border-slate-200 dark:border-slate-800 overflow-y-auto z-10 transition-transform duration-300">
               <DocsSidebar activeTrack={lesson.trackSlug} activeLessonId={lesson.id} />
             </div>
 
