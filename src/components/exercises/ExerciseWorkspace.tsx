@@ -19,10 +19,79 @@ import {
   ChevronDown,
 } from "lucide-react";
 import {
+  useEffect,
   useRef,
   useState,
   type PointerEvent as ReactPointerEvent,
 } from "react";
+
+import { useLanguage } from "@/lib/language-context";
+
+const workspaceContent = {
+  en: {
+    // Exercise interface
+    problem: "Problem",
+    yourTask: "Your Task",
+    expectedStructure: "Expected structure",
+    constraints: "Constraints",
+    savedLocally: "Saved locally",
+    reset: "Reset",
+    run: "Run",
+    liveOutput: "Live output",
+    testResults: "Test results",
+    codingExercise: "Coding exercise",
+    passed: "Passed",
+    totalTests: "Total tests",
+    xpAvailable: "XP available",
+
+    // AI assistant
+    assistantTitle: "AI Assistance Bot",
+    assistantDescription: "Guidance to help you complete the exercise",
+    hints: "Hints",
+    aiTools: "AI tools",
+    history: "History",
+    workStepByStep: "Work through it step by step",
+    hintsDescription:
+      "Each hint becomes more specific. The full fix unlocks after five hints.",
+    hintProgress: "Hint progress",
+    used: "used",
+    hint: "Hint",
+    allHintsUsed: "You used all hints",
+    fixUnlocked: "“Fix my code” is now unlocked.",
+  },
+
+  km: {
+    // Exercise interface
+    problem: "បញ្ហា",
+    yourTask: "កិច្ចការរបស់អ្នក",
+    expectedStructure: "រចនាសម្ព័ន្ធដែលរំពឹងទុក",
+    constraints: "លក្ខខណ្ឌ",
+    savedLocally: "បានរក្សាទុកក្នុងឧបករណ៍",
+    reset: "កំណត់ឡើងវិញ",
+    run: "ដំណើរការ",
+    liveOutput: "លទ្ធផលផ្ទាល់",
+    testResults: "លទ្ធផលតេស្ត",
+    codingExercise: "លំហាត់សរសេរកូដ",
+    passed: "បានជាប់",
+    totalTests: "តេស្តសរុប",
+    xpAvailable: "XP ដែលអាចទទួលបាន",
+
+    // AI assistant
+    assistantTitle: "ជំនួយការ AI",
+    assistantDescription: "ជួយណែនាំអ្នកឱ្យបញ្ចប់លំហាត់នេះ",
+    hints: "គន្លឹះ",
+    aiTools: "ឧបករណ៍ AI",
+    history: "ប្រវត្តិ",
+    workStepByStep: "ដោះស្រាយម្តងមួយជំហាន",
+    hintsDescription:
+      "គន្លឹះនីមួយៗនឹងកាន់តែច្បាស់លម្អិត។ ដំណោះស្រាយពេញលេញនឹងបើកបន្ទាប់ពីប្រើគន្លឹះទាំង ៥។",
+    hintProgress: "វឌ្ឍនភាពគន្លឹះ",
+    used: "បានប្រើ",
+    hint: "គន្លឹះ",
+    allHintsUsed: "អ្នកបានប្រើគន្លឹះទាំងអស់",
+    fixUnlocked: "មុខងារ “កែកូដរបស់ខ្ញុំ” បានបើកហើយ។",
+  },
+};
 
 const starterCode = `<!doctype html>
 <html lang="en">
@@ -43,16 +112,22 @@ const starterCode = `<!doctype html>
 </html>`;
 
 export default function ExerciseWorkspace() {
+  const { lang } = useLanguage();
+  const t = workspaceContent[lang];
   const [code, setCode] = useState(starterCode);
   const [preview, setPreview] = useState(starterCode);
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [instructionsOpen, setInstructionsOpen] = useState(false);
   const [instructionsCollapsed, setInstructionsCollapsed] = useState(false);
   const [activeTab, setActiveTab] = useState<"preview" | "tests">("preview");
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
   const [botPosition, setBotPosition] = useState<{
     x: number;
     y: number;
   } | null>(null);
+
+  const [isBotDragging, setIsBotDragging] = useState(false);
 
   const botDrag = useRef({
     startX: 0,
@@ -64,6 +139,25 @@ export default function ExerciseWorkspace() {
 
   const suppressBotClick = useRef(false);
 
+  useEffect(() => {
+    const rootElement = document.documentElement;
+
+    const updateTheme = () => {
+      setIsDarkMode(rootElement.classList.contains("dark"));
+    };
+
+    updateTheme();
+
+    const observer = new MutationObserver(updateTheme);
+
+    observer.observe(rootElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   const runCode = () => {
     setPreview(code);
     setActiveTab("preview");
@@ -73,6 +167,8 @@ export default function ExerciseWorkspace() {
     event: ReactPointerEvent<HTMLButtonElement>,
   ) => {
     const rect = event.currentTarget.getBoundingClientRect();
+
+    setIsBotDragging(true);
 
     botDrag.current = {
       startX: event.clientX,
@@ -120,16 +216,79 @@ export default function ExerciseWorkspace() {
   };
 
   const handleBotPointerUp = (event: ReactPointerEvent<HTMLButtonElement>) => {
-    suppressBotClick.current = botDrag.current.moved;
+    const wasDragged = botDrag.current.moved;
+
+    suppressBotClick.current = wasDragged;
+    setIsBotDragging(false);
 
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
+
+    if (!wasDragged) return;
+
+    const size = event.currentTarget.offsetWidth;
+
+    const sideGap = 12;
+    const bottomGap = 12;
+
+    // Keeps the robot below the website navigation.
+    const topGap = 80;
+
+    const maxX = window.innerWidth - size - sideGap;
+    const maxY = window.innerHeight - size - bottomGap;
+
+    const currentX = Math.min(
+      Math.max(sideGap, event.clientX - botDrag.current.offsetX),
+      maxX,
+    );
+
+    const currentY = Math.min(
+      Math.max(topGap, event.clientY - botDrag.current.offsetY),
+      maxY,
+    );
+
+    const distances = {
+      left: currentX - sideGap,
+      right: maxX - currentX,
+      top: currentY - topGap,
+      bottom: maxY - currentY,
+    };
+
+    const nearestEdge = (
+      Object.entries(distances) as Array<[keyof typeof distances, number]>
+    ).reduce((nearest, current) =>
+      current[1] < nearest[1] ? current : nearest,
+    )[0];
+
+    let snappedX = currentX;
+    let snappedY = currentY;
+
+    if (nearestEdge === "left") {
+      snappedX = sideGap;
+    }
+
+    if (nearestEdge === "right") {
+      snappedX = maxX;
+    }
+
+    if (nearestEdge === "top") {
+      snappedY = topGap;
+    }
+
+    if (nearestEdge === "bottom") {
+      snappedY = maxY;
+    }
+
+    setBotPosition({
+      x: snappedX,
+      y: snappedY,
+    });
   };
 
   return (
     <div className="relative flex min-h-[calc(100dvh-7rem)] flex-col overflow-hidden bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-      <header className="flex min-h-14 items-center gap-3 border-b border-slate-200 px-4 pt-3 pb-2 dark:border-slate-800">
+      <header className="flex min-h-20 items-center gap-3 border-b border-slate-200 bg-slate-50 px-5 py-4 sm:px-6 dark:border-slate-800 dark:bg-slate-900">
         <button
           type="button"
           onClick={() => setInstructionsOpen(true)}
@@ -140,7 +299,7 @@ export default function ExerciseWorkspace() {
         </button>
 
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <Link
               href="/documentation/lessons/html-elements"
               className="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 transition hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
@@ -149,12 +308,12 @@ export default function ExerciseWorkspace() {
               HTML Elements
             </Link>
 
-            <span className="rounded-full bg-slate-200/70 px-2 py-0.5 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-              Coding exercise
+            <span className="rounded-full bg-slate-200/80 px-2.5 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+              {t.codingExercise}
             </span>
           </div>
 
-          <h1 className="mt-1.5 truncate text-lg leading-tight font-extrabold sm:text-xl">
+          <h1 className="mt-2 truncate text-xl leading-tight font-extrabold tracking-tight sm:text-2xl">
             Build a semantic profile card
           </h1>
         </div>
@@ -196,11 +355,11 @@ export default function ExerciseWorkspace() {
         </div>
 
         <section className="flex min-w-0 flex-1 flex-col bg-white dark:bg-slate-950">
-          <div className="flex h-13 items-center justify-end border-b border-slate-200 px-3 dark:border-slate-800">
+          <div className="flex h-14 shrink-0 items-center justify-end border-b border-slate-200 bg-white px-4 sm:px-5 dark:border-slate-800 dark:bg-slate-950">
             <div className="flex gap-2">
               <div className="hidden items-center gap-1.5 px-2 text-xs text-slate-500 sm:flex dark:text-slate-400">
                 <CheckCircle2 className="size-4 text-emerald-500" />
-                Saved locally
+                {t.savedLocally}
               </div>
 
               <button
@@ -209,7 +368,7 @@ export default function ExerciseWorkspace() {
                 className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-semibold hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
               >
                 <RefreshCcw className="size-4" />
-                <span className="hidden sm:inline">Reset</span>
+                <span className="hidden sm:inline">{t.reset}</span>
               </button>
 
               <button
@@ -218,70 +377,72 @@ export default function ExerciseWorkspace() {
                 className="inline-flex items-center gap-2 rounded-lg bg-[#002455] px-4 py-1.5 text-sm font-semibold text-white hover:bg-blue-900"
               >
                 <Play className="size-4 fill-current" />
-                Run
+                {t.run}
               </button>
             </div>
           </div>
 
-          <div className="min-h-80 flex-3 bg-[#111827]">
-            <Editor
-              height="100%"
-              language="html"
-              theme="vs-dark"
-              value={code}
-              onChange={(value) => setCode(value ?? "")}
-              options={{
-                minimap: { enabled: false },
-                fontSize: 14,
-                padding: { top: 18 },
-                scrollBeyondLastLine: false,
-                automaticLayout: true,
-                wordWrap: "on",
-              }}
-            />
-          </div>
-
-          <div className="flex min-h-64 flex-2 flex-col border-t border-slate-200 dark:border-slate-800">
-            <div className="flex h-12 items-center gap-1 border-b border-slate-200 px-4 dark:border-slate-800">
-              <button
-                type="button"
-                onClick={() => setActiveTab("preview")}
-                className={`h-full border-b-2 px-3 text-sm font-semibold ${
-                  activeTab === "preview"
-                    ? "border-blue-700 text-blue-700 dark:text-blue-400"
-                    : "border-transparent text-slate-500"
-                }`}
-              >
-                Live output
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setActiveTab("tests")}
-                className={`h-full border-b-2 px-3 text-sm font-semibold ${
-                  activeTab === "tests"
-                    ? "border-blue-700 text-blue-700 dark:text-blue-400"
-                    : "border-transparent text-slate-500"
-                }`}
-              >
-                Test results
-              </button>
-            </div>
-
-            {activeTab === "preview" ? (
-              <iframe
-                title="Exercise output"
-                srcDoc={preview}
-                sandbox="allow-scripts"
-                className="min-h-52 w-full flex-1 bg-white"
+          <div className="flex min-h-0 flex-1 flex-col xl:flex-row">
+            <div className="min-h-80 flex-1 bg-white xl:min-w-0 xl:flex-3 dark:bg-[#111827]">
+              <Editor
+                height="100%"
+                language="html"
+                theme={isDarkMode ? "vs-dark" : "light"}
+                value={code}
+                onChange={(value) => setCode(value ?? "")}
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  padding: { top: 18 },
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                  wordWrap: "on",
+                }}
               />
-            ) : (
-              <div className="grid flex-1 content-start gap-3 p-4 sm:grid-cols-3">
-                <ResultCard label="Passed" value="2" tone="green" />
-                <ResultCard label="Total tests" value="3" />
-                <ResultCard label="XP available" value="20" tone="blue" />
+            </div>
+
+            <div className="flex min-h-64 flex-1 flex-col border-t border-slate-200 xl:min-w-0 xl:flex-2 xl:border-t-0 xl:border-l dark:border-slate-800">
+              <div className="flex h-12 items-center gap-1 border-b border-slate-200 px-4 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("preview")}
+                  className={`h-full border-b-2 px-3 text-sm font-semibold ${
+                    activeTab === "preview"
+                      ? "border-blue-700 text-blue-700 dark:text-blue-400"
+                      : "border-transparent text-slate-500"
+                  }`}
+                >
+                  {t.liveOutput}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("tests")}
+                  className={`h-full border-b-2 px-3 text-sm font-semibold ${
+                    activeTab === "tests"
+                      ? "border-blue-700 text-blue-700 dark:text-blue-400"
+                      : "border-transparent text-slate-500"
+                  }`}
+                >
+                  {t.testResults}
+                </button>
               </div>
-            )}
+
+              {activeTab === "preview" ? (
+                <iframe
+                  title="Exercise output"
+                  srcDoc={preview}
+                  sandbox="allow-scripts"
+                  className="min-h-52 w-full flex-1 bg-white"
+                />
+              ) : (
+                <div className="grid flex-1 content-start gap-3 p-4 sm:grid-cols-3">
+                  <ResultCard label={t.passed} value="2" tone="green" />
+                  <ResultCard label={t.totalTests} value="3" />
+                  <ResultCard label={t.xpAvailable} value="20" tone="blue" />
+                </div>
+              )}
+            </div>
           </div>
         </section>
 
@@ -313,9 +474,11 @@ export default function ExerciseWorkspace() {
                   }
                 : undefined
             }
-            className={`group fixed z-40 grid size-16 touch-none cursor-grab place-items-center rounded-full border-4 border-white bg-linear-to-br from-blue-700 to-indigo-500 text-white shadow-xl transition-shadow hover:shadow-2xl active:cursor-grabbing dark:border-slate-800 ${
-              botPosition ? "" : "right-6 bottom-6"
-            }`}
+            className={`group fixed z-40 grid size-16 touch-none cursor-grab place-items-center rounded-full border-4 border-white bg-linear-to-br from-blue-700 to-indigo-500 text-white shadow-xl hover:shadow-2xl active:cursor-grabbing dark:border-slate-800 ${
+              isBotDragging
+                ? "transition-none"
+                : "transition-[left,top,box-shadow,transform] duration-300 ease-out"
+            } ${botPosition ? "" : "right-6 bottom-6"}`}
             aria-label="Open AI Assistance Bot"
             title="Drag to move or click to open"
           >
@@ -359,11 +522,13 @@ function ExerciseInstructions({
   className?: string;
   onClose?: () => void;
 }) {
+  const { lang } = useLanguage();
+  const t = workspaceContent[lang];
   return (
     <aside className={`${className ?? ""} overflow-y-auto p-5`}>
       <div className="mb-5 flex items-center justify-between">
-        <span className="text-xs font-bold tracking-widest text-blue-700 uppercase dark:text-blue-400">
-          Problem
+        <span className="text-base font-bold tracking-normal text-blue-700 dark:text-blue-400">
+          {t.problem}
         </span>
 
         {onClose && (
@@ -422,6 +587,8 @@ function ExerciseInstructions({
 }
 
 function AssistantPanel({ onClose }: { onClose: () => void }) {
+  const { lang } = useLanguage();
+  const t = workspaceContent[lang];
   const [activeSection, setActiveSection] = useState<
     "hints" | "tools" | "history"
   >("hints");
@@ -439,7 +606,7 @@ function AssistantPanel({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <aside className="fixed inset-y-0 right-0 z-40 flex w-[92%] max-w-sm flex-col border-l border-slate-200 bg-white shadow-2xl xl:static xl:z-auto xl:w-88 xl:shrink-0 xl:shadow-none dark:border-slate-800 dark:bg-slate-900">
+    <aside className="absolute inset-y-0 right-0 z-50 flex w-[92%] max-w-sm flex-col border-l border-slate-200 bg-white shadow-2xl sm:w-96 dark:border-slate-800 dark:bg-slate-900">
       <div className="flex h-16 items-center gap-3 border-b border-slate-200 px-4 dark:border-slate-800">
         <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-blue-100 p-0.5 dark:bg-blue-950">
           <Image
@@ -452,9 +619,9 @@ function AssistantPanel({ onClose }: { onClose: () => void }) {
         </div>
 
         <div className="min-w-0 flex-1">
-          <h2 className="font-bold">AI Assistance Bot</h2>
+          <h2 className="font-bold">{t.assistantTitle}</h2>
           <p className="truncate text-xs text-slate-500">
-            Guidance without giving away the answer
+            {t.assistantDescription}
           </p>
         </div>
 
@@ -487,10 +654,10 @@ function AssistantPanel({ onClose }: { onClose: () => void }) {
             }`}
           >
             {section === "hints"
-              ? "Hints"
+              ? t.hints
               : section === "tools"
-                ? "AI tools"
-                : "History"}
+                ? t.aiTools
+                : t.history}
           </button>
         ))}
       </div>
@@ -522,6 +689,9 @@ function HintsSection({
   selectedHintStep: number;
   onSelectHint: (step: number) => void;
 }) {
+  const { lang } = useLanguage();
+  const t = workspaceContent[lang];
+
   const hints = [
     "Look closely at the HTML structure. Ask yourself whether every opening element has the correct closing element.",
     "Start with one semantic article element and place all profile content inside it.",
@@ -533,18 +703,20 @@ function HintsSection({
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-violet-100 bg-violet-50 p-4 dark:border-violet-900 dark:bg-violet-950/30">
-        <h3 className="text-sm font-bold">Work through it step by step</h3>
+        <h3 className="text-sm font-bold">{t.workStepByStep}</h3>
 
         <p className="mt-2 text-xs leading-5 text-slate-500 dark:text-slate-400">
-          Each hint becomes more specific. The full fix unlocks after five
-          hints.
+          {t.hintsDescription}
         </p>
       </div>
 
       <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
-        <div className="flex justify-between text-xs">
-          <span className="text-slate-500">Hint progress</span>
-          <strong>{hintStep} / 5 used</strong>
+        <div className="flex justify-between gap-3 text-xs">
+          <span className="text-slate-500">{t.hintProgress}</span>
+
+          <strong>
+            {hintStep} / 5 {t.used}
+          </strong>
         </div>
 
         <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
@@ -565,7 +737,7 @@ function HintsSection({
                 type="button"
                 disabled={!isUnlocked}
                 onClick={() => onSelectHint(step)}
-                aria-label={`View hint ${step}`}
+                aria-label={`${t.hint} ${step}`}
                 aria-pressed={isSelected}
                 className={`grid size-7 place-items-center rounded-full border text-xs font-bold transition-colors ${
                   isSelected
@@ -586,7 +758,7 @@ function HintsSection({
         <div className="rounded-xl border border-violet-100 bg-violet-50/60 p-4 dark:border-violet-900 dark:bg-violet-950/20">
           <div className="flex items-center justify-between">
             <strong className="text-primary-color text-xs dark:text-blue-400">
-              HINT {selectedHintStep}
+              {t.hint.toUpperCase()} {selectedHintStep}
             </strong>
 
             <span className="text-[11px] text-slate-400">07:00 PM</span>
@@ -790,6 +962,9 @@ function AssistantActions({
   hintStep: number;
   onGetHint: () => void;
 }) {
+  const { lang } = useLanguage();
+  const t = workspaceContent[lang];
+
   const ordinals = ["first", "second", "third", "fourth", "fifth"];
   const remainingHints = 5 - hintStep;
 
@@ -804,16 +979,20 @@ function AssistantActions({
         <Sparkles className="size-4" />
 
         {hintStep === 5
-          ? "You used all hints"
-          : `Get ${ordinals[hintStep]} hint`}
+          ? t.allHintsUsed
+          : lang === "km"
+            ? `ទទួលគន្លឹះទី ${hintStep + 1}`
+            : `Get ${ordinals[hintStep]} hint`}
       </button>
 
       <p className="text-center text-[11px] text-slate-400">
         {remainingHints === 0
-          ? "“Fix my code” is now unlocked."
-          : `Use ${remainingHints} more ${
-              remainingHints === 1 ? "hint" : "hints"
-            } to unlock “Fix my code”.`}
+          ? t.fixUnlocked
+          : lang === "km"
+            ? `ប្រើគន្លឹះ ${remainingHints} ទៀត ដើម្បីបើកមុខងារ “កែកូដរបស់ខ្ញុំ”។`
+            : `Use ${remainingHints} more ${
+                remainingHints === 1 ? "hint" : "hints"
+              } to unlock “Fix my code”.`}
       </p>
     </div>
   );
