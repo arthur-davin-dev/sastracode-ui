@@ -142,37 +142,65 @@ export default function Footer() {
           </h4>
 
           {/* Responsive Sponsors Grid: 1 col on phone, 2 on tablet, 3 on desktop */}
+          {/* Responsive Sponsors Grid: 1 col on phone, 2 on tablet, 3 on desktop */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-center justify-items-center">
             {/* ISTAD Logo */}
             <div className="h-16 flex items-center justify-center">
+              {/* Light Mode Logo */}
               <Image
-                src="/images/logo_istad.png"
+                src="/images/istad_white_logo.png"
                 alt="ISTAD Logo"
                 width={180}
                 height={60}
-                className="object-contain max-h-16 w-auto"
+                className="object-contain max-h-16 w-auto dark:hidden"
+              />
+              {/* Dark Mode Logo */}
+              <Image
+                src="/images/istad_dark_logo.png"
+                alt="ISTAD Logo"
+                width={180}
+                height={60}
+                className="object-contain max-h-16 w-auto hidden dark:block"
               />
             </div>
 
             {/* MPTC Logo */}
             <div className="h-16 flex items-center justify-center">
+              {/* Light Mode Logo */}
               <Image
-                src="/images/mptc_logo.png"
+                src="/images/mptc_white_logo.png"
                 alt="Ministry of Post and Telecommunications Logo"
                 width={260}
                 height={80}
-                className="object-contain max-h-16 w-auto"
+                className="object-contain max-h-16 w-auto dark:hidden"
+              />
+              {/* Dark Mode Logo */}
+              <Image
+                src="/images/mptc_dark_logo.png"
+                alt="Ministry of Post and Telecommunications Logo"
+                width={260}
+                height={80}
+                className="object-contain max-h-16 w-auto hidden dark:block"
               />
             </div>
 
             {/* CBRD FUND Logo */}
             <div className="h-16 flex items-center justify-center md:col-span-2 lg:col-span-1">
+              {/* Light Mode Logo */}
               <Image
-                src="/images/cbrd_logo.jpg"
+                src="/images/cbrd_white_logo.png"
                 alt="CBRD Fund Logo"
                 width={180}
                 height={60}
-                className="object-contain max-h-16 w-auto"
+                className="object-contain max-h-16 w-auto dark:hidden"
+              />
+              {/* Dark Mode Logo */}
+              <Image
+                src="/images/cbrd_dark_logo.png"
+                alt="CBRD Fund Logo"
+                width={180}
+                height={60}
+                className="object-contain max-h-16 w-auto hidden dark:block"
               />
             </div>
           </div>
