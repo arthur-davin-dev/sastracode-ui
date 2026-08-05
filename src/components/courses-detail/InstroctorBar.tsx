@@ -53,12 +53,6 @@ export function InstructorBar({ course }: InstructorBarProps) {
           </span>
         ))}
       </div>
-
-      {/* Enroll Button */}
-      <Button className="rounded-xl bg-indigo-800 dark:bg-indigo-600 px-5 text-sm font-semibold text-white hover:bg-indigo-900 dark:hover:bg-indigo-500 transition-colors shadow-sm">
-        <Play className="mr-2 h-3.5 w-3.5 fill-white" />
-        ចុះឈ្មោះឥឡូវនេះ
-      </Button>
     </div>
   );
 }

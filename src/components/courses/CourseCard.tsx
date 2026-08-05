@@ -81,9 +81,9 @@ export function CourseCard({ course }: CourseCardProps) {
               {buttonLabel}
             </Button>
 
-            <span className="text-xs font-semibold text-indigo-800 dark:text-indigo-400 transition-transform group-hover:translate-x-0.5">
-              ចាប់ផ្តើមរៀន →
-            </span>
+            <Link href= "" className="text-xs font-semibold text-indigo-800 dark:text-indigo-400 transition-transform group-hover:translate-x-0.5">
+              Enroll now→
+            </Link>
           </div>
         ) : (
           <div className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
