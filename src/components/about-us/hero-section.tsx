@@ -1,55 +1,62 @@
 'use client';
 
-import React from 'react';
 import Image from 'next/image';
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full h-screen flex items-center justify-center bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 px-4 py-16 overflow-hidden transition-colors duration-300">
-      
-      {/* Floating Java Logo - Left */}
-      <div className="absolute left-4 sm:left-12 md:left-20 top-1/2 -translate-y-1/2 w-28 h-28 sm:w-40 sm:h-40 md:w-52 md:h-52 z-10 pointer-events-none transition-transform duration-500 hover:scale-105">
-        <Image
-          src="/images/java-3d.png" // Replace with your Java logo path
-          alt="Java 3D Logo"
-          fill
-          className="object-contain drop-shadow-md dark:drop-shadow-[0_10px_20px_rgba(59,130,246,0.15)]"
-          priority
-        />
-      </div>
+    <section className="relative w-full aspect-[16/9] lg:h-screen overflow-hidden">
 
-      {/* Floating Python Logo - Right */}
-      <div className="absolute right-4 sm:right-12 md:right-20 top-1/2 -translate-y-1/2 w-28 h-28 sm:w-40 sm:h-40 md:w-52 md:h-52 z-10 pointer-events-none transition-transform duration-500 hover:scale-105">
-        <Image
-          src="/images/python-3d.png" // Replace with your Python logo path
-          alt="Python 3D Logo"
-          fill
-          className="object-contain drop-shadow-md dark:drop-shadow-[0_10px_20px_rgba(59,130,246,0.15)]"
-          priority
-        />
-      </div>
+      {/* Background Image - Fits 100% width and height evenly */}
+      <Image
+        src="/about-us/hero-section.png"
+        alt="Hero Section"
+        fill
+        priority
+        className="object-fill lg:object-cover"
+      />
 
-      {/* Center Content Area */}
-      <div className="relative z-20 max-w-2xl w-full mx-auto text-center px-4">
-        
-        {/* Top Accent Line */}
-        <div className="w-full max-w-105 h-0.5 bg-[#eab308] dark:bg-amber-400 mx-auto mb-6 opacity-80 dark:opacity-90 shadow-xs" />
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-black/55 z-10" />
 
-        {/* Khmer Quote Title */}
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold text-[#0f172a] dark:text-slate-100 leading-relaxed md:leading-[1.6] tracking-wide mb-6 font-khmer">
-          “សាស្ត្រា<span className="text-red-500 dark:text-red-400">កូដ</span> កសាងអនាគតយុវជនឌីជីថល
-          <br className="hidden sm:block" />
-          របស់កម្ពុជា”
-        </h1>
+      {/* Content */}
+      <div className="absolute inset-0 z-20 flex items-center justify-center">
+        <div className="w-full max-w-7xl px-4 sm:px-6 text-center flex flex-col items-center justify-center">
 
-        {/* Bottom Accent Line */}
-        <div className="w-full max-w-105 h-0.5 bg-[#eab308] dark:bg-amber-400 mx-auto mb-4 opacity-80 dark:opacity-90 shadow-xs" />
+          {/* Top Line */}
+          <div className="mb-2 sm:mb-4 lg:mb-10 h-0.5 sm:h-1 w-2/3 sm:w-1/2 lg:w-full max-w-4xl rounded-full bg-yellow-400" />
+          {/* Main Title */}
+          <h1
+            className="
+              font-khmer
+              font-bold
+              text-white
+              text-center
+              leading-[1.1]
+              drop-shadow-[0_8px_24px_rgba(0,0,0,0.7)]
+              text-[clamp(1rem,4vw,6rem)]
+            "
+          >
+            <span className="whitespace-nowrap">
+              “សាស្ត្រា<span className="text-red-500">កូដ </span>
+              កសាងអនាគតយុវជនឌីជីថល
+            </span>
 
-        {/* Team Subtitle */}
-        <p className="text-sm sm:text-base font-semibold text-[#1e293b] dark:text-slate-300 tracking-tight font-sans">
-          -The SastraCode Team
-        </p>
+            <br />
 
+            <span className="whitespace-nowrap">
+              របស់កម្ពុជា”
+            </span>
+          </h1>
+
+          {/* Bottom Line */}
+          <div className="mt-2 sm:mt-4 lg:mt-10 mb-2 sm:mb-4 lg:mb-6 h-0.5 sm:h-1 w-32 sm:w-64 lg:w-96 max-w-4xl rounded-full bg-yellow-400" />
+
+          {/* Subtitle */}
+          <p className="text-xs sm:text-lg md:text-2xl lg:text-3xl font-semibold text-white">
+            — The SastraCode Team —
+          </p>
+
+        </div>
       </div>
     </section>
   );

@@ -13,16 +13,16 @@ export const mockMentors: MentorType[] = [
     name: 'Chan Chhaya',
     role: 'Mentor',
     image: '/images/chan_chhaya.jpg',
-    githubUrl: "https://github.com",
-    telegramUrl: "https://t.me",
+    githubUrl: "https://github.com/it-chhaya",
+    telegramUrl: "https://t.me/chhayadevkh",
   },
     {
     id: '2',
     name: 'Sreng Chipor',
     role: 'Mentor',
     image: '/images/sreng_chipor.jpg',
-    githubUrl: "https://github.com",
-    telegramUrl: "https://t.me",
+    githubUrl: "https://github.com/jiporCK",
+    telegramUrl: "https://t.me/jiporsreng",
   },
 
 ];
