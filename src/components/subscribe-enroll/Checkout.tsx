@@ -139,7 +139,6 @@ export default function CheckoutPage() {
                 <section className="space-y-4">
                   <h3 className="text-lg font-semibold text-primary-color">
                    ព័ត៌មាន​អំពី​វិក្កយបត្រ</h3>
-
                   <div className="space-y-2 text-primary-color">
                     <Label htmlFor="fullName">ឈ្មោះពេញ</Label>
                     <Input

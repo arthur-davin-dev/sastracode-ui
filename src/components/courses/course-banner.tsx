@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { ArrowRight, Code2, PlayCircle, Sparkles } from "lucide-react";
 import Image from "next/image";
 
@@ -34,21 +34,21 @@ export default function CourseBanner() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 pt-2">
-              <Button
-                size="lg"
-                className="group rounded-full bg-primary-color hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white px-7 py-6 text-base shadow-md shadow-indigo-500/20 transition-all duration-300 hover:shadow-indigo-500/30 active:scale-[0.98]"
+              <Link
+                href="/documentation/html-lesson"
+                className="group inline-flex items-center justify-center rounded-full bg-primary-color hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white px-7 py-3 text-base shadow-md shadow-indigo-500/20 transition-all duration-300 hover:shadow-indigo-500/30 active:scale-[0.98]"
               >
                 <span>ចាប់ផ្តើមសិក្សា</span>
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Button>
+                <ArrowRight className="mr-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
 
-              <Button
+              {/* <Button
                 size="lg"
                 className="rounded-full bg-init-color hover:opacity-90 text-slate-950 font-medium px-7 py-6 text-base transition-all duration-300 active:scale-[0.98] shadow-sm shadow-amber-500/20"
               >
                 <PlayCircle className="mr-2 h-4 w-4 text-slate-900" />
                 <span>ស្វែងរកផែនការសិក្សា</span>
-              </Button>
+              </Button> */}
             </div>
           </div>
 
@@ -66,7 +66,7 @@ export default function CourseBanner() {
               />
 
               {/* Gradient Overlay for Vignette */}
-              <div className="absolute inset-0 bg-linear-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
 
               {/* Floating Badges */}
               <div className="absolute top-[12%] left-[8%] sm:top-[14%] sm:left-[12%] z-10 animate-bounce animation-duration-[4s] rounded-xl bg-emerald-500/90 backdrop-blur-md px-3.5 py-1.5 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-emerald-500/20 -rotate-6 border border-white/20">
