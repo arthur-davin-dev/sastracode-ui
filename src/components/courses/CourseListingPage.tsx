@@ -58,6 +58,7 @@ const courses: Course[] = [
     lessons: 32,
     duration: "៧ម៉ោង ૧૦នាទី",
     image: "/assets/images/Nodejs.jpg",
+    locked: true,
   },
   {
     id: "5",
