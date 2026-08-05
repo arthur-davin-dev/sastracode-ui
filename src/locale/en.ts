@@ -87,6 +87,13 @@ export const en = {
     ctaLabel: "Start Learning",
   },
   resultAndRewards: {
+    featureSection: {
+      features: [
+        { lines: ["Learn through clearly explained lessons", "and practical examples"] },
+        { lines: ["Write, test, and run code", "directly inside your browser"] },
+        { lines: ["Receive helpful hints and code explanations", "to improve your programming skills"] },
+      ],
+    },
     rewards: {
       headingMain: "Achievements &",
       headingAccent: "Rewards",

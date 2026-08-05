@@ -12,7 +12,6 @@ import TechStackSection from '@/components/function/TechStackSection'
 import Review from '@/components/home/review/Review'
 import Resource from '@/components/home/resource/Resource'
 import LogoLoop from '@/components/home/technology-stack/LogoLoop'
-import { title } from 'process'
 import { CustomLogoLoop } from '@/components/home/technology-stack/CustomLogoLoop'
 import { logos } from '@/components/home/technology-stack/logo'
 // import Hero from '@/components/home/hero-section/Hero'
@@ -28,11 +27,13 @@ export default function page() {
         logos={logos}
         renderItem={(item, key) => (
           <div key={key} className="flex items-center gap-2">
-            <img
-              src={item.src}
-              alt={item.alt || item.title}
-              className="h-10 w-10"
-            />
+            {"src" in item ? (
+              <img
+                src={item.src}
+                alt={item.alt || item.title}
+                className="h-10 w-10"
+              />
+            ) : item.node}
             <span className="text-sm font-medium">{item.title}</span>
           </div>
         )}

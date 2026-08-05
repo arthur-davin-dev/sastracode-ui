@@ -13,10 +13,10 @@ import {
 } from "@/components/ui/card"
 import { useTranslation } from "@/hooks/useTranslations"
 import { Play } from "lucide-react"
-import { motion } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
 
 // Animation variants
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -27,7 +27,7 @@ const containerVariants = {
   },
 }
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 30,
@@ -55,7 +55,7 @@ const cardVariants = {
   },
 }
 
-const cardFloatVariants = {
+const cardFloatVariants: Variants = {
   initial: { y: 0 },
   animate: (index: number) => ({
     y: [0, -4, 0, 4, 0],
@@ -68,7 +68,7 @@ const cardFloatVariants = {
   }),
 }
 
-const imageVariants = {
+const imageVariants: Variants = {
   hover: {
     scale: 1.08,
     transition: {
@@ -78,7 +78,7 @@ const imageVariants = {
   },
 }
 
-const playButtonVariants = {
+const playButtonVariants: Variants = {
   initial: { scale: 0.8, opacity: 0 },
   visible: {
     scale: 1,
@@ -106,7 +106,7 @@ const playButtonVariants = {
   },
 }
 
-const badgeVariants = {
+const badgeVariants: Variants = {
   hover: {
     scale: 1.08,
     transition: {
@@ -117,7 +117,7 @@ const badgeVariants = {
   },
 }
 
-const titleVariants = {
+const titleVariants: Variants = {
   hover: {
     scale: 1.02,
     color: "#2563EB",
@@ -127,7 +127,7 @@ const titleVariants = {
   },
 }
 
-const descriptionVariants = {
+const descriptionVariants: Variants = {
   hover: {
     opacity: 1,
     transition: {
@@ -136,7 +136,7 @@ const descriptionVariants = {
   },
 }
 
-const buttonVariants = {
+const buttonVariants: Variants = {
   hover: {
     scale: 1.02,
     transition: {
@@ -153,7 +153,7 @@ const buttonVariants = {
   },
 }
 
-const arrowVariants = {
+const arrowVariants: Variants = {
   hover: {
     scale: 1.1,
     transition: {
@@ -170,7 +170,7 @@ const arrowVariants = {
   },
 }
 
-const titleTextVariants = {
+const titleTextVariants: Variants = {
   hidden: { opacity: 0, y: -20 },
   visible: {
     opacity: 1,

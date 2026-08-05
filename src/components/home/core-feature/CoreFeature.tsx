@@ -3,7 +3,7 @@
 
 import { useTranslation } from "@/hooks/useTranslations";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 // Static per-card visuals — not language dependent
 const cardStyles = [
@@ -52,7 +52,7 @@ const cardStyles = [
 ];
 
 // Animation variants
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -63,7 +63,7 @@ const containerVariants = {
   },
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 50,
@@ -82,7 +82,7 @@ const cardVariants = {
   },
 };
 
-const badgeVariants = {
+const badgeVariants: Variants = {
   hidden: { opacity: 0, scale: 0.8, y: -20 },
   visible: {
     opacity: 1,
@@ -97,7 +97,7 @@ const badgeVariants = {
   },
 };
 
-const titleVariants = {
+const titleVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
@@ -111,7 +111,7 @@ const titleVariants = {
   },
 };
 
-const descriptionVariants = {
+const descriptionVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
@@ -126,7 +126,7 @@ const descriptionVariants = {
 };
 
 // Subtle floating animation for icons
-const iconFloatVariants = {
+const iconFloatVariants: Variants = {
   initial: { y: 0 },
   animate: {
     y: [0, -4, 0, 4, 0],
@@ -147,7 +147,7 @@ const iconFloatVariants = {
 };
 
 // Subtle card float animation (different delays per card)
-const cardFloatVariants = {
+const cardFloatVariants: Variants = {
   initial: { y: 0 },
   animate: (i: number) => ({
     y: [0, -6, 0, 6, 0],
@@ -160,7 +160,7 @@ const cardFloatVariants = {
   }),
 };
 
-const arrowVariants = {
+const arrowVariants: Variants = {
   hover: {
     x: 6,
     transition: {
@@ -173,7 +173,7 @@ const arrowVariants = {
 };
 
 // Subtle pulse for the CTA text
-const ctaVariants = {
+const ctaVariants: Variants = {
   hover: {
     scale: 1.05,
     transition: {

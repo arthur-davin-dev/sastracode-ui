@@ -1,5 +1,5 @@
 import { Layers, GitBranch, Server, Route, ShieldCheck, Rocket } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 const resources = [
   {
@@ -66,7 +66,7 @@ const resources = [
 ];
 
 // Animation variants
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -77,7 +77,7 @@ const containerVariants = {
   },
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 30,
@@ -97,7 +97,7 @@ const cardVariants = {
 };
 
 // Subtle floating animation for icons
-const iconFloatVariants = {
+const iconFloatVariants: Variants = {
   initial: { y: 0, rotate: 0 },
   animate: (i: number) => ({
     y: [0, -3, 0, 3, 0],
@@ -120,7 +120,7 @@ const iconFloatVariants = {
 };
 
 // Subtle card float animation
-const cardFloatVariants = {
+const cardFloatVariants: Variants = {
   initial: { y: 0 },
   animate: (i: number) => ({
     y: [0, -4, 0, 4, 0],
@@ -134,7 +134,7 @@ const cardFloatVariants = {
 };
 
 // Text shimmer effect on hover
-const textVariants = {
+const textVariants: Variants = {
   hover: {
     scale: 1.02,
     transition: {
@@ -144,7 +144,7 @@ const textVariants = {
 };
 
 // Container pulse effect
-const containerPulseVariants = {
+const containerPulseVariants: Variants = {
   initial: { scale: 1 },
   hover: {
     scale: 1.02,

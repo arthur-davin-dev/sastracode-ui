@@ -120,11 +120,13 @@ export default function Banner() {
         logos={logos}
         renderItem={(item, key) => (
           <div key={key} className="flex items-center gap-2">
-            <img
-              src={item.src}
-              alt={item.alt || item.title}
-              className="h-10 w-10"
-            />
+            {"src" in item ? (
+              <img
+                src={item.src}
+                alt={item.alt || item.title}
+                className="h-10 w-10"
+              />
+            ) : item.node}
             <span className="text-sm font-medium">{item.title}</span>
           </div>
         )}

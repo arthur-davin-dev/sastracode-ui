@@ -6,7 +6,7 @@ import React from "react";
 
 interface CourseCardProps {
   course: {
-    id?: number
+    id?: string | number
     coverImage: string
     title: string
     description: string

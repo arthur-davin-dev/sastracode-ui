@@ -37,14 +37,14 @@ export const numberVariants: Variants = {
   }
 }
 
-export const statHoverVariants = {
+export const statHoverVariants: Variants = {
   hover: {
     scale: 1.1,
     transition: { type: "spring", stiffness: 300 }
   }
 }
 
-export const percentPulseVariants = {
+export const percentPulseVariants: Variants = {
   animate: {
     scale: [1, 1.1, 1],
     rotate: [0, 5, -5, 0],

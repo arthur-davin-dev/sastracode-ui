@@ -24,14 +24,14 @@ export const itemVariants: Variants = {
   }
 }
 
-export const badgeVariants = {
+export const badgeVariants: Variants = {
   hover: {
     scale: 1.05,
     transition: { type: "spring", stiffness: 300 }
   }
 }
 
-export const pulseVariants = {
+export const pulseVariants: Variants = {
   animate: {
     scale: [1, 1.5, 1],
     transition: {
@@ -42,7 +42,7 @@ export const pulseVariants = {
   }
 }
 
-export const buttonVariants = {
+export const buttonVariants: Variants = {
   hover: {
     scale: 1.05,
     y: -3,

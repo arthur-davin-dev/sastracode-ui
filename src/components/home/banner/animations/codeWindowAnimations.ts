@@ -31,7 +31,7 @@ export const chromeVariants: Variants = {
   }
 }
 
-export const floatingAnimation = {
+export const floatingAnimation: Variants = {
   initial: { y: 0, rotate: 0 },
   animate: {
     y: [0, -10, 0],
@@ -44,7 +44,7 @@ export const floatingAnimation = {
   }
 }
 
-export const progressBarVariants = {
+export const progressBarVariants: Variants = {
   animate: {
     width: ["3rem", "5rem", "3rem"],
     transition: {
@@ -55,14 +55,14 @@ export const progressBarVariants = {
   }
 }
 
-export const colorPulseVariants = {
+export const colorPulseVariants: Variants = {
   animate: {
     opacity: [1, 0.6, 1],
     transition: { duration: 2, repeat: Infinity }
   }
 }
 
-export const chartIconVariants = {
+export const chartIconVariants: Variants = {
   animate: {
     y: [0, -8, 0],
     rotate: [0, 5, -5, 0],
