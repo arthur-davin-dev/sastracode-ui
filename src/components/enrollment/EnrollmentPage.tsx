@@ -2,7 +2,9 @@ import { EnrollmentHeader } from "./EnrollmentHeader";
 import { WhatYoullGet } from "./WhatYoullGet";
 import { EnrollmentHistory } from "./EnrollmentHistory";
 import { CheckoutCard } from "./CheckoutCard";
-import { Course, EnrollmentHistoryItem } from "@/lib/course/courses";
+import { Course } from "@/lib/course/courses";
+import { EnrollmentHistoryItem } from "@/lib/course/enrollhistory";
+import { WhatYoullGet } from "./WhatYoullGet";
 
 interface EnrollmentPageProps {
   course: Course;

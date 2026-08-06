@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getCourseById } from "@/lib/course/courses";
-import { mockEnrollmentHistory } from "@/lib/mock-data/enrollmenthistory";
+import { enrollhistory } from "@/lib/course/enrollhistory";
 import EnrollmentPage from "@/components/enrollment/EnrollmentPage";
 
 interface PageProps {
@@ -15,5 +15,5 @@ export default async function Page({ params }: PageProps) {
     notFound();
   }
 
-  return <EnrollmentPage course={course} enrollmentHistory={mockEnrollmentHistory} />;
+  return <EnrollmentPage course={course} enrollmentHistory={enrollhistory} />;
 }

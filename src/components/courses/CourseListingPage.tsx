@@ -5,6 +5,7 @@ import { SearchBar } from "./SearchBar";
 import { CategoryFilter } from "./CategoryFilter";
 import { CourseGrid } from "./CourseGrid";
 import { Course } from "@/lib/course/courses";
+import CourseBanner from "./course-banner";
 
 const categories = [
   "ទាំងអស់",
@@ -57,6 +58,7 @@ const courses: Course[] = [
     lessons: 32,
     duration: "៧ម៉ោង ૧૦នាទី",
     image: "/assets/images/Nodejs.jpg",
+    locked: true,
   },
   {
     id: "5",
@@ -114,7 +116,7 @@ const courseSections = [
   {
     title: "ចុងក្រោយបំផុត",
     seeAllHref: "/documentation/lessons?category=latest",
-    courseIds: ["1", "2", "3"],
+    courseIds: ["1", "2", "3", "4", "5", "6"],
   },
   {
     title: "ណែនាំសម្រាប់អ្នក",
@@ -151,7 +153,7 @@ export default function CourseListingPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       {/* Top Hero Banner */}
-      {/* <CourseBanner/> */}
+      <CourseBanner />
 
       {/* Main Content Area */}
       <main className="mx-auto max-w-7xl px-6 pb-16 pt-10">
