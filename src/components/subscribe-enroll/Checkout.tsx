@@ -138,7 +138,8 @@ export default function CheckoutPage() {
                 {/* Billing Information */}
                 <section className="space-y-4">
                   <h3 className="text-lg font-semibold text-primary-color">
-                   ព័ត៌មាន​អំពី​វិក្កយបត្រ</h3>
+                    ព័ត៌មាន​អំពី​វិក្កយបត្រ
+                  </h3>
                   <div className="space-y-2 text-primary-color">
                     <Label htmlFor="fullName">ឈ្មោះពេញ</Label>
                     <Input
@@ -430,6 +431,17 @@ export default function CheckoutPage() {
                     <div className="flex justify-between text-lg font-bold text-slate-900">
                       <span>Total</span>
                       <span>$10.00</span>
+                    </div>
+
+                    <div className="mt-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm text-center">
+                      <p className="mb-3 text-sm font-medium text-slate-700">
+                        Scan to complete payment
+                      </p>
+                      <img
+                        src="/assets/images/QR.png"
+                        alt="Payment QR Code"
+                        className="mx-auto h-40 w-40 object-contain"
+                      />
                     </div>
                   </div>
                 </div>
