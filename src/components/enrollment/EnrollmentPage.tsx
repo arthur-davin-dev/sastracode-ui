@@ -4,7 +4,6 @@ import { EnrollmentHistory } from "./EnrollmentHistory";
 import { CheckoutCard } from "./CheckoutCard";
 import { Course } from "@/lib/course/courses";
 import { EnrollmentHistoryItem } from "@/lib/course/enrollhistory";
-import { WhatYoullGet } from "./WhatYoullGet";
 
 interface EnrollmentPageProps {
   course: Course;

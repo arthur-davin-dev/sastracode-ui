@@ -4,7 +4,7 @@ import Banner from '@/components/home/banner/Banner'
 import CoreFeatures from '@/components/home/core-feature/CoreFeature'
 import HeroCharacter from '@/components/home/show-case/HeroCharacter'
 import {LeftWavyStack, RightWavyStack} from '@/components/home/technology-stack/WavyStack'
-import InteractiveGrid from '@/components/home/interactive-grid/InteractiveGrid'
+
 import { lessons, currentProgress, forumPosts, promoBanner } from "@/lib/data/courses";
 import CourseGrid from '@/components/documentation/CourseGrid'
 import { HomePopularCourse, HomePopularDoc } from '@/components/home/cards/HomePopularCourse'

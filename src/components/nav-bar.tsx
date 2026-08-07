@@ -4,6 +4,7 @@ import { SunMedium, Moon, Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/language-context";
+import Login from "@/components/auth/Login";
 
 export default function Navbar() {
   const { lang, setLang } = useLanguage();
@@ -20,7 +21,7 @@ export default function Navbar() {
         { label: "មុខងារ", href: "/function" },
         { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
       ],
-      register: "ចុះឈ្មោះ",
+      // register: "ចុះឈ្មោះ",
       langName: "ខ្មែរ",
       flagSrc: "https://flagcdn.com/w40/kh.png",
     },
@@ -36,7 +37,7 @@ export default function Navbar() {
 
         // Quiz
       ],
-      register: "Register",
+      // register: "Register",
       langName: "English",
       flagSrc: "https://flagcdn.com/w40/gb.png",
     },
@@ -184,13 +185,15 @@ export default function Navbar() {
             <span className="whitespace-nowrap">{currentT.langName}</span>
           </button>
 
+          <Login />
+
           {/* Register Link */}
-          <Link
+          {/* <Link
             href="/register"
             className="hidden md:inline-block text-[14px] lg:text-[18px] font-semibold text-[#DC0000] whitespace-nowrap transition-colors hover:text-red-600 shrink-0"
           >
             {currentT.register}
-          </Link>
+          </Link> */}
 
           {/* Hamburger Button (Mobile only) */}
           <button
@@ -220,13 +223,13 @@ export default function Navbar() {
 
             {/* Register Link inside mobile drawer */}
             <div className="pt-2 border-t border-gray-100/50 dark:border-slate-800/50">
-              <Link
+              {/* <Link
                 href="/register"
                 onClick={() => setIsOpen(false)}
                 className="text-[18px] font-semibold text-[#DC0000] whitespace-nowrap transition-colors hover:text-red-600"
               >
                 {currentT.register}
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>
