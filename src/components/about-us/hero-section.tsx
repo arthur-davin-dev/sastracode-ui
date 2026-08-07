@@ -51,10 +51,9 @@ export default function HeroSection() {
         }}
       />
 
-      {/* Floating Accent Shapes (Hidden on smaller screens to prevent overlap) */}
+      {/* 3. FLOATING ACCENT SHAPES */}
       <div className="absolute top-20 left-6 w-10 h-10 xl:w-12 xl:h-12 border-4 border-[#002455] dark:border-slate-300 bg-[#dc0000] rotate-12 hidden xl:block shadow-[3px_3px_0px_0px_#002455] dark:shadow-[3px_3px_0px_0px_#38bdf8] hover:rotate-45 transition-transform duration-300" />
       <div className="absolute bottom-16 right-8 w-12 h-12 xl:w-14 xl:h-14 border-4 border-[#002455] dark:border-slate-300 bg-[#dc0000] rounded-full hidden xl:block shadow-[3px_3px_0px_0px_#002455] dark:shadow-[3px_3px_0px_0px_#38bdf8] hover:scale-110 transition-transform duration-300" />
-      
 
       {/* 4. MAIN HERO CONTENT */}
       <div className="relative z-10 max-w-6xl w-full mx-auto flex-1 my-auto grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-center py-4 lg:py-0">

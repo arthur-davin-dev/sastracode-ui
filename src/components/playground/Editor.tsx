@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+
 import {
   Play,
   Copy,
@@ -17,8 +18,13 @@ import {
   Trash2,
   Eraser,
 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
+
 import MonacoEditor, { OnMount } from "@monaco-editor/react";
+import { useExecuteCodeMutation } from "@/types/playgroundApi";
+
+
 
 const languages = [
   { label: "HTML", value: "html", color: "#E34F26" },
@@ -48,12 +54,13 @@ print(greet_developer(user_input))
 const DEFAULT_COLOR = "#3776AB";
 
 export default function Editor() {
+  const [stdin, setStdin] = useState("Khmer Coder");
   const [code, setCode] = useState(defaultCode);
   const [activeLabel, setActiveLabel] = useState("Python");
   const [activeColor, setActiveColor] = useState(DEFAULT_COLOR);
   const [language, setLanguage] = useState("python");
   const [output, setOutput] = useState<string[]>([]);
-  const [isRunning, setIsRunning] = useState(false);
+  const [executeCode, { isLoading: isRunning }] = useExecuteCodeMutation();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -98,19 +105,104 @@ export default function Editor() {
     setActiveColor(color);
   };
 
-  const handleRun = () => {
-    setIsRunning(true);
-    setOutput(["Compiling..."]);
-    setTimeout(() => {
-      setOutput([
-        "Compiling...",
-        "Success! Output:",
-        "សូស្តី Khmer Coder! ចាប់ផ្តើមសរសេរកូដជាមួយ SastraCode",
-        "",
-        "Process finished with exit code 0",
-      ]);
-      setIsRunning(false);
-    }, 1000);
+  const handleRun = async () => {
+    const currentCode = editorRef.current?.getValue() ?? code;
+
+    if (!currentCode.trim()) {
+      setOutput(["Error: Please write some code first."]);
+
+      return;
+    }
+
+    setOutput([`Running ${activeLabel}...`]);
+
+    try {
+      const result = await executeCode({
+        language,
+        code: currentCode,
+        stdin,
+      }).unwrap();
+
+      const lines: string[] = [];
+
+      // ---------------------------
+      // Output
+      // ---------------------------
+
+      if (result.output && result.output.trim()) {
+        lines.push("Success! Output:");
+
+        lines.push(...result.output.split("\n"));
+      }
+
+      // ---------------------------
+      // Error
+      // ---------------------------
+
+      if (result.error && result.error.trim()) {
+        if (lines.length > 0) {
+          lines.push("");
+        }
+
+        lines.push("Error:");
+
+        lines.push(...result.error.split("\n"));
+      }
+
+      // ---------------------------
+      // Timeout
+      // ---------------------------
+
+      if (result.timedOut) {
+        if (lines.length > 0) {
+          lines.push("");
+        }
+
+        lines.push("Execution timed out.");
+      }
+
+      // ---------------------------
+      // No output
+      // ---------------------------
+
+      if (!result.output && !result.error) {
+        lines.push("Program finished with no output.");
+      }
+
+      // ---------------------------
+      // Execution information
+      // ---------------------------
+
+      lines.push("");
+
+      if (result.durationMs !== undefined) {
+        lines.push(`Execution time: ${result.durationMs} ms`);
+      }
+
+      if (result.exitCode !== undefined) {
+        lines.push(`Process finished with exit code ${result.exitCode}`);
+      }
+
+      setOutput(lines);
+    } catch (error) {
+      console.error("Code execution failed:", error);
+
+      let message = "Unable to execute code.";
+
+      if (typeof error === "object" && error !== null && "data" in error) {
+        const apiError = error as {
+          data?: {
+            message?: string;
+          };
+        };
+
+        if (apiError.data?.message) {
+          message = apiError.data.message;
+        }
+      }
+
+      setOutput(["Execution failed.", "", message]);
+    }
   };
 
   const handleCopy = () => {
@@ -282,11 +374,16 @@ export default function Editor() {
           <Button
             onClick={handleRun}
             disabled={isRunning}
-            style={{ backgroundColor: activeColor, color: activeTextColor }}
+            style={{
+              backgroundColor: activeColor,
+
+              color: activeTextColor,
+            }}
             className="gap-2 hover:opacity-90"
           >
             <Play className="h-4 w-4" />
-            Run
+
+            {isRunning ? "Running..." : "Run"}
           </Button>
           <Button variant="outline" className="gap-2" onClick={handleCopy}>
             <Copy className="h-4 w-4" />
@@ -320,6 +417,36 @@ export default function Editor() {
       </div>
 
       {/* Editor + Console Grid */}
+      {/* Standard Input */}
+
+      <div className="pt-4">
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
+          <div className="mb-2 flex items-center justify-between">
+            <label
+              htmlFor="stdin"
+              className="text-sm font-semibold text-slate-700 dark:text-slate-300"
+            >
+              Standard Input (stdin)
+            </label>
+
+            <button
+              type="button"
+              onClick={() => setStdin("")}
+              className="text-xs text-slate-500 transition-colors hover:text-red-500"
+            >
+              Clear
+            </button>
+          </div>
+
+          <textarea
+            id="stdin"
+            value={stdin}
+            onChange={(event) => setStdin(event.target.value)}
+            placeholder="Enter input for your program..."
+            className="min-h-20 w-full resize-y rounded-lg border border-slate-200 bg-white p-3 font-mono text-sm text-slate-800 outline-none transition focus:border-slate-400 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200"
+          />
+        </div>
+      </div>
       <div className="grid lg:grid-cols-2 gap-4 pt-4">
         {/* Code Editor Panel */}
         <div
@@ -407,7 +534,7 @@ export default function Editor() {
                 </button>
               </div>
             </div>
-            
+
             <div
               ref={outputRef}
               style={{ fontSize: outputFontSize }}
@@ -424,11 +551,16 @@ export default function Editor() {
                     className={
                       line === "Success! Output:"
                         ? "text-emerald-600 dark:text-emerald-400 font-semibold"
-                        : line.startsWith("Process finished")
-                          ? "text-slate-400 dark:text-slate-500"
-                          : line.includes("Compiling")
-                            ? "text-slate-500 dark:text-slate-400"
-                            : "text-slate-900 dark:text-slate-100"
+                        : line === "Error:" ||
+                            line.startsWith("Execution failed") ||
+                            line.startsWith("Execution timed out")
+                          ? "text-red-600 dark:text-red-400 font-semibold"
+                          : line.startsWith("Process finished") ||
+                              line.startsWith("Execution time:")
+                            ? "text-slate-400 dark:text-slate-500"
+                            : line.startsWith("Running")
+                              ? "text-blue-600 dark:text-blue-400"
+                              : "text-slate-900 dark:text-slate-100"
                     }
                   >
                     {line}
