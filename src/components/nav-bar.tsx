@@ -1,15 +1,46 @@
 "use client";
 
-import { SunMedium, Moon, Menu, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import {
+  SunMedium,
+  Moon,
+  Menu,
+  X,
+  User,
+  LogOut,
+  ChevronDown,
+} from "lucide-react";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
+
 import { useLanguage } from "@/lib/language-context";
 import Login from "@/components/auth/Login";
 
 export default function Navbar() {
   const { lang, setLang } = useLanguage();
+
+  // Auth.js session
+  const { data: session, status } = useSession();
+
   const [darkMode, setDarkMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  // -----------------------------------
+  // Safe user values
+  // -----------------------------------
+
+  const userName = session?.user?.name ?? "User";
+  const userEmail = session?.user?.email ?? "";
+  const userImage = session?.user?.image ?? "";
+
+  const userInitial =
+    userName.length > 0 ? userName.charAt(0).toUpperCase() : "U";
+
+  // -----------------------------------
+  // Translation
+  // -----------------------------------
 
   const t = {
     km: {
@@ -17,12 +48,14 @@ export default function Navbar() {
         { label: "មេរៀន", href: "/documentation" },
         { label: "វគ្គសិក្សា", href: "/courses" },
         { label: "កន្លែងសាកល្បងកូដ", href: "/playground" },
-        // { label: "សំណួរតេស្ត", href: "/quiz" },
         { label: "មុខងារ", href: "/function" },
         { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
       ],
-      // register: "ចុះឈ្មោះ",
+
       langName: "ខ្មែរ",
+
+      // IMPORTANT:
+      // Do not put markdown [url](url) here.
       flagSrc: "https://flagcdn.com/w40/kh.png",
     },
 
@@ -31,13 +64,10 @@ export default function Navbar() {
         { label: "Lessons", href: "/documentation" },
         { label: "Courses", href: "/courses" },
         { label: "Playground", href: "/playground" },
-        // { label: "Quiz", href: "/quiz" },
-        {label: "Function", href: "/function" },
+        { label: "Function", href: "/function" },
         { label: "About Sastra Code", href: "/about-us" },
-
-        // Quiz
       ],
-      // register: "Register",
+
       langName: "English",
       flagSrc: "https://flagcdn.com/w40/gb.png",
     },
@@ -45,7 +75,10 @@ export default function Navbar() {
 
   const currentT = t[lang];
 
-  // Load saved theme preference on mount
+  // -----------------------------------
+  // Theme
+  // -----------------------------------
+
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
 
@@ -62,13 +95,12 @@ export default function Navbar() {
     setLang((prev) => (prev === "km" ? "en" : "km"));
   };
 
-  // Circular clip-path transition handler
-  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleTheme = (event: React.MouseEvent) => {
     const nextDark = !darkMode;
 
-    // Fallback for browsers without View Transitions API support
     if (!document.startViewTransition) {
       setDarkMode(nextDark);
+
       if (nextDark) {
         document.documentElement.classList.add("dark");
         localStorage.setItem("theme", "dark");
@@ -76,22 +108,21 @@ export default function Navbar() {
         document.documentElement.classList.remove("dark");
         localStorage.setItem("theme", "light");
       }
+
       return;
     }
 
-    // Get click position (center of the transition circle)
     const x = event.clientX;
     const y = event.clientY;
 
-    // Calculate maximum radius (distance to the furthest corner of the screen)
     const endRadius = Math.hypot(
       Math.max(x, window.innerWidth - x),
       Math.max(y, window.innerHeight - y),
     );
 
-    // Trigger state change inside the view transition callback
     const transition = document.startViewTransition(() => {
       setDarkMode(nextDark);
+
       if (nextDark) {
         document.documentElement.classList.add("dark");
         localStorage.setItem("theme", "dark");
@@ -101,7 +132,6 @@ export default function Navbar() {
       }
     });
 
-    // Animate clip-path with smooth timing and slower speed
     transition.ready.then(() => {
       const clipPath = [
         `circle(0px at ${x}px ${y}px)`,
@@ -110,7 +140,7 @@ export default function Navbar() {
 
       document.documentElement.animate(
         {
-          clipPath: clipPath,
+          clipPath,
         },
         {
           duration: 1000,
@@ -121,10 +151,25 @@ export default function Navbar() {
     });
   };
 
+  // -----------------------------------
+  // Logout
+  // -----------------------------------
+
+  const handleLogout = async () => {
+    setProfileOpen(false);
+
+    await signOut({
+      redirectTo: "/",
+    });
+  };
+
   return (
-    <header className="fixed top-0 left-0 z-50 w-full border-b border-gray-200/30 bg-white/60 dark:border-slate-800/50 dark:bg-slate-950/60 backdrop-blur-xl shadow-xs transition-colors duration-200 font-khmer">
-      <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-4 sm:px-6">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200/30 bg-white/70 backdrop-blur-xl dark:border-slate-800/50 dark:bg-slate-950/70">
+      <nav className="mx-auto flex w-full items-center justify-between gap-3 px-4 py-3 md:px-6 lg:px-8">
+        {/* -------------------------------- */}
         {/* Left: Logo */}
+        {/* -------------------------------- */}
+
         <div className="flex items-center shrink-0">
           <Link href="/">
             <img
@@ -135,21 +180,17 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Desktop Center: Pill Navigation with Glass Effect */}
-        <div className="hidden md:flex flex-1 min-w-0 justify-center overflow-x-auto no-scrollbar">
-          {/*
-            Fixed width here (instead of sizing to fit content) is intentional:
-            Khmer and English labels differ in length, so if the pill sized
-            itself to content, it would grow/shrink and visibly shift position
-            every time the language toggles. A fixed width keeps the pill's
-            box stable regardless of which language is showing.
-          */}
-          <div className="flex items-center justify-center gap-2 lg:gap-5 w-full md:w-140 lg:w-180 rounded-full border border-[#002455]/20 bg-white/40 dark:bg-slate-900/40 backdrop-blur-md px-5 lg:px-10 py-2 lg:py-2.5 text-[#002455] dark:text-[#FFFFFF] shadow-xs dark:border-slate-700/50">
-            {currentT.navItems.map((item, index) => (
+        {/* -------------------------------- */}
+        {/* Desktop Navigation */}
+        {/* -------------------------------- */}
+
+        <div className="hidden min-w-0 flex-1 justify-center overflow-x-auto md:flex">
+          <div className="flex w-full items-center justify-center gap-2 rounded-full border border-[#002455]/20 bg-white/40 px-5 py-2 text-[#002455] shadow-xs backdrop-blur-md md:w-140 lg:w-180 lg:gap-5 lg:px-10 lg:py-2.5 dark:border-slate-700/50 dark:bg-slate-900/40 dark:text-white">
+            {currentT.navItems.map((item) => (
               <Link
-                key={index}
+                key={item.href}
                 href={item.href}
-                className="text-[14px] lg:text-[18px] font-semibold whitespace-nowrap transition-colors hover:text-red-500"
+                className="whitespace-nowrap text-[14px] font-semibold transition-colors hover:text-red-500 lg:text-[18px]"
               >
                 {item.label}
               </Link>
@@ -157,80 +198,253 @@ export default function Navbar() {
           </div>
         </div>
 
+        {/* -------------------------------- */}
         {/* Right Controls */}
-        <div className="flex items-center space-x-2 md:space-x-3 lg:space-x-5 shrink-0">
-          {/* Theme Toggle Button */}
+        {/* -------------------------------- */}
+
+        <div className="flex shrink-0 items-center space-x-2 md:space-x-3 lg:space-x-5">
+          {/* Theme */}
+
           <button
+            type="button"
             onClick={toggleTheme}
             aria-label="Toggle Theme"
-            className="rounded-full p-1.5 shrink-0 text-gray-700 hover:bg-gray-100/50 dark:text-gray-300 dark:hover:bg-slate-800/50 transition-colors hover:text-[#DC0000]"
+            className="shrink-0 rounded-full p-1.5 text-gray-700 transition-colors hover:bg-gray-100/50 hover:text-[#DC0000] dark:text-gray-300 dark:hover:bg-slate-800/50"
           >
             {darkMode ? (
-              <SunMedium className="cursor-pointer text:dark-[#002455] hover:text-[#DC0000]" />
+              <SunMedium className="cursor-pointer" />
             ) : (
               <Moon className="cursor-pointer" />
             )}
           </button>
 
-          {/* Language Switcher */}
+          {/* Language */}
+
           <button
+            type="button"
             onClick={toggleLanguage}
-            className="flex items-center space-x-1.5 sm:space-x-2 rounded-full border border-[#002455] px-2.5 sm:px-3 py-1.5 sm:py-2 text-[14px] lg:text-[16px] font-medium text-[#002455] hover:text-[#DC0000] dark:border-slate-700 dark:text-gray-200 dark:hover:bg-slate-800/50 transition-colors cursor-pointer shrink-0 bg-white/30 dark:bg-slate-900/30 backdrop-blur-xs"
+            className="flex shrink-0 cursor-pointer items-center space-x-1.5 rounded-full border border-[#002455] bg-white/30 px-2.5 py-1.5 text-[14px] font-medium text-[#002455] backdrop-blur-xs transition-colors hover:text-[#DC0000] sm:space-x-2 sm:px-3 sm:py-2 lg:text-[16px] dark:border-slate-700 dark:bg-slate-900/30 dark:text-gray-200 dark:hover:bg-slate-800/50"
           >
             <img
               src={currentT.flagSrc}
-              alt="Flag"
-              className="h-3.5 w-5 sm:h-4 sm:w-6 rounded-xs object-cover shrink-0"
+              alt={currentT.langName}
+              className="h-3.5 w-5 shrink-0 rounded-xs object-cover sm:h-4 sm:w-6"
             />
+
             <span className="whitespace-nowrap">{currentT.langName}</span>
           </button>
 
-          <Login />
+          {/* -------------------------------- */}
+          {/* Authentication */}
+          {/* -------------------------------- */}
 
-          {/* Register Link */}
-          {/* <Link
-            href="/register"
-            className="hidden md:inline-block text-[14px] lg:text-[18px] font-semibold text-[#DC0000] whitespace-nowrap transition-colors hover:text-red-600 shrink-0"
-          >
-            {currentT.register}
-          </Link> */}
+          {status === "loading" ? (
+            // Session loading
+            <div className="hidden items-center gap-2 md:flex">
+              <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200 dark:bg-slate-700" />
+            </div>
+          ) : status === "authenticated" && session?.user ? (
+            // Logged in
+            <div className="relative hidden md:block">
+              <button
+                type="button"
+                onClick={() => setProfileOpen((prev) => !prev)}
+                className="flex items-center gap-2 rounded-full border border-[#002455]/20 bg-white/40 p-1.5 pr-3 transition-colors hover:bg-white/70 dark:border-slate-700 dark:bg-slate-900/40 dark:hover:bg-slate-800"
+              >
+                {/* Avatar */}
 
-          {/* Hamburger Button (Mobile only) */}
+                {userImage ? (
+                  <img
+                    src={userImage}
+                    alt={userName}
+                    className="h-9 w-9 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#002455] text-sm font-bold text-white">
+                    {userInitial}
+                  </div>
+                )}
+
+                {/* Name */}
+
+                <div className="hidden min-w-0 text-left lg:block">
+                  <p className="max-w-32 truncate text-sm font-semibold text-[#002455] dark:text-white">
+                    {userName}
+                  </p>
+
+                  {userEmail && (
+                    <p className="max-w-32 truncate text-xs text-gray-500 dark:text-gray-400">
+                      {userEmail}
+                    </p>
+                  )}
+                </div>
+
+                <ChevronDown
+                  className={`h-4 w-4 text-gray-500 transition-transform ${
+                    profileOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {/* -------------------------------- */}
+              {/* Profile Dropdown */}
+              {/* -------------------------------- */}
+
+              {profileOpen && (
+                <div className="absolute right-0 top-full z-50 mt-3 w-72 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
+                  {/* User information */}
+
+                  <div className="border-b border-gray-100 p-4 dark:border-slate-800">
+                    <div className="flex items-center gap-3">
+                      {userImage ? (
+                        <img
+                          src={userImage}
+                          alt={userName}
+                          className="h-12 w-12 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#002455] text-lg font-bold text-white">
+                          {userInitial}
+                        </div>
+                      )}
+
+                      <div className="min-w-0">
+                        <p className="truncate font-semibold text-[#002455] dark:text-white">
+                          {userName}
+                        </p>
+
+                        {userEmail && (
+                          <p className="truncate text-sm text-gray-500 dark:text-gray-400">
+                            {userEmail}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Profile link */}
+
+                  <div className="p-2">
+                    <Link
+                      href="/profile"
+                      onClick={() => setProfileOpen(false)}
+                      className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-800"
+                    >
+                      <User className="h-5 w-5" />
+
+                      <span>Profile</span>
+                    </Link>
+
+                    {/* Logout */}
+
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10"
+                    >
+                      <LogOut className="h-5 w-5" />
+
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            // Not logged in
+            <Login />
+          )}
+
+          {/* Mobile hamburger */}
+
           <button
-            onClick={() => setIsOpen(!isOpen)}
+            type="button"
+            onClick={() => setIsOpen((prev) => !prev)}
             aria-label="Toggle Navigation Menu"
-            className="md:hidden rounded-lg p-2 shrink-0 text-gray-700 dark:text-gray-200 hover:bg-gray-100/50 dark:hover:bg-slate-800/50 transition-colors focus:outline-none"
+            className="shrink-0 rounded-lg p-2 text-gray-700 transition-colors hover:bg-gray-100/50 focus:outline-none md:hidden dark:text-gray-200 dark:hover:bg-slate-800/50"
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </nav>
 
-      {/* Mobile Dropdown Menu with Glassmorphism */}
+      {/* -------------------------------- */}
+      {/* Mobile Menu */}
+      {/* -------------------------------- */}
+
       {isOpen && (
-        <div className="md:hidden border-t border-gray-200/30 bg-white/70 dark:border-slate-800/50 dark:bg-slate-950/70 backdrop-blur-xl px-6 py-4 transition-all">
+        <div className="border-t border-gray-200/30 bg-white/70 px-6 py-4 backdrop-blur-xl md:hidden dark:border-slate-800/50 dark:bg-slate-950/70">
           <div className="flex flex-col space-y-3">
-            {currentT.navItems.map((item, index) => (
+            {currentT.navItems.map((item) => (
               <Link
-                key={index}
+                key={item.href}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="text-[18px] font-semibold text-[#002455] dark:text-[#FFFFFF] transition-colors hover:text-red-500 py-1"
+                className="py-1 text-[18px] font-semibold text-[#002455] transition-colors hover:text-red-500 dark:text-white"
               >
                 {item.label}
               </Link>
             ))}
 
-            {/* Register Link inside mobile drawer */}
-            <div className="pt-2 border-t border-gray-100/50 dark:border-slate-800/50">
-              {/* <Link
-                href="/register"
-                onClick={() => setIsOpen(false)}
-                className="text-[18px] font-semibold text-[#DC0000] whitespace-nowrap transition-colors hover:text-red-600"
-              >
-                {currentT.register}
-              </Link> */}
-            </div>
+            {/* -------------------------------- */}
+            {/* Mobile authenticated profile */}
+            {/* -------------------------------- */}
+
+            {status === "authenticated" && session?.user && (
+              <div className="mt-2 border-t border-gray-200 pt-4 dark:border-slate-800">
+                <div className="mb-3 flex items-center gap-3">
+                  {userImage ? (
+                    <img
+                      src={userImage}
+                      alt={userName}
+                      className="h-11 w-11 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#002455] font-bold text-white">
+                      {userInitial}
+                    </div>
+                  )}
+
+                  <div className="min-w-0">
+                    <p className="truncate font-semibold text-[#002455] dark:text-white">
+                      {userName}
+                    </p>
+
+                    {userEmail && (
+                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
+                        {userEmail}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <Link
+                  href="/profile"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-3 rounded-lg px-2 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-800"
+                >
+                  <User className="h-5 w-5" />
+                  Profile
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="mt-1 flex w-full items-center gap-3 rounded-lg px-2 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10"
+                >
+                  <LogOut className="h-5 w-5" />
+                  Logout
+                </button>
+              </div>
+            )}
+
+            {/* Mobile login */}
+
+            {status === "unauthenticated" && (
+              <div className="border-t border-gray-200 pt-4 dark:border-slate-800">
+                <Login />
+              </div>
+            )}
           </div>
         </div>
       )}

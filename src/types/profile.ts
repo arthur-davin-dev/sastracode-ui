@@ -1,14 +1,99 @@
-export interface UserProfile {
-  firstName: string;
-  lastName: string;
-  avatarUrl: string;
-  quote: string;
-  email: string;
+export type Gender = "MALE" | "FEMALE" | "OTHER";
 
-  phone?: string;
-  university?: string;
-  major?: string;
-  studentId?: string;
-  nationalId?: string;
-  dob?: string;
+export type WorkStudyType = "STUDENT" | "EMPLOYEE";
+
+export type UserStatus = "ACTIVE" | "BLOCKED" | "DEACTIVATED" | "PENDING";
+
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+  timestamp: string;
+}
+
+export interface UserProfileResponse {
+  userId?: string;
+
+  username?: string;
+
+  firstName?: string;
+
+  lastName?: string;
+
+  email?: string;
+
+  gender?: Gender;
+
+  birthday?: string;
+
+  phoneNumber?: string;
+
+  biography?: string;
+
+  workStudyType?: WorkStudyType;
+
+  institutionName?: string;
+
+  locale?: string;
+
+  avatarFileId?: string;
+
+  status?: UserStatus;
+}
+
+/**
+ * Frontend version.
+ * avatarUrl is created by our Next.js proxy.
+ */
+export interface UserProfile extends UserProfileResponse {
+  avatarUrl?: string;
+}
+
+export interface UpdateUserInfoRequest {
+  firstName?: string;
+
+  lastName?: string;
+
+  email?: string;
+
+  gender?: Gender;
+
+  birthday?: string;
+
+  phoneNumber?: string;
+
+  biography?: string;
+
+  workStudyType?: WorkStudyType;
+
+  institutionName?: string;
+
+  locale?: string;
+
+  avatarFileId?: string;
+}
+
+export interface AvatarResponse {
+  avatarFileId: string;
+  avatarUrl: string;
+}
+
+export interface FileResponse {
+  id: string;
+
+  fileName: string;
+
+  extension: string;
+
+  fileType: string;
+
+  sizeBytes: number;
+
+  uploadedBy: string;
+
+  url: string;
+
+  createdAt: string;
+
+  updatedAt: string;
 }

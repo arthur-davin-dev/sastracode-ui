@@ -2,27 +2,58 @@
 
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useSession, signOut } from "next-auth/react";
+import Link from "next/link";
+
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Search, Bell, SunMedium, Moon, Menu, X, PanelLeft } from "lucide-react";
+
+import {
+  Search,
+  Bell,
+  SunMedium,
+  Moon,
+  Menu,
+  X,
+  PanelLeft,
+  User,
+  LogOut,
+  ChevronDown,
+} from "lucide-react";
+
 import { pageConfig } from "@/components/layout/navbar-config";
 
 interface NavbarProps {
-  userName?: string;
-  userAvatarUrl?: string;
   hasUnreadNotifications?: boolean;
   onOpenSidebar?: () => void;
 }
 
 export default function SubNavbar({
-  userName = "Chhay Davin",
-  userAvatarUrl = "/images/chhay_davin.png",
   hasUnreadNotifications = true,
   onOpenSidebar,
 }: NavbarProps) {
   const pathname = usePathname();
+
+  // Auth.js session
+  const { data: session, status } = useSession();
+
   const [darkMode, setDarkMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  // ========================================
+  // Safe session user values
+  // ========================================
+
+  const userName = session?.user?.name ?? "User";
+  const userEmail = session?.user?.email ?? "";
+  const userAvatarUrl = session?.user?.image ?? "";
+
+  const userInitial = userName.trim().charAt(0).toUpperCase() || "U";
+
+  // ========================================
+  // Page title
+  // ========================================
 
   const matchedPath = Object.keys(pageConfig)
     .filter((path) => pathname.startsWith(path))
@@ -30,34 +61,49 @@ export default function SubNavbar({
 
   const current = matchedPath
     ? pageConfig[matchedPath]
-    : { title: "SastraCode", icon: null };
+    : {
+        title: "SastraCode",
+        icon: null,
+      };
+
   const Icon = current.icon;
+
+  // ========================================
+  // Theme
+  // ========================================
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
+
     setDarkMode(savedTheme === "dark");
   }, []);
 
-  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const toggleTheme = (event: React.MouseEvent) => {
     const nextDark = !darkMode;
 
     if (!document.startViewTransition) {
       setDarkMode(nextDark);
+
       document.documentElement.classList.toggle("dark", nextDark);
+
       localStorage.setItem("theme", nextDark ? "dark" : "light");
+
       return;
     }
 
     const x = event.clientX;
     const y = event.clientY;
+
     const endRadius = Math.hypot(
       Math.max(x, window.innerWidth - x),
-      Math.max(y, window.innerHeight - y)
+      Math.max(y, window.innerHeight - y),
     );
 
     const transition = document.startViewTransition(() => {
       setDarkMode(nextDark);
+
       document.documentElement.classList.toggle("dark", nextDark);
+
       localStorage.setItem("theme", nextDark ? "dark" : "light");
     });
 
@@ -68,142 +114,334 @@ export default function SubNavbar({
       ];
 
       document.documentElement.animate(
-        { clipPath },
+        {
+          clipPath,
+        },
         {
           duration: 1000,
           easing: "cubic-bezier(0.4, 0, 0.2, 1)",
           pseudoElement: "::view-transition-new(root)",
-        }
+        },
       );
     });
   };
 
+  // ========================================
+  // Logout
+  // ========================================
+
+  const handleLogout = async () => {
+    setProfileOpen(false);
+    setIsOpen(false);
+
+    await signOut({
+      redirectTo: "/",
+    });
+  };
+
   return (
-    <header className="sticky top-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b-2 border-slate-100 dark:border-slate-800 transition-all duration-300 shadow-sm">
-      <div className="flex items-center justify-between gap-4 px-4 sm:px-8 py-4">
-        
-        {/* Sidebar Toggle (Mobile) + Title (Text-2xl) */}
-        <div className="flex items-center gap-3 shrink-0 min-w-0">
+    <header className="w-full bg-white dark:bg-slate-900">
+      <div className="flex w-full items-center justify-between gap-4 px-4 py-3 md:px-6">
+        {/* ===================================== */}
+        {/* Sidebar Toggle + Page Title */}
+        {/* ===================================== */}
+
+        <div className="flex min-w-0 shrink-0 items-center gap-3">
           <button
+            type="button"
             onClick={onOpenSidebar}
             aria-label="Open Sidebar"
-            className="lg:hidden rounded-2xl p-2.5 text-primary-color hover:bg-yellow-400/20 transition-colors shrink-0 border border-slate-200 dark:border-slate-800"
+            className="shrink-0 rounded-2xl border border-slate-200 p-2.5 text-primary-color transition-colors hover:bg-yellow-400/20 lg:hidden dark:border-slate-800"
           >
             <PanelLeft className="h-6 w-6 text-primary-color" />
           </button>
 
-          <div className="flex items-center gap-3 min-w-0">
+          <div className="flex min-w-0 items-center gap-3">
             {Icon && (
-              <div className="p-2 bg-yellow-400/20 text-yellow-600 rounded-2xl shrink-0">
+              <div className="shrink-0 rounded-2xl bg-yellow-400/20 p-2 text-yellow-600">
                 <Icon className="h-7 w-7 text-primary-color" />
               </div>
             )}
-            <h1 className="text-2xl font-black text-primary-color tracking-tight truncate max-w-[160px] sm:max-w-none">
+
+            <h1 className="max-w-[160px] truncate text-2xl font-black tracking-tight text-primary-color sm:max-w-none">
               {current.title}
             </h1>
           </div>
         </div>
 
-        {/* Search Bar: Desktop Only */}
-        <div className="relative w-full max-w-md mx-4 hidden md:block">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-color opacity-50" />
+        {/* ===================================== */}
+        {/* Search */}
+        {/* ===================================== */}
+
+        <div className="relative mx-4 hidden w-full max-w-md md:block">
+          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary-color opacity-50" />
+
           <Input
             placeholder="ស្វែងរកអ្វីមួយ..."
-            className="pl-12 pr-4 py-6 text-lg rounded-2xl bg-slate-100 dark:bg-slate-800 text-primary-color placeholder:text-primary-color/50 border-2 border-slate-200/60 dark:border-slate-700/60 focus-visible:ring-yellow-400 font-bold transition-all"
+            className="rounded-2xl border-2 border-slate-200/60 bg-slate-100 py-6 pl-12 pr-4 text-lg font-bold text-primary-color placeholder:text-primary-color/50 transition-all focus-visible:ring-yellow-400 dark:border-slate-700/60 dark:bg-slate-800"
           />
         </div>
 
-        {/* Desktop Controls & User Profile */}
-        <div className="hidden md:flex items-center gap-5 shrink-0">
-          
-          {/* Theme Toggle Button */}
+        {/* ===================================== */}
+        {/* Desktop Right Controls */}
+        {/* ===================================== */}
+
+        <div className="hidden shrink-0 items-center gap-4 md:flex">
+          {/* Theme */}
+
           <button
+            type="button"
             onClick={toggleTheme}
             aria-label="Toggle Theme"
-            className="rounded-2xl p-3 text-primary-color bg-slate-100 dark:bg-slate-800 hover:bg-yellow-400/20 transition-all border border-slate-200 dark:border-slate-700"
+            className="rounded-2xl border border-slate-200 bg-slate-100 p-3 text-primary-color transition-all hover:bg-yellow-400/20 dark:border-slate-700 dark:bg-slate-800"
           >
-            {darkMode ? <SunMedium className="h-6 w-6 text-yellow-400" /> : <Moon className="h-6 w-6 text-primary-color" />}
-          </button>
-
-          {/* Notifications Indicator */}
-          <button
-            aria-label="Notifications"
-            className="relative rounded-2xl p-3 text-primary-color bg-slate-100 dark:bg-slate-800 hover:bg-yellow-400/20 transition-all border border-slate-200 dark:border-slate-700"
-          >
-            <Bell className="h-6 w-6 text-primary-color" />
-            {hasUnreadNotifications && (
-              <span className="absolute top-2 right-2 h-3 w-3 rounded-full bg-red-600 ring-2 ring-white dark:ring-slate-900 animate-pulse" />
+            {darkMode ? (
+              <SunMedium className="h-6 w-6 text-yellow-400" />
+            ) : (
+              <Moon className="h-6 w-6 text-primary-color" />
             )}
           </button>
 
-          {/* User Profile Info */}
-          <div className="flex items-center gap-3 pl-2 border-l-2 border-slate-200 dark:border-slate-800">
-            <Avatar className="h-11 w-11 border-2 border-yellow-400 shadow-sm">
-              <AvatarImage src={userAvatarUrl} alt={userName} />
-              <AvatarFallback className="bg-yellow-400 text-red-600 font-extrabold text-lg">
-                {userName[0]}
-              </AvatarFallback>
-            </Avatar>
-            <span className="text-lg font-extrabold text-primary-color truncate max-w-[140px]">
-              {userName}
-            </span>
-          </div>
+          {/* Notifications */}
+
+          <button
+            type="button"
+            aria-label="Notifications"
+            className="relative rounded-2xl border border-slate-200 bg-slate-100 p-3 text-primary-color transition-all hover:bg-yellow-400/20 dark:border-slate-700 dark:bg-slate-800"
+          >
+            <Bell className="h-6 w-6 text-primary-color" />
+
+            {hasUnreadNotifications && (
+              <span className="absolute right-2 top-2 h-3 w-3 animate-pulse rounded-full bg-red-600 ring-2 ring-white dark:ring-slate-900" />
+            )}
+          </button>
+
+          {/* ================================= */}
+          {/* Session loading */}
+          {/* ================================= */}
+
+          {status === "loading" ? (
+            <div className="flex items-center gap-3 border-l-2 border-slate-200 pl-4 dark:border-slate-800">
+              <div className="h-11 w-11 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700" />
+
+              <div className="h-4 w-24 animate-pulse rounded bg-slate-200 dark:bg-slate-700" />
+            </div>
+          ) : status === "authenticated" && session?.user ? (
+            /* ================================= */
+            /* Logged-in profile */
+            /* ================================= */
+
+            <div className="relative border-l-2 border-slate-200 pl-4 dark:border-slate-800">
+              <button
+                type="button"
+                onClick={() => setProfileOpen((prev) => !prev)}
+                className="flex items-center gap-3 rounded-xl px-2 py-1.5 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
+              >
+                <Avatar className="h-11 w-11 border-2 border-yellow-400 shadow-sm">
+                  {userAvatarUrl && (
+                    <AvatarImage src={userAvatarUrl} alt={userName} />
+                  )}
+
+                  <AvatarFallback className="bg-yellow-400 text-lg font-extrabold text-red-600">
+                    {userInitial}
+                  </AvatarFallback>
+                </Avatar>
+
+                <div className="hidden min-w-0 text-left lg:block">
+                  <p className="max-w-[140px] truncate text-base font-extrabold text-primary-color">
+                    {userName}
+                  </p>
+
+                  {userEmail && (
+                    <p className="max-w-[160px] truncate text-xs font-medium text-slate-500 dark:text-slate-400">
+                      {userEmail}
+                    </p>
+                  )}
+                </div>
+
+                <ChevronDown
+                  className={`h-4 w-4 text-slate-500 transition-transform ${
+                    profileOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {/* ================================= */}
+              {/* Profile Dropdown */}
+              {/* ================================= */}
+
+              {profileOpen && (
+                <div className="absolute right-0 top-full z-50 mt-3 w-72 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
+                  {/* User */}
+
+                  <div className="border-b border-slate-100 p-4 dark:border-slate-800">
+                    <div className="flex items-center gap-3">
+                      <Avatar className="h-12 w-12 border-2 border-yellow-400">
+                        {userAvatarUrl && (
+                          <AvatarImage src={userAvatarUrl} alt={userName} />
+                        )}
+
+                        <AvatarFallback className="bg-yellow-400 font-bold text-red-600">
+                          {userInitial}
+                        </AvatarFallback>
+                      </Avatar>
+
+                      <div className="min-w-0">
+                        <p className="truncate font-bold text-primary-color">
+                          {userName}
+                        </p>
+
+                        {userEmail && (
+                          <p className="truncate text-sm text-slate-500 dark:text-slate-400">
+                            {userEmail}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+
+                  <div className="p-2">
+                    <Link
+                      href="/profile"
+                      onClick={() => setProfileOpen(false)}
+                      className="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+                    >
+                      <User className="h-5 w-5" />
+
+                      <span>Profile</span>
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10"
+                    >
+                      <LogOut className="h-5 w-5" />
+
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : null}
         </div>
 
-        {/* Mobile Right Controls */}
-        <div className="flex md:hidden items-center gap-2 shrink-0">
+        {/* ===================================== */}
+        {/* Mobile Controls */}
+        {/* ===================================== */}
+
+        <div className="flex shrink-0 items-center gap-2 md:hidden">
           <button
+            type="button"
             onClick={toggleTheme}
             aria-label="Toggle Theme"
-            className="rounded-2xl p-2.5 text-primary-color bg-slate-100 dark:bg-slate-800 hover:bg-yellow-400/20 transition-all border border-slate-200 dark:border-slate-700"
+            className="rounded-2xl border border-slate-200 bg-slate-100 p-2.5 text-primary-color transition-all hover:bg-yellow-400/20 dark:border-slate-700 dark:bg-slate-800"
           >
-            {darkMode ? <SunMedium className="h-5 w-5 text-yellow-400" /> : <Moon className="h-5 w-5 text-primary-color" />}
+            {darkMode ? (
+              <SunMedium className="h-5 w-5 text-yellow-400" />
+            ) : (
+              <Moon className="h-5 w-5 text-primary-color" />
+            )}
           </button>
 
           <button
-            onClick={() => setIsOpen(!isOpen)}
+            type="button"
+            onClick={() => setIsOpen((prev) => !prev)}
             aria-label="Toggle Menu"
-            className="rounded-2xl p-2.5  transition-all shadow-md"
+            className="rounded-2xl p-2.5 shadow-md transition-all"
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Dropdown Panel */}
+      {/* ===================================== */}
+      {/* Mobile Dropdown */}
+      {/* ===================================== */}
+
       {isOpen && (
-        <div className="md:hidden border-t-2 border-slate-100 dark:border-slate-800 px-6 py-5 space-y-5 bg-white dark:bg-slate-900 animate-in slide-in-from-top duration-300">
+        <div className="animate-in slide-in-from-top space-y-5 border-t-2 border-slate-100 bg-white px-6 py-5 duration-300 md:hidden dark:border-slate-800 dark:bg-slate-900">
+          {/* Search */}
+
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-color opacity-50" />
+            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary-color opacity-50" />
+
             <Input
               placeholder="ស្វែងរកអ្វីមួយ..."
-              className="pl-12 pr-4 py-5 text-lg rounded-2xl bg-slate-100 dark:bg-slate-800 text-primary-color placeholder:text-primary-color/50 border-2 border-slate-200 dark:border-slate-700 font-bold"
+              className="rounded-2xl border-2 border-slate-200 bg-slate-100 py-5 pl-12 pr-4 text-lg font-bold text-primary-color placeholder:text-primary-color/50 dark:border-slate-700 dark:bg-slate-800"
             />
           </div>
 
-          <div className="flex items-center justify-between pt-2">
-            <div className="flex items-center gap-3">
-              <Avatar className="h-12 w-12 ">
-                <AvatarImage src={userAvatarUrl} alt={userName} />
-                <AvatarFallback className="bg-init-color text-secondary-color font-extrabold text-lg">
-                  {userName[0]}
-                </AvatarFallback>
-              </Avatar>
-              <span className="text-lg font-extrabold text-primary-color">
-                {userName}
-              </span>
-            </div>
+          {/* ================================= */}
+          {/* Mobile Profile */}
+          {/* ================================= */}
 
-            <button
-              aria-label="Notifications"
-              className="relative p-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
-            >
-              <Bell className="h-6 w-6 text-primary-color" />
-              {hasUnreadNotifications && (
-                <span className="absolute top-2 right-2 h-3 w-3 rounded-full bg-red-600 ring-2 ring-white dark:ring-slate-900" />
-              )}
-            </button>
-          </div>
+          {status === "authenticated" && session?.user && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pt-2">
+                <div className="flex min-w-0 items-center gap-3">
+                  <Avatar className="h-12 w-12 shrink-0">
+                    {userAvatarUrl && (
+                      <AvatarImage src={userAvatarUrl} alt={userName} />
+                    )}
+
+                    <AvatarFallback className="bg-init-color text-lg font-extrabold text-secondary-color">
+                      {userInitial}
+                    </AvatarFallback>
+                  </Avatar>
+
+                  <div className="min-w-0">
+                    <p className="truncate text-lg font-extrabold text-primary-color">
+                      {userName}
+                    </p>
+
+                    {userEmail && (
+                      <p className="truncate text-sm text-slate-500 dark:text-slate-400">
+                        {userEmail}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  aria-label="Notifications"
+                  className="relative rounded-2xl border border-slate-200 bg-slate-100 p-3 dark:border-slate-700 dark:bg-slate-800"
+                >
+                  <Bell className="h-6 w-6 text-primary-color" />
+
+                  {hasUnreadNotifications && (
+                    <span className="absolute right-2 top-2 h-3 w-3 rounded-full bg-red-600 ring-2 ring-white dark:ring-slate-900" />
+                  )}
+                </button>
+              </div>
+
+              {/* Profile */}
+
+              <Link
+                href="/profile"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+              >
+                <User className="h-5 w-5" />
+                Profile
+              </Link>
+
+              {/* Logout */}
+
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10"
+              >
+                <LogOut className="h-5 w-5" />
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       )}
     </header>

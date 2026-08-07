@@ -9,9 +9,9 @@ export default function MainLayout({
   return (
     <>
       <Navbar />
-      <main className="flex-1 pt-14">
-        {children}
-      </main>
+
+      {children}
+
       <Footer />
     </>
   );

@@ -1,16 +1,21 @@
 "use client";
 
-import { useInitiateKeycloakLoginMutation } from "@/redux/api";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 export default function Login() {
-  const [initiateKeycloakLogin, { isLoading }] = useInitiateKeycloakLoginMutation();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
     try {
-      const result = await initiateKeycloakLogin().unwrap();
-      window.location.assign(result.loginUrl);
+      setIsLoading(true);
+
+      await signIn("keycloak", {
+        redirectTo: "/",
+      });
     } catch (error) {
       console.error("Failed to start Keycloak login", error);
+      setIsLoading(false);
     }
   };
 
@@ -19,7 +24,7 @@ export default function Login() {
       type="button"
       onClick={handleLogin}
       disabled={isLoading}
-      className="hidden md:inline-flex items-center justify-center rounded-full border border-[#002455] px-3 py-2 text-[14px] lg:text-[16px] font-semibold text-[#002455] transition-colors hover:text-[#DC0000] dark:border-slate-700 dark:text-gray-200 dark:hover:bg-slate-800/50 disabled:opacity-70"
+      className="hidden md:inline-flex items-center justify-center rounded-full border border-[#002455] px-3 py-2 text-[14px] lg:text-[16px] font-semibold text-[#002455] transition-colors hover:text-[#DC0000] disabled:opacity-70"
     >
       {isLoading ? "Redirecting..." : "Login"}
     </button>
