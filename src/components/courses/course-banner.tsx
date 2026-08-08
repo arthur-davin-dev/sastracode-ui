@@ -54,9 +54,9 @@ export default function CourseBanner() {
 
           {/* Right Illustration Column (5 cols) */}
           <div className="relative lg:col-span-5">
-            <div className="relative mx-auto max-w-md lg:max-w-none overflow-hidden rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-2xl bg-slate-900/90 group">
+            <div className="relative mx-auto max-w-md lg:max-w-none overflow-hidden rounded-3xl group">
               <Image
-                src="/assets/images/bannercourse.png"
+                src="/assets/images/banner.gif"
                 alt="Student learning to code"
                 width={900}
                 height={600}
@@ -66,10 +66,10 @@ export default function CourseBanner() {
               />
 
               {/* Gradient Overlay for Vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 via-transparent to-transparent pointer-events-none" />
 
               {/* Floating Badges */}
-              <div className="absolute top-[12%] left-[8%] sm:top-[14%] sm:left-[12%] z-10 animate-bounce animation-duration-[4s] rounded-xl bg-emerald-500/90 backdrop-blur-md px-3.5 py-1.5 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-emerald-500/20 -rotate-6 border border-white/20">
+              {/* <div className="absolute top-[12%] left-[8%] sm:top-[14%] sm:left-[12%] z-10 animate-bounce animation-duration-[4s] rounded-xl bg-emerald-500/90 backdrop-blur-md px-3.5 py-1.5 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-emerald-500/20 -rotate-6 border border-white/20">
                 JavaScript
               </div>
 
@@ -83,7 +83,7 @@ export default function CourseBanner() {
 
               <div className="absolute bottom-[10%] left-[8%] z-10 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-amber-400/95 text-slate-900 shadow-lg shadow-amber-400/20 rotate-12 border border-white/30 animate-bounce animation-duration-[3.8s]">
                 <Code2 className="h-6 w-6 stroke-[2.5]" />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

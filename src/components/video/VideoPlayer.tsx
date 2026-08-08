@@ -95,3 +95,4 @@ export function VideoPlayer({
     </div>
   );
 }
+
