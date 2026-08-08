@@ -106,6 +106,9 @@ export const sastraApi = createApi({
     "Leaderboard",
     "Notification",
     "Tutorial",
+    "Document",
+    "Section",
+    "Block",
   ],
 
   endpoints: () => ({}),
