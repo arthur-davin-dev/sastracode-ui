@@ -1,23 +1,18 @@
-// lib/store.ts
 import { configureStore } from "@reduxjs/toolkit";
-import { ecommerceApi } from "./api";
+import { sastraApi } from "@/redux/api/sastra-code";
 
-export const makeStore = () => {
-  return configureStore({
+export const makeStore = () =>
+  configureStore({
     reducer: {
-      [ecommerceApi.reducerPath]: ecommerceApi.reducer,
+      [sastraApi.reducerPath]: sastraApi.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware()
-    .concat(ecommerceApi.middleware)
-  });
-};
 
-// Infer the type of makeStore
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(sastraApi.middleware),
+  });
+
 export type AppStore = ReturnType<typeof makeStore>;
 
-// Infer RootState
 export type RootState = ReturnType<AppStore["getState"]>;
 
-// Infer AppDispatch
 export type AppDispatch = AppStore["dispatch"];

@@ -19,7 +19,7 @@ export interface Course {
 
 export interface CourseProgress {
   courseTitle: string;
-  lessonLabel: string; 
+  lessonLabel: string;
   percent: number; // 0-100
   href: string;
 }
@@ -146,5 +146,62 @@ export interface MyCourse {
   description: string;
   studentsCount: string;
   duration: string;
-  status: "not_started" | "in_progress"; 
+  status: "not_started" | "in_progress";
+}
+
+export interface FileSummaryResponse {
+  id: string;
+  url: string;
+}
+
+export interface CategorySummaryResponse {
+  id: string;
+  name?: string;
+}
+
+export interface CourseSectionResponse {
+  id: string;
+  courseId?: string;
+  title?: string;
+  orderIndex?: number;
+  videos?: { id: string }[];
+}
+
+export interface CourseResponse {
+  id: string;
+  title: string;
+  slug?: string;
+  summary?: string;
+  description?: string;
+  level?: "BEGINNER" | "INTERMEDIATE" | "ADVANCED";
+  accessType?: "FREE" | "PREMIUM" | "PRIVATE";
+  price?: number;
+  discount?: number;
+  currency?: string;
+  thumbnailFileId?: FileSummaryResponse;
+  instructorId?: string;
+  status?: string;
+  publishedAt?: string | null;
+  enrollmentCount?: number;
+  hasFullAccess?: boolean;
+  isDeleted?: boolean;
+  categories?: CategorySummaryResponse[];
+  tags?: { id: string; name?: string }[];
+  sections?: CourseSectionResponse[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface PagedCourseResponse {
+  content: CourseResponse[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface GetCoursesParams {
+  page?: number;
+  size?: number;
+  categoryId?: string;
 }

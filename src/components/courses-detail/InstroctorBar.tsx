@@ -9,7 +9,7 @@ interface InstructorBarProps {
 
 const defaultInstructor = {
   name: "Dr. Davin Chhay",
-  avatar: "/assets/images/Davin.DNG",
+  avatar: "/assets/images/Davin.png",
   rating: 4.9,
   reviewCount: 1240,
   tags: ["Premium Access", "Advanced Level"],

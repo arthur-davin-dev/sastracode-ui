@@ -7,7 +7,7 @@ interface EnrollmentHistoryProps {
 }
 
 export function EnrollmentHistory({ items }: EnrollmentHistoryProps) {
-  if (items.length === 0) return null;
+  if (!items || items.length === 0) return null;
 
   return (
     <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
@@ -15,12 +15,16 @@ export function EnrollmentHistory({ items }: EnrollmentHistoryProps) {
         <h2 className="text-lg font-bold text-gray-900 font-sans">
           ប្រវត្តិចុះឈ្មោះរបស់អ្នក
         </h2>
-        <Link href="/enrollments" className="text-sm font-medium text-primary-color hover:underline">
-          View all
+        <Link 
+          href="/enrollments" 
+          className="text-sm font-medium text-[#002455] dark:text-blue-400 hover:underline transition-colors"
+        >
+          មើលទាំងអស់ (View all)
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      {/* Grid List */}
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
         {items.map((item) => (
           <Link key={item.historyId} href={`/courses/${item.historyId}`} className="group">
             <div className="relative mb-2 aspect-video overflow-hidden rounded-xl bg-gray-900">
@@ -45,10 +49,11 @@ export function EnrollmentHistory({ items }: EnrollmentHistoryProps) {
                 {item.status === "completed" ? "Completed" : "In Progress"}
               </span>
             </div>
-            <p className="mt-1 text-xs text-gray-400">{item.progressPercent}%</p>
+
           </Link>
         ))}
       </div>
+
     </div>
   );
 }

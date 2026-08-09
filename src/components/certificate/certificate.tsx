@@ -1,4 +1,5 @@
 "use client";
+
 import { motion } from "framer-motion";
 import { PageHeader } from "@/components/ui/page-header";
 import { CertificateStatsRow } from "@/components/certificate/CertificateStatsRow";

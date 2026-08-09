@@ -7,12 +7,12 @@ import {
   Monitor,
 } from "lucide-react";
 
-// Edit this static list to change the content displayed on the enrollment page.
+// Static benefits list for the course enrollment page
 const benefits = [
   { icon: PlayCircle, title: "អាចចូលមើលមេរៀនវីដេអូបានពេញលេញ", description: "និងឯកសារវគ្គសិក្សាទាំងអស់" },
   { icon: Download, title: "ទាញយកឯកសារ", description: "ធនធាន និងឯកសារកូដ" },
   { icon: Award, title: "វិញ្ញាបនបត្របញ្ជាក់ការបញ្ចប់វគ្គសិក្សា", description: "អាចប្រើបានបន្ទាប់ពីបញ្ចប់" },
-  { icon: MessageCircleQuestion, title: "Q&A support", description: "សួរសំណួរនៅក្នុងការពិភាក្សា"},
+  { icon: MessageCircleQuestion, title: "ការគាំទ្រសំណួរ និងចម្លើយ (Q&A)", description: "សួរសំណួរនៅក្នុងការពិភាក្សា" },
   { icon: InfinityIcon, title: "រៀនតាមល្បឿនផ្ទាល់ខ្លួនរបស់អ្នក", description: "ជាមួយនឹងសិទ្ធិប្រើប្រាស់បានពេញមួយជីវិត" },
   { icon: Monitor, title: "អាចចូលប្រើបាននៅលើឧបករណ៍ទាំងអស់", description: "គ្រប់ពេលវេលា និងគ្រប់ទីកន្លែង" },
 ];
@@ -23,13 +23,18 @@ export function WhatYoullGet() {
       <h2 className="mb-5 text-lg font-bold text-gray-900 font-sans">
         អ្វីដែលអ្នកទទួលបាន
       </h2>
+
+      {/* Benefits Grid */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {benefits.map((benefit) => {
           const Icon = benefit.icon;
           return (
-            <div key={benefit.title} className="flex items-start gap-3 rounded-xl border border-gray-100 p-3.5">
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-500">
-                <Icon className="h-3.5 w-3.5" />
+            <div 
+              key={benefit.title} 
+              className="flex items-start gap-3.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 p-3.5 transition-colors"
+            >
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 mt-0.5">
+                <Icon className="h-4 w-4" />
               </span>
               <div>
                 <p className="text-sm font-medium text-gray-900 font-sans">
@@ -43,6 +48,7 @@ export function WhatYoullGet() {
           );
         })}
       </div>
+
     </div>
   );
 }

@@ -165,15 +165,18 @@ function PaidCourseCard({ course }: { course: Course }) {
             {course.lessons} មេរៀន · {course.duration}
           </span>
         </div>
+        
         <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300">
-          <Clock className="h-4 w-4 shrink-0 text-indigo-800 dark:text-indigo-400" />
-          <span>Access ពេញមួយជីវិត</span>
+          <Clock className="h-4 w-4 shrink-0 text-[#002455] dark:text-blue-400" />
+          <span>ការចូលប្រើប្រាស់បានពេញមួយជីវិត</span>
         </div>
+        
         <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300">
           <ShieldCheck className="h-4 w-4 shrink-0 text-indigo-800 dark:text-indigo-400" />
           <span>វិញ្ញាបនបត្រពេញលក្ខណៈក្រោយបញ្ចប់ការសិក្សា</span>
         </div>
       </div>
+
     </div>
   );
 }

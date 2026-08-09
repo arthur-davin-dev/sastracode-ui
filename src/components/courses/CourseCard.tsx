@@ -10,7 +10,10 @@ interface CourseCardProps {
   course: Course;
 }
 export function CourseCard({ course }: CourseCardProps) {
-  const isFree = Number(course.id) % 2 === 1;
+  const isFree =
+    course.accessType === "FREE" ||
+    course.price === 0 ||
+    course.price === undefined;
   const buttonLabel = isFree ? "ឥតគិតថ្លៃ" : "ថ្នាក់បង់ថ្លៃ";
 
   const buttonClass = isFree
@@ -19,11 +22,16 @@ export function CourseCard({ course }: CourseCardProps) {
 
   const cardWrapperClass =
     "group block w-full overflow-hidden rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:hover:border-slate-700";
+
+  const imageSrc = course.image?.trim()
+    ? encodeURI(course.image.trim())
+    : "/assets/images/javascript-course.png";
+
   const cardContent = (
     <>
       <div className="relative h-37.5 w-full ">
         <Image
-          src={course.image}
+          src="/assets/images/javascript-course.png"
           alt={course.title}
           fill
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"

@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import AnalyticsCard, { AICard, BusinessCard, LiveCoding, NormalCard } from "../floatingCard/cards/AllCard";
 import FloatingCard from "../floatingCard/FloatingCard";
 import HeroCharacter from "./HeroCharacter";
+import { current } from "@reduxjs/toolkit";
+import { useTranslation } from "@/hooks/useTranslations";
 
 const CANVAS_W = 1216;
 const CANVAS_H = 440;
@@ -17,65 +19,65 @@ const widthClamp = (w: number, minPx: number) =>
 
 // Floating animation variants with different delays and durations
 const floatingAnimations = [
-  { 
-    name: 'float1', 
-    duration: '3s', 
+  {
+    name: 'float1',
+    duration: '3s',
     delay: '0s',
     yOffset: [-12, 12, -12],
     xOffset: [0, 6, 0]
   },
-  { 
-    name: 'float2', 
-    duration: '4s', 
+  {
+    name: 'float2',
+    duration: '4s',
     delay: '0.5s',
     yOffset: [-15, 15, -15],
     xOffset: [0, -8, 0]
   },
-  { 
-    name: 'float3', 
-    duration: '3.5s', 
+  {
+    name: 'float3',
+    duration: '3.5s',
     delay: '1s',
     yOffset: [-10, 10, -10],
     xOffset: [5, -5, 5]
   },
-  { 
-    name: 'float4', 
-    duration: '4.5s', 
+  {
+    name: 'float4',
+    duration: '4.5s',
     delay: '0.3s',
     yOffset: [-18, 18, -18],
     xOffset: [0, 10, 0]
   },
-  { 
-    name: 'float5', 
-    duration: '3.2s', 
+  {
+    name: 'float5',
+    duration: '3.2s',
     delay: '0.8s',
     yOffset: [-14, 14, -14],
     xOffset: [-6, 6, -6]
   },
-  { 
-    name: 'float6', 
-    duration: '5s', 
+  {
+    name: 'float6',
+    duration: '5s',
     delay: '0.2s',
     yOffset: [-20, 20, -20],
     xOffset: [8, -8, 8]
   },
-  { 
-    name: 'float7', 
-    duration: '3.8s', 
+  {
+    name: 'float7',
+    duration: '3.8s',
     delay: '1.2s',
     yOffset: [-11, 11, -11],
     xOffset: [0, -5, 0]
   },
-  { 
-    name: 'float8', 
-    duration: '4.2s', 
+  {
+    name: 'float8',
+    duration: '4.2s',
     delay: '0.6s',
     yOffset: [-16, 16, -16],
     xOffset: [-7, 7, -7]
   },
-  { 
-    name: 'float9', 
-    duration: '3.6s', 
+  {
+    name: 'float9',
+    duration: '3.6s',
     delay: '0.9s',
     yOffset: [-13, 13, -13],
     xOffset: [4, -4, 4]
@@ -84,6 +86,8 @@ const floatingAnimations = [
 
 export default function Showcase() {
   const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
+
+ const currentT = useTranslation();
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -172,7 +176,7 @@ export default function Showcase() {
           className="w-[40%] h-auto dark:opacity-50"
         />
         <img
-          src="/assets/home/image/center-dot-float.png"
+          src="/home/center-dot.svg"
           alt=""
           className="-mt-[10%] w-[1%] h-auto dark:opacity-50"
         />
@@ -184,11 +188,11 @@ export default function Showcase() {
       </div>
 
       {/* Cards with floating animations - Card components themselves handle dark mode */}
-      <div 
+      <div
         className="absolute z-10 floating-card"
-        style={{ 
-          left: pctX(40), 
-          top: pctY(-60), 
+        style={{
+          left: pctX(40),
+          top: pctY(-60),
           width: widthClamp(240, 118),
           animationName: 'float1',
           animationDuration: '3s',
@@ -198,81 +202,81 @@ export default function Showcase() {
         <BusinessCard variant="grid" />
       </div>
 
-      <div 
+      <div
         className="absolute z-10 floating-card"
-        style={{ 
-          left: pctX(350), 
-          top: pctY(0), 
+        style={{
+          left: pctX(350),
+          top: pctY(0),
           width: widthClamp(140, 76),
           animationName: 'float2',
           animationDuration: '4s',
           animationDelay: '0.5s',
         }}
       >
-        <NormalCard variant="grid" text="ចាប់ផ្ដើម" imagePath="/assets/image/play.png" />
+        <NormalCard variant="grid" text={currentT.showCase.floatCard.text1} imagePath="/home/float-card/play.svg" />
       </div>
 
-      <div 
+      <div
         className="absolute z-10 floating-card"
-        style={{ 
-          right: pctX(350), 
-          top: pctY(0), 
+        style={{
+          right: pctX(350),
+          top: pctY(0),
           width: widthClamp(140, 76),
           animationName: 'float3',
           animationDuration: '3.5s',
           animationDelay: '1s',
         }}
       >
-        <NormalCard variant="grid" text="ស្វែងយល់" imagePath="/assets/image/play.png" />
+        <NormalCard variant="grid" text={currentT.showCase.floatCard.text3} imagePath="/home/float-card/stars.svg" />
       </div>
 
-      <div 
+      <div
         className="absolute z-10 floating-card"
-        style={{ 
-          left: pctX(250), 
-          top: pctY(280), 
+        style={{
+          left: pctX(250),
+          top: pctY(280),
           width: widthClamp(140, 76),
           animationName: 'float4',
           animationDuration: '4.5s',
           animationDelay: '0.3s',
         }}
       >
-        <NormalCard variant="grid" text="online" imagePath="/assets/image/play.png" />
+        <NormalCard variant="grid" text={currentT.showCase.floatCard.text4} imagePath="/home/float-card/networkData.svg" />
       </div>
 
-      <div 
+      <div
         className="absolute z-10 floating-card"
-        style={{ 
-          left: pctX(530), 
-          top: pctY(260), 
+        style={{
+          left: pctX(530),
+          top: pctY(260),
           width: widthClamp(160, 84),
           animationName: 'float5',
           animationDuration: '3.2s',
           animationDelay: '0.8s',
         }}
       >
-        <NormalCard variant="grid" text="រៀនគ្មានដែនកំណត់" imagePath="/assets/image/play.png" />
+        <NormalCard variant="grid" text={currentT.showCase.floatCard.text5} imagePath="/home/float-card/time.svg" />
       </div>
 
-      <div 
+      <div
         className="absolute z-10 floating-card"
-        style={{ 
-          left: pctX(500), 
-          top: pctY(55), 
+        style={{
+          left: pctX(500),
+          top: pctY(55),
           width: widthClamp(160, 84),
           animationName: 'float6',
           animationDuration: '5s',
           animationDelay: '0.2s',
         }}
       >
-        <NormalCard variant="grid" text="អនុវត្តកូដដោយផ្ទាល់" />
+        <NormalCard variant="grid" text={currentT.showCase.floatCard.text2} />
       </div>
 
-      <div 
+      <div
         className="absolute z-10 floating-card"
-        style={{ 
-          left: pctX(90), 
-          top: pctY(150), 
+        style={{
+          left: pctX(90),
+          top: pctY(150),
           width: widthClamp(190, 108),
           animationName: 'float7',
           animationDuration: '3.8s',
@@ -281,16 +285,16 @@ export default function Showcase() {
       >
         <LiveCoding
           variant="grid"
-          text="រៀនគ្រប់ទីកន្លែងបានគ្រប់ពេល"
+          text={currentT.showCase.floatCard.liveCoding}
           className="shadow-[0_4px_6px_rgba(0,0,0,0.25)] dark:shadow-[0_4px_6px_rgba(255,255,255,0.1)]"
         />
       </div>
 
-      <div 
+      <div
         className="absolute z-10 floating-card"
-        style={{ 
-          right: pctX(170), 
-          top: pctY(320), 
+        style={{
+          right: pctX(170),
+          top: pctY(320),
           width: widthClamp(240, 118),
           animationName: 'float8',
           animationDuration: '4.2s',
@@ -299,16 +303,16 @@ export default function Showcase() {
       >
         <AICard
           variant="grid"
-          text="AI ជំនួយការសិក្សា ជួយអ្នក"
+          text={currentT.showCase.floatCard.aiCard}
           className="flex-col px-4 shadow-[0_4px_6px_rgba(0,0,0,0.25)] dark:shadow-[0_4px_6px_rgba(255,255,255,0.1)]"
         />
       </div>
 
-      <div 
+      <div
         className="absolute z-10 floating-card"
-        style={{ 
-          right: pctX(0), 
-          top: pctY(90), 
+        style={{
+          right: pctX(0),
+          top: pctY(90),
           width: widthClamp(200, 100),
           animationName: 'float9',
           animationDuration: '3.6s',
@@ -347,7 +351,7 @@ export default function Showcase() {
 
     return (
       <div className="mx-auto max-w-4xl px-2">
-        <div 
+        <div
           className="relative mx-auto"
           style={{
             display: 'grid',
@@ -364,7 +368,7 @@ export default function Showcase() {
             <div className="w-3/4 h-px bg-gradient-to-r from-transparent via-purple-300 dark:via-purple-500 to-transparent"></div>
           </div>
 
-          <div 
+          <div
             className="z-10 transition-all duration-500 hover:scale-105 hover:z-20"
             style={{
               ...getCardStyle(gridConfig.cards.business),
@@ -376,7 +380,7 @@ export default function Showcase() {
             </div>
           </div>
 
-          <div 
+          <div
             className="z-10 transition-all duration-500 hover:scale-105 hover:z-20"
             style={{
               ...getCardStyle(gridConfig.cards.start),
@@ -384,11 +388,11 @@ export default function Showcase() {
             }}
           >
             <div className="w-full h-full flex items-center justify-center">
-              <NormalCard variant="grid" text="ចាប់ផ្ដើម" imagePath="/assets/image/play.png" />
+              <NormalCard variant="grid" text={currentT.showCase.floatCard.text1} imagePath="/home/float-card/play.svg" />
             </div>
           </div>
 
-          <div 
+          <div
             className="z-10 transition-all duration-500 hover:scale-105 hover:z-20"
             style={{
               ...getCardStyle(gridConfig.cards.explore),
@@ -396,11 +400,11 @@ export default function Showcase() {
             }}
           >
             <div className="w-full h-full flex items-center justify-center">
-              <NormalCard variant="grid" text="ស្វែងយល់" imagePath="/assets/image/play.png" />
+              <NormalCard variant="grid" text={currentT.showCase.floatCard.text3} imagePath="/home/float-card/stars.svg" />
             </div>
           </div>
 
-          <div 
+          <div
             className="z-10 transition-all duration-500 hover:scale-105 hover:z-20"
             style={{
               ...getCardStyle(gridConfig.cards.online),
@@ -408,11 +412,11 @@ export default function Showcase() {
             }}
           >
             <div className="w-full h-full flex items-center justify-center">
-              <NormalCard variant="grid" text="online" imagePath="/assets/image/play.png" />
+              <NormalCard variant="grid" text={currentT.showCase.floatCard.text4} imagePath="/home/float-card/networkData.svg" />
             </div>
           </div>
 
-          <div 
+          <div
             className="z-10 transition-all duration-500 hover:scale-105 hover:z-20"
             style={{
               ...getCardStyle(gridConfig.cards.learn),
@@ -420,11 +424,11 @@ export default function Showcase() {
             }}
           >
             <div className="w-full h-full flex items-center justify-center">
-              <NormalCard variant="grid" text="រៀនគ្មានដែនកំណត់" imagePath="/assets/image/play.png" />
+              <NormalCard variant="grid" text={currentT.showCase.floatCard.text5} imagePath="/home/float-card/time.svg" />
             </div>
           </div>
 
-          <div 
+          <div
             className="z-10 transition-all duration-500 hover:scale-105 hover:z-20"
             style={{
               ...getCardStyle(gridConfig.cards.practice),
@@ -432,11 +436,11 @@ export default function Showcase() {
             }}
           >
             <div className="w-full h-full flex items-center justify-center">
-              <NormalCard variant="grid" text="អនុវត្តកូដដោយផ្ទាល់" />
+              <NormalCard variant="grid" text={currentT.showCase.floatCard.text2} />
             </div>
           </div>
 
-          <div 
+          <div
             className="z-10 transition-all duration-500 hover:scale-105 hover:z-20"
             style={{
               ...getCardStyle(gridConfig.cards.liveCoding),
@@ -452,7 +456,7 @@ export default function Showcase() {
             </div>
           </div>
 
-          <div 
+          <div
             className="z-10 transition-all duration-500 hover:scale-105 hover:z-20"
             style={{
               ...getCardStyle(gridConfig.cards.ai),
@@ -468,7 +472,7 @@ export default function Showcase() {
             </div>
           </div>
 
-          <div 
+          <div
             className="z-10 transition-all duration-500 hover:scale-105 hover:z-20"
             style={{
               ...getCardStyle(gridConfig.cards.analytics),
@@ -487,8 +491,8 @@ export default function Showcase() {
   return (
     <section className="relative overflow-hidden pb-40 bg-white dark:bg-gray-900 py-6 lg:pt-20 pb-3.5 transition-colors duration-300">
       {/* Background Blur - updated for dark mode */}
-      <div className="absolute left-0 top-0 h-96 w-96 rounded-full blur-[140px] bg-purple-100/30 dark:bg-purple-900/20" />
-      <div className="absolute right-[-80px] top-32 h-56 w-56 sm:h-72 sm:w-72 lg:h-96 lg:w-96 rounded-full blur-[140px] bg-blue-100/30 dark:bg-blue-900/20" />
+      {/* <div className="absolute left-0 top-0 h-96 w-96 rounded-full blur-[140px] bg-purple-100/30 dark:bg-purple-900/20" />
+      <div className="absolute right-[-80px] top-32 h-56 w-56 sm:h-72 sm:w-72 lg:h-96 lg:w-96 rounded-full blur-[140px] bg-blue-100/30 dark:bg-blue-900/20" /> */}
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         {/* Mobile: Simple grid */}

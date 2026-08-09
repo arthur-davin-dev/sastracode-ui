@@ -36,6 +36,7 @@ export interface Course {
   image: string;
   href?: string;
   price?: number;
+  accessType?: "FREE" | "PREMIUM" | "PRIVATE";
   locked?: boolean;
   learningPoints?: string[];
   instructor?: Instructor;

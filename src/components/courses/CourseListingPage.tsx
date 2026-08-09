@@ -5,6 +5,8 @@ import { SearchBar } from "./SearchBar";
 import { CategoryFilter } from "./CategoryFilter";
 import { CourseGrid } from "./CourseGrid";
 import { Course } from "@/lib/course/courses";
+import { useGetCoursesQuery } from "@/redux/api";
+import type { CourseResponse } from "@/types/course";
 import CourseBanner from "./course-banner";
 
 const categories = [
@@ -18,124 +20,83 @@ const categories = [
   "UI/UX",
 ];
 
-const courses: Course[] = [
-  {
-    id: "1",
-    category: "FRONTEND",
-    title: "HTML & CSS Fundamentals",
-    description:
-      "រៀនបង្កើត Responsive Website ជាមួយ HTML និង CSS ចាប់ពីមូលដ្ឋានដល់កម្រិតខ្ពស់",
-    lessons: 28,
-    duration: "៦ម៉ោង ៤២នាទី",
-    image: "/assets/images/HTML & CSS.jpg",
-  },
-  {
-    id: "2",
-    category: "CSS",
-    title: "Advanced CSS Layouts",
-    description:
-      "ស្វែងយល់ពី Grid, Flexbox និង Responsive Patterns ដើម្បីបង្កើត UI រាបស្មើ",
-    lessons: 24,
-    duration: "៥ម៉ោង ១០នាទី",
-    image: "/assets/images/CSS.jpg",
-  },
-  {
-    id: "3",
-    category: "HTML",
-    title: "HTML Structure & Semantics",
-    description:
-      "រៀនរចនាផ្ទៃក្នុង HTML ជាមួយ Semantic Elements និង Accessibility",
-    lessons: 18,
-    duration: "៤ម៉ោង ២០នាទី",
-    image: "/assets/images/HTML-course.jpg",
-  },
-  {
-    id: "4",
-    category: "Backend",
-    title: "Node.js Basics",
-    description:
-      "ទទួលបានប្រាក់ចំណូលសម្រាប់ Server-side development ជាមួយ Node.js និង Express",
-    lessons: 32,
-    duration: "៧ម៉ោង ૧૦នាទី",
-    image: "/assets/images/Nodejs.jpg",
-    locked: true,
-  },
-  {
-    id: "5",
-    category: "Free Course",
-    title: "Intro to JavaScript",
-    description:
-      "ស្នើភាសាស្វ័យប្រវត្តិកម្ម JavaScript ដើម្បីបង្កើតព្រលឹង Web អន្តរកម្ម",
-    lessons: 26,
-    duration: "៦ម៉ោង ៣០នាទី",
-    image: "/assets/images/javascript-course.png",
-  },
-  {
-    id: "6",
-    category: "Frontend",
-    title: "React Basics",
-    description: "ចាប់ផ្តើម React និង Components រួមទាំង Hooks និង Routing",
-    lessons: 30,
-    duration: "៨ម៉ោង ១៥នាទី",
-    image: "/assets/images/react-card.jpg",
-  },
-  {
-    id: "7",
-    category: "JavaScript",
-    title: "Modern JavaScript",
-    description:
-      "ស្វែងយល់ពី ES6+, Async/Await និង Patterns សម័យថ្មីសម្រាប់ Web Development",
-    lessons: 22,
-    duration: "៦ម៉ោង ៤០នាទី",
-    image: "/assets/images/javascript-course.png",
-  },
-  {
-    id: "8",
-    category: "UI/UX",
-    title: "Design Systems",
-    description:
-      "រៀនរចនាប្រព័ន្ធ UI ដោយប្រើ Principles និង Patterns ដូចជា Atomic Design",
-    lessons: 18,
-    duration: "៥ម៉ោង ២០នាទី",
-    image: "/assets/images/design-systems-course.png",
-  },
-  {
-    id: "9",
-    category: "Backend",
-    title: "API Development",
-    description:
-      "បង្កើត RESTful និង GraphQL API ដែលអាចប្រើបានឆាប់ រហ័ស និងសុវត្ថិភាព",
-    lessons: 26,
-    duration: "៧ម៉ោង ៣០នាទី",
-    image: "/assets/images/api-development-course.png",
-  },
-];
+function mapApiCourseToCourse(course: CourseResponse): Course {
+  const lessons =
+    course.sections?.reduce(
+      (sum, section) => sum + (section.videos?.length ?? 0),
+      0,
+    ) || 0;
 
-// Static homepage sections. Change the titles, links, or course IDs here.
-const courseSections = [
+  const isFree = course.accessType === "FREE" || course.price === 0;
+
+  return {
+    id: course.id,
+    category:
+      course.categories?.[0]?.name || (isFree ? "ឥតគិតថ្លៃ" : "ថ្នាក់គិតថ្លៃ"),
+    title: course.title,
+    description: course.summary ?? course.description ?? "",
+    lessons,
+    duration:
+      course.level === "BEGINNER"
+        ? "Beginner"
+        : course.level === "INTERMEDIATE"
+        ? "Intermediate"
+        : course.level === "ADVANCED"
+        ? "Advanced"
+        : "មិនមាន",
+    image:
+      course.thumbnailFileId?.url || "/assets/images/javascript-course.png",
+    href: `/courses/${course.id}`,
+    price: course.price,
+    accessType: course.accessType,
+    locked: course.accessType === "PRIVATE" || course.hasFullAccess === false,
+  };
+}
+
+interface CourseSectionDefinition {
+  title: string;
+  seeAllHref: string;
+  getCourses: (courses: Course[]) => Course[];
+}
+
+const courseSections: CourseSectionDefinition[] = [
   {
     title: "ចុងក្រោយបំផុត",
     seeAllHref: "/documentation/lessons?category=latest",
-    courseIds: ["1", "2", "3", "4", "5", "6"],
+    getCourses: (courses) => courses.slice(0, 6),
   },
   {
     title: "ណែនាំសម្រាប់អ្នក",
     seeAllHref: "/documentation/lessons?category=recommended",
-    courseIds: ["4", "5", "6"],
+    getCourses: (courses) =>
+      courses
+        .filter(
+          (course) =>
+            course.accessType === "FREE" ||
+            course.category.toLowerCase().includes("frontend"),
+        )
+        .slice(0, 6),
   },
   {
     title: "មេរៀនពេញនិយម",
     seeAllHref: "/documentation/lessons?category=popular",
-    courseIds: ["7", "8", "9"],
+    getCourses: (courses) => courses.slice(6, 12),
   },
-] as const;
+];
 
 export default function CourseListingPage() {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState(categories[0]);
 
+  const { data, isLoading, isError } = useGetCoursesQuery();
+
+  const apiCourses = useMemo(
+    () => (data?.content ?? []).map(mapApiCourseToCourse),
+    [data],
+  );
+
   const filteredCourses = useMemo(() => {
-    return courses.filter((course) => {
+    return apiCourses.filter((course) => {
       const matchesCategory =
         activeCategory === categories[0] ||
         course.category.toLowerCase() === activeCategory.toLowerCase();
@@ -148,7 +109,41 @@ export default function CourseListingPage() {
 
       return matchesCategory && matchesSearch;
     });
-  }, [search, activeCategory]);
+  }, [search, activeCategory, apiCourses]);
+
+  const sectionCourses = courseSections.map((section) => ({
+    ...section,
+    courses: section.getCourses(apiCourses),
+  }));
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+        <CourseBanner />
+        <main className="mx-auto max-w-7xl px-6 pb-16 pt-10">
+          <p className="text-lg font-medium text-slate-700 dark:text-slate-300">
+            កំពុងទាញយកវគ្គសិក្សាសូមរង់ចាំ...
+          </p>
+        </main>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+        <CourseBanner />
+        <main className="mx-auto max-w-7xl px-6 pb-16 pt-10">
+          <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200">
+            <p className="font-semibold">មានកំហុសក្នុងការទាញទិន្ន័យវគ្គសិក្សា</p>
+            <p className="mt-2 text-sm">
+              សូមព្យាយាមឡើងវិញ ឬពិនិត្យឲ្យแน่ใจថាប្រូសេស API មានស្រាប់។
+            </p>
+          </div>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
@@ -171,13 +166,11 @@ export default function CourseListingPage() {
           <CourseGrid title="លទ្ធផលស្វែងរក" courses={filteredCourses} />
         ) : (
           <div className="space-y-12">
-            {courseSections.map((section) => (
+            {sectionCourses.map((section) => (
               <CourseGrid
                 key={section.title}
                 title={section.title}
-                courses={section.courseIds
-                  .map((id) => courses.find((course) => course.id === id))
-                  .filter((course): course is Course => Boolean(course))}
+                courses={section.courses}
                 seeAllHref={section.seeAllHref}
               />
             ))}

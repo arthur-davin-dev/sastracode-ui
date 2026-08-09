@@ -1,10 +1,12 @@
 // import type { Metadata } from "next";
 // import localFont from "next/font/local";
 // import { Inter } from "next/font/google";
-
 // import "./globals.css";
-// import Navbar from "@/components/nav-bar";
-// import Footer from "@/components/footer";
+
+// import { LanguageProvider } from "@/lib/language-context";
+// import PrelineScriptWrapper from "./components/PrelineScriptWrapper";
+// import StoreProvider from "./StoreProvider";
+// import AuthProvider from "@/components/AuthProvider";
 
 // const googleSans = localFont({
 //   src: [
@@ -28,43 +30,59 @@
 // });
 
 // export const metadata: Metadata = {
-//   title: "KaveyCode",
+//   title: "SastraCode",
 //   description: "Programming Learning Platform",
 // };
 
 // export default function RootLayout({
 //   children,
-// }: Readonly<{ children: React.ReactNode }>) {
+// }: Readonly<{
+//   children: React.ReactNode;
+// }>) {
 //   return (
 //     <html
 //       lang="km"
 //       suppressHydrationWarning
 //       className={`${googleSans.variable} ${inter.variable}`}
 //     >
-//       <body className="min-h-screen flex flex-col bg-white text-black dark:bg-gray-950 dark:text-white">
-//         <Navbar />
+//       <body>
+//         <AuthProvider>
+//           <StoreProvider>
+//             <LanguageProvider>
+//               {children}
 
-//         <main className="flex-1 pt-16">{children}</main>
-
-//         <Footer />
+//               <PrelineScriptWrapper />
+//             </LanguageProvider>
+//           </StoreProvider>
+//         </AuthProvider>
 //       </body>
 //     </html>
 //   );
 // }
 
-
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
+
 import "./globals.css";
-import Navbar from "@/components/nav-bar";
-import Footer from "@/components/footer";
+
+import { LanguageProvider } from "@/lib/language-context";
+import StoreProvider from "./StoreProvider";
+import AuthProvider from "@/components/AuthProvider";
+import PrelineClient from "./components/PrelineClient";
 
 const googleSans = localFont({
   src: [
-    { path: "../../public/font/GoogleSans-VariableFont_GRAD,opsz,wght.ttf", style: "normal" },
-    { path: "../../public/font/GoogleSans-Italic-VariableFont_GRAD,opsz,wght.ttf", style: "italic" },
+    {
+      path: "../../public/font/GoogleSans-VariableFont_GRAD,opsz,wght.ttf",
+      style: "normal",
+    },
+    {
+      path: "../../public/font/GoogleSans-Italic-VariableFont_GRAD,opsz,wght.ttf",
+      style: "italic",
+    },
   ],
+
   variable: "--font-google-sans",
   display: "swap",
 });
@@ -76,19 +94,31 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Sastra Code",
-  description: "Learn programming with Sastra Code",
+  title: "SastraCode",
+  description: "Programming Learning Platform",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="km" suppressHydrationWarning className={`${googleSans.variable} ${inter.variable}`}>
-      <body className="min-h-screen flex flex-col">
-        <Navbar/>
-        {children} 
-        <Footer/>
+    <html
+      lang="km"
+      suppressHydrationWarning
+      className={`${googleSans.variable} ${inter.variable}`}
+    >
+      <body>
+        <AuthProvider>
+          <StoreProvider>
+            <LanguageProvider>
+              {children}
+
+              <PrelineClient />
+            </LanguageProvider>
+          </StoreProvider>
+        </AuthProvider>
       </body>
     </html>
   );

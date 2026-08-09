@@ -10,7 +10,11 @@ interface VerificationCardProps {
   verificationId: string;
 }
 
-export function VerificationCard({ status, issuedDate, verificationId }: VerificationCardProps) {
+export function VerificationCard({
+  status,
+  issuedDate,
+  verificationId,
+}: VerificationCardProps) {
   return (
     <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-100 dark:border-slate-800 shadow-xl bg-white dark:bg-slate-900 transition-all duration-300">
       

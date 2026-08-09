@@ -1,11 +1,16 @@
 // InteractiveDoc.tsx
+"use client"
+import { useTranslation } from "@/hooks/useTranslations";
 import AIChatCard from "./AIChatCard";
 import PreviewCard from "./PreviewCard";
-import Sidebar from "./Sidebar";
+import Link from "next/link";
+
+
 
 export default function InteractiveDoc() {
+    const currentT = useTranslation();
     return (
-        <section className="py-[10px] sm:py-[20px] lg:py-[30px]  bg-white dark:bg-gray-900 transition-colors duration-300">
+        <section className="py-2.5 sm:py-5 lg:py-7.5  bg-white dark:bg-gray-900 transition-colors duration-300">
             <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 items-center">
                     {/* LEFT */}
@@ -15,21 +20,19 @@ export default function InteractiveDoc() {
                                 lg:mx-0
                                 relative
                                 top-0
-                                lg:-top-[150px]">
+                                lg:-top-[100px]">
                             <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-white mb-4 sm:mb-6 transition-colors duration-300">
-                                ឯកសារ Interactive Documentation
+                               {currentT.interactiveDoc.title}
                             </h1>
 
                             <p className="text-base sm:text-lg text-slate-500 dark:text-gray-400 leading-7 sm:leading-relaxed mb-5 sm:mb-6 transition-colors duration-300">
-                                ស្វែងយល់ពីមេរៀនដែលរៀបចំជាព័ន្ធ ជាមួយ Live Code Examples,
-                                Syntax Highlighting, Embedded Exercises និង Quiz
-                                ដែលជួយប្លែងចំណេះដឹងស្ទឹះទៅជាការអនុវត្តជាក់ស្តែងៗ
+                               {currentT.interactiveDoc.description}
                             </p>
 
-                            <a href="#" className="inline-flex items-center gap-2 text-sm sm:text-base text-slate-800 dark:text-white font-medium hover:text-slate-600 dark:hover:text-gray-300 transition-colors duration-300">
-                                មើល Documentation
+                            <Link href="/documentation" className="inline-flex items-center gap-2 text-sm sm:text-base text-slate-800 dark:text-white font-medium hover:text-slate-600 dark:hover:text-gray-300 transition-colors duration-300">
+                                {currentT.interactiveDoc.link}
                                 <span aria-hidden="true">→</span>
-                            </a>
+                            </Link>
                         </div>
                         <div className="mt-10 lg:mt-0 flex justify-center lg:justify-start">
                             <PreviewCard />

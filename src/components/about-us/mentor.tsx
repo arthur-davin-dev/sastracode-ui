@@ -70,12 +70,12 @@ export default function Mentor() {
               </div>
 
               {/* Mentor Name */}
-              <h3 className="font-bold text-[#002455] dark:text-slate-100 text-2xl tracking-tight mb-1">
+              <h3 className="font-bold text-[#002455] dark:text-slate-100 text-2xl tracking-tight mb-1 font-khmer">
                 {mentor.name}
               </h3>
 
               {/* Role */}
-              <p className="text-[22px] font-semibold text-[#1d3557] dark:text-slate-300 mb-5">
+              <p className="text-[22px] font-khmer font-semibold text-[#1d3557] dark:text-slate-300 mb-5">
                 ({mentor.role})
               </p>
 

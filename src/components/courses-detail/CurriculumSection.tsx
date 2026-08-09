@@ -15,7 +15,7 @@ const defaultChapters: Chapter[] = [
     lessons: [
       {
         id: "l1",
-        title: "មេរៀនទី ០១ — សេចក្ដីណែនាំអំពីគ្រឹះមូលដ្ធាន React",
+        title: "មេរៀនទី ០១ — សេចក្ដីណែនាំអំពីគ្រឹះមូលដ្ឋាន React",
         duration: "10:00",
         locked: false,
       },
@@ -27,7 +27,7 @@ const defaultChapters: Chapter[] = [
       },
       {
         id: "l3",
-        title: "មេរៀនទី ០៣ — សេចក្ដីណែនាំណែនាំអំពី JavaScript",
+        title: "មេរៀនទី ០៣ — សេចក្ដីណែនាំអំពី JavaScript",
         duration: "10:00",
         locked: true,
       },
@@ -36,7 +36,7 @@ const defaultChapters: Chapter[] = [
   {
     id: "ch2",
     number: "02",
-    title: "មូលដ្ធានគ្រឺះ Variable & DataType",
+    title: "មូលដ្ឋានគ្រឹះ Variable & DataType",
     lessonCount: 3,
     totalDuration: "៣ មេរៀន · ៤៥ នាទី",
     lessons: [
@@ -84,7 +84,7 @@ export function CurriculumSection({ course }: CurriculumSectionProps) {
           />
         ))}
       </div>
-      
+
     </div>
   );
 }

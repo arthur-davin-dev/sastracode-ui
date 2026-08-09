@@ -10,7 +10,7 @@ import { BookmarkedCourse } from "@/types/course";
 
 interface BookmarkCourseCardProps {
   course: BookmarkedCourse & {
-    progressPercent?: number; // Made optional so some cards have progress and some don't
+    progressPercent?: number; // Optional progress field
   };
 }
 
@@ -24,11 +24,11 @@ export function BookmarkCourseCard({ course }: BookmarkCourseCardProps) {
 
   return (
     <motion.div
-      whileHover={{ y: -6 }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
       className="h-full"
     >
-      <Card className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-md hover:shadow-xl hover:border-blue-50 transition-all duration-300 h-full p-0">
+      <Card className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-md transition-all duration-300 h-full p-0">
         
         {/* Thumbnail Image Container */}
         <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
@@ -39,29 +39,28 @@ export function BookmarkCourseCard({ course }: BookmarkCourseCardProps) {
           />
 
           {/* Dark Overlay Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent opacity-90" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/20" />
 
-          {/* Top-Left Bookmark Ribbon (Yellow Accent) */}
+          {/* Top-Left Bookmark Ribbon */}
           <button
+            type="button"
             onClick={() => setBookmarked(!bookmarked)}
-            className="absolute top-0 left-4 z-20 transition-transform active:scale-90"
+            className="absolute top-3 left-3 z-20 p-2 rounded-xl bg-black/40 backdrop-blur-md hover:bg-black/60 transition-all active:scale-90"
             title={bookmarked ? "ដកចេញពី bookmark" : "រក្សាទុក"}
           >
-            <div className="relative flex items-center p-3 justify-center">
-              <Bookmark
-                className={`h-7 w-7 drop-shadow-md transition-colors duration-300 ${
-                  bookmarked
-                    ? "text-init-color fill-yellow-400"
-                    : "text-white/80 fill-black/30 hover:text-yellow-400"
-                }`}
-              />
-            </div>
+            <Bookmark
+              className={`h-5 w-5 transition-colors duration-300 ${
+                bookmarked
+                  ? "text-yellow-400 fill-yellow-400"
+                  : "text-white fill-none"
+              }`}
+            />
           </button>
 
-          {/* Top-Right Access Status Badge (Red for ឥតគិតថ្លៃ / Yellow for ថ្នាក់គិតថ្លៃ) */}
+          {/* Top-Right Access Status Badge */}
           <div className="absolute top-3 right-3 z-10">
             <Badge
-              className={`border-none px-8 py-4 text-lg font-bold shadow-md transition-colors duration-300 ${
+              className={`border-none px-3.5 py-1.5 text-sm font-bold shadow-sm rounded-full transition-colors duration-300 ${
                 course.status === "in_progress"
                   ? "bg-red-600 text-white"
                   : "bg-yellow-400 text-slate-950"
@@ -73,54 +72,54 @@ export function BookmarkCourseCard({ course }: BookmarkCourseCardProps) {
 
           {/* Hover Play Button Overlay */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/30 backdrop-blur-[2px]">
-            <div className="p-4 rounded-full bg-primary-color text-white shadow-xl scale-90 group-hover:scale-100 transition-transform duration-300">
-              <Play className="h-7 w-7 fill-current ml-0.5" />
+            <div className="p-3.5 rounded-full bg-primary-color text-white shadow-lg scale-90 group-hover:scale-100 transition-transform duration-300">
+              <Play className="h-6 w-6 fill-current ml-0.5" />
             </div>
           </div>
         </div>
 
         {/* Card Content Section */}
-        <CardContent className="p-6 flex flex-col justify-between flex-1 space-y-4">
+        <CardContent className="p-5 flex flex-col justify-between flex-1 gap-4">
           
           {/* Category Tag & Title Details */}
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-2 rounded-xl bg-init-color/20 text-primary-color dark:text-init-color text-lg font-bold border border-yellow-400/40">
-                <Tag className="h-4 w-4 text-secondary-color" />
+          <div className="space-y-2.5">
+            <div>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-700 dark:text-amber-400 text-xs font-bold border border-amber-500/20">
+                <Tag className="h-3.5 w-3.5 text-amber-600" />
                 {course.category}
               </span>
             </div>
 
             {/* Course Title */}
-            <h3 className="font-bold text-lg text-primary-color dark:text-white line-clamp-2 leading-snug transition-colors duration-300">
+            <h3 className="font-bold text-base text-slate-900 dark:text-white line-clamp-2 leading-snug">
               {course.title}
             </h3>
           </div>
 
           {/* CONDITIONALLY RENDERED: Progress Section */}
           {hasProgress && (
-            <div className="space-y-2 pt-1">
-              <div className="flex items-center justify-between text-lg font-bold">
-                <span className="text-primary-color dark:text-white flex items-center gap-2">
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-sm font-bold">
+                <span className="text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
                   {isCompleted ? (
                     <>
-                      <CheckCircle2 className="h-5 w-5 text-blue-600 fill-blue-100" />
-                      <span>បានបញ្ចប់</span>
+                      <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                      <span className="text-emerald-600">បានបញ្ចប់</span>
                     </>
                   ) : (
                     <span>វឌ្ឍនភាពសិក្សា</span>
                   )}
                 </span>
-                <span className="text-secondary-color dark:text-red-400">{progress}%</span>
+                <span className="text-red-600 dark:text-red-400">{progress}%</span>
               </div>
 
               {/* Progress Bar */}
-              <div className="relative h-3.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-700">
+              <div className="relative h-2.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                 <div
-                  className={`h-full rounded-full transition-all duration-500 shadow-xs ${
+                  className={`h-full rounded-full transition-all duration-500 ${
                     isCompleted 
-                      ? "bg-gradient-to-r from-yellow-400 to-amber-500" 
-                      : "bg-gradient-to-r from-blue-600 to-primary-color"
+                      ? "bg-emerald-500" 
+                      : "bg-blue-600"
                   }`}
                   style={{ width: `${Math.min(progress, 100)}%` }}
                 />
@@ -129,17 +128,17 @@ export function BookmarkCourseCard({ course }: BookmarkCourseCardProps) {
           )}
 
           {/* Footer: Time & Action Button */}
-          <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-4">
+          <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
             
             {/* Duration Display */}
-            <div className="flex items-center gap-2 text-lg font-bold text-slate-700 dark:text-slate-300 shrink-0">
-              <Clock className="h-6 w-6 text-red-600" />
+            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-600 dark:text-slate-400 shrink-0">
+              <Clock className="h-4 w-4 text-red-500" />
               <span>{course.duration || "២០ ម៉ោង"}</span>
             </div>
 
             {/* Dynamic Action Button text based on progress state */}
             <Button
-              className="h-12 px-5 rounded-lg bg-primary-color hover:bg-blue-800 text-white font-bold text-lg shadow-md transition-all duration-300 group/btn shrink-0 flex items-center gap-2"
+              className="h-10 px-3.5 rounded-xl bg-primary-color hover:bg-blue-900 text-white font-bold text-xs shadow-sm transition-all duration-200 shrink-0 flex items-center gap-1.5"
             >
               <span>
                 {hasProgress 
@@ -148,7 +147,7 @@ export function BookmarkCourseCard({ course }: BookmarkCourseCardProps) {
                     : "បន្តវគ្គសិក្សា" 
                   : "ចាប់ផ្តើមសិក្សា"}
               </span>
-              <ArrowRight className="h-5 w-5 transition-transform group-hover/btn:translate-x-1" />
+              <ArrowRight className="h-3.5 w-3.5" />
             </Button>
 
           </div>

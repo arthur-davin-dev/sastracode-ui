@@ -1,15 +1,14 @@
 // lib/store.ts
-import { ecommerceApi } from "@/redux/api";
 import { configureStore } from "@reduxjs/toolkit";
-
+import { sastraApi } from "@/redux/api/sastra-code";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      [ecommerceApi.reducerPath]: ecommerceApi.reducer,
+      [sastraApi.reducerPath]: sastraApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(ecommerceApi.middleware),
+      getDefaultMiddleware().concat(sastraApi.middleware),
   });
 };
 

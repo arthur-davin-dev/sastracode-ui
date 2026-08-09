@@ -29,7 +29,7 @@ export function UpNextCard({
     <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm transition-colors duration-300">
       {/* Header & Autoplay Toggle */}
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-base font-semibold text-gray-900 font-(family-name:--font-sans)">
+        <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 font-(family-name:--font-sans)">
           បន្ទាប់
         </h2>
         <div className="flex items-center gap-2">
@@ -39,14 +39,14 @@ export function UpNextCard({
             role="switch"
             aria-checked={autoplay}
             onClick={() => onAutoplayChange(!autoplay)}
-            className={`relative h-5 w-9 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/40 ${
+            className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/40 ${
               autoplay ? "bg-indigo-600 dark:bg-indigo-500" : "bg-slate-200 dark:bg-slate-700"
             }`}
           >
             <span className="sr-only">Toggle autoplay</span>
             <span
-              className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-transform ${
-                autoplay ? "translate-x-4" : "translate-x-0.5"
+              className={`pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow-lg ring-0 transition-transform duration-200 ease-in-out ${
+                autoplay ? "translate-x-4.5" : "translate-x-0.5"
               }`}
             />
           </button>

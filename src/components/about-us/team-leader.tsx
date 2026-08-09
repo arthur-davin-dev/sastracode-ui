@@ -49,7 +49,7 @@ export default function TeamLeader() {
           សមាជិក<span className="text-red-600 dark:text-red-500">ក្រុម</span>របស់យើង
         </h2>
         <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-khmer text-[22px]">
-          ក្រុមការងារប្រកបដោយការប្ដេជ្ញាចិត្តខ្ពស់ ក្នុងការជំរុញសាស្ត្រCODE ឱ្យដើរទៅមុខ។
+          ក្រុមការងារប្រកបដោយការប្ដេជ្ញាចិត្តខ្ពស់ ក្នុងការជំរុញសាស្ត្រាកូដ ឱ្យដើរទៅមុខ។
         </p>
       </div>
 
@@ -114,7 +114,7 @@ export default function TeamLeader() {
                 </span>
 
                 {/* Description / Bio */}
-                <p className="text-[18px] text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                <p className="text-[16px] text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
                   {leader.bio}
                 </p>
 

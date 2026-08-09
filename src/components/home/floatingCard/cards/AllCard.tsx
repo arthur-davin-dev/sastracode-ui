@@ -1,6 +1,7 @@
 // AllCard.tsx
 import Image from "next/image";
 import { Props } from "./ClassNameProps";
+import { useTranslation } from "@/hooks/useTranslations";
 
 type Variant = "floating" | "grid";
 type VariantProps = { variant?: Variant };
@@ -10,6 +11,8 @@ export function BusinessCard({ className, variant = "floating" }: Props & Varian
     variant === "grid"
       ? "relative w-full"
       : "absolute w-40 sm:w-48 md:w-52 lg:w-60";
+
+  const currentT = useTranslation();
 
   return (
     <div
@@ -30,7 +33,7 @@ export function BusinessCard({ className, variant = "floating" }: Props & Varian
           lg:h-8 lg:w-8 shrink-0 overflow-hidden rounded-full border-2 border-white/20"
         >
           <Image
-            src="/profile.jpg"
+            src="/home/support-team/vuthvatana.jpg"
             alt="Profile"
             fill
             className="object-cover"
@@ -38,10 +41,10 @@ export function BusinessCard({ className, variant = "floating" }: Props & Varian
         </div>
         <div className="min-w-0">
           <p className="truncate text-[9px] sm:text-[11px] lg:text-xs text-gray-400 dark:text-gray-500">
-            M.Hossein Moradi
+            Mr. Vuth Vatana
           </p>
           <h2 className="break-words text-[9px] sm:text-[11px] lg:text-xs font-bold leading-tight text-white dark:text-gray-100">
-            Start Online Business
+            {currentT.showCase.floatCard.businessCard}
           </h2>
         </div>
       </div>
@@ -63,6 +66,7 @@ export function LiveCoding({ className, text, variant = "floating" }: Props & Va
     variant === "grid"
       ? "relative w-full"
       : "absolute w-[170px] sm:w-[210px] lg:w-auto";
+  const currentT = useTranslation();
 
   return (
     <div
@@ -120,7 +124,7 @@ export function LiveCoding({ className, text, variant = "floating" }: Props & Va
       {/* Content */}
       <div className="flex min-w-0 flex-1 flex-col items-center">
         <h2 className="break-words text-center text-[9px] sm:text-[11px] lg:text-xs leading-tight text-gray-500 dark:text-gray-300 transition-colors duration-300">
-          រៀនទីកន្លែងបានគ្រប់ពេល
+          {currentT.showCase.floatCard.liveCoding}
         </h2>
 
         <button className="mt-2 rounded-full bg-[#0E2D66] dark:bg-blue-600 px-2 sm:px-4 py-1 text-[9px] sm:text-xs font-medium text-white transition-all duration-300 hover:bg-[#163a82] dark:hover:bg-blue-700">
@@ -136,7 +140,7 @@ export function AICard({ text, className, variant = "floating" }: Props & Varian
     variant === "grid"
       ? "relative w-full"
       : "absolute w-[180px] sm:w-[220px] lg:w-auto";
-
+  const currentT = useTranslation();
   return (
     <div className={`${base} 
       p-2 sm:p-3 
@@ -169,6 +173,7 @@ export function NormalCard({
   const base = variant === "grid" ? "relative w-full justify-center" : "absolute";
   const wrap = variant === "grid" ? "whitespace-normal text-center" : "whitespace-nowrap";
 
+  const currentT = useTranslation();
   return (
     <div
       className={`
@@ -217,6 +222,7 @@ export default function AnalyticsCard({
       ? "relative w-full"
       : "absolute right-0 top-0 w-[170px] sm:w-[200px] lg:w-auto";
 
+  const currentT = useTranslation();
   return (
     <div
       className={`${base} 
@@ -249,7 +255,7 @@ export default function AnalyticsCard({
 
       <div className="mt-2 sm:mt-3 lg:mt-4 flex items-center justify-between gap-1">
         <span className="min-w-0 break-words text-[9px] sm:text-xs lg:text-sm text-gray-400 dark:text-gray-500 transition-colors duration-300">
-          មេរៀនបានបញ្ចប់
+          {currentT.showCase.floatCard.analyticCard}
         </span>
 
         <span className="shrink-0 text-xs sm:text-base font-bold text-gray-800 dark:text-gray-200 transition-colors duration-300">
@@ -259,7 +265,7 @@ export default function AnalyticsCard({
 
       {/* Progress bar for better analytics */}
       <div className="mt-2 w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden transition-colors duration-300">
-        <div 
+        <div
           className="h-full bg-blue-500 dark:bg-blue-400 rounded-full transition-all duration-500"
           style={{ width: '80%' }}
         />

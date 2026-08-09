@@ -1,10 +1,11 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ChevronLeft, Download, Share2 } from "lucide-react";
+import { ChevronLeft, Download, Share2, Check, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { CertificateImageView } from "@/components/certificate/CertificateImageView";
 import { VerificationCard } from "@/components/certificate/VerificationCard";
 import { SkillsCard } from "@/components/certificate/SkillsCard";
@@ -84,9 +85,34 @@ export default function CertificateViewPage({
 }) {
   const { certificateId } = use(params);
   const certificate = certificateData[certificateId];
+  const [copied, setCopied] = useState(false);
+
+  const handleShare = () => {
+    if (typeof window !== "undefined") {
+      navigator.clipboard.writeText(window.location.href);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   if (!certificate) {
-    return <div className="p-6">រកមិនឃើញព័ត៌មានវិញ្ញាបនបត្រនេះទេ</div>;
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6 flex items-center justify-center transition-colors">
+        <Card className="max-w-md w-full bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-sm p-6 text-center space-y-4">
+          <div className="h-12 w-12 rounded-full bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 text-rose-600 dark:text-rose-400 flex items-center justify-center mx-auto">
+            <AlertCircle size={24} />
+          </div>
+          <h2 className="text-[18px] font-semibold text-slate-900 dark:text-slate-100">
+            រកមិនឃើញព័ត៌មានវិញ្ញាបនបត្រនេះទេ
+          </h2>
+          <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-[18px]">
+            <Link href="/certificate">
+              <ChevronLeft className="mr-1 h-4 w-4" /> ត្រឡប់ទៅទំព័រដើម
+            </Link>
+          </Button>
+        </Card>
+      </div>
+    );
   }
 
   return (
@@ -117,9 +143,10 @@ export default function CertificateViewPage({
 
       {/* Main Grid: Certificate Image Preview & Verification Side-by-Side */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Certificate Preview Image Panel */}
         <motion.div
           className="lg:col-span-2"
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >

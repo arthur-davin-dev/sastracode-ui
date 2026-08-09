@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { TechOption } from "@/types/course";
 
@@ -12,23 +11,11 @@ export default function TechStackChips({ options }: TechStackChipsProps) {
   // Helper function to match technology labels to their official Devicon CDN paths
   const getIconUrl = (label: string) => {
     const cleanLabel = label.toLowerCase().trim();
-    
-    if (cleanLabel === "java") {
-      return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg";
-    }
-    if (cleanLabel === "javascript" || cleanLabel === "js") {
-      return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg";
-    }
-    if (cleanLabel === "python") {
-      return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg";
-    }
-    if (cleanLabel === "html") {
-      return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg";
-    }
-    if (cleanLabel === "css") {
-      return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg";
-    }
-    // Fallback if a tag doesn't match the standard options
+    if (cleanLabel.includes("html")) return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg";
+    if (cleanLabel.includes("css")) return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg";
+    if (cleanLabel === "java") return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg";
+    if (cleanLabel === "javascript" || cleanLabel === "js") return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg";
+    if (cleanLabel === "python") return "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg";
     return `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${cleanLabel}/${cleanLabel}-original.svg`;
   };
 
@@ -39,23 +26,22 @@ export default function TechStackChips({ options }: TechStackChipsProps) {
 
         return (
           <li key={option.id}>
-            <Link
-              href={`/documentation?tag=${option.label.toLowerCase()}`}
-              className="group flex items-center gap-2 rounded-full border border-slate-100 bg-white px-4 py-2 text-sm font-medium font-khmer text-slate-700 transition-all duration-200 hover:border-blue-300 hover:text-blue-700 hover:bg-slate-50/50"
+            <div
+              className="group flex cursor-default items-center gap-2.5 rounded-full border border-slate-200/80 bg-white px-5 py-2.5 text-base font-medium text-slate-700 font-khmer shadow-sm transition-all duration-300 ease-out hover:-translate-y-0.5 hover:border-blue-400 hover:text-blue-600 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:border-blue-500 dark:hover:text-blue-400 dark:shadow-slate-950/50"
             >
-              {/* Dynamic Logo Replacement */}
-              <div className="relative h-5 w-5 shrink-0 transition-transform duration-200 group-hover:scale-110">
+              {/* Logo Icon Container */}
+              <div className="relative h-6 w-6 shrink-0 transition-transform duration-300 ease-out group-hover:scale-110">
                 <Image
                   src={iconUrl}
                   alt={`${option.label} logo`}
                   fill
                   className="object-contain"
-                  unoptimized // Keeps vectors completely sharp without Next.js resizing them
+                  unoptimized 
                 />
               </div>
               
               <span>{option.label}</span>
-            </Link>
+            </div>
           </li>
         );
       })}
