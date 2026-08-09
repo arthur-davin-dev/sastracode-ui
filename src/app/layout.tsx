@@ -70,6 +70,7 @@ import { LanguageProvider } from "@/lib/language-context";
 import StoreProvider from "./StoreProvider";
 import AuthProvider from "@/components/AuthProvider";
 import PrelineClient from "./components/PrelineClient";
+import { Toaster } from "@/components/ui/sonner";
 
 const googleSans = localFont({
   src: [
@@ -116,6 +117,7 @@ export default function RootLayout({
               {children}
 
               <PrelineClient />
+              <Toaster position="top-right" richColors />
             </LanguageProvider>
           </StoreProvider>
         </AuthProvider>

@@ -4,11 +4,10 @@ import Link from "next/link";
 
 // 1. Update this interface to match your real data properties
 interface SearchResultItem {
-  id: string | number;
+  id: string;
   title: string;
   description?: string;
-  // If your actual items don't have a slug, remove it from here or make it optional:
-  slug?: string; 
+  type?: string;
 }
 
 interface SearchResultCardProps {
@@ -16,8 +15,7 @@ interface SearchResultCardProps {
 }
 
 export default function SearchResultCard({ result }: SearchResultCardProps) {
-  // If your routing uses 'id' instead of 'slug', change this href to `/documentation/lessons/${result.id}`
-  const targetHref = `/documentation/lessons/${result.slug || result.id}`;
+  const targetHref = `/documentation/lessons/${result.id}`;
 
   return (
     <Link 

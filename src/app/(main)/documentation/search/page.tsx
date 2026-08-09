@@ -1,45 +1,25 @@
+"use client";
+
+import { Suspense } from "react";
 import { Search } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 import DocsShell from "@/components/documentation/DocsShell";
 import FilterTabs from "@/components/documentation/FilterTabs";
 import SearchResultCard from "@/components/documentation/SearchResultCard";
 import SortDropdown from "@/components/documentation/SortDropdown";
-import { searchResults } from "@/lib/data/documentation";
+import { useGlobalSearchQuery } from "@/redux/service/searchApi";
 
-type SearchPageProps = {
-  searchParams: Promise<{
-    q?: string | string[];
-  }>;
-};
-
-export default async function SearchDocsPage({
-  searchParams,
-}: SearchPageProps) {
-  const params = await searchParams;
-
-  const query = Array.isArray(params.q)
-    ? params.q[0] ?? ""
-    : params.q ?? "";
+function SearchDocsPageContent() {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("q") ?? "";
 
   const normalizedQuery = query.toLowerCase().trim();
-
-  const filteredResults = normalizedQuery
-    ? searchResults.filter((result) => {
-        const title = result.title?.toLowerCase() ?? "";
-        const description = result.description?.toLowerCase() ?? "";
-
-        const content =
-          "content" in result && typeof result.content === "string"
-            ? result.content.toLowerCase()
-            : "";
-
-        return (
-          title.includes(normalizedQuery) ||
-          description.includes(normalizedQuery) ||
-          content.includes(normalizedQuery)
-        );
-      })
-    : [];
+  const { data, isFetching, error } = useGlobalSearchQuery(
+    { q: normalizedQuery, type: "TUTORIAL", size: 20, sort: "popular" },
+    { skip: normalizedQuery.length < 2 },
+  );
+  const filteredResults = data?.data?.items ?? [];
 
   return (
     <DocsShell>
@@ -85,7 +65,15 @@ export default async function SearchDocsPage({
               <SortDropdown />
             </div>
 
-            {filteredResults.length > 0 ? (
+            {isFetching ? (
+              <div className="py-12 text-center text-sm text-muted-foreground">
+                Searching tutorials...
+              </div>
+            ) : error ? (
+              <div className="py-12 text-center text-sm text-destructive">
+                Search could not be loaded. Please try again.
+              </div>
+            ) : filteredResults.length > 0 ? (
               <div className="flex flex-col gap-4">
                 {filteredResults.map((result) => (
                   <SearchResultCard
@@ -111,5 +99,13 @@ export default async function SearchDocsPage({
         )}
       </div>
     </DocsShell>
+  );
+}
+
+export default function SearchDocsPage() {
+  return (
+    <Suspense fallback={null}>
+      <SearchDocsPageContent />
+    </Suspense>
   );
 }
