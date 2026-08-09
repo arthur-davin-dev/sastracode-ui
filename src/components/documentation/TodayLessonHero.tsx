@@ -19,8 +19,8 @@ export default function TodayLessonHero({
         <span className="w-fit rounded-2xl bg-accent px-3 py-1 text-[11px] font-bold text-accent-foreground">
           ថ្ងៃនេះ
         </span>
-        <h2 className="text-xl font-extrabold text-foreground">{title}</h2>
-        <p className="max-w-lg text-sm leading-relaxed text-muted-foreground">{description}</p>
+        <h2 className="text-xl font-extrabold text-primary-color dark:text-white">{title}</h2>
+        <p className="max-w-lg text-[18px] leading-8 text-slate-700 dark:text-slate-200">{description}</p>
 
         <div className="mt-1 flex flex-wrap items-center gap-3">
           <Link

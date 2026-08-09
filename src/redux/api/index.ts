@@ -1,2 +1,2 @@
-export { sastraApi, useInitiateKeycloakLoginMutation } from "./sastra-code";
+export { sastraApi } from "./sastra-code";
 export * from "./tutorial-api";

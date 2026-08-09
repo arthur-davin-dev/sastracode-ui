@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 
 import { pageConfig } from "@/components/layout/navbar-config";
+import SearchModal from "@/components/search/SearchModal";
 
 interface NavbarProps {
   hasUnreadNotifications?: boolean;
@@ -40,6 +41,8 @@ export default function SubNavbar({
   const [darkMode, setDarkMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // ========================================
   // Safe session user values
@@ -76,6 +79,17 @@ export default function SubNavbar({
     const savedTheme = localStorage.getItem("theme");
 
     setDarkMode(savedTheme === "dark");
+  }, []);
+
+  useEffect(() => {
+    const openSearch = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener("keydown", openSearch);
+    return () => window.removeEventListener("keydown", openSearch);
   }, []);
 
   const toggleTheme = (event: React.MouseEvent) => {
@@ -140,6 +154,7 @@ export default function SubNavbar({
   };
 
   return (
+    <>
     <header className="w-full bg-white dark:bg-slate-900">
       <div className="flex w-full items-center justify-between gap-4 px-4 py-3 md:px-6">
         {/* ===================================== */}
@@ -178,6 +193,9 @@ export default function SubNavbar({
 
           <Input
             placeholder="ស្វែងរកអ្វីមួយ..."
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            onFocus={() => setSearchOpen(true)}
             className="rounded-2xl border-2 border-slate-200/60 bg-slate-100 py-6 pl-12 pr-4 text-lg font-bold text-primary-color placeholder:text-primary-color/50 transition-all focus-visible:ring-yellow-400 dark:border-slate-700/60 dark:bg-slate-800"
           />
         </div>
@@ -371,6 +389,9 @@ export default function SubNavbar({
 
             <Input
               placeholder="ស្វែងរកអ្វីមួយ..."
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              onFocus={() => setSearchOpen(true)}
               className="rounded-2xl border-2 border-slate-200 bg-slate-100 py-5 pl-12 pr-4 text-lg font-bold text-primary-color placeholder:text-primary-color/50 dark:border-slate-700 dark:bg-slate-800"
             />
           </div>
@@ -445,5 +466,7 @@ export default function SubNavbar({
         </div>
       )}
     </header>
+    {searchOpen && <SearchModal open initialQuery={searchQuery} onClose={() => setSearchOpen(false)} />}
+    </>
   );
 }
