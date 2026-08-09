@@ -9,6 +9,7 @@ import FilterTabs from "@/components/documentation/FilterTabs";
 import SearchResultCard from "@/components/documentation/SearchResultCard";
 import SortDropdown from "@/components/documentation/SortDropdown";
 import { useGlobalSearchQuery } from "@/redux/service/searchApi";
+import { useListTutorialsQuery } from "@/redux/api/tutorial-api";
 
 function SearchDocsPageContent() {
   const searchParams = useSearchParams();
@@ -19,7 +20,29 @@ function SearchDocsPageContent() {
     { q: normalizedQuery, type: "TUTORIAL", size: 20, sort: "popular" },
     { skip: normalizedQuery.length < 2 },
   );
-  const filteredResults = data?.data?.items ?? [];
+  const {
+    data: tutorialsData,
+    isFetching: isFetchingTutorials,
+    error: tutorialsError,
+  } = useListTutorialsQuery(
+    { status: "PUBLISHED", page: 0, size: 100, sort: "publishedAt,desc" },
+    { skip: normalizedQuery.length < 2 },
+  );
+  const apiResults = data?.data?.items ?? [];
+  const fallbackResults = (tutorialsData?.data?.content ?? [])
+    .filter(
+      (tutorial) =>
+        tutorial.title.toLowerCase().includes(normalizedQuery) ||
+        tutorial.summary?.toLowerCase().includes(normalizedQuery),
+    )
+    .map((tutorial) => ({
+      ...tutorial,
+      type: "TUTORIAL" as const,
+      description: tutorial.summary,
+    }));
+  const filteredResults = apiResults.length > 0 ? apiResults : fallbackResults;
+  const searching = isFetching || isFetchingTutorials;
+  const searchFailed = Boolean(error && tutorialsError);
 
   return (
     <DocsShell>
@@ -65,11 +88,11 @@ function SearchDocsPageContent() {
               <SortDropdown />
             </div>
 
-            {isFetching ? (
+            {searching ? (
               <div className="py-12 text-center text-sm text-muted-foreground">
                 Searching tutorials...
               </div>
-            ) : error ? (
+            ) : searchFailed ? (
               <div className="py-12 text-center text-sm text-destructive">
                 Search could not be loaded. Please try again.
               </div>

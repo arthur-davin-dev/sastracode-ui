@@ -14,6 +14,7 @@ import FilterTabs from "@/components/documentation/FilterTabs";
 import SearchResultCard from "@/components/documentation/SearchResultCard";
 import SortDropdown from "@/components/documentation/SortDropdown";
 import { useGlobalSearchQuery } from "@/redux/service/searchApi";
+import { useListTutorialsQuery } from "@/redux/api/tutorial-api";
 
 function SearchDocsModalContent() {
   const router = useRouter();
@@ -70,7 +71,33 @@ function SearchDocsModalContent() {
     { q: query, type: "TUTORIAL", size: 20, sort: "popular" },
     { skip: query.length < 2 },
   );
-  const filteredResults = useMemo(() => data?.data?.items ?? [], [data]);
+  const {
+    data: tutorialsData,
+    isFetching: isFetchingTutorials,
+    error: tutorialsError,
+  } = useListTutorialsQuery(
+    { status: "PUBLISHED", page: 0, size: 100, sort: "publishedAt,desc" },
+    { skip: query.length < 2 },
+  );
+  const filteredResults = useMemo(() => {
+    const apiResults = data?.data?.items ?? [];
+    if (apiResults.length > 0) return apiResults;
+
+    const normalizedQuery = query.toLowerCase();
+    return (tutorialsData?.data?.content ?? [])
+      .filter(
+        (tutorial) =>
+          tutorial.title.toLowerCase().includes(normalizedQuery) ||
+          tutorial.summary?.toLowerCase().includes(normalizedQuery),
+      )
+      .map((tutorial) => ({
+        ...tutorial,
+        type: "TUTORIAL" as const,
+        description: tutorial.summary,
+      }));
+  }, [data, query, tutorialsData]);
+  const searching = isFetching || isFetchingTutorials;
+  const searchFailed = Boolean(error && tutorialsError);
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 p-4 pt-[10vh] backdrop-blur-sm animate-in fade-in duration-200">
@@ -137,11 +164,11 @@ function SearchDocsModalContent() {
                 <SortDropdown />
               </div>
 
-              {isFetching ? (
+              {searching ? (
                 <div className="py-12 text-center text-sm text-muted-foreground">
                   Searching tutorials...
                 </div>
-              ) : error ? (
+              ) : searchFailed ? (
                 <div className="py-12 text-center text-sm text-destructive">
                   Search could not be loaded. Please try again.
                 </div>
