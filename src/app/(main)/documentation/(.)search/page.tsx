@@ -1,19 +1,13 @@
 "use client";
 
-import {
-  Suspense,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 
 import FilterTabs from "@/components/documentation/FilterTabs";
 import SearchResultCard from "@/components/documentation/SearchResultCard";
 import SortDropdown from "@/components/documentation/SortDropdown";
-import { searchResults } from "@/lib/data/documentation";
+import { useGlobalSearchQuery } from "@/redux/service/searchApi";
 
 function SearchDocsModalContent() {
   const router = useRouter();
@@ -65,29 +59,12 @@ function SearchDocsModalContent() {
     };
   }, [inputValue, router]);
 
-  const filteredResults = useMemo(() => {
-    const query = inputValue.toLowerCase().trim();
-
-    if (!query) {
-      return [];
-    }
-
-    return searchResults.filter((result) => {
-      const title = result.title?.toLowerCase() ?? "";
-      const description = result.description?.toLowerCase() ?? "";
-
-      const content =
-        "content" in result && typeof result.content === "string"
-          ? result.content.toLowerCase()
-          : "";
-
-      return (
-        title.includes(query) ||
-        description.includes(query) ||
-        content.includes(query)
-      );
-    });
-  }, [inputValue]);
+  const query = inputValue.trim();
+  const { data, isFetching, error } = useGlobalSearchQuery(
+    { q: query, type: "TUTORIAL", sort: "popular", page: 0, size: 20 },
+    { skip: query.length < 2 },
+  );
+  const filteredResults = data?.data?.items ?? [];
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 p-4 pt-[10vh] backdrop-blur-sm animate-in fade-in duration-200">
@@ -143,7 +120,7 @@ function SearchDocsModalContent() {
                 <p className="text-[18px] text-muted-foreground">
                   រកឃើញលទ្ធផល{" "}
                   <span className="font-semibold text-foreground">
-                    {filteredResults.length}
+                    {data?.data?.total ?? filteredResults.length}
                   </span>{" "}
                   សម្រាប់{" "}
                   <span className="font-semibold text-primary">
@@ -154,7 +131,17 @@ function SearchDocsModalContent() {
                 <SortDropdown />
               </div>
 
-              {filteredResults.length > 0 ? (
+              {isFetching ? (
+                <div className="flex flex-col gap-4 pb-2">
+                  {Array.from({ length: 4 }, (_, index) => (
+                    <div key={index} className="h-28 animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800" />
+                  ))}
+                </div>
+              ) : error ? (
+                <div className="py-12 text-center font-khmer text-sm text-destructive">
+                  មិនអាចទាញយកលទ្ធផលស្វែងរកបានទេ។
+                </div>
+              ) : filteredResults.length > 0 ? (
                 <div className="flex flex-col gap-4 pb-2">
                   {filteredResults.map((result) => (
                     <SearchResultCard

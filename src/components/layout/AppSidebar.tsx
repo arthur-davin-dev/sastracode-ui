@@ -19,6 +19,7 @@ import {
   Bookmark,
   X,
 } from "lucide-react";
+import { logoutUser } from "@/lib/auth/logout";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -49,6 +50,11 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
 
   const goToLink = () => {
     if (window.innerWidth < 1024) closeMobile();
+  };
+
+  const handleLogout = async () => {
+    goToLink();
+    await logoutUser("/");
   };
 
   return (
@@ -152,7 +158,7 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
           {!isCollapsed && <span className="truncate">ជំនួយ</span>}
         </button>
 
-        <button onClick={goToLink} className="flex items-center gap-3.5 px-4 py-3 text-lg font-bold text-secondary-color hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl w-full transform-none select-none">
+        <button onClick={handleLogout} className="flex items-center gap-3.5 px-4 py-3 text-lg font-bold text-secondary-color hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl w-full transform-none select-none">
           <LogOut size={24} className="shrink-0 text-secondary-color" />
           {!isCollapsed && <span className="truncate">ចាកចេញ</span>}
         </button>

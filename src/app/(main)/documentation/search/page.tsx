@@ -1,10 +1,7 @@
 import { Search } from "lucide-react";
 
 import DocsShell from "@/components/documentation/DocsShell";
-import FilterTabs from "@/components/documentation/FilterTabs";
-import SearchResultCard from "@/components/documentation/SearchResultCard";
-import SortDropdown from "@/components/documentation/SortDropdown";
-import { searchResults } from "@/lib/data/documentation";
+import DocumentationSearchResults from "@/components/documentation/DocumentationSearchResults";
 
 type SearchPageProps = {
   searchParams: Promise<{
@@ -20,26 +17,6 @@ export default async function SearchDocsPage({
   const query = Array.isArray(params.q)
     ? params.q[0] ?? ""
     : params.q ?? "";
-
-  const normalizedQuery = query.toLowerCase().trim();
-
-  const filteredResults = normalizedQuery
-    ? searchResults.filter((result) => {
-        const title = result.title?.toLowerCase() ?? "";
-        const description = result.description?.toLowerCase() ?? "";
-
-        const content =
-          "content" in result && typeof result.content === "string"
-            ? result.content.toLowerCase()
-            : "";
-
-        return (
-          title.includes(normalizedQuery) ||
-          description.includes(normalizedQuery) ||
-          content.includes(normalizedQuery)
-        );
-      })
-    : [];
 
   return (
     <DocsShell>
@@ -60,55 +37,7 @@ export default async function SearchDocsPage({
           />
         </form>
 
-        <FilterTabs
-          options={[
-            "កម្រិតមូលដ្ឋាន",
-            "កម្រិតមធ្យម",
-            "កម្រិតខ្ពស់",
-          ]}
-        />
-
-        {normalizedQuery ? (
-          <>
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-muted-foreground">
-                រកឃើញលទ្ធផល{" "}
-                <span className="font-semibold text-foreground">
-                  {filteredResults.length}
-                </span>{" "}
-                សម្រាប់{" "}
-                <span className="font-semibold text-primary">
-                  &ldquo;{query}&rdquo;
-                </span>
-              </p>
-
-              <SortDropdown />
-            </div>
-
-            {filteredResults.length > 0 ? (
-              <div className="flex flex-col gap-4">
-                {filteredResults.map((result) => (
-                  <SearchResultCard
-                    key={result.id}
-                    result={result}
-                  />
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-                <p className="font-khmer text-sm text-destructive">
-                  មិនមានលទ្ធផលស្វែងរកទេ!
-                </p>
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-            <p className="font-khmer text-sm">
-              សូមបញ្ចូលពាក្យគន្លឹះដើម្បីស្វែងរកមេរៀន...
-            </p>
-          </div>
-        )}
+        <DocumentationSearchResults query={query} />
       </div>
     </DocsShell>
   );

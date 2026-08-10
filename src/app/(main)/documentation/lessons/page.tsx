@@ -1,7 +1,6 @@
 import HeroSearchBar from "@/components/documentation/HeroSearchBar";
-import CourseGrid from "@/components/documentation/CourseGrid";
 import Backbutton from "@/components/documentation/Backbutton";
-import { lessons } from "@/lib/data/courses";
+import DocumentationTutorials from "@/components/documentation/DocumentationTutorials";
 
 export default function AllLessonsPage() {
   return (
@@ -17,7 +16,7 @@ export default function AllLessonsPage() {
         </div>
         
         {/* Course Grid Content */}
-        <CourseGrid title="មេរៀនទាំងអស់" courses={lessons} />
+        <DocumentationTutorials showSections={false} />
         
       </div>
     </main>

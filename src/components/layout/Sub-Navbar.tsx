@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 import { Input } from "@/components/ui/input";
@@ -24,6 +24,7 @@ import {
 import { pageConfig } from "@/components/layout/navbar-config";
 import SearchModal from "@/components/search/SearchModal";
 import { useGetMyProfileQuery } from "@/redux/service/profile-api";
+import { logoutUser } from "@/lib/auth/logout";
 
 interface NavbarProps {
   hasUnreadNotifications?: boolean;
@@ -156,9 +157,7 @@ export default function SubNavbar({
     setProfileOpen(false);
     setIsOpen(false);
 
-    await signOut({
-      redirectTo: "/",
-    });
+    await logoutUser("/");
   };
 
   return (

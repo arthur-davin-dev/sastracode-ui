@@ -605,7 +605,7 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
   const [activeLessonId, setActiveLessonId] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const tutorial = data?.data as TutorialDetailData | undefined;
+  const tutorial: TutorialDetailData | undefined = data?.data;
 
   const sections = useMemo(
     () => sortSections(tutorial?.sections ?? []),

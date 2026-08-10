@@ -12,11 +12,12 @@ import {
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 import { useLanguage } from "@/lib/language-context";
 import Login from "@/components/auth/Login";
 import { useGetMyProfileQuery } from "@/redux/service/profile-api";
+import { logoutUser } from "@/lib/auth/logout";
 
 export default function Navbar() {
   const { lang, setLang } = useLanguage();
@@ -166,9 +167,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     setProfileOpen(false);
 
-    await signOut({
-      redirectTo: "/",
-    });
+    await logoutUser("/");
   };
 
   return (
