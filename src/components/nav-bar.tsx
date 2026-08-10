@@ -18,6 +18,7 @@ import { useLanguage } from "@/lib/language-context";
 import Login from "@/components/auth/Login";
 import { useGetMyProfileQuery } from "@/redux/service/profile-api";
 import { logoutUser } from "@/lib/auth/logout";
+import NotificationBell from "@/components/notification/NotificationBell";
 
 export default function Navbar() {
   const { lang, setLang } = useLanguage();
@@ -90,14 +91,11 @@ export default function Navbar() {
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
+    const nextDark = savedTheme === "dark";
+    document.documentElement.classList.toggle("dark", nextDark);
+    const timeoutId = window.setTimeout(() => setDarkMode(nextDark), 0);
 
-    if (savedTheme === "dark") {
-      setDarkMode(true);
-      document.documentElement.classList.add("dark");
-    } else {
-      setDarkMode(false);
-      document.documentElement.classList.remove("dark");
-    }
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   const toggleLanguage = () => {
@@ -244,6 +242,10 @@ export default function Navbar() {
           {/* -------------------------------- */}
           {/* Authentication */}
           {/* -------------------------------- */}
+
+          {status === "authenticated" && session?.user && (
+            <NotificationBell />
+          )}
 
           {status === "loading" ? (
             // Session loading

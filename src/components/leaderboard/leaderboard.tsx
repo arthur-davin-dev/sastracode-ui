@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { LeaderboardTabs } from "@/components/leaderboard/LeaderboardTabs";
@@ -8,24 +8,12 @@ import { LeaderboardTable } from "@/components/leaderboard/LeaderboardTable";
 import { WeeklyGoalCard } from "@/components/leaderboard/WeeklyGoalCard";
 import { YourStatsCard } from "@/components/leaderboard/YourStatsCard";
 import { TopPerformersCard } from "@/components/leaderboard/TopPerformersCard";
-import { LeaderboardEntry, WeeklyGoalDay, UserStat, TopPerformer } from "@/types/leaderboard";
-
-const entries: LeaderboardEntry[] = [
-  { rank: 1, name: "Sokpheap Lim", avatarUrl: "", level: 18, xp: 18450 },
-  { rank: 2, name: "Davy Kimsan", avatarUrl: "", level: 17, xp: 16230 },
-  { rank: 3, name: "Rithy Chan", avatarUrl: "", level: 17, xp: 14890 },
-  { rank: 4, name: "Sreynich Chhorn", avatarUrl: "", level: 16, xp: 13560 },
-  { rank: 5, name: "Menghour Tan", avatarUrl: "", level: 16, xp: 12340 },
-  { rank: 6, name: "Pichmony Heng", avatarUrl: "", level: 15, xp: 11230 },
-  { rank: 7, name: "Vannak Keo", avatarUrl: "", level: 14, xp: 9850 },
-  { rank: 8, name: "Bunleap Chhay", avatarUrl: "", level: 14, xp: 8450 },
-  { rank: 9, name: "Chenda Pov", avatarUrl: "", level: 13, xp: 7550 },
-  { rank: 10, name: "Lim Mechan", avatarUrl: "", level: 13, xp: 6980 },
-];
-
-const currentUser: LeaderboardEntry = {
-  rank: 24, name: "Vicheka", avatarUrl: "", level: 12, xp: 2880, isCurrentUser: true,
-};
+import type { LeaderboardEntry, LeaderboardPeriod, WeeklyGoalDay, UserStat } from "@/types/leaderboard";
+import {
+  useGetLeaderboardQuery,
+  useGetMyLeaderboardRankQuery,
+} from "@/redux/service/leaderboardApi";
+import { useGetMyProfileQuery } from "@/redux/service/profile-api";
 
 const weeklyDays: WeeklyGoalDay[] = [
   { day: "Mon", completed: true },
@@ -37,48 +25,123 @@ const weeklyDays: WeeklyGoalDay[] = [
   { day: "Sun", completed: false },
 ];
 
-const userStats: UserStat[] = [
-  { icon: "star", value: "2,678 xp", label: "Total Experience", color: "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400" },
-  { icon: "check", value: 14, label: "Problems solved", color: "bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-400" },
-  { icon: "flame", value: 12, label: "Day Streak", color: "bg-yellow-100 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-400" },
-  { icon: "chart", value: 14, label: "Current Level", color: "bg-purple-100 text-purple-600 dark:bg-purple-500/20 dark:text-purple-400" },
-];
+type SupportedPeriod = Exclude<LeaderboardPeriod, "COURSE">;
 
-const topPerformers: TopPerformer[] = [
-  { rank: 1, name: "Dara Kim", xp: 2234 },
-  { rank: 2, name: "Sreynich Chhom", xp: 2134 },
-  { rank: 3, name: "Sothea Vireak", xp: 2034 },
-];
+function learnerName(rank: number) {
+  return `Learner #${rank}`;
+}
 
 export default function Leaderboard() {
-  const [activeTab, setActiveTab] = useState("Global");
+  const [activeTab, setActiveTab] = useState<SupportedPeriod>("GLOBAL");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const { data, isLoading, isFetching, isError, refetch } =
+    useGetLeaderboardQuery({ period: activeTab, size: 50 });
+  const { data: myRank } = useGetMyLeaderboardRankQuery(activeTab);
+  const { data: myProfile } = useGetMyProfileQuery();
+
+  const entries: LeaderboardEntry[] = useMemo(
+    () =>
+      (data?.content ?? []).map((entry) => ({
+        rank: entry.rank,
+        name: learnerName(entry.rank),
+        avatarUrl: "",
+        xp: entry.score,
+      })),
+    [data?.content],
+  );
+
+  const currentUser: LeaderboardEntry | undefined = myRank
+    ? {
+        rank: myRank.rank,
+        name:
+          [myProfile?.firstName, myProfile?.lastName].filter(Boolean).join(" ") ||
+          myProfile?.username ||
+          "You",
+        avatarUrl: myProfile?.avatarUrl ?? "",
+        xp: myRank.score,
+        isCurrentUser: true,
+      }
+    : undefined;
+
+  const userStats: UserStat[] = [
+    { icon: "star", value: `${myRank?.score.toLocaleString() ?? "—"} XP`, label: "Your score", color: "" },
+    { icon: "chart", value: myRank?.rank ? `#${myRank.rank}` : "—", label: "Your rank", color: "" },
+  ];
+
+  const topPerformers = entries.slice(0, 3).map(({ rank, name, xp }) => ({
+    rank,
+    name,
+    xp,
+  }));
+
+  const filteredEntries = useMemo(() => {
+    const normalizedQuery = searchQuery.trim().toLocaleLowerCase();
+
+    if (!normalizedQuery) return entries;
+
+    return entries.filter((entry) =>
+      entry.name.toLocaleLowerCase().includes(normalizedQuery),
+    );
+  }, [entries, searchQuery]);
 
   return (
-    <div className="relative w-full min-h-screen bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 px-4 py-16 overflow-hidden transition-colors duration-300">
+    <div className="relative min-h-full w-full overflow-hidden rounded-3xl bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] px-4 py-6 transition-colors duration-300 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 sm:px-6 sm:py-8">
       <div className="max-w-6xl mx-auto space-y-6">
-        <h1 className="text-xl font-bold text-indigo-950 dark:text-white transition-colors duration-300">
-          តារាងចំណាត់ថ្នាក់
-        </h1>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-wider text-primary-color">
+              Community ranking
+            </p>
+            <h1 className="mt-1 text-2xl font-extrabold text-indigo-950 transition-colors duration-300 dark:text-white sm:text-3xl">
+              តារាងចំណាត់ថ្នាក់
+            </h1>
+          </div>
 
-        <LeaderboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
+          <label className="relative block w-full sm:max-w-xs">
+            <span className="sr-only">Search leaderboard by name</span>
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500 dark:text-slate-400" aria-hidden="true" />
+            <Input
+              type="search"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder="Search by name..."
+              className="h-11 rounded-xl border-slate-300 bg-white pl-10 text-indigo-950 shadow-sm placeholder:text-slate-500 focus-visible:ring-primary-color dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-400"
+            />
+          </label>
+        </div>
+
+        <LeaderboardTabs
+          activeTab={activeTab}
+          onTabChange={(tab) => setActiveTab(tab as SupportedPeriod)}
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <LeaderboardTable entries={entries} currentUser={currentUser} />
+            {isLoading ? (
+              <div className="space-y-3 rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900" aria-label="Loading leaderboard">
+                {Array.from({ length: 8 }, (_, index) => (
+                  <div key={index} className="h-20 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-800" />
+                ))}
+              </div>
+            ) : isError ? (
+              <div className="rounded-3xl border border-red-200 bg-white p-8 text-center dark:border-red-900 dark:bg-slate-900">
+                <p className="font-bold text-red-600 dark:text-red-400">Could not load the leaderboard.</p>
+                <button type="button" onClick={() => refetch()} className="mt-4 rounded-xl bg-primary-color px-4 py-2 text-sm font-bold text-white">
+                  Try again
+                </button>
+              </div>
+            ) : (
+              <div className={isFetching ? "opacity-70" : undefined} aria-busy={isFetching}>
+                <LeaderboardTable entries={filteredEntries} currentUser={currentUser} />
+              </div>
+            )}
           </div>
 
           <div className="space-y-4">
-            {/* <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-slate-400" />
-              <Input 
-                placeholder="Search for courses, lessons, topics..." 
-                className="pl-9 dark:bg-slate-900/80 dark:border-slate-800 dark:text-white dark:placeholder:text-slate-500 transition-colors duration-300" 
-              />
-            </div> */}
-
             <WeeklyGoalCard days={weeklyDays} completedCount={4} totalCount={5} />
             <YourStatsCard stats={userStats} />
-            <TopPerformersCard performers={topPerformers} />
+            {topPerformers.length > 0 && <TopPerformersCard performers={topPerformers} />}
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,30 +33,52 @@ interface ProfileFormProps {
   profile: UserProfile;
 }
 
+function getApiErrorMessage(error: unknown) {
+  if (!error || typeof error !== "object" || !("data" in error)) {
+    return null;
+  }
+
+  const data = error.data;
+
+  if (typeof data === "string") {
+    return data;
+  }
+
+  if (data && typeof data === "object" && "message" in data) {
+    return typeof data.message === "string" ? data.message : null;
+  }
+
+  return null;
+}
+
 export function ProfileForm({ profile }: ProfileFormProps) {
   // ===================================
   // Form State
   // ===================================
 
-  const [firstName, setFirstName] = useState("");
+  const [firstName, setFirstName] = useState(profile.firstName ?? "");
 
-  const [lastName, setLastName] = useState("");
+  const [lastName, setLastName] = useState(profile.lastName ?? "");
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(profile.email ?? "");
 
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(profile.phoneNumber ?? "");
 
-  const [biography, setBiography] = useState("");
+  const [biography, setBiography] = useState(profile.biography ?? "");
 
-  const [birthday, setBirthday] = useState("");
+  const [birthday, setBirthday] = useState(profile.birthday ?? "");
 
-  const [gender, setGender] = useState<Gender | "">("");
+  const [gender, setGender] = useState<Gender | "">(profile.gender ?? "");
 
-  const [workStudyType, setWorkStudyType] = useState<WorkStudyType | "">("");
+  const [workStudyType, setWorkStudyType] = useState<WorkStudyType | "">(
+    profile.workStudyType ?? "",
+  );
 
-  const [institutionName, setInstitutionName] = useState("");
+  const [institutionName, setInstitutionName] = useState(
+    profile.institutionName ?? "",
+  );
 
-  const [locale, setLocale] = useState("");
+  const [locale, setLocale] = useState(profile.locale ?? "");
 
   // ===================================
   // RTK Query
@@ -67,32 +89,6 @@ export function ProfileForm({ profile }: ProfileFormProps) {
 
   const [resetPassword, { isLoading: isResettingPassword }] =
     useResetMyPasswordMutation();
-
-  // ===================================
-  // Sync fetched API data
-  // ===================================
-
-  useEffect(() => {
-    setFirstName(profile.firstName ?? "");
-
-    setLastName(profile.lastName ?? "");
-
-    setEmail(profile.email ?? "");
-
-    setPhoneNumber(profile.phoneNumber ?? "");
-
-    setBiography(profile.biography ?? "");
-
-    setBirthday(profile.birthday ?? "");
-
-    setGender(profile.gender ?? "");
-
-    setWorkStudyType(profile.workStudyType ?? "");
-
-    setInstitutionName(profile.institutionName ?? "");
-
-    setLocale(profile.locale ?? "");
-  }, [profile]);
 
   // ===================================
   // Save profile
@@ -109,9 +105,9 @@ export function ProfileForm({ profile }: ProfileFormProps) {
 
         email: email.trim(),
 
-        phoneNumber: phoneNumber.trim(),
+        phoneNumber: phoneNumber.trim() || undefined,
 
-        biography: biography.trim(),
+        biography: biography.trim() || undefined,
 
         birthday: birthday || undefined,
 
@@ -119,16 +115,18 @@ export function ProfileForm({ profile }: ProfileFormProps) {
 
         workStudyType: workStudyType || undefined,
 
-        institutionName: institutionName.trim(),
+        institutionName: institutionName.trim() || undefined,
 
-        locale: locale.trim(),
+        locale: locale.trim() || undefined,
       }).unwrap();
 
       toast.success("ព័ត៌មានត្រូវបានរក្សាទុកដោយជោគជ័យ។");
     } catch (error) {
       console.error("Update profile failed:", error);
 
-      toast.error("មិនអាចរក្សាទុកព័ត៌មានបានទេ។");
+      toast.error(
+        getApiErrorMessage(error) ?? "មិនអាចរក្សាទុកព័ត៌មានបានទេ។",
+      );
     }
   };
 

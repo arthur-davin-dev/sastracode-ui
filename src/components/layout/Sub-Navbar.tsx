@@ -10,7 +10,6 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import {
   Search,
-  Bell,
   SunMedium,
   Moon,
   Menu,
@@ -25,14 +24,13 @@ import { pageConfig } from "@/components/layout/navbar-config";
 import SearchModal from "@/components/search/SearchModal";
 import { useGetMyProfileQuery } from "@/redux/service/profile-api";
 import { logoutUser } from "@/lib/auth/logout";
+import NotificationBell from "@/components/notification/NotificationBell";
 
 interface NavbarProps {
-  hasUnreadNotifications?: boolean;
   onOpenSidebar?: () => void;
 }
 
 export default function SubNavbar({
-  hasUnreadNotifications = true,
   onOpenSidebar,
 }: NavbarProps) {
   const pathname = usePathname();
@@ -86,8 +84,11 @@ export default function SubNavbar({
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
+    const timeoutId = window.setTimeout(() => {
+      setDarkMode(savedTheme === "dark");
+    }, 0);
 
-    setDarkMode(savedTheme === "dark");
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   useEffect(() => {
@@ -229,17 +230,7 @@ export default function SubNavbar({
 
           {/* Notifications */}
 
-          <button
-            type="button"
-            aria-label="Notifications"
-            className="relative rounded-2xl border border-slate-200 bg-slate-100 p-3 text-primary-color transition-all hover:bg-yellow-400/20 dark:border-slate-700 dark:bg-slate-800"
-          >
-            <Bell className="h-6 w-6 text-primary-color" />
-
-            {hasUnreadNotifications && (
-              <span className="absolute right-2 top-2 h-3 w-3 animate-pulse rounded-full bg-red-600 ring-2 ring-white dark:ring-slate-900" />
-            )}
-          </button>
+          <NotificationBell />
 
           {/* ================================= */}
           {/* Session loading */}
@@ -434,17 +425,7 @@ export default function SubNavbar({
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  aria-label="Notifications"
-                  className="relative rounded-2xl border border-slate-200 bg-slate-100 p-3 dark:border-slate-700 dark:bg-slate-800"
-                >
-                  <Bell className="h-6 w-6 text-primary-color" />
-
-                  {hasUnreadNotifications && (
-                    <span className="absolute right-2 top-2 h-3 w-3 rounded-full bg-red-600 ring-2 ring-white dark:ring-slate-900" />
-                  )}
-                </button>
+                <NotificationBell />
               </div>
 
               {/* Profile */}

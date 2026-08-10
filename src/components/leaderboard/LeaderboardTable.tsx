@@ -8,7 +8,7 @@ import { Trophy } from "lucide-react";
 
 interface LeaderboardTableProps {
   entries: LeaderboardEntry[];
-  currentUser: LeaderboardEntry;
+  currentUser?: LeaderboardEntry;
 }
 
 export function LeaderboardTable({ entries, currentUser }: LeaderboardTableProps) {
@@ -50,16 +50,26 @@ export function LeaderboardTable({ entries, currentUser }: LeaderboardTableProps
               <LeaderboardRow entry={entry} />
             </motion.div>
           ))}
+          {entries.length === 0 && (
+            <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-10 text-center dark:border-slate-700 dark:bg-slate-800/40">
+              <p className="font-semibold text-slate-700 dark:text-slate-200">
+                No leaderboard members found
+              </p>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Try another name or clear the search.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Floating / Highlighted Current User Fixed Row */}
-        <div className="mt-5 pt-4 border-t border-amber-400/30">
+        {currentUser && <div className="mt-5 pt-4 border-t border-amber-400/30">
           <p className="text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 px-1 flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-red-600 inline-block animate-pulse" />
             ចំណាត់ថ្នាក់របស់អ្នក:
           </p>
           <LeaderboardRow entry={currentUser} />
-        </div>
+        </div>}
 
       </CardContent>
     </Card>

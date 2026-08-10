@@ -11,7 +11,7 @@ interface DocumentationTutorialsProps {
   showSections?: boolean;
 }
 
-function getTechTag(tutorial: TutorialSummary): TechTag {
+export function getTechTag(tutorial: TutorialSummary): TechTag {
   const value = `${tutorial.title} ${tutorial.slug}`.toLowerCase();
 
   if (value.includes("python")) return "Python";
@@ -21,7 +21,7 @@ function getTechTag(tutorial: TutorialSummary): TechTag {
   return "HTML";
 }
 
-function toCourse(tutorial: TutorialSummary): Course {
+export function toCourse(tutorial: TutorialSummary): Course {
   return {
     id: tutorial.id,
     title: tutorial.title,

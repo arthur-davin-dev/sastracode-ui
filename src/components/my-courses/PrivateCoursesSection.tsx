@@ -24,7 +24,7 @@ export default function PrivateCoursesSection({ pageMode = false }: PrivateCours
     }),
   );
 
-  if (status === "loading" || isLoading || isFetching) {
+  if (status === "loading" || isLoading) {
     return (
       <section className={pageMode ? "p-6" : "mt-10"}>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -57,7 +57,10 @@ export default function PrivateCoursesSection({ pageMode = false }: PrivateCours
   }
 
   return (
-    <section className={pageMode ? "space-y-6 p-6" : "mt-10 space-y-5"}>
+    <section
+      className={`${pageMode ? "space-y-6 p-6" : "space-y-5"} ${isFetching ? "opacity-70" : ""}`}
+      aria-busy={isFetching}
+    >
       <div>
         <div className="flex items-center gap-2">
           <LockKeyhole className="h-6 w-6 text-[#002455] dark:text-blue-300" />

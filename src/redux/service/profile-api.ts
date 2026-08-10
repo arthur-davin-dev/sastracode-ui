@@ -26,7 +26,7 @@ export const profileApi = sastraApi.injectEndpoints({
 
     getMyProfile: builder.query<UserProfile, void>({
       query: () => ({
-        url: "/profile",
+        url: "/v1/users/me",
 
         method: "GET",
       }),
@@ -42,18 +42,19 @@ export const profileApi = sastraApi.injectEndpoints({
     // UPDATE PROFILE
     // =================================
 
-    updateMyProfile: builder.mutation<UserProfile, UpdateUserInfoRequest>({
+    updateMyProfile: builder.mutation<void, UpdateUserInfoRequest>({
       query: (body) => ({
-        url: "/profile",
+        url: "/v1/users/me",
 
         method: "PATCH",
 
         body,
       }),
 
-      transformResponse: (response: ApiResponse<UserProfileResponse>) => {
-        return mapProfile(response.data);
-      },
+      // The backend may return either the updated profile or an empty success
+      // response. The form does not need the mutation payload; invalidating the
+      // profile tag below reloads the canonical profile after every save.
+      transformResponse: () => undefined,
 
       invalidatesTags: ["Profile"],
     }),
@@ -69,7 +70,7 @@ export const profileApi = sastraApi.injectEndpoints({
         formData.append("file", file);
 
         return {
-          url: "/profile/avatar",
+          url: "/v1/users/me/avatar",
 
           method: "POST",
 
@@ -90,7 +91,7 @@ export const profileApi = sastraApi.injectEndpoints({
 
     resetMyPassword: builder.mutation<void, void>({
       query: () => ({
-        url: "/profile/reset-password",
+        url: "/v1/users/me/reset-password",
 
         method: "POST",
       }),

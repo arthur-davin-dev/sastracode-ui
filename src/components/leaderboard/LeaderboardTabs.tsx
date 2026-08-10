@@ -9,10 +9,10 @@ interface LeaderboardTabsProps {
 
 export function LeaderboardTabs({ activeTab, onTabChange }: LeaderboardTabsProps) {
   const tabs = [
-    { id: "Global", label: "សកល (Global)" },
-    { id: "Daily", label: "ប្រចាំថ្ងៃ (Daily)" },
-    { id: "Weekly", label: "ប្រចាំសប្តាហ៍ (Weekly)" },
-    { id: "Course", label: "តាមវគ្គសិក្សា (Course)" },
+    { id: "GLOBAL", label: "សកល (Global)" },
+    { id: "DAILY", label: "ប្រចាំថ្ងៃ (Daily)" },
+    { id: "WEEKLY", label: "ប្រចាំសប្តាហ៍ (Weekly)" },
+    { id: "MONTHLY", label: "ប្រចាំខែ (Monthly)" },
   ];
 
   return (
