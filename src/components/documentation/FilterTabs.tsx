@@ -12,7 +12,7 @@ export default function FilterTabs({ options, defaultActive, onChange }: FilterT
   const [active, setActive] = useState(defaultActive ?? options[0]);
 
   return (
-    <div className="flex flex-wrap items-center gap-2 rounded-[16px] bg-muted p-1.5  ">
+    <div className="flex flex-wrap items-center gap-1.5 rounded-2xl border border-border bg-muted/60 p-1.5" aria-label="Filter by level">
       {options.map((option) => (
         <button
           key={option}
@@ -20,10 +20,11 @@ export default function FilterTabs({ options, defaultActive, onChange }: FilterT
             setActive(option);
             onChange?.(option);
           }}
-          className={`rounded-[16px] px-5 py-2 font-semibold text-[18px] max-sm:text-sm dark:text-white ${
+          aria-pressed={active === option}
+          className={`rounded-xl px-4 py-2 text-sm font-semibold transition-colors sm:text-base ${
             active === option
-              ? "bg-[#002455] text-primary-foreground "
-              : "text-muted-foreground hover:text-foreground"
+              ? "bg-primary-color text-white shadow-sm"
+              : "text-muted-foreground hover:bg-background hover:text-foreground"
           }`}
         >
           {option}
