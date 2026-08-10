@@ -1,4 +1,8 @@
-import TutorialDetail from "@/components/documentation/TutorialDetail";
+// app/documentation/[lessonId]/page.tsx
+import { notFound } from "next/navigation";
+import { getLessonById } from "@/lib/data/lessions";
+import LessonPageClient from "@/components/documentation/LessonPageClient";
+
 
 export default async function LessonPage({
   params,
@@ -6,5 +10,13 @@ export default async function LessonPage({
   params: Promise<{ lessonId: string }>;
 }) {
   const { lessonId } = await params;
-  return <TutorialDetail tutorialId={lessonId} />;
+  const lesson = getLessonById(lessonId);
+
+  // Trigger 404 page if lesson doesn't exist
+  if (!lesson) {
+    notFound();
+  }
+
+  // Pass lesson prop to the client layout component
+  return <LessonPageClient lesson={lesson} />;
 }

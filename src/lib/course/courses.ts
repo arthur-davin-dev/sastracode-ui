@@ -25,23 +25,83 @@ export interface Instructor {
   reviewCount?: number;
   tags?: string[];
 }
-
+export interface CourseThumbnail {
+  id: string;
+  url: string;
+}
 export interface Course {
   id: string;
+
   category: string;
+
   title: string;
+
   description: string;
+
   lessons: number;
+
   duration: string;
+
+  /*
+   * Frontend-ready image URL
+   */
   image: string;
+
+  /*
+   * Original API thumbnail object
+   */
+  thumbnailFileId?: {
+    id: string;
+    url: string;
+  } | null;
+
   href?: string;
+
+  slug?: string;
+
   price?: number;
-  locked?: boolean;
-  learningPoints?: string[];
-  instructor?: Instructor;
-  curriculum?: Chapter[];
+
   originalPrice?: number;
+
+  discount?: number;
+
+  currency?: string;
+
+  accessType?:
+    | "FREE"
+    | "PREMIUM"
+    | "PRIVATE";
+
+  level?:
+    | "BEGINNER"
+    | "INTERMEDIATE"
+    | "ADVANCED";
+
+  status?:
+    | "DRAFT"
+    | "IN_REVIEW"
+    | "PUBLISHED"
+    | "REJECTED"
+    | "ARCHIVED";
+
+  enrollmentCount?: number;
+
+  hasFullAccess?: boolean;
+
+  tags?: string[];
+
+  publishedAt?: string;
+
+  locked?: boolean;
+
+  learningPoints?: string[];
+
+  instructor?: Instructor;
+
+  curriculum?: Chapter[];
+
   totalDuration?: string;
+
   benefits?: Benefit[];
 }
 export interface Benefit {
@@ -196,3 +256,4 @@ export async function getRelatedCourses(
 //   progressPercent: number;
 
 // }
+

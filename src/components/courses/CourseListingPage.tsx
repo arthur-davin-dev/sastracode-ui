@@ -1,165 +1,214 @@
 "use client";
 
+
 import { useMemo, useState } from "react";
+
+
+import CourseBanner from "./course-banner";
 import { SearchBar } from "./SearchBar";
 import { CategoryFilter } from "./CategoryFilter";
 import { CourseGrid } from "./CourseGrid";
-import { Course } from "@/lib/course/courses";
-import CourseBanner from "./course-banner";
 
-const categories = [
-  "ទាំងអស់",
-  "HTML",
-  "CSS",
-  "Free Course",
-  "Frontend",
-  "Backend",
-  "JavaScript",
-  "UI/UX",
-];
 
-const courses: Course[] = [
-  {
-    id: "1",
-    category: "FRONTEND",
-    title: "HTML & CSS Fundamentals",
-    description:
-      "រៀនបង្កើត Responsive Website ជាមួយ HTML និង CSS ចាប់ពីមូលដ្ឋានដល់កម្រិតខ្ពស់",
-    lessons: 28,
-    duration: "៦ម៉ោង ៤២នាទី",
-    image: "/assets/images/HTML & CSS.jpg",
-  },
-  {
-    id: "2",
-    category: "CSS",
-    title: "Advanced CSS Layouts",
-    description:
-      "ស្វែងយល់ពី Grid, Flexbox និង Responsive Patterns ដើម្បីបង្កើត UI រាបស្មើ",
-    lessons: 24,
-    duration: "៥ម៉ោង ១០នាទី",
-    image: "/assets/images/CSS.jpg",
-  },
-  {
-    id: "3",
-    category: "HTML",
-    title: "HTML Structure & Semantics",
-    description:
-      "រៀនរចនាផ្ទៃក្នុង HTML ជាមួយ Semantic Elements និង Accessibility",
-    lessons: 18,
-    duration: "៤ម៉ោង ២០នាទី",
-    image: "/assets/images/HTML-course.jpg",
-  },
-  {
-    id: "4",
-    category: "Backend",
-    title: "Node.js Basics",
-    description:
-      "ទទួលបានប្រាក់ចំណូលសម្រាប់ Server-side development ជាមួយ Node.js និង Express",
-    lessons: 32,
-    duration: "៧ម៉ោង ૧૦នាទី",
-    image: "/assets/images/Nodejs.jpg",
-    locked: true,
-  },
-  {
-    id: "5",
-    category: "Free Course",
-    title: "Intro to JavaScript",
-    description:
-      "ស្នើភាសាស្វ័យប្រវត្តិកម្ម JavaScript ដើម្បីបង្កើតព្រលឹង Web អន្តរកម្ម",
-    lessons: 26,
-    duration: "៦ម៉ោង ៣០នាទី",
-    image: "/assets/images/javascript-course.png",
-  },
-  {
-    id: "6",
-    category: "Frontend",
-    title: "React Basics",
-    description: "ចាប់ផ្តើម React និង Components រួមទាំង Hooks និង Routing",
-    lessons: 30,
-    duration: "៨ម៉ោង ១៥នាទី",
-    image: "/assets/images/react-card.jpg",
-  },
-  {
-    id: "7",
-    category: "JavaScript",
-    title: "Modern JavaScript",
-    description:
-      "ស្វែងយល់ពី ES6+, Async/Await និង Patterns សម័យថ្មីសម្រាប់ Web Development",
-    lessons: 22,
-    duration: "៦ម៉ោង ៤០នាទី",
-    image: "/assets/images/javascript-course.png",
-  },
-  {
-    id: "8",
-    category: "UI/UX",
-    title: "Design Systems",
-    description:
-      "រៀនរចនាប្រព័ន្ធ UI ដោយប្រើ Principles និង Patterns ដូចជា Atomic Design",
-    lessons: 18,
-    duration: "៥ម៉ោង ២០នាទី",
-    image: "/assets/images/design-systems-course.png",
-  },
-  {
-    id: "9",
-    category: "Backend",
-    title: "API Development",
-    description:
-      "បង្កើត RESTful និង GraphQL API ដែលអាចប្រើបានឆាប់ រហ័ស និងសុវត្ថិភាព",
-    lessons: 26,
-    duration: "៧ម៉ោង ៣០នាទី",
-    image: "/assets/images/api-development-course.png",
-  },
-];
+import type { Course } from "@/lib/course/courses";
+import { mapApiCourseToCourse } from "@/lib/course/course-adapter";
+import { useGetPublicCoursesQuery } from "@/redux/api/course-api";
 
-// Static homepage sections. Change the titles, links, or course IDs here.
-const courseSections = [
-  {
-    title: "ចុងក្រោយបំផុត",
-    seeAllHref: "/documentation/lessons?category=latest",
-    courseIds: ["1", "2", "3", "4", "5", "6"],
-  },
-  {
-    title: "ណែនាំសម្រាប់អ្នក",
-    seeAllHref: "/documentation/lessons?category=recommended",
-    courseIds: ["4", "5", "6"],
-  },
-  {
-    title: "មេរៀនពេញនិយម",
-    seeAllHref: "/documentation/lessons?category=popular",
-    courseIds: ["7", "8", "9"],
-  },
-] as const;
+
+const ALL = "ទាំងអស់";
+const FREE = "Free Course";
+const PREMIUM = "Premium";
+
+
+function removeDuplicateCourses(courses: Course[]) {
+  return Array.from(
+    new Map(courses.map((course) => [course.id, course])).values(),
+  );
+}
+
 
 export default function CourseListingPage() {
   const [search, setSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState(categories[0]);
+  const [activeCategory, setActiveCategory] = useState(ALL);
+
+
+  /*
+   * ===============================
+   * FETCH COURSES FROM API
+   * ===============================
+   */
+
+
+  const latestQuery = useGetPublicCoursesQuery({
+    sort: "NEWEST",
+  });
+
+
+  const recommendedQuery = useGetPublicCoursesQuery({
+    sort: "RECOMMEND",
+  });
+
+
+  const popularQuery = useGetPublicCoursesQuery({
+    sort: "POPULAR",
+  });
+
+
+  /*
+   * ===============================
+   * CONVERT API DATA TO UI COURSE
+   * ===============================
+   */
+
+
+  const latestCourses = useMemo(() => {
+    return (latestQuery.data ?? []).map(mapApiCourseToCourse);
+  }, [latestQuery.data]);
+
+
+  const recommendedCourses = useMemo(() => {
+    return (recommendedQuery.data ?? []).map(mapApiCourseToCourse);
+  }, [recommendedQuery.data]);
+
+
+  const popularCourses = useMemo(() => {
+    return (popularQuery.data ?? []).map(mapApiCourseToCourse);
+  }, [popularQuery.data]);
+
+
+  /*
+   * Combine all public courses.
+   *
+   * PRIVATE courses are already excluded
+   * by useGetPublicCoursesQuery.
+   */
+
+
+  const allCourses = useMemo(() => {
+    return removeDuplicateCourses([
+      ...latestCourses,
+      ...recommendedCourses,
+      ...popularCourses,
+    ]);
+  }, [latestCourses, recommendedCourses, popularCourses]);
+
+
+  /*
+   * ===============================
+   * CATEGORY FILTER
+   * ===============================
+   */
+
+
+  const categories = useMemo(() => {
+    const apiCategories = Array.from(
+      new Set(
+        allCourses
+          .map((course) => course.category?.trim())
+          .filter((category): category is string => Boolean(category)),
+      ),
+    );
+
+
+    return [ALL, FREE, PREMIUM, ...apiCategories];
+  }, [allCourses]);
+
+
+  /*
+   * ===============================
+   * SEARCH + FILTER
+   * ===============================
+   */
+
 
   const filteredCourses = useMemo(() => {
-    return courses.filter((course) => {
-      const matchesCategory =
-        activeCategory === categories[0] ||
-        course.category.toLowerCase() === activeCategory.toLowerCase();
+    const query = search.trim().toLowerCase();
 
-      const query = search.trim().toLowerCase();
+
+    return allCourses.filter((course) => {
+      const category = course.category?.toLowerCase() ?? "";
+
+
+      const matchesCategory =
+        activeCategory === ALL ||
+        (activeCategory === FREE && course.accessType === "FREE") ||
+        (activeCategory === PREMIUM && course.accessType === "PREMIUM") ||
+        category === activeCategory.toLowerCase();
+
+
       const matchesSearch =
         query.length === 0 ||
         course.title.toLowerCase().includes(query) ||
-        course.description.toLowerCase().includes(query);
+        course.description?.toLowerCase().includes(query) ||
+        course.tags?.some((tag) => tag.toLowerCase().includes(query));
+
 
       return matchesCategory && matchesSearch;
     });
-  }, [search, activeCategory]);
+  }, [allCourses, search, activeCategory]);
+
+
+  /*
+   * ===============================
+   * LOADING
+   * ===============================
+   */
+
+
+  const isLoading =
+    latestQuery.isLoading ||
+    recommendedQuery.isLoading ||
+    popularQuery.isLoading;
+
+
+  /*
+   * Only show main error if all
+   * course requests failed.
+   */
+  const hasError =
+    Boolean(latestQuery.error) &&
+    Boolean(recommendedQuery.error) &&
+    Boolean(popularQuery.error);
+
+
+  const isFiltering = search.trim().length > 0 || activeCategory !== ALL;
+
+
+  /*
+   * ===============================
+   * RETRY
+   * ===============================
+   */
+
+
+  const handleRetry = () => {
+    void latestQuery.refetch();
+    void recommendedQuery.refetch();
+    void popularQuery.refetch();
+  };
+
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
-      {/* Top Hero Banner */}
+    <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
+      {/* =========================
+          COURSE BANNER
+      ========================== */}
+
+
       <CourseBanner />
 
-      {/* Main Content Area */}
+
+      {/* =========================
+          MAIN
+      ========================== */}
+
+
       <main className="mx-auto max-w-7xl px-6 pb-16 pt-10">
-        {/* Search & Filter Row */}
+        {/* Search + Category */}
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <SearchBar value={search} onChange={setSearch} />
+
+
           <CategoryFilter
             categories={categories}
             active={activeCategory}
@@ -167,23 +216,81 @@ export default function CourseListingPage() {
           />
         </div>
 
-        {search.trim() || activeCategory !== categories[0] ? (
-          <CourseGrid title="លទ្ធផលស្វែងរក" courses={filteredCourses} />
-        ) : (
-          <div className="space-y-12">
-            {courseSections.map((section) => (
-              <CourseGrid
-                key={section.title}
-                title={section.title}
-                courses={section.courseIds
-                  .map((id) => courses.find((course) => course.id === id))
-                  .filter((course): course is Course => Boolean(course))}
-                seeAllHref={section.seeAllHref}
+
+        {/* =========================
+            LOADING
+        ========================== */}
+
+
+        {isLoading && allCourses.length === 0 ? (
+          <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div
+                key={index}
+                className="h-96 animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800"
               />
             ))}
+          </div>
+        ) : hasError ? (
+          /* =========================
+              ERROR
+          ========================== */
+
+
+          <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-900 dark:bg-red-950/20">
+            <p className="text-sm font-medium text-red-700 dark:text-red-300">
+              មិនអាចទាញយកវគ្គសិក្សាបានទេ
+            </p>
+
+
+            <button
+              type="button"
+              onClick={handleRetry}
+              className="mt-4 rounded-xl bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+            >
+              ព្យាយាមម្ដងទៀត
+            </button>
+          </div>
+        ) : isFiltering ? (
+          /* =========================
+              SEARCH RESULT
+          ========================== */
+
+
+          <CourseGrid title="លទ្ធផលស្វែងរក" courses={filteredCourses} />
+        ) : (
+          /* =========================
+              DEFAULT COURSE SECTIONS
+          ========================== */
+
+
+          <div className="space-y-12">
+            {/* Latest */}
+            <CourseGrid
+              title="វគ្គសិក្សាថ្មីបំផុត"
+              courses={latestCourses.slice(0, 6)}
+              seeAllHref="/courses?sort=NEWEST"
+            />
+
+
+            {/* Recommended */}
+            <CourseGrid
+              title="វគ្គសិក្សាណែនាំសម្រាប់អ្នក"
+              courses={recommendedCourses.slice(3, 8)}
+              seeAllHref="/courses?sort=RECOMMEND"
+            />
+
+
+            {/* Popular */}
+            <CourseGrid
+              title="វគ្គសិក្សាពេញនិយម"
+              courses={popularCourses.slice(5, 1)}
+              seeAllHref="/courses?sort=POPULAR"
+            />
           </div>
         )}
       </main>
     </div>
   );
 }
+

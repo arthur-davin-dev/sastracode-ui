@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // "use client";
 
 // import { useState } from "react";
@@ -77,6 +78,16 @@
 "use client";
 
 import { useState } from "react";
+=======
+
+
+
+"use client";
+
+import { useEffect, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
+>>>>>>> origin/kongkea-new
 
 import AppSidebar from "@/components/layout/AppSidebar";
 import SubNavbar from "@/components/layout/Sub-Navbar";
@@ -88,6 +99,25 @@ export default function LayoutWithSidebar({
 }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+<<<<<<< HEAD
+=======
+  const { status } = useSession();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      void signIn("keycloak", { redirectTo: pathname || "/courses/my-courses" });
+    }
+  }, [status, pathname]);
+
+  if (status !== "authenticated") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-[#002455]" />
+      </div>
+    );
+  }
+>>>>>>> origin/kongkea-new
 
   return (
     <div className="h-screen overflow-hidden bg-[#F0F2F9] dark:bg-slate-950 flex flex-col">

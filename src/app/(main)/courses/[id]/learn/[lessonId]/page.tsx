@@ -1,18 +1,19 @@
-import { notFound } from "next/navigation";
-import LessonPlayerPage from "@/components/video/LessonPlayerPage";
-import { getCourseById } from "@/lib/course/courses";
+import LessonCourseLoader from "@/components/video/LessonCourseLoader";
 
 interface PageProps {
-  params: Promise<{ id: string; lessonId: string }>;
+  params: Promise<{
+    id: string;
+    lessonId: string;
+  }>;
 }
 
 export default async function Page({ params }: PageProps) {
   const { id, lessonId } = await params;
-  const course = await getCourseById(id);
 
-  if (!course) {
-    notFound();
-  }
-
-  return <LessonPlayerPage course={course} lessonId={lessonId} />;
+  return (
+    <LessonCourseLoader
+      courseId={id}
+      lessonId={lessonId}
+    />
+  );
 }

@@ -3,6 +3,7 @@
 import { MyCourseCard } from "@/components/my-courses/MyCourseCard";
 import { MyCourse } from "@/types/course";
 import { motion } from "framer-motion";
+import PrivateCoursesSection from "./PrivateCoursesSection";
 
 interface ExtendedMyCourse extends MyCourse {
   progressPercent: number;
@@ -132,6 +133,8 @@ export default function MyCourses() {
           </motion.div>
         ))}
       </div>
+
+      <PrivateCoursesSection />
     </div>
   );
 }

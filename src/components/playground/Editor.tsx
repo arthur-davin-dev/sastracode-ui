@@ -216,104 +216,104 @@ console.log(result);`,
   // REACT - LIVE PREVIEW
   // ====================================================
 
-  {
-    label: "React",
-    value: "javascript",
-    extension: "jsx",
-    color: "#61DAFB",
-    mode: "preview",
+//   {
+//     label: "React",
+//     value: "javascript",
+//     extension: "jsx",
+//     color: "#61DAFB",
+//     mode: "preview",
 
-    starterCode: `function App() {
-  const [count, setCount] =
-    React.useState(0);
+//     starterCode: `function App() {
+//   const [count, setCount] =
+//     React.useState(0);
 
-  return (
-    <div
-      style={{
-        minHeight: "100vh",
-        padding: "40px",
-        background: "#f8fafc",
-        fontFamily: "Arial, sans-serif"
-      }}
-    >
+//   return (
+//     <div
+//       style={{
+//         minHeight: "100vh",
+//         padding: "40px",
+//         background: "#f8fafc",
+//         fontFamily: "Arial, sans-serif"
+//       }}
+//     >
 
-      <div
-        style={{
-          maxWidth: "480px",
-          margin: "40px auto",
-          padding: "30px",
-          background: "white",
-          borderRadius: "20px",
-          boxShadow:
-            "0 10px 30px rgba(0, 0, 0, 0.08)"
-        }}
-      >
+//       <div
+//         style={{
+//           maxWidth: "480px",
+//           margin: "40px auto",
+//           padding: "30px",
+//           background: "white",
+//           borderRadius: "20px",
+//           boxShadow:
+//             "0 10px 30px rgba(0, 0, 0, 0.08)"
+//         }}
+//       >
 
-        <h1
-          style={{
-            color: "#002455"
-          }}
-        >
-          សួស្តី React!
-        </h1>
+//         <h1
+//           style={{
+//             color: "#002455"
+//           }}
+//         >
+//           សួស្តី React!
+//         </h1>
 
-        <p>
-          Welcome to SastraCode React Playground.
-        </p>
+//         <p>
+//           Welcome to SastraCode React Playground.
+//         </p>
 
-        <p>
-          Count: {count}
-        </p>
+//         <p>
+//           Count: {count}
+//         </p>
 
-        <button
-          onClick={() =>
-            setCount(
-              (previous) =>
-                previous + 1
-            )
-          }
-          style={{
-            padding: "12px 20px",
-            background: "#002455",
-            color: "white",
-            border: "none",
-            borderRadius: "10px",
-            cursor: "pointer"
-          }}
-        >
-          Increase Count
-        </button>
+//         <button
+//           onClick={() =>
+//             setCount(
+//               (previous) =>
+//                 previous + 1
+//             )
+//           }
+//           style={{
+//             padding: "12px 20px",
+//             background: "#002455",
+//             color: "white",
+//             border: "none",
+//             borderRadius: "10px",
+//             cursor: "pointer"
+//           }}
+//         >
+//           Increase Count
+//         </button>
 
-      </div>
+//       </div>
 
-    </div>
-  );
-}`,
-  },
+//     </div>
+//   );
+// }`,
+//   },
 
   // ====================================================
   // PHP
   // ====================================================
 
-  {
-    label: "PHP",
-    value: "php",
-    extension: "php",
-    color: "#777BB4",
-    mode: "execute",
+//   {
+//     label: "PHP",
+//     value: "php",
+//     extension: "php",
+//     color: "#777BB4",
+//     mode: "execute",
 
-    starterCode: `<?php
+//     starterCode: `<?php
 
-$name = "SastraCode";
+// $name = "SastraCode";
 
-echo "Hello " . $name . "!\\n";
+// echo "Hello " . $name . "!\\n";
 
-for ($i = 1; $i <= 5; $i++) {
-    echo "Number: " . $i . "\\n";
-}
+// for ($i = 1; $i <= 5; $i++) {
+//     echo "Number: " . $i . "\\n";
+// }
 
-?>`,
-  },
+// ?>`,
+//   },
 
   // ====================================================
   // NODE.JS
@@ -462,58 +462,58 @@ users.forEach((user, index) => {
   // C
   // ====================================================
 
-  {
-    label: "C",
-    value: "c",
-    extension: "c",
-    color: "#A8B9CC",
-    mode: "execute",
+//   {
+//     label: "C",
+//     value: "c",
+//     extension: "c",
+//     color: "#A8B9CC",
+//     mode: "execute",
 
-    starterCode: `#include <stdio.h>
+//     starterCode: `#include <stdio.h>
 
-int main() {
+// int main() {
 
-    printf("Hello SastraCode!\\n");
+//     printf("Hello SastraCode!\\n");
 
-    for (int i = 1; i <= 5; i++) {
-        printf("Number: %d\\n", i);
-    }
+//     for (int i = 1; i <= 5; i++) {
+//         printf("Number: %d\\n", i);
+//     }
 
-    return 0;
-}`,
-  },
+//     return 0;
+// }`,
+//   },
 
   // ====================================================
   // C++
   // ====================================================
 
-  {
-    label: "C++",
-    value: "cpp",
-    extension: "cpp",
-    color: "#00599C",
-    mode: "execute",
+//   {
+//     label: "C++",
+//     value: "cpp",
+//     extension: "cpp",
+//     color: "#00599C",
+//     mode: "execute",
 
-    starterCode: `#include <iostream>
+//     starterCode: `#include <iostream>
 
-using namespace std;
+// using namespace std;
 
-int main() {
+// int main() {
 
-    cout
-      << "Hello SastraCode!"
-      << endl;
+//     cout
+//       << "Hello SastraCode!"
+//       << endl;
 
-    for (int i = 1; i <= 5; i++) {
-        cout
-          << "Number: "
-          << i
-          << endl;
-    }
+//     for (int i = 1; i <= 5; i++) {
+//         cout
+//           << "Number: "
+//           << i
+//           << endl;
+//     }
 
-    return 0;
-}`,
-  },
+//     return 0;
+// }`,
+  // },
 
   // ====================================================
   // PYTHON
@@ -580,32 +580,32 @@ print(
   // C#
   // ====================================================
 
-  {
-    label: "C#",
-    value: "csharp",
-    extension: "cs",
-    color: "#9B4F96",
-    mode: "execute",
+//   {
+//     label: "C#",
+//     value: "csharp",
+//     extension: "cs",
+//     color: "#9B4F96",
+//     mode: "execute",
 
-    starterCode: `using System;
+//     starterCode: `using System;
 
-class Program
-{
-    static void Main()
-    {
-        Console.WriteLine(
-            "Hello SastraCode!"
-        );
+// class Program
+// {
+//     static void Main()
+//     {
+//         Console.WriteLine(
+//             "Hello SastraCode!"
+//         );
 
-        for (int i = 1; i <= 5; i++)
-        {
-            Console.WriteLine(
-                "Number: " + i
-            );
-        }
-    }
-}`,
-  },
+//         for (int i = 1; i <= 5; i++)
+//         {
+//             Console.WriteLine(
+//                 "Number: " + i
+//             );
+//         }
+//     }
+// }`,
+//   },
 
   // ====================================================
   // KOTLIN

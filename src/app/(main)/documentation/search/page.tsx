@@ -1,48 +1,45 @@
-"use client";
-
-import { Suspense } from "react";
 import { Search } from "lucide-react";
-import { useSearchParams } from "next/navigation";
 
 import DocsShell from "@/components/documentation/DocsShell";
 import FilterTabs from "@/components/documentation/FilterTabs";
 import SearchResultCard from "@/components/documentation/SearchResultCard";
 import SortDropdown from "@/components/documentation/SortDropdown";
-import { useGlobalSearchQuery } from "@/redux/service/searchApi";
-import { useListTutorialsQuery } from "@/redux/api/tutorial-api";
+import { searchResults } from "@/lib/data/documentation";
 
-function SearchDocsPageContent() {
-  const searchParams = useSearchParams();
-  const query = searchParams.get("q") ?? "";
+type SearchPageProps = {
+  searchParams: Promise<{
+    q?: string | string[];
+  }>;
+};
+
+export default async function SearchDocsPage({
+  searchParams,
+}: SearchPageProps) {
+  const params = await searchParams;
+
+  const query = Array.isArray(params.q)
+    ? params.q[0] ?? ""
+    : params.q ?? "";
 
   const normalizedQuery = query.toLowerCase().trim();
-  const { data, isFetching, error } = useGlobalSearchQuery(
-    { q: normalizedQuery, type: "TUTORIAL", size: 20, sort: "popular" },
-    { skip: normalizedQuery.length < 2 },
-  );
-  const {
-    data: tutorialsData,
-    isFetching: isFetchingTutorials,
-    error: tutorialsError,
-  } = useListTutorialsQuery(
-    { status: "PUBLISHED", page: 0, size: 100, sort: "publishedAt,desc" },
-    { skip: normalizedQuery.length < 2 },
-  );
-  const apiResults = data?.data?.items ?? [];
-  const fallbackResults = (tutorialsData?.data?.content ?? [])
-    .filter(
-      (tutorial) =>
-        tutorial.title.toLowerCase().includes(normalizedQuery) ||
-        tutorial.summary?.toLowerCase().includes(normalizedQuery),
-    )
-    .map((tutorial) => ({
-      ...tutorial,
-      type: "TUTORIAL" as const,
-      description: tutorial.summary,
-    }));
-  const filteredResults = apiResults.length > 0 ? apiResults : fallbackResults;
-  const searching = isFetching || isFetchingTutorials;
-  const searchFailed = Boolean(error && tutorialsError);
+
+  const filteredResults = normalizedQuery
+    ? searchResults.filter((result) => {
+        const title = result.title?.toLowerCase() ?? "";
+        const description = result.description?.toLowerCase() ?? "";
+
+        const content =
+          "content" in result && typeof result.content === "string"
+            ? result.content.toLowerCase()
+            : "";
+
+        return (
+          title.includes(normalizedQuery) ||
+          description.includes(normalizedQuery) ||
+          content.includes(normalizedQuery)
+        );
+      })
+    : [];
 
   return (
     <DocsShell>
@@ -88,15 +85,7 @@ function SearchDocsPageContent() {
               <SortDropdown />
             </div>
 
-            {searching ? (
-              <div className="py-12 text-center text-sm text-muted-foreground">
-                Searching tutorials...
-              </div>
-            ) : searchFailed ? (
-              <div className="py-12 text-center text-sm text-destructive">
-                Search could not be loaded. Please try again.
-              </div>
-            ) : filteredResults.length > 0 ? (
+            {filteredResults.length > 0 ? (
               <div className="flex flex-col gap-4">
                 {filteredResults.map((result) => (
                   <SearchResultCard
@@ -122,13 +111,5 @@ function SearchDocsPageContent() {
         )}
       </div>
     </DocsShell>
-  );
-}
-
-export default function SearchDocsPage() {
-  return (
-    <Suspense fallback={null}>
-      <SearchDocsPageContent />
-    </Suspense>
   );
 }
