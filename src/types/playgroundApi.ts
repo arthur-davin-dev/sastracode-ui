@@ -10,7 +10,7 @@ export const playgroundApi = sastraApi.injectEndpoints({
   endpoints: (builder) => ({
     executeCode: builder.mutation<CodeExecuteResponse, CodeExecuteRequest>({
       query: (body) => ({
-        url: "/playground/execute",
+        url: "/v1/code/execute",
 
         method: "POST",
 

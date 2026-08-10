@@ -12,10 +12,6 @@ declare module "next-auth/jwt" {
   interface JWT {
     accessToken?: string;
     refreshToken?: string;
-<<<<<<< HEAD
-=======
-    idToken?: string;
->>>>>>> origin/kongkea-new
     accessTokenExpires?: number;
     error?: "RefreshAccessTokenError";
   }

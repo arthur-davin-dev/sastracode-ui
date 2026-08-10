@@ -62,7 +62,6 @@
 
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Inter } from "next/font/google";
 
 import "./globals.css";
 
@@ -88,12 +87,6 @@ const googleSans = localFont({
   display: "swap",
 });
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: "SastraCode",
   description: "Programming Learning Platform",
@@ -108,7 +101,7 @@ export default function RootLayout({
     <html
       lang="km"
       suppressHydrationWarning
-      className={`${googleSans.variable} ${inter.variable}`}
+      className={googleSans.variable}
     >
       <body>
         <AuthProvider>
