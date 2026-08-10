@@ -10,14 +10,14 @@ const rankColors: Record<number, string> = {
 export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
   return (
     <div
-      className={`flex items-center justify-between p-4 my-1.5 rounded-2xl transition-all duration-300 border ${
+      className={`my-1.5 grid grid-cols-[2.5rem_minmax(0,1fr)] items-center gap-2 rounded-2xl border p-3 transition-all duration-300 sm:grid-cols-[3rem_minmax(0,1fr)_auto] sm:gap-3 sm:p-4 ${
         entry.isCurrentUser
           ? "bg-init-color/10 border-init-color/60 shadow-md"
           : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60"
       }`}
     >
       {/* Rank Badge */}
-      <div className="flex items-center justify-center w-12 shrink-0">
+      <div className="flex w-10 shrink-0 items-center justify-center sm:w-12">
         {entry.rank <= 3 ? (
           <span
             className={`h-9 w-9 rounded-2xl flex items-center justify-center text-lg ${rankColors[entry.rank]}`}
@@ -32,8 +32,8 @@ export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
       </div>
 
       {/* User Info */}
-      <div className="flex items-center gap-4 flex-1 min-w-0 ml-2">
-        <Avatar className="h-12 w-12 border-2 border-slate-200 dark:border-slate-700 shrink-0">
+      <div className="ml-1 flex min-w-0 items-center gap-3 sm:ml-2 sm:gap-4">
+        <Avatar className="h-10 w-10 shrink-0 border-2 border-slate-200 dark:border-slate-700 sm:h-12 sm:w-12">
           <AvatarImage src={entry.avatarUrl} alt={entry.name} />
           <AvatarFallback className="bg-init-color/20 text-secondary-color text-lg font-extrabold">
             {entry.name?.[0] || "U"}
@@ -41,23 +41,23 @@ export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
         </Avatar>
 
         <div className="flex flex-col min-w-0">
-          <p className="text-lg font-bold text-primary-color truncate leading-tight">
+          <p className="truncate text-base font-bold leading-tight text-primary-color sm:text-lg">
             {entry.name}
             {entry.isCurrentUser && (
-              <span className="ml-2 text-lg font-extrabold text-secondary-color bg-red-100 dark:bg-red-950/50 px-3 py-2 rounded-full inline-block">
+              <span className="ml-2 inline-block rounded-full bg-red-100 px-2 py-1 text-xs font-extrabold text-secondary-color dark:bg-red-950/50 sm:px-3 sm:text-sm">
                 អ្នក
               </span>
             )}
           </p>
-          <p className="text-base font-medium text-primary-color opacity-70">
-            កម្រិត {entry.level}
+          <p className="truncate text-sm font-medium text-primary-color opacity-70 sm:text-base">
+            {entry.level ? `កម្រិត ${entry.level}` : "Leaderboard member"}
           </p>
         </div>
       </div>
 
       {/* XP Score */}
-      <div className="text-right shrink-0">
-        <span className="text-lg font-extrabold text-primary-color bg-slate-100 dark:bg-slate-800 px-3.5 py-1.5 rounded-xl border border-slate-200/50 dark:border-slate-700/50 inline-block">
+      <div className="col-start-2 text-left sm:col-start-auto sm:text-right">
+        <span className="inline-block rounded-xl border border-slate-200/50 bg-slate-100 px-3 py-1 text-sm font-extrabold text-primary-color dark:border-slate-700/50 dark:bg-slate-800 sm:px-3.5 sm:py-1.5 sm:text-lg">
           {entry.xp.toLocaleString()} <span className="text-red-600 text-base font-bold">XP</span>
         </span>
       </div>

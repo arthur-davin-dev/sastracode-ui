@@ -42,7 +42,7 @@ export default function CourseCard({ course }: CourseCardProps) {
         </h3>
         
         {/* Description */}
-        <p className="line-clamp-3 flex-1 text-sm leading-relaxed text-slate-500 dark:text-slate-400 mb-5">
+        <p className="mb-5 line-clamp-2 min-h-[2.75rem] flex-1 overflow-hidden text-ellipsis text-sm leading-relaxed text-slate-500 dark:text-slate-400">
           {course.description}
         </p>
 

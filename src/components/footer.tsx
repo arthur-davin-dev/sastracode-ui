@@ -26,7 +26,7 @@ export default function Footer() {
             >
               <div className="w-20 h-20 relative shrink-0">
                 <Image
-                  src="/images/sastra_code_logo.png"
+                  src="/images/sastraCode.png"
                   alt="SastraCode Logo"
                   width={80}
                   height={80}

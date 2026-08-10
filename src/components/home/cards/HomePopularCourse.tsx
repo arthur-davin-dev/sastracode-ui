@@ -12,6 +12,9 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { useTranslation } from "@/hooks/useTranslations"
+import { useRouter } from "next/navigation"
+import { useGetPublicCoursesQuery } from "@/redux/api/course-api"
+import { mapApiCourseToCourse } from "@/lib/course/course-adapter"
 
 // CourseCard Component
 interface CourseCardProps {
@@ -79,7 +82,7 @@ function CourseCard({
   )
 }
 
-const courses = [
+const documentationCards = [
   {
     id: 1,
     image: "/images/html.png",
@@ -133,11 +136,19 @@ const courses = [
 // Main Component
 export function HomePopularCourse() {
   const currentT = useTranslation();
+  const router = useRouter();
+  const { data, isLoading, error } = useGetPublicCoursesQuery({ sort: "POPULAR" });
+  const courses = (data ?? []).slice(0, 8).map(mapApiCourseToCourse);
 
-  // Course data - replace with your actual data
-  const handleViewCourse = (courseId: number) => {
-    console.log("View course:", courseId)
-    // Add your navigation logic here
+  React.useEffect(() => {
+    if (isLoading) return;
+    void import("preline/non-auto").then(({ HSStaticMethods }) => {
+      HSStaticMethods.autoInit();
+    });
+  }, [isLoading, courses.length]);
+
+  const handleViewCourse = (courseId: string) => {
+    router.push(`/courses/${courseId}`);
   }
 
   return (
@@ -156,18 +167,30 @@ export function HomePopularCourse() {
         <div className="hs-carousel relative w-full min-h-110 overflow-hidden">
           {/* Carousel Body */}
           <div className="px-6 hs-carousel-body flex flex-nowrap absolute top-0 bottom-0 inset-s-0 transition-transform duration-700 -mx-1 cursor-grab hs-carousel-dragging:transition-none hs-carousel-dragging:cursor-grabbing opacity-0 gap-1.5">
-            {courses.map((course) => (
+            {isLoading && [1, 2, 3, 4].map((item) => (
+              <div key={item} className="hs-carousel-slide px-1">
+                <div className="mx-auto my-6 h-96 w-full max-w-sm animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800" />
+              </div>
+            ))}
+            {!isLoading && !error && courses.map((course) => (
               <div key={course.id} className="hs-carousel-slide px-1">
                 <CourseCard
                   image={course.image}
                   title={course.title}
                   description={course.description}
-                  badge={course.badge}
-                  buttonText={course.buttonText}
+                  badge={course.accessType === "PREMIUM" ? "Premium" : course.category}
+                  buttonText="មើលវគ្គសិក្សា"
                   onView={() => handleViewCourse(course.id)}
                 />
               </div>
             ))}
+            {!isLoading && error && (
+              <div className="hs-carousel-slide px-1">
+                <div className="m-6 rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-600 dark:border-red-900 dark:bg-red-950/20 dark:text-red-300">
+                  មិនអាចទាញយកវគ្គសិក្សាពេញនិយមពី API បាន។
+                </div>
+              </div>
+            )}
           </div>
           {/* End Carousel Body */}
         </div>
@@ -227,7 +250,7 @@ export function HomePopularDoc() {
         <div className="hs-carousel relative w-full min-h-110 overflow-hidden">
           {/* Carousel Body */}
           <div className="px-6 hs-carousel-body flex flex-nowrap absolute top-0 bottom-0 inset-s-0 transition-transform duration-700 -mx-1 cursor-grab hs-carousel-dragging:transition-none hs-carousel-dragging:cursor-grabbing opacity-0 gap-1.5">
-            {courses.map((course) => (
+            {documentationCards.map((course) => (
               <div key={course.id} className="hs-carousel-slide px-1">
                 <CourseCard
                   image={course.image}

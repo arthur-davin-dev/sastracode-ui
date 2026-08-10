@@ -1,212 +1,119 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { Bell, CheckCheck, ChevronLeft, ChevronRight } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { CheckCheck, Bell, Sparkles } from "lucide-react";
-import { NotificationTabs } from "@/components/notification/NotificationTabs";
-import { NotificationItem } from "@/components/notification/NotificationItem";
-import { NotificationSuggestionCard } from "@/components/notification/NotificationSuggestionCard";
+
 import {
-  NotificationItem as NotificationItemType,
-  NotificationSuggestion,
-} from "@/types/notification";
-
-const initialNotifications: NotificationItemType[] = [
-  {
-    id: "1",
-    type: "course",
-    category: "ថ្មីៗ",
-    title: "វគ្គសិក្សាថ្មី៖ បង្រៀនអំពី React.js ត្រូវបានផ្សព្វផ្សាយ",
-    description:
-      "ចូលរួមសិក្សាវគ្គថ្មីអំពីខ្លឹមសារជាមូលដ្ឋាននៃ React.js និងបង្កើតគម្រោងជាមួយវា។ បន្ថែមទៀតអំពីរបៀបប្រើប្រាស់ Hooks ក៏ដូចជា Component ជាដើម",
-    time: "២ នាទីមុន",
-    isUnread: true,
-  },
-  {
-    id: "2",
-    type: "reward",
-    category: "រង្វាន់",
-    title: "សូមអបអរសាទរ! អ្នកទទួលបានរង្វាន់ថ្មី \"អ្នករៀនសាមញ្ញ\"",
-    description:
-      "អ្នកបានបញ្ចប់លំហាត់ថ្មី ១០ ដងជាប់ៗគ្នា។ ត្រូវការស្វែងរកនិងស្វែងយល់បន្ថែមអំពីរបៀបប្រើប្រាស់មុខងារនេះ និងបន្តខិតខំសិក្សាបន្ថែម",
-    time: "២ នាទីមុន",
-    isUnread: true,
-  },
-  {
-    id: "3",
-    type: "streak",
-    category: "ការរំលឹក",
-    title: "ការរំលឹក កំពុងធ្វេស \"HTML Basics\" លិខិតបញ្ជាក់កំពុងរង់ចាំ",
-    description:
-      "ចូលរួមសិក្សាថ្នាក់ថ្មីអំពីខ្លឹមសារជាមូលដ្ឋាននៃ React.js និងបង្កើតគម្រោងជាមួយវា។ ត្រូវការស្វែងរកបន្ថែមអំពីរបៀបប្រើប្រាស់មុខងារនេះ",
-    time: "២ នាទីមុន",
-    isUnread: true,
-    streakData: {
-      progressPercent: 60,
-      label: "សម្រេចបាន ៦០% រួចហើយ",
-    },
-  },
-  {
-    id: "4",
-    type: "system",
-    category: "ប្រព័ន្ធ",
-    title: "ការធ្វើបច្ចុប្បន្នភាពប្រព័ន្ធនឹងកើតឡើងថ្ងៃស្អែក",
-    description:
-      "អ្នកគួរធ្វើការចម្លងទុកព័ត៌មានសំខាន់ៗរបស់អ្នក មុនពេលប្រព័ន្ធធ្វើការធ្វើបច្ចុប្បន្នភាព និងបន្តខិតខំសិក្សាបន្ថែម",
-    time: "២ នាទីមុន",
-    isUnread: true,
-  },
-];
-
-const suggestions: NotificationSuggestion[] = [
-  {
-    id: "1",
-    icon: "flame",
-    title: "កម្រិតថាស",
-    subtitle: "នៅសល់អ្នកបានធ្វើកម្មវិធីរួច ១ថ្ងៃទៀត",
-    variant: "primary",
-  },
-  {
-    id: "2",
-    icon: "trophy",
-    title: "វិញ្ញាបនបត្រថ្មី",
-    subtitle: "បញ្ចប់វគ្គបន្ថែម",
-    variant: "secondary",
-  },
-  {
-    id: "3",
-    icon: "lock",
-    title: "ដោះសោសមិទ្ធផលថ្មី",
-    subtitle: "បញ្ចប់មេរៀនបន្ថែម ៤ ទៀត",
-    variant: "locked",
-  },
-];
+  useGetMyNotificationsQuery,
+  useGetUnreadNotificationCountQuery,
+  useMarkAllNotificationsReadMutation,
+  useMarkNotificationReadMutation,
+} from "@/redux/service/notificationApi";
 
 export default function Notification() {
-  const [activeTab, setActiveTab] = useState("all");
-  const [notificationsList, setNotificationsList] =
-    useState<NotificationItemType[]>(initialNotifications);
-
-  const unreadCount = notificationsList.filter((n) => n.isUnread).length;
-
-  const filteredNotifications =
-    activeTab === "unread"
-      ? notificationsList.filter((n) => n.isUnread)
-      : notificationsList;
-
-  const markAllAsRead = () => {
-    setNotificationsList((prev) =>
-      prev.map((item) => ({ ...item, isUnread: false }))
+  const { status } = useSession();
+  const [filter, setFilter] = useState<"all" | "unread">("all");
+  const [page, setPage] = useState(0);
+  const enabled = status === "authenticated";
+  const { data, isLoading, isFetching, isError, refetch } =
+    useGetMyNotificationsQuery(
+      { isRead: filter === "unread" ? false : undefined, page, size: 20 },
+      { skip: !enabled },
     );
-  };
+  const { data: unreadCount = 0 } = useGetUnreadNotificationCountQuery(undefined, {
+    skip: !enabled,
+  });
+  const [markRead] = useMarkNotificationReadMutation();
+  const [markAllRead, { isLoading: markingAll }] =
+    useMarkAllNotificationsReadMutation();
+
+  if (status === "loading" || isLoading) {
+    return <div className="space-y-4 p-6">{[1, 2, 3, 4].map((item) => <div key={item} className="h-32 animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800" />)}</div>;
+  }
+
+  if (!enabled) {
+    return <div className="m-6 rounded-3xl border border-dashed border-slate-300 p-12 text-center text-slate-600 dark:border-slate-700 dark:text-slate-300">Please sign in to view your notifications.</div>;
+  }
 
   return (
-    <div className="relative w-full min-h-screen bg-slate-50/50 dark:bg-slate-950 px-4 py-12 md:py-16 overflow-hidden transition-colors duration-300">
-      
-      {/* Decorative Ambient Radial Glow */}
-      <div className="absolute top-0 right-1/4 h-96 w-96 rounded-full  pointer-events-none" />
-      <div className="absolute bottom-10 left-10 h-96 w-96 rounded-full pointer-events-none" />
-
-      <div className="max-w-5xl mx-auto space-y-8 relative z-10">
-        
-        {/* Breadcrumb Navigation (text-lg) */}
-        <nav className="text-lg font-medium text-primary-color opacity-70">
-          ផ្ទាំងគ្រប់គ្រង &gt; <span className="font-bold opacity-100">ការជូនដំណឹង</span>
-        </nav>
-
-        {/* Page Header Area */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white dark:bg-slate-900 p-8 rounded-3xl border-2 border-slate-100 dark:border-slate-800 shadow-xl relative overflow-hidden">
-          
-          {/* Top Accent Line */}
-          <div className="absolute top-0 left-0 w-full h-2 " />
-
-          <div className="space-y-2">
-            {/* Main Title (text-2xl) */}
-            <h1 className="text-2xl font-extrabold text-primary-color flex items-center gap-3">
-              <div className="p-3 rounded-2xl bg-yellow-400/20 border border-yellow-400/50 flex items-center justify-center">
-                <Bell className="h-7 w-7 text-secondary-color" />
-              </div>
-              ការរំលឹក និងការជូនដំណឹង
-            </h1>
-
-            {/* Subtitle / Description (text-lg) */}
-            <p className="text-lg text-primary-color opacity-80 pl-1">
-              តាមដានសារជូនដំណឹងទាំងអស់ រួមទាំងព័ត៌មានថ្មីៗអំពីការសិក្សា
-            </p>
+    <div className="mx-auto w-full max-w-5xl space-y-6 p-4 sm:p-6">
+      <header className="flex flex-col gap-5 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <div>
+          <div className="flex items-center gap-3">
+            <span className="rounded-2xl bg-primary-color/10 p-3 text-primary-color"><Bell className="h-6 w-6" /></span>
+            <div>
+              <p className="text-sm font-bold uppercase tracking-wider text-primary-color">Inbox</p>
+              <h1 className="text-2xl font-extrabold text-slate-950 dark:text-white">Notifications</h1>
+            </div>
           </div>
-
-          {/* Mark All As Read Button (Red Secondary with Yellow Hover) */}
-          <Button
-            onClick={markAllAsRead}
-            disabled={unreadCount === 0}
-            className="h-14 px-6 rounded-2xl text-lg font-bold text-white bg-secondary-color hover:bg-secondary-color/50 shadow-md transition-all duration-300 gap-2.5 shrink-0 flex items-center justify-center border border-red-500/40 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <CheckCheck className="h-6 w-6" />
-            <span>សម្គាល់ថាបានអានទាំងអស់</span>
-          </Button>
+          <p className="mt-3 text-slate-600 dark:text-slate-300">All announcements and updates delivered by the administration.</p>
         </div>
+        <button
+          type="button"
+          disabled={unreadCount === 0 || markingAll}
+          onClick={() => markAllRead()}
+          className="flex h-11 items-center justify-center gap-2 rounded-xl bg-primary-color px-4 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <CheckCheck className="h-5 w-5" /> Mark all as read
+        </button>
+      </header>
 
-        {/* Filter Navigation Tabs */}
-        <section>
-          <NotificationTabs
-            activeTab={activeTab}
-            onTabChange={setActiveTab}
-            counts={{ all: notificationsList.length, unread: unreadCount }}
-          />
-        </section>
-
-        {/* Notifications List Container */}
-        <section className="space-y-4">
-          <AnimatePresence mode="popLayout">
-            {filteredNotifications.length === 0 ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                className="py-16 text-center rounded-3xl bg-white dark:bg-slate-900 border-2 border-dashed border-slate-200 dark:border-slate-800 shadow-sm space-y-3"
-              >
-                <Bell className="h-12 w-12 text-slate-400 mx-auto" />
-                <p className="text-2xl font-bold text-primary-color">
-                  គ្មានការជូនដំណឹងនៅឡើយទេ
-                </p>
-                <p className="text-lg text-primary-color opacity-70">
-                  សារជូនដំណឹងថ្មីៗរបស់អ្នកនឹងបង្ហាញនៅទីនេះ
-                </p>
-              </motion.div>
-            ) : (
-              filteredNotifications.map((n, i) => (
-                <motion.div
-                  key={n.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ delay: i * 0.08, duration: 0.3 }}
-                >
-                  <NotificationItem notification={n} />
-                </motion.div>
-              ))
-            )}
-          </AnimatePresence>
-        </section>
-
-        {/* Achievements / Suggestions Section */}
-        <section className="pt-6 space-y-4">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-init-color" />
-            <h2 className="text-2xl font-extrabold text-primary-color">
-              សមិទ្ធផលថ្មីរបស់អ្នក
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {suggestions.map((s) => (
-              <NotificationSuggestionCard key={s.id} suggestion={s} />
-            ))}
-          </div>
-        </section>
-
+      <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white p-1.5 dark:border-slate-800 dark:bg-slate-900">
+        {(["all", "unread"] as const).map((tab) => (
+          <button
+            key={tab}
+            type="button"
+            onClick={() => { setFilter(tab); setPage(0); }}
+            className={`rounded-xl px-4 py-2 text-sm font-bold capitalize ${filter === tab ? "bg-primary-color text-white" : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"}`}
+          >
+            {tab} {tab === "unread" && `(${unreadCount})`}
+          </button>
+        ))}
       </div>
+
+      {isError ? (
+        <div className="rounded-3xl border border-red-200 bg-red-50 p-10 text-center dark:border-red-900 dark:bg-red-950/20">
+          <p className="font-bold text-red-700 dark:text-red-300">Could not load notifications.</p>
+          <button type="button" onClick={() => refetch()} className="mt-4 rounded-xl bg-primary-color px-4 py-2 text-sm font-bold text-white">Try again</button>
+        </div>
+      ) : !data?.content.length ? (
+        <div className="rounded-3xl border border-dashed border-slate-300 bg-white p-14 text-center dark:border-slate-700 dark:bg-slate-900">
+          <Bell className="mx-auto h-10 w-10 text-slate-400" />
+          <p className="mt-3 font-bold text-slate-800 dark:text-slate-200">No notifications here.</p>
+        </div>
+      ) : (
+        <div className={`space-y-3 ${isFetching ? "opacity-70" : ""}`} aria-busy={isFetching}>
+          {data.content.map((item) => (
+            <article key={item.notificationReceiverId} className={`rounded-2xl border bg-white p-5 shadow-sm dark:bg-slate-900 ${item.isRead ? "border-slate-200 dark:border-slate-800" : "border-l-4 border-l-red-500 border-y-slate-200 border-r-slate-200 dark:border-y-slate-800 dark:border-r-slate-800"}`}>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="rounded-full bg-primary-color/10 px-2.5 py-1 text-xs font-bold text-primary-color">{item.type.replaceAll("_", " ")}</span>
+                    {!item.isRead && <span className="rounded-full bg-red-100 px-2 py-1 text-[11px] font-bold text-red-700 dark:bg-red-950 dark:text-red-300">New</span>}
+                    <time className="text-xs text-slate-500 dark:text-slate-400">{new Date(item.deliveredAt).toLocaleString()}</time>
+                  </div>
+                  <h2 className="mt-3 text-lg font-bold text-slate-950 dark:text-white">{item.title}</h2>
+                  <p className="mt-1 whitespace-pre-wrap text-sm leading-6 text-slate-600 dark:text-slate-300">{item.content}</p>
+                </div>
+                <div className="flex shrink-0 items-center gap-2">
+                  {!item.isRead && <button type="button" onClick={() => markRead(item.notificationReceiverId)} className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-primary-color dark:border-slate-700">Mark read</button>}
+                  {item.deepLink && <Link href={item.deepLink} onClick={() => !item.isRead && markRead(item.notificationReceiverId)} className="rounded-lg bg-primary-color px-3 py-2 text-xs font-bold text-white">Open</Link>}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+
+      {data && data.totalPages > 1 && (
+        <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-900">
+          <button type="button" disabled={data.first} onClick={() => setPage((value) => Math.max(0, value - 1))} className="rounded-lg p-2 text-primary-color disabled:opacity-30"><ChevronLeft /></button>
+          <span className="text-sm text-slate-600 dark:text-slate-300">Page {data.number + 1} of {data.totalPages}</span>
+          <button type="button" disabled={data.last} onClick={() => setPage((value) => value + 1)} className="rounded-lg p-2 text-primary-color disabled:opacity-30"><ChevronRight /></button>
+        </div>
+      )}
     </div>
   );
 }

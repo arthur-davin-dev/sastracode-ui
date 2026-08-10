@@ -62,7 +62,6 @@
 
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Inter } from "next/font/google";
 
 import "./globals.css";
 
@@ -70,6 +69,7 @@ import { LanguageProvider } from "@/lib/language-context";
 import StoreProvider from "./StoreProvider";
 import AuthProvider from "@/components/AuthProvider";
 import PrelineClient from "./components/PrelineClient";
+import { Toaster } from "@/components/ui/sonner";
 
 const googleSans = localFont({
   src: [
@@ -87,12 +87,6 @@ const googleSans = localFont({
   display: "swap",
 });
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: "SastraCode",
   description: "Programming Learning Platform",
@@ -107,7 +101,7 @@ export default function RootLayout({
     <html
       lang="km"
       suppressHydrationWarning
-      className={`${googleSans.variable} ${inter.variable}`}
+      className={googleSans.variable}
     >
       <body>
         <AuthProvider>
@@ -116,6 +110,7 @@ export default function RootLayout({
               {children}
 
               <PrelineClient />
+              <Toaster position="top-right" richColors />
             </LanguageProvider>
           </StoreProvider>
         </AuthProvider>

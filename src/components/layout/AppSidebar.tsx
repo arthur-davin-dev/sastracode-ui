@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import {
@@ -10,7 +11,6 @@ import {
   Award,
   Bell,
   Users,
-  HelpCircle,
   LogOut,
   ChevronDown,
   ChevronLeft,
@@ -19,6 +19,8 @@ import {
   Bookmark,
   X,
 } from "lucide-react";
+import { logoutUser } from "@/lib/auth/logout";
+import SidebarNotifications from "@/components/notification/SidebarNotifications";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -51,6 +53,11 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
     if (window.innerWidth < 1024) closeMobile();
   };
 
+  const handleLogout = async () => {
+    goToLink();
+    await logoutUser("/");
+  };
+
   return (
     <aside className={`relative h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col py-6 transition-all duration-300 shadow-lg ${isCollapsed ? "w-20" : "w-70"}`}>
       
@@ -70,9 +77,11 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
       {/* Logo */}
       <div className="flex flex-col items-center justify-center mb-6 px-4">
         <Link href="/" className="flex flex-col items-center gap-2 transform-none">
-          <img
+          <Image
             src="/images/sastra_code_logo.png"
             alt="SastraCode Logo"
+            width={96}
+            height={80}
             className={`transition-all duration-300 object-contain ${isCollapsed ? "h-12 w-12" : "h-20 w-auto"}`}
           />
           {!isCollapsed && <h1 className="text-2xl font-extrabold text-primary-color select-none">SastraCode</h1>}
@@ -129,6 +138,17 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
             );
           }
 
+          if (item.href === "/notifications") {
+            return (
+              <SidebarNotifications
+                key={item.href}
+                collapsed={isCollapsed}
+                active={isActive}
+                onNavigate={goToLink}
+              />
+            );
+          }
+
           return (
             <Link
               key={item.href}
@@ -147,12 +167,12 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
 
       {/* Footer */}
       <div className="px-4 mt-4 border-t border-slate-200 dark:border-slate-800 pt-4 space-y-2">
-        <button onClick={goToLink} className="flex items-center gap-3.5 px-4 py-3 text-lg font-bold text-primary-color hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl w-full transform-none select-none">
+        {/* <button onClick={goToLink} className="flex items-center gap-3.5 px-4 py-3 text-lg font-bold text-primary-color hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl w-full transform-none select-none">
           <HelpCircle size={24} className="shrink-0 text-primary-color" />
           {!isCollapsed && <span className="truncate">ជំនួយ</span>}
-        </button>
+        </button> */}
 
-        <button onClick={goToLink} className="flex items-center gap-3.5 px-4 py-3 text-lg font-bold text-secondary-color hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl w-full transform-none select-none">
+        <button onClick={handleLogout} className="flex items-center gap-3.5 px-4 py-3 text-lg font-bold text-secondary-color hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl w-full transform-none select-none">
           <LogOut size={24} className="shrink-0 text-secondary-color" />
           {!isCollapsed && <span className="truncate">ចាកចេញ</span>}
         </button>

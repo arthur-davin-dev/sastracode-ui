@@ -1,7 +1,7 @@
 import Hero from "@/components/documentation/Hero";
 import CourseProgressCard from "@/components/documentation/CourseProgressCard";
+import DocumentationTutorials from "@/components/documentation/DocumentationTutorials";
 import { currentProgress } from "@/lib/data/courses";
-import TutorialCatalogClient from "@/components/documentation/TutorialCatalogClient";
 
 export default function DocumentationHomePage() {
   return (
@@ -14,7 +14,7 @@ export default function DocumentationHomePage() {
           <CourseProgressCard progress={currentProgress} />
         </section>
 
-        <TutorialCatalogClient />
+        <DocumentationTutorials />
       </div>
     </main>
   );

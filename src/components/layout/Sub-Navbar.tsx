@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,6 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import {
   Search,
-  Bell,
   SunMedium,
   Moon,
   Menu,
@@ -22,32 +21,43 @@ import {
 } from "lucide-react";
 
 import { pageConfig } from "@/components/layout/navbar-config";
+import SearchModal from "@/components/search/SearchModal";
+import { useGetMyProfileQuery } from "@/redux/service/profile-api";
+import { logoutUser } from "@/lib/auth/logout";
+import NotificationBell from "@/components/notification/NotificationBell";
 
 interface NavbarProps {
-  hasUnreadNotifications?: boolean;
   onOpenSidebar?: () => void;
 }
 
 export default function SubNavbar({
-  hasUnreadNotifications = true,
   onOpenSidebar,
 }: NavbarProps) {
   const pathname = usePathname();
 
   // Auth.js session
   const { data: session, status } = useSession();
+  const { data: profile } = useGetMyProfileQuery(undefined, {
+    skip: status !== "authenticated",
+  });
 
   const [darkMode, setDarkMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // ========================================
   // Safe session user values
   // ========================================
 
-  const userName = session?.user?.name ?? "User";
-  const userEmail = session?.user?.email ?? "";
-  const userAvatarUrl = session?.user?.image ?? "";
+  const profileName = [profile?.firstName, profile?.lastName]
+    .filter(Boolean)
+    .join(" ");
+  const userName =
+    profileName || profile?.username || session?.user?.name || "User";
+  const userEmail = profile?.email || session?.user?.email || "";
+  const userAvatarUrl = profile?.avatarUrl || session?.user?.image || "";
 
   const userInitial = userName.trim().charAt(0).toUpperCase() || "U";
 
@@ -74,8 +84,22 @@ export default function SubNavbar({
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
+    const timeoutId = window.setTimeout(() => {
+      setDarkMode(savedTheme === "dark");
+    }, 0);
 
-    setDarkMode(savedTheme === "dark");
+    return () => window.clearTimeout(timeoutId);
+  }, []);
+
+  useEffect(() => {
+    const openSearch = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener("keydown", openSearch);
+    return () => window.removeEventListener("keydown", openSearch);
   }, []);
 
   const toggleTheme = (event: React.MouseEvent) => {
@@ -134,12 +158,11 @@ export default function SubNavbar({
     setProfileOpen(false);
     setIsOpen(false);
 
-    await signOut({
-      redirectTo: "/",
-    });
+    await logoutUser("/");
   };
 
   return (
+    <>
     <header className="w-full bg-white dark:bg-slate-900">
       <div className="flex w-full items-center justify-between gap-4 px-4 py-3 md:px-6">
         {/* ===================================== */}
@@ -178,6 +201,9 @@ export default function SubNavbar({
 
           <Input
             placeholder="ស្វែងរកអ្វីមួយ..."
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            onFocus={() => setSearchOpen(true)}
             className="rounded-2xl border-2 border-slate-200/60 bg-slate-100 py-6 pl-12 pr-4 text-lg font-bold text-primary-color placeholder:text-primary-color/50 transition-all focus-visible:ring-yellow-400 dark:border-slate-700/60 dark:bg-slate-800"
           />
         </div>
@@ -204,17 +230,7 @@ export default function SubNavbar({
 
           {/* Notifications */}
 
-          <button
-            type="button"
-            aria-label="Notifications"
-            className="relative rounded-2xl border border-slate-200 bg-slate-100 p-3 text-primary-color transition-all hover:bg-yellow-400/20 dark:border-slate-700 dark:bg-slate-800"
-          >
-            <Bell className="h-6 w-6 text-primary-color" />
-
-            {hasUnreadNotifications && (
-              <span className="absolute right-2 top-2 h-3 w-3 animate-pulse rounded-full bg-red-600 ring-2 ring-white dark:ring-slate-900" />
-            )}
-          </button>
+          <NotificationBell />
 
           {/* ================================= */}
           {/* Session loading */}
@@ -371,6 +387,9 @@ export default function SubNavbar({
 
             <Input
               placeholder="ស្វែងរកអ្វីមួយ..."
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              onFocus={() => setSearchOpen(true)}
               className="rounded-2xl border-2 border-slate-200 bg-slate-100 py-5 pl-12 pr-4 text-lg font-bold text-primary-color placeholder:text-primary-color/50 dark:border-slate-700 dark:bg-slate-800"
             />
           </div>
@@ -406,17 +425,7 @@ export default function SubNavbar({
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  aria-label="Notifications"
-                  className="relative rounded-2xl border border-slate-200 bg-slate-100 p-3 dark:border-slate-700 dark:bg-slate-800"
-                >
-                  <Bell className="h-6 w-6 text-primary-color" />
-
-                  {hasUnreadNotifications && (
-                    <span className="absolute right-2 top-2 h-3 w-3 rounded-full bg-red-600 ring-2 ring-white dark:ring-slate-900" />
-                  )}
-                </button>
+                <NotificationBell />
               </div>
 
               {/* Profile */}
@@ -445,5 +454,7 @@ export default function SubNavbar({
         </div>
       )}
     </header>
+    {searchOpen && <SearchModal open initialQuery={searchQuery} onClose={() => setSearchOpen(false)} />}
+    </>
   );
 }

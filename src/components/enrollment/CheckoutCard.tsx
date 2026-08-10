@@ -1,105 +1,54 @@
 "use client";
 
-import {
-  Heart,
-  Lock,
-  BookOpen,
-  Clock,
-  Award,
-  Monitor,
-  Infinity as InfinityIcon,
-} from "lucide-react";
-import Link from "next/link";
-import { Course } from "@/lib/course/courses";
+import { Award, BookOpen, Clock, Infinity as InfinityIcon, Lock, Monitor } from "lucide-react";
+import { signIn, useSession } from "next-auth/react";
+import { toast } from "sonner";
+import type { Course } from "@/lib/course/courses";
+import { useEnrollCourseMutation } from "@/redux/api/course-api";
 
 interface CheckoutCardProps {
   course: Course;
 }
 
 export function CheckoutCard({ course }: CheckoutCardProps) {
-  const displayPrice = course.price && course.price > 0 ? course.price : 12;
-  const hasDiscount =
-    course.originalPrice && course.originalPrice > displayPrice;
+  const { status } = useSession();
+  const [enroll, { isLoading }] = useEnrollCourseMutation();
+  const hasDiscount = Boolean(course.originalPrice && course.originalPrice > (course.price ?? 0));
+
+  const handleEnroll = async () => {
+    if (status !== "authenticated") {
+      await signIn("keycloak", { redirectTo: `/courses/${course.id}/enroll` });
+      return;
+    }
+    try {
+      await enroll(course.id).unwrap();
+      toast.success("ចុះឈ្មោះវគ្គសិក្សាបានជោគជ័យ");
+      window.location.href = `/courses/${course.id}`;
+    } catch (error) {
+      console.error(error);
+      toast.error("មិនអាចចុះឈ្មោះវគ្គសិក្សាបាន");
+    }
+  };
+
+  const displayPrice = course.accessType === "FREE" ? "Free" : `${course.currency ?? "USD"} ${(course.price ?? 0).toFixed(2)}`;
 
   return (
-    <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 font-khmer transition-colors duration-300">
-      
-      {/* Price Header & Wishlist Button */}
-      <div className="mb-4 flex items-start justify-between">
-        <div>
-          {hasDiscount && (
-            <p className="text-sm font-medium text-slate-400 dark:text-slate-500 line-through">
-              ${course.originalPrice}.00
-            </p>
-          )}
-          <p className="text-3xl font-bold text-slate-900 dark:text-slate-100">
-            ${displayPrice}.00
-          </p>
-        </div>
-        <button
-          type="button"
-          aria-label="Save to wishlist"
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 transition hover:border-slate-300 dark:hover:border-slate-700 hover:text-red-500 dark:hover:text-red-400"
-        >
-          <Heart className="h-4 w-4" />
-        </button>
+    <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
+      <div className="mb-4">
+        {hasDiscount && <p className="text-sm font-medium text-slate-400 line-through">{course.currency ?? "USD"} {course.originalPrice?.toFixed(2)}</p>}
+        <p className="text-3xl font-bold text-slate-900 dark:text-slate-100">{displayPrice}</p>
       </div>
-
-      {/* Confirmation Button */}
-      <Link
-        href="/success"
-        className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#002455] dark:bg-blue-600 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-blue-900 dark:hover:bg-blue-700 active:scale-[0.98]"
-      >
-        <Lock className="h-4 w-4" />
-        <span>បញ្ជាក់ការចុះឈ្មោះ</span>
-      </Link>
-
-      {/* Money Back Guarantee Badge */}
-      <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
-        <Award className="h-3.5 w-3.5" />
-        <span>30-day money-back guarantee</span>
-      </p>
-
-      {/* Divider */}
+      <button onClick={handleEnroll} disabled={isLoading || course.accessType === "PRIVATE"} className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#002455] py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-900 disabled:opacity-60">
+        <Lock className="h-4 w-4" /><span>{isLoading ? "កំពុងដំណើរការ..." : course.accessType === "PRIVATE" ? "Private access" : "បញ្ជាក់ការចុះឈ្មោះ"}</span>
+      </button>
+      <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-slate-400"><Award className="h-3.5 w-3.5" /><span>Enrollment is handled by the backend API</span></p>
       <div className="my-5 border-t border-slate-100 dark:border-slate-800" />
-
-      {/* Features List */}
       <div className="space-y-3">
-        <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300">
-          <BookOpen className="h-4 w-4 text-slate-400 dark:text-slate-500 shrink-0" />
-          <span>{course.lessons} មេរៀន (Lessons)</span>
-        </div>
-        <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300">
-          <Clock className="h-4 w-4 text-slate-400 dark:text-slate-500 shrink-0" />
-          <span>{course.totalDuration ?? course.duration} រយៈពេលសរុប</span>
-        </div>
-        <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300">
-          <Award className="h-4 w-4 text-slate-400 dark:text-slate-500 shrink-0" />
-          <span>វិញ្ញាបនបត្របញ្ជាក់ការបញ្ចប់</span>
-        </div>
-        <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300">
-          <Monitor className="h-4 w-4 text-slate-400 dark:text-slate-500 shrink-0" />
-          <span>អាចប្រើប្រាស់បាននៅលើទូរស័ព្ទ និងកុំព្យូទ័រ</span>
-        </div>
-        <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300">
-          <InfinityIcon className="h-4 w-4 text-slate-400 dark:text-slate-500 shrink-0" />
-          <span>ការចូលប្រើប្រាស់បានពេញមួយជីវិត</span>
-        </div>
+        <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300"><BookOpen className="h-4 w-4 text-slate-400" /><span>{course.lessons} មេរៀន</span></div>
+        <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300"><Clock className="h-4 w-4 text-slate-400" /><span>{course.totalDuration ?? course.duration}</span></div>
+        <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300"><Monitor className="h-4 w-4 text-slate-400" /><span>Mobile និង Desktop</span></div>
+        <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300"><InfinityIcon className="h-4 w-4 text-slate-400" /><span>សិទ្ធិចូលប្រើតាម backend</span></div>
       </div>
-
-      {/* Footer Legal Terms */}
-      <p className="mt-5 text-center text-xs leading-relaxed text-slate-400 dark:text-slate-500">
-        By enrolling, you agree to our{" "}
-        <Link href="/terms" className="text-[#002455] dark:text-blue-400 font-medium hover:underline">
-          Terms of Service
-        </Link>{" "}
-        and{" "}
-        <Link href="/privacy" className="text-[#002455] dark:text-blue-400 font-medium hover:underline">
-          Privacy Policy
-        </Link>
-        .
-      </p>
-
     </div>
   );
 }

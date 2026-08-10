@@ -1,6 +1,6 @@
 import HeroSearchBar from "@/components/documentation/HeroSearchBar";
 import Backbutton from "@/components/documentation/Backbutton";
-import TutorialCatalogClient from "@/components/documentation/TutorialCatalogClient";
+import DocumentationTutorials from "@/components/documentation/DocumentationTutorials";
 
 export default function AllLessonsPage() {
   return (
@@ -12,8 +12,10 @@ export default function AllLessonsPage() {
             <HeroSearchBar />
           </div>
         </div>
-
-        <TutorialCatalogClient mode="all" />
+        
+        {/* Course Grid Content */}
+        <DocumentationTutorials showSections={false} />
+        
       </div>
     </main>
   );

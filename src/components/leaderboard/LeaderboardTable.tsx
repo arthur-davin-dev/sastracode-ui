@@ -50,6 +50,16 @@ export function LeaderboardTable({ entries, currentUser }: LeaderboardTableProps
               <LeaderboardRow entry={entry} />
             </motion.div>
           ))}
+          {entries.length === 0 && (
+            <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 py-10 text-center dark:border-slate-700 dark:bg-slate-800/40">
+              <p className="font-semibold text-slate-700 dark:text-slate-200">
+                No leaderboard members found
+              </p>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Try another name or clear the search.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Floating / Highlighted Current User Fixed Row */}

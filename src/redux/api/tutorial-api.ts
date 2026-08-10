@@ -32,8 +32,8 @@ export interface TutorialSummary {
 
 export interface DocumentBlock {
   id: string;
-  sectionId?: string;
-  subsectionId?: string;
+  subsectionId?: string | null;
+  sectionId?: string | null;
   blockTypeId?: string;
   type: string;
   data: Record<string, unknown>;
@@ -47,8 +47,26 @@ export interface TutorialSubsection {
   sectionId: string;
   title: string;
   orderIndex: number;
-  settings?: { durationSeconds?: number; passingPercentage?: number };
-  blocks: DocumentBlock[];
+  contentMode?: "EMPTY" | "DIRECT" | "GROUPED";
+  settings?: QuizSettings | null;
+  blocks?: DocumentBlock[];
+  subsections?: TutorialSubsection[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface QuizSettings {
+  durationSeconds?: number;
+  passingPercentage?: number;
+}
+
+export interface TutorialSubsection {
+  id: string;
+  sectionId: string;
+  title: string;
+  orderIndex: number;
+  settings?: QuizSettings | null;
+  blocks?: DocumentBlock[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -59,9 +77,25 @@ export interface TutorialSection {
   title: string;
   orderIndex: number;
   contentMode?: "EMPTY" | "DIRECT" | "GROUPED";
-  settings?: { durationSeconds?: number; passingPercentage?: number };
-  blocks: DocumentBlock[];
-  subsections: TutorialSubsection[];
+  settings?: QuizSettings | null;
+  blocks?: DocumentBlock[];
+  subsections?: TutorialSubsection[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface QuizSettings {
+  durationSeconds?: number;
+  passingPercentage?: number;
+}
+
+export interface TutorialSubsection {
+  id: string;
+  sectionId: string;
+  title: string;
+  orderIndex: number;
+  settings?: QuizSettings | null;
+  blocks?: DocumentBlock[];
   createdAt?: string;
   updatedAt?: string;
 }

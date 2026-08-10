@@ -1,4 +1,4 @@
-import CourseDetailClient from "@/components/courses-detail/CourseDetailClient";
+import CourseDetailPage from "@/components/courses-detail/CourseDetail";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -6,5 +6,5 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
-  return <CourseDetailClient courseId={id} />;
+  return <CourseDetailPage courseId={id} />;
 }

@@ -1,5 +1,4 @@
-import DocumentPageClient from "@/components/documentation/DocumentPageClient";
-
+import TutorialDetail from "@/components/documentation/TutorialDetail";
 
 export default async function LessonPage({
   params,
@@ -7,5 +6,5 @@ export default async function LessonPage({
   params: Promise<{ lessonId: string }>;
 }) {
   const { lessonId } = await params;
-  return <DocumentPageClient tutorialId={lessonId} />;
+  return <TutorialDetail tutorialId={lessonId} />;
 }

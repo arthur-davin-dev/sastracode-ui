@@ -1,48 +1,164 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { Layers } from 'lucide-react';
+import { BookOpen, ChevronDown, ChevronRight } from "lucide-react";
+import { useState } from "react";
 
-interface SidebarLeftProps {
-  isOpen: boolean;
-  darkMode: boolean;
+import type { TutorialSection } from "@/types/tutorial-reader";
+
+interface SidebarLeftLessonProps {
+  sections: TutorialSection[];
+  activeLessonId: string;
+  onSelectLesson: (lessonId: string) => void;
 }
 
-const courseOutline = [
-  {
-    level: "កម្រិត៖ មូលដ្ឋានគ្រឹះ (Basics)",
-    items: ["Java Syntax Basics", "Variables & Data Types", "Operators", "Control Flow", "Methods", "Arrays", "Basic Practice Projects"]
-  },
-  {
-    level: "កម្រិត៖ មធ្យម (Intermediate)",
-    items: ["Object-Oriented Programming", "Exception Handling", "Collections Framework", "File I/O"]
-  }
-];
+export default function SidebarLeftLesson({
+  sections,
+  activeLessonId,
+  onSelectLesson,
+}: SidebarLeftLessonProps) {
+  const [openSections, setOpenSections] = useState<Set<string>>(new Set());
 
-export default function SidebarLeftLesson({ isOpen, darkMode }: SidebarLeftProps) {
+  const sortedSections = [...sections].sort(
+    (a, b) => a.orderIndex - b.orderIndex,
+  );
+
+  function toggleSection(sectionId: string) {
+    setOpenSections((previous) => {
+      const next = new Set(previous);
+
+      if (next.has(sectionId)) {
+        next.delete(sectionId);
+      } else {
+        next.add(sectionId);
+      }
+
+      return next;
+    });
+  }
+
   return (
-    <aside className={`fixed inset-y-0 left-0 z-40 w-64 transform lg:transform-none lg:opacity-100 lg:static transition-all duration-300 p-6 lg:p-0 overflow-y-auto shrink-0
-      ${isOpen ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0 lg:translate-x-0'}
-      ${darkMode ? 'bg-[#0f172a] lg:bg-transparent border-r border-slate-800 lg:border-none' : 'bg-white lg:bg-transparent border-r border-slate-200 lg:border-none'}`}
-    >
-      <div className="space-y-6">
-        {courseOutline.map((section, idx) => (
-          <div key={idx} className="space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-              <Layers size={12} />
-              {section.level}
-            </h4>
-            <ul className="space-y-1 pl-2 border-l border-slate-200 dark:border-slate-800">
-              {section.items.map((item, i) => (
-                <li key={i}>
-                  <a href="#" className={`block text-sm py-1.5 px-3 rounded-lg transition-all ${item === "Variables & Data Types" ? 'bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 font-medium' : 'hover:text-indigo-500'}`}>
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
+    <aside className="h-full bg-slate-50/80 dark:bg-slate-950">
+      <div className="px-4 pb-8 pt-6">
+        <div className="mb-5 flex items-center justify-between gap-3 px-2">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <BookOpen className="h-4 w-4 shrink-0 text-[#002455] dark:text-blue-300" />
+            <h2 className="font-khmer truncate text-sm font-bold text-[#002455] dark:text-white">
+              មាតិកាមេរៀន
+            </h2>
           </div>
-        ))}
+
+          <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-bold text-slate-400 shadow-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">
+            {sortedSections.length}
+          </span>
+        </div>
+
+        <div className="space-y-1.5">
+          {sortedSections.map((section, sectionIndex) => {
+            const subsections = [...(section.subsections ?? [])].sort(
+              (a, b) => a.orderIndex - b.orderIndex,
+            );
+
+            const hasSubsections = subsections.length > 0;
+            const isDirect =
+              section.contentMode === "DIRECT" || !hasSubsections;
+            const sectionActive = activeLessonId === section.id;
+            const containsActiveLesson =
+              sectionActive ||
+              subsections.some(
+                (subsection) => subsection.id === activeLessonId,
+              );
+            const isOpen = openSections.has(section.id) || containsActiveLesson;
+
+            return (
+              <div key={section.id}>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (isDirect) {
+                        onSelectLesson(section.id);
+                      } else {
+                        toggleSection(section.id);
+                      }
+                    }}
+                    className={`group flex min-w-0 flex-1 items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 ${
+                      sectionActive
+                        ? "bg-[#002455] text-white shadow-sm"
+                        : containsActiveLesson
+                          ? "bg-white text-[#002455] shadow-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:text-blue-300 dark:ring-slate-800"
+                          : "text-slate-700 hover:bg-white hover:text-[#002455] dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"
+                    }`}
+                  >
+                    <span
+                      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold tabular-nums transition-colors ${
+                        sectionActive
+                          ? "bg-white/12 text-white"
+                          : "bg-slate-200/70 text-slate-500 group-hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-400"
+                      }`}
+                    >
+                      {String(sectionIndex + 1).padStart(2, "0")}
+                    </span>
+
+                    <span className="font-khmer min-w-0 flex-1 truncate text-[14px] font-semibold leading-6">
+                      {section.title}
+                    </span>
+                  </button>
+
+                  {hasSubsections && (
+                    <button
+                      type="button"
+                      onClick={() => toggleSection(section.id)}
+                      aria-label={
+                        isOpen ? "Collapse section" : "Expand section"
+                      }
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-400 transition hover:bg-white hover:text-[#002455] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 dark:hover:bg-slate-900 dark:hover:text-white"
+                    >
+                      {isOpen ? (
+                        <ChevronDown className="h-4 w-4" />
+                      ) : (
+                        <ChevronRight className="h-4 w-4" />
+                      )}
+                    </button>
+                  )}
+                </div>
+
+                {hasSubsections && isOpen && (
+                  <div className="relative ml-[26px] mt-1 border-l border-slate-200 pl-3 dark:border-slate-800">
+                    <div className="space-y-0.5 py-1">
+                      {subsections.map((subsection, index) => {
+                        const active = activeLessonId === subsection.id;
+
+                        return (
+                          <button
+                            key={subsection.id}
+                            type="button"
+                            onClick={() => onSelectLesson(subsection.id)}
+                            className={`font-khmer group relative flex w-full items-start gap-2 rounded-lg px-3 py-2 text-left text-[13.5px] leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 ${
+                              active
+                                ? "bg-blue-50 font-semibold text-[#002455] dark:bg-blue-950/25 dark:text-blue-300"
+                                : "text-slate-500 hover:bg-white hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-slate-200"
+                            }`}
+                          >
+                            {active && (
+                              <span className="absolute -left-[16px] top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-[#002455] ring-4 ring-slate-50 dark:bg-blue-400 dark:ring-slate-950" />
+                            )}
+
+                            <span className="mt-0.5 w-4 shrink-0 text-[10px] font-bold tabular-nums text-slate-300 dark:text-slate-600">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
+                            <span className="line-clamp-2 min-w-0">
+                              {subsection.title}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </aside>
   );

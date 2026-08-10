@@ -43,10 +43,15 @@ export default function DocsHeader() {
         </nav>
 
         <div className="ml-auto flex flex-1 items-center justify-end gap-3">
-          <form className="relative hidden w-full max-w-[240px] sm:block">
+          <form
+            action="/documentation/search"
+            method="get"
+            className="relative hidden w-full max-w-[240px] sm:block"
+          >
             <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
-              type="text"
+              type="search"
+              name="q"
               placeholder="ស្វែងរកមេរៀន..."
               className="w-full rounded-2xl border border-border bg-muted/60 py-2 pl-9 pr-3 text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/15"
             />
