@@ -1,16 +1,13 @@
 "use client";
 
-import { ChevronDown, ChevronRight, Layers3 } from "lucide-react";
-
+import { BookOpen, ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 import type { TutorialSection } from "@/types/tutorial-reader";
 
 interface SidebarLeftLessonProps {
   sections: TutorialSection[];
-
   activeLessonId: string;
-
   onSelectLesson: (lessonId: string) => void;
 }
 
@@ -40,41 +37,40 @@ export default function SidebarLeftLesson({
   }
 
   return (
-    <aside className="h-full overflow-y-auto border-r border-slate-200 bg-[#f7f9fc] dark:border-slate-800 dark:bg-slate-950">
-      <div className="p-4">
-        <div className="mb-5 flex items-center gap-2 px-2">
-          <Layers3 className="h-5 w-5 text-primary-color dark:text-blue-400" />
+    <aside className="h-full bg-slate-50/80 dark:bg-slate-950">
+      <div className="px-4 pb-8 pt-6">
+        <div className="mb-5 flex items-center justify-between gap-3 px-2">
+          <div className="flex min-w-0 items-center gap-2.5">
+            <BookOpen className="h-4 w-4 shrink-0 text-[#002455] dark:text-blue-300" />
+            <h2 className="font-khmer truncate text-sm font-bold text-[#002455] dark:text-white">
+              មាតិកាមេរៀន
+            </h2>
+          </div>
 
-          <span className="font-khmer text-[18px] font-bold text-primary-color dark:text-white">
-            មាតិកាមេរៀន
+          <span className="rounded-full bg-white px-2 py-0.5 text-[11px] font-bold text-slate-400 shadow-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:ring-slate-800">
+            {sortedSections.length}
           </span>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {sortedSections.map((section, sectionIndex) => {
             const subsections = [...(section.subsections ?? [])].sort(
               (a, b) => a.orderIndex - b.orderIndex,
             );
 
             const hasSubsections = subsections.length > 0;
-
-            const containsActiveLesson =
-              section.id === activeLessonId ||
-              subsections.some((subsection) => subsection.id === activeLessonId);
-
-            const isOpen = openSections.has(section.id) || containsActiveLesson;
-
-            /*
-             * DIRECT sections behave like lessons themselves.
-             */
             const isDirect =
               section.contentMode === "DIRECT" || !hasSubsections;
-
             const sectionActive = activeLessonId === section.id;
+            const containsActiveLesson =
+              sectionActive ||
+              subsections.some(
+                (subsection) => subsection.id === activeLessonId,
+              );
+            const isOpen = openSections.has(section.id) || containsActiveLesson;
 
             return (
-              <div key={section.id} className="overflow-hidden rounded-xl">
-                {/* Section heading */}
+              <div key={section.id}>
                 <div className="flex items-center gap-1">
                   <button
                     type="button"
@@ -85,17 +81,25 @@ export default function SidebarLeftLesson({
                         toggleSection(section.id);
                       }
                     }}
-                    className={`flex min-w-0 flex-1 items-center gap-2 rounded-xl px-3 py-3 text-left text-[18px] font-semibold leading-7 transition ${
+                    className={`group flex min-w-0 flex-1 items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 ${
                       sectionActive
                         ? "bg-[#002455] text-white shadow-sm"
-                        : "text-primary-color hover:bg-slate-200/70 dark:text-slate-200 dark:hover:bg-slate-800"
+                        : containsActiveLesson
+                          ? "bg-white text-[#002455] shadow-sm ring-1 ring-slate-200 dark:bg-slate-900 dark:text-blue-300 dark:ring-slate-800"
+                          : "text-slate-700 hover:bg-white hover:text-[#002455] dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"
                     }`}
                   >
-                    <span className="shrink-0 text-xs opacity-60">
+                    <span
+                      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold tabular-nums transition-colors ${
+                        sectionActive
+                          ? "bg-white/12 text-white"
+                          : "bg-slate-200/70 text-slate-500 group-hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-400"
+                      }`}
+                    >
                       {String(sectionIndex + 1).padStart(2, "0")}
                     </span>
 
-                    <span className="font-khmer min-w-0 flex-1 truncate">
+                    <span className="font-khmer min-w-0 flex-1 truncate text-[14px] font-semibold leading-6">
                       {section.title}
                     </span>
                   </button>
@@ -104,10 +108,10 @@ export default function SidebarLeftLesson({
                     <button
                       type="button"
                       onClick={() => toggleSection(section.id)}
-                      className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-200 hover:text-primary-color dark:hover:bg-slate-800"
                       aria-label={
                         isOpen ? "Collapse section" : "Expand section"
                       }
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-400 transition hover:bg-white hover:text-[#002455] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 dark:hover:bg-slate-900 dark:hover:text-white"
                     >
                       {isOpen ? (
                         <ChevronDown className="h-4 w-4" />
@@ -118,37 +122,37 @@ export default function SidebarLeftLesson({
                   )}
                 </div>
 
-                {/* Dropdown lessons */}
                 {hasSubsections && isOpen && (
-                  <div className="mt-1 space-y-1 pb-2 pl-4">
-                    {subsections.map((subsection, index) => {
-                      const active = activeLessonId === subsection.id;
+                  <div className="relative ml-[26px] mt-1 border-l border-slate-200 pl-3 dark:border-slate-800">
+                    <div className="space-y-0.5 py-1">
+                      {subsections.map((subsection, index) => {
+                        const active = activeLessonId === subsection.id;
 
-                      return (
-                        <button
-                          key={subsection.id}
-                          type="button"
-                          onClick={() => onSelectLesson(subsection.id)}
-                          className={`font-khmer relative flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-[17px] leading-7 transition ${
-                            active
-                              ? "bg-white font-semibold text-primary-color shadow-sm dark:bg-slate-800 dark:text-blue-400"
-                              : "text-slate-700 hover:bg-white hover:text-primary-color dark:text-slate-300 dark:hover:bg-slate-800"
-                          }`}
-                        >
-                          {active && (
-                            <span className="absolute top-2 bottom-2 left-0 w-[3px] rounded-full bg-primary-color dark:bg-blue-400" />
-                          )}
+                        return (
+                          <button
+                            key={subsection.id}
+                            type="button"
+                            onClick={() => onSelectLesson(subsection.id)}
+                            className={`font-khmer group relative flex w-full items-start gap-2 rounded-lg px-3 py-2 text-left text-[13.5px] leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 ${
+                              active
+                                ? "bg-blue-50 font-semibold text-[#002455] dark:bg-blue-950/25 dark:text-blue-300"
+                                : "text-slate-500 hover:bg-white hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-slate-200"
+                            }`}
+                          >
+                            {active && (
+                              <span className="absolute -left-[16px] top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-[#002455] ring-4 ring-slate-50 dark:bg-blue-400 dark:ring-slate-950" />
+                            )}
 
-                          <span className="w-4 text-xs opacity-50">
-                            {index + 1}.
-                          </span>
-
-                          <span className="line-clamp-2">
-                            {subsection.title}
-                          </span>
-                        </button>
-                      );
-                    })}
+                            <span className="mt-0.5 w-4 shrink-0 text-[10px] font-bold tabular-nums text-slate-300 dark:text-slate-600">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
+                            <span className="line-clamp-2 min-w-0">
+                              {subsection.title}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
               </div>
