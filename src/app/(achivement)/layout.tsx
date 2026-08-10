@@ -1,0 +1,78 @@
+
+
+
+"use client";
+
+import { useEffect, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
+
+import AppSidebar from "@/components/layout/AppSidebar";
+import SubNavbar from "@/components/layout/Sub-Navbar";
+
+export default function LayoutWithSidebar({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { status } = useSession();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      void signIn("keycloak", { redirectTo: pathname || "/courses/my-courses" });
+    }
+  }, [status, pathname]);
+
+  if (status !== "authenticated") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50 dark:bg-slate-950">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-[#002455]" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-screen overflow-hidden bg-[#F0F2F9] dark:bg-slate-950 flex flex-col">
+      {/* Top Header */}
+      <header className="shrink-0 z-50 border-b border-slate-200/70 dark:border-slate-800/70 bg-white/80 dark:bg-slate-950/80 backdrop-blur-sm shadow-sm">
+        <SubNavbar onOpenSidebar={() => setIsMobileOpen(true)} />
+      </header>
+
+      {/* Body Area */}
+      <div className="flex flex-1 min-h-0 relative">
+        {/* Mobile Backdrop */}
+        {isMobileOpen && (
+          <div
+            onClick={() => setIsMobileOpen(false)}
+            className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+          />
+        )}
+
+        {/* Sidebar */}
+        <div
+          className={`
+            fixed lg:static inset-y-0 left-0 z-50 h-full
+            transition-transform duration-300
+            ${isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+          `}
+        >
+          <AppSidebar
+            isCollapsed={isCollapsed}
+            setIsCollapsed={setIsCollapsed}
+            closeMobile={() => setIsMobileOpen(false)}
+          />
+        </div>
+
+        {/* Main Content Area */}
+        <main className="flex-1 min-w-0 overflow-y-auto px-4 py-6 sm:px-6 lg:px-8">
+          <div className="mx-auto w-full max-w-7xl">
+            {children}
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
