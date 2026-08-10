@@ -32,11 +32,23 @@ export interface TutorialSummary {
 
 export interface DocumentBlock {
   id: string;
-  sectionId: string;
+  sectionId?: string;
+  subsectionId?: string;
   blockTypeId?: string;
   type: string;
   data: Record<string, unknown>;
   orderIndex: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface TutorialSubsection {
+  id: string;
+  sectionId: string;
+  title: string;
+  orderIndex: number;
+  settings?: { durationSeconds?: number; passingPercentage?: number };
+  blocks: DocumentBlock[];
   createdAt?: string;
   updatedAt?: string;
 }
@@ -46,8 +58,10 @@ export interface TutorialSection {
   documentId: string;
   title: string;
   orderIndex: number;
+  contentMode?: "EMPTY" | "DIRECT" | "GROUPED";
   settings?: { durationSeconds?: number; passingPercentage?: number };
   blocks: DocumentBlock[];
+  subsections: TutorialSubsection[];
   createdAt?: string;
   updatedAt?: string;
 }

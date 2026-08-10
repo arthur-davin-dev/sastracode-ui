@@ -8,7 +8,7 @@ import { Trophy } from "lucide-react";
 
 interface LeaderboardTableProps {
   entries: LeaderboardEntry[];
-  currentUser: LeaderboardEntry;
+  currentUser?: LeaderboardEntry;
 }
 
 export function LeaderboardTable({ entries, currentUser }: LeaderboardTableProps) {
@@ -53,13 +53,13 @@ export function LeaderboardTable({ entries, currentUser }: LeaderboardTableProps
         </div>
 
         {/* Floating / Highlighted Current User Fixed Row */}
-        <div className="mt-5 pt-4 border-t border-amber-400/30">
+        {currentUser && <div className="mt-5 pt-4 border-t border-amber-400/30">
           <p className="text-xs font-bold text-slate-700 dark:text-slate-300 mb-2 px-1 flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-red-600 inline-block animate-pulse" />
             ចំណាត់ថ្នាក់របស់អ្នក:
           </p>
           <LeaderboardRow entry={currentUser} />
-        </div>
+        </div>}
 
       </CardContent>
     </Card>

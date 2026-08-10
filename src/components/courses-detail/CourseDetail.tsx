@@ -4,15 +4,14 @@ import { WhatYouLearn } from "./WhatYouLearn";
 import { CurriculumSection } from "./CurriculumSection";
 import { PurchaseCard } from "./PurchaseCard";
 import { RelatedCourses } from "./RelatedCourses";
-import { Course, getRelatedCourses } from "@/lib/course/courses";
+import { Course } from "@/lib/course/courses";
 
 interface CourseDetailPageProps {
   course: Course;
+  relatedCourses?: Course[];
 }
 
-export default async function CourseDetailPage({ course }: CourseDetailPageProps) {
-  const relatedCourses = await getRelatedCourses(course.id, course.category);
-
+export default function CourseDetailPage({ course, relatedCourses = [] }: CourseDetailPageProps) {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300 py-8 md:py-12">
       <div className="mx-auto max-w-7xl px-6">

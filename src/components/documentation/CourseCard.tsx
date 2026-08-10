@@ -7,13 +7,20 @@ interface CourseCardProps {
 }
 
 export default function CourseCard({ course }: CourseCardProps) {
+  const coverFileId = course.coverFileId.trim();
+  const coverSrc = !coverFileId
+    ? "/images/html.png"
+    : coverFileId.startsWith("/") || /^https?:\/\//i.test(coverFileId)
+      ? coverFileId
+      : `/api/files/${encodeURIComponent(coverFileId)}`;
+
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 font-khmer transition-all duration-300 ease-in-out hover:border-blue-200 dark:hover:border-blue-800 hover:shadow-lg hover:shadow-slate-200/50 dark:hover:shadow-none">
       
       {/* Top Media Section */}
       <div className="relative h-44 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
         <Image
-          src={course.coverImage}
+          src={coverSrc}
           alt={course.title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

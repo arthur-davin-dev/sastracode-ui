@@ -16,8 +16,8 @@ interface SearchResultCardProps {
 }
 
 export default function SearchResultCard({ result }: SearchResultCardProps) {
-  // If your routing uses 'id' instead of 'slug', change this href to `/documentation/lessons/${result.id}`
-  const targetHref = `/documentation/lessons/${result.slug || result.id}`;
+  // The document endpoint requires the tutorial UUID, not its slug.
+  const targetHref = `/documentation/lessons/${result.id}`;
 
   return (
     <Link 

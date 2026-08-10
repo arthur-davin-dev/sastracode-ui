@@ -1,6 +1,4 @@
-import { notFound } from "next/navigation";
-import { getCourseById } from "@/lib/course/courses";
-import CourseDetailPage from "@/components/courses-detail/CourseDetail";
+import CourseDetailClient from "@/components/courses-detail/CourseDetailClient";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -8,11 +6,5 @@ interface PageProps {
 
 export default async function Page({ params }: PageProps) {
   const { id } = await params;
-  const course = await getCourseById(id);
-
-  if (!course) {
-    notFound();
-  }
-
-  return <CourseDetailPage course={course} />;
+  return <CourseDetailClient courseId={id} />;
 }

@@ -11,6 +11,12 @@ interface CourseCardProps {
 }
 export function CourseCard({ course }: CourseCardProps) {
   const isFree = Number(course.id) % 2 === 1;
+  const coverFileId = course.coverFileId?.trim() ?? "";
+  const coverSrc = !coverFileId
+    ? course.image
+    : coverFileId.startsWith("/") || /^https?:\/\//i.test(coverFileId)
+      ? coverFileId
+      : `/api/files/${encodeURIComponent(coverFileId)}`;
   const buttonLabel = isFree ? "ឥតគិតថ្លៃ" : "ថ្នាក់បង់ថ្លៃ";
 
   const buttonClass = isFree
@@ -24,7 +30,7 @@ export function CourseCard({ course }: CourseCardProps) {
     >
       <div className="relative h-37.5 w-full ">
         <Image
-          src={course.image}
+          src={coverSrc}
           alt={course.title}
           fill
           sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"

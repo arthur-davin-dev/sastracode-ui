@@ -26,7 +26,8 @@ function toCourse(tutorial: TutorialSummary): Course {
     description: tutorial.summary || "Open this tutorial to start learning.",
     tag: inferTag(tutorial),
     href: `/documentation/lessons/${tutorial.id}`,
-    coverImage: "/images/html.png",
+    // Keep the API field as its original UUID. CourseCard resolves it for display.
+    coverFileId: tutorial.coverFileId?.trim() || "",
     ctaLabel: "Learn now",
   };
 }

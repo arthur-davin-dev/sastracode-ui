@@ -1,7 +1,7 @@
 import Hero from "@/components/documentation/Hero";
 import CourseProgressCard from "@/components/documentation/CourseProgressCard";
-import TutorialCatalogClient from "@/components/documentation/TutorialCatalogClient";
 import { currentProgress } from "@/lib/data/courses";
+import TutorialCatalogClient from "@/components/documentation/TutorialCatalogClient";
 
 export default function DocumentationHomePage() {
   return (
