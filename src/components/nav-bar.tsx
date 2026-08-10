@@ -16,12 +16,16 @@ import { useSession, signOut } from "next-auth/react";
 
 import { useLanguage } from "@/lib/language-context";
 import Login from "@/components/auth/Login";
+import { useGetMyProfileQuery } from "@/redux/service/profile-api";
 
 export default function Navbar() {
   const { lang, setLang } = useLanguage();
 
   // Auth.js session
   const { data: session, status } = useSession();
+  const { data: profile } = useGetMyProfileQuery(undefined, {
+    skip: status !== "authenticated",
+  });
 
   const [darkMode, setDarkMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -31,9 +35,13 @@ export default function Navbar() {
   // Safe user values
   // -----------------------------------
 
-  const userName = session?.user?.name ?? "User";
-  const userEmail = session?.user?.email ?? "";
-  const userImage = session?.user?.image ?? "";
+  const profileName = [profile?.firstName, profile?.lastName]
+    .filter(Boolean)
+    .join(" ");
+  const userName =
+    profileName || profile?.username || session?.user?.name || "User";
+  const userEmail = profile?.email || session?.user?.email || "";
+  const userImage = profile?.avatarUrl || session?.user?.image || "";
 
   const userInitial =
     userName.length > 0 ? userName.charAt(0).toUpperCase() : "U";

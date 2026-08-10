@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -123,11 +124,11 @@ export function ProfileForm({ profile }: ProfileFormProps) {
         locale: locale.trim(),
       }).unwrap();
 
-      alert("ព័ត៌មានត្រូវបានរក្សាទុកដោយជោគជ័យ។");
+      toast.success("ព័ត៌មានត្រូវបានរក្សាទុកដោយជោគជ័យ។");
     } catch (error) {
       console.error("Update profile failed:", error);
 
-      alert("មិនអាចរក្សាទុកព័ត៌មានបានទេ។");
+      toast.error("មិនអាចរក្សាទុកព័ត៌មានបានទេ។");
     }
   };
 
@@ -139,11 +140,11 @@ export function ProfileForm({ profile }: ProfileFormProps) {
     try {
       await resetPassword().unwrap();
 
-      alert("សំណើប្ដូរលេខសម្ងាត់ត្រូវបានផ្ញើដោយជោគជ័យ។");
+      toast.success("សំណើប្ដូរលេខសម្ងាត់ត្រូវបានផ្ញើដោយជោគជ័យ។");
     } catch (error) {
       console.error("Reset password failed:", error);
 
-      alert("មិនអាចប្ដូរលេខសម្ងាត់បានទេ។");
+      toast.error("មិនអាចប្ដូរលេខសម្ងាត់បានទេ។");
     }
   };
 

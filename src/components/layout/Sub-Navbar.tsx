@@ -23,6 +23,7 @@ import {
 
 import { pageConfig } from "@/components/layout/navbar-config";
 import SearchModal from "@/components/search/SearchModal";
+import { useGetMyProfileQuery } from "@/redux/service/profile-api";
 
 interface NavbarProps {
   hasUnreadNotifications?: boolean;
@@ -37,6 +38,9 @@ export default function SubNavbar({
 
   // Auth.js session
   const { data: session, status } = useSession();
+  const { data: profile } = useGetMyProfileQuery(undefined, {
+    skip: status !== "authenticated",
+  });
 
   const [darkMode, setDarkMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -48,9 +52,13 @@ export default function SubNavbar({
   // Safe session user values
   // ========================================
 
-  const userName = session?.user?.name ?? "User";
-  const userEmail = session?.user?.email ?? "";
-  const userAvatarUrl = session?.user?.image ?? "";
+  const profileName = [profile?.firstName, profile?.lastName]
+    .filter(Boolean)
+    .join(" ");
+  const userName =
+    profileName || profile?.username || session?.user?.name || "User";
+  const userEmail = profile?.email || session?.user?.email || "";
+  const userAvatarUrl = profile?.avatarUrl || session?.user?.image || "";
 
   const userInitial = userName.trim().charAt(0).toUpperCase() || "U";
 

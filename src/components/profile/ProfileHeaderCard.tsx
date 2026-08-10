@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 import { Camera, Edit3 } from "lucide-react";
+import { toast } from "sonner";
 
 import type { UserProfile } from "@/types/profile";
 import { useUploadMyAvatarMutation } from "@/redux/service/profile-api";
@@ -30,7 +31,15 @@ export function ProfileHeaderCard({
   const [uploadAvatar, { isLoading: isUploadingAvatar }] =
     useUploadMyAvatarMutation();
 
-  const [imageVersion, setImageVersion] = useState(0);
+  const [avatarPreviewUrl, setAvatarPreviewUrl] = useState<string>();
+
+  useEffect(() => {
+    return () => {
+      if (avatarPreviewUrl?.startsWith("blob:")) {
+        URL.revokeObjectURL(avatarPreviewUrl);
+      }
+    };
+  }, [avatarPreviewUrl]);
 
   const fullName =
     [profile.firstName, profile.lastName].filter(Boolean).join(" ") ||
@@ -43,9 +52,7 @@ export function ProfileHeaderCard({
     "U"
   ).toUpperCase();
 
-  const avatarUrl = profile.avatarUrl
-    ? `${profile.avatarUrl}?v=${imageVersion}`
-    : undefined;
+  const avatarUrl = avatarPreviewUrl ?? profile.avatarUrl;
 
   const handleAvatarChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -57,21 +64,33 @@ export function ProfileHeaderCard({
     }
 
     if (!file.type.startsWith("image/")) {
-      alert("សូមជ្រើសរើសឯកសាររូបភាព។");
+      toast.error("សូមជ្រើសរើសឯកសាររូបភាព។");
 
       return;
     }
 
+    const previewUrl = URL.createObjectURL(file);
+    setAvatarPreviewUrl(previewUrl);
+
     try {
-      await uploadAvatar(file).unwrap();
+      const uploadedAvatar = await uploadAvatar(file).unwrap();
 
-      setImageVersion(Date.now());
+      // Switch from the temporary browser preview to the authenticated proxy.
+      // This makes the uploaded avatar visible immediately, even while the
+      // profile query is being refreshed in the background.
+      if (uploadedAvatar.avatarFileId) {
+        setAvatarPreviewUrl(
+          `/api/profile/avatar/${encodeURIComponent(uploadedAvatar.avatarFileId)}?v=${Date.now()}`,
+        );
+      }
 
-      alert("រូបភាពត្រូវបានផ្លាស់ប្តូរដោយជោគជ័យ។");
+      toast.success("រូបភាពត្រូវបានផ្លាស់ប្តូរដោយជោគជ័យ។");
     } catch (error) {
       console.error("Upload avatar failed:", error);
 
-      alert("មិនអាចផ្លាស់ប្តូររូបភាពបានទេ។");
+      setAvatarPreviewUrl(undefined);
+
+      toast.error("មិនអាចផ្លាស់ប្តូររូបភាពបានទេ។");
     } finally {
       event.target.value = "";
     }
