@@ -35,7 +35,11 @@ const navItems = [
     href: "/courses",
     icon: GraduationCap,
     subItems: [
-      { label: "វគ្គសិក្សារបស់ខ្ញុំ", href: "/courses/my-courses", icon: BookOpen },
+      {
+        label: "វគ្គសិក្សារបស់ខ្ញុំ",
+        href: "/courses/my-courses",
+        icon: BookOpen,
+      },
       { label: "រក្សាទុក", href: "/courses/bookmark", icon: Bookmark },
     ],
   },
@@ -45,7 +49,11 @@ const navItems = [
   { label: "ប្រវត្តិរូប", href: "/profile", icon: Users },
 ];
 
-export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }: SidebarProps) {
+export default function AppSidebar({
+  isCollapsed,
+  setIsCollapsed,
+  closeMobile,
+}: SidebarProps) {
   const pathname = usePathname();
   const [openMenu, setOpenMenu] = useState<string | null>("ការសិក្សា");
 
@@ -59,32 +67,51 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
   };
 
   return (
-    <aside className={`relative h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col py-6 transition-all duration-300 shadow-lg ${isCollapsed ? "w-20" : "w-70"}`}>
-      
+    <aside
+      className={`relative h-full bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col py-6 transition-all duration-300 shadow-lg ${isCollapsed ? "w-20" : "w-70"}`}
+    >
       {/* Toggle Desktop */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
         className="hidden lg:flex absolute -right-4 top-5 w-5 h-5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-primary-color hover:bg-slate-100 rounded-full items-center justify-center shadow-md z-50 transform-none select-none"
       >
-        {isCollapsed ? <ChevronRight size={18} className="shrink-0" /> : <ChevronLeft size={18} className="shrink-0" />}
+        {isCollapsed ? (
+          <ChevronRight size={18} className="shrink-0" />
+        ) : (
+          <ChevronLeft size={18} className="shrink-0" />
+        )}
       </button>
 
       {/* Mobile Close */}
-      <button onClick={closeMobile} className="lg:hidden absolute right-4 top-4 p-2 text-primary-color hover:bg-slate-100 rounded-xl transform-none">
+      <button
+        onClick={closeMobile}
+        className="lg:hidden absolute right-4 top-4 p-2 text-primary-color hover:bg-slate-100 rounded-xl transform-none"
+      >
         <X size={24} className="shrink-0" />
       </button>
 
       {/* Logo */}
       <div className="flex flex-col items-center justify-center mb-6 px-4">
-        <Link href="/" className="flex flex-col items-center gap-2 transform-none">
+        <Link
+          href="/"
+          className="flex flex-col items-center gap-2 transform-none"
+        >
           <Image
             src="/images/sastra_code_logo.png"
             alt="SastraCode Logo"
-            width={96}
-            height={80}
-            className={`transition-all duration-300 object-contain ${isCollapsed ? "h-12 w-12" : "h-20 w-auto"}`}
+            width={240}
+            height={160}
+            quality={1000}
+            priority
+            className={`transition-all duration-300 object-contain ${
+              isCollapsed ? "h-12 w-12" : "h-20 w-auto"
+            }`}
           />
-          {!isCollapsed && <h1 className="text-2xl font-extrabold text-primary-color select-none">SastraCode</h1>}
+          {/* {!isCollapsed && (
+            <h1 className="text-2xl font-extrabold text-primary-color select-none">
+              SastraCode
+            </h1>
+          )} */}
         </Link>
       </div>
 
@@ -93,7 +120,8 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
         {navItems.map((item) => {
           const hasSubItems = "subItems" in item && item.subItems;
           const isOpen = openMenu === item.label;
-          const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+          const isActive =
+            pathname === item.href || pathname.startsWith(item.href + "/");
 
           if (hasSubItems) {
             return (
@@ -101,15 +129,25 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
                 <button
                   onClick={() => setOpenMenu(isOpen ? null : item.label)}
                   className={`flex items-center justify-between w-full gap-3 px-4 py-3 rounded-2xl font-bold text-lg text-primary-color transition-colors duration-150 transform-none select-none ${
-                    isActive ? "bg-init-color/20" : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                    isActive
+                      ? "bg-init-color/20"
+                      : "hover:bg-slate-100 dark:hover:bg-slate-800"
                   }`}
                 >
                   <div className="flex items-center gap-3.5 min-w-0">
-                    <item.icon size={24} className="shrink-0 text-primary-color" />
-                    {!isCollapsed && <span className="truncate">{item.label}</span>}
+                    <item.icon
+                      size={24}
+                      className="shrink-0 text-primary-color"
+                    />
+                    {!isCollapsed && (
+                      <span className="truncate">{item.label}</span>
+                    )}
                   </div>
                   {!isCollapsed && (
-                    <ChevronDown size={20} className={`shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
+                    <ChevronDown
+                      size={20}
+                      className={`shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                    />
                   )}
                 </button>
 
@@ -124,10 +162,15 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
                           href={sub.href}
                           onClick={goToLink}
                           className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-lg font-semibold text-primary-color transition-colors duration-150 transform-none select-none ${
-                            isSubActive ? "bg-init-color/20" : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                            isSubActive
+                              ? "bg-init-color/20"
+                              : "hover:bg-slate-100 dark:hover:bg-slate-800"
                           }`}
                         >
-                          <sub.icon size={18} className="shrink-0 text-primary-color" />
+                          <sub.icon
+                            size={18}
+                            className="shrink-0 text-primary-color"
+                          />
                           <span className="truncate">{sub.label}</span>
                         </Link>
                       );
@@ -155,7 +198,9 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
               href={item.href}
               onClick={goToLink}
               className={`flex items-center gap-3.5 px-4 py-3 rounded-2xl font-bold text-lg text-primary-color transition-colors duration-150 transform-none select-none ${
-                isActive ? "bg-init-color/20" : "hover:bg-slate-100 dark:hover:bg-slate-800"
+                isActive
+                  ? "bg-init-color/20"
+                  : "hover:bg-slate-100 dark:hover:bg-slate-800"
               }`}
             >
               <item.icon size={24} className="shrink-0 text-primary-color" />
@@ -172,7 +217,10 @@ export default function AppSidebar({ isCollapsed, setIsCollapsed, closeMobile }:
           {!isCollapsed && <span className="truncate">ជំនួយ</span>}
         </button> */}
 
-        <button onClick={handleLogout} className="flex items-center gap-3.5 px-4 py-3 text-lg font-bold text-secondary-color hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl w-full transform-none select-none">
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-3.5 px-4 py-3 text-lg font-bold text-secondary-color hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl w-full transform-none select-none"
+        >
           <LogOut size={24} className="shrink-0 text-secondary-color" />
           {!isCollapsed && <span className="truncate">ចាកចេញ</span>}
         </button>

@@ -1,68 +1,157 @@
-import { getToken } from "next-auth/jwt";
-import { NextRequest } from "next/server";
+// import { getToken } from "next-auth/jwt";
+// import { NextRequest } from "next/server";
 
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
+// export const runtime = "nodejs";
+// export const dynamic = "force-dynamic";
+
+// export async function POST(request: NextRequest) {
+//   const backendBaseUrl = (process.env.BACKEND_API_URL ?? process.env.BACKEND_URL)?.replace(
+//     /\/$/,
+//     "",
+//   );
+
+//   if (!backendBaseUrl) {
+//     return Response.json(
+//       { success: false, message: "Backend API configuration is missing." },
+//       { status: 500 },
+//     );
+//   }
+
+//   try {
+//     const token = await getToken({
+//       req: request,
+//       secret: process.env.AUTH_SECRET,
+//     });
+
+//     const refreshToken =
+//       typeof token?.refreshToken === "string" ? token.refreshToken : undefined;
+
+//     // Local Auth.js sign-out still happens in the browser even when no refresh
+//     // token exists. This endpoint is for invalidating the backend/Keycloak
+//     // refresh token when it is available.
+//     if (!refreshToken) {
+//       return Response.json({ success: true, message: "No refresh token to revoke." });
+//     }
+
+//     const response = await fetch(`${backendBaseUrl}/api/v1/auth/logout`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Accept: "application/json",
+//       },
+//       body: JSON.stringify({ refreshToken }),
+//       cache: "no-store",
+//     });
+
+//     const text = await response.text();
+//     if (!response.ok) {
+//       return Response.json(
+//         {
+//           success: false,
+//           message: text || "Backend logout failed.",
+//         },
+//         { status: response.status },
+//       );
+//     }
+
+//     return new Response(text || JSON.stringify({ success: true }), {
+//       status: response.status,
+//       headers: { "Content-Type": "application/json" },
+//     });
+//   } catch (error) {
+//     console.error("Logout API error:", error);
+//     return Response.json(
+//       { success: false, message: "Logout request failed." },
+//       { status: 500 },
+//     );
+//   }
+// }
+
+import { NextRequest, NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
+
+const API_BASE_URL = process.env.API_BASE_URL ?? "http://32.236.78.160:9999";
 
 export async function POST(request: NextRequest) {
-  const backendBaseUrl = (process.env.BACKEND_API_URL ?? process.env.BACKEND_URL)?.replace(
-    /\/$/,
-    "",
-  );
-
-  if (!backendBaseUrl) {
-    return Response.json(
-      { success: false, message: "Backend API configuration is missing." },
-      { status: 500 },
-    );
-  }
-
   try {
     const token = await getToken({
       req: request,
       secret: process.env.AUTH_SECRET,
     });
 
-    const refreshToken =
-      typeof token?.refreshToken === "string" ? token.refreshToken : undefined;
-
-    // Local Auth.js sign-out still happens in the browser even when no refresh
-    // token exists. This endpoint is for invalidating the backend/Keycloak
-    // refresh token when it is available.
-    if (!refreshToken) {
-      return Response.json({ success: true, message: "No refresh token to revoke." });
+    if (!token) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "No authenticated session",
+        },
+        {
+          status: 401,
+        },
+      );
     }
 
-    const response = await fetch(`${backendBaseUrl}/api/v1/auth/logout`, {
+    const refreshToken =
+      typeof token.refreshToken === "string" ? token.refreshToken : undefined;
+
+    if (!refreshToken) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Refresh token not found",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    const response = await fetch(`${API_BASE_URL}/api/v1/auth/logout`, {
       method: "POST",
+
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify({ refreshToken }),
+
+      body: JSON.stringify({
+        refreshToken,
+      }),
+
       cache: "no-store",
     });
 
-    const text = await response.text();
+    const data = await response.json().catch(() => null);
+
     if (!response.ok) {
-      return Response.json(
+      console.error("Backend logout failed:", response.status, data);
+
+      return NextResponse.json(
         {
           success: false,
-          message: text || "Backend logout failed.",
+          message: data?.message ?? "Backend logout failed",
         },
-        { status: response.status },
+        {
+          status: response.status,
+        },
       );
     }
 
-    return new Response(text || JSON.stringify({ success: true }), {
-      status: response.status,
-      headers: { "Content-Type": "application/json" },
+    return NextResponse.json({
+      success: true,
+      message: "Logged out successfully",
     });
   } catch (error) {
-    console.error("Logout API error:", error);
-    return Response.json(
-      { success: false, message: "Logout request failed." },
-      { status: 500 },
+    console.error("Session logout route failed:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Logout failed",
+      },
+      {
+        status: 500,
+      },
     );
   }
 }

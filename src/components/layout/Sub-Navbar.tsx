@@ -30,9 +30,7 @@ interface NavbarProps {
   onOpenSidebar?: () => void;
 }
 
-export default function SubNavbar({
-  onOpenSidebar,
-}: NavbarProps) {
+export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
   const pathname = usePathname();
 
   // Auth.js session
@@ -163,226 +161,40 @@ export default function SubNavbar({
 
   return (
     <>
-    <header className="w-full bg-white dark:bg-slate-900">
-      <div className="flex w-full items-center justify-between gap-4 px-4 py-3 md:px-6">
-        {/* ===================================== */}
-        {/* Sidebar Toggle + Page Title */}
-        {/* ===================================== */}
+      <header className="w-full bg-white dark:bg-slate-900">
+        <div className="flex w-full items-center justify-between gap-4 px-4 py-3 md:px-6 lg:px-8">
+          {/* ===================================== */}
+          {/* Sidebar Toggle + Page Title */}
+          {/* ===================================== */}
 
-        <div className="flex min-w-0 shrink-0 items-center gap-3">
-          <button
-            type="button"
-            onClick={onOpenSidebar}
-            aria-label="Open Sidebar"
-            className="shrink-0 rounded-2xl border border-slate-200 p-2.5 text-primary-color transition-colors hover:bg-yellow-400/20 lg:hidden dark:border-slate-800"
-          >
-            <PanelLeft className="h-6 w-6 text-primary-color" />
-          </button>
+          <div className="flex min-w-0 shrink-0 items-center gap-3">
+            <button
+              type="button"
+              onClick={onOpenSidebar}
+              aria-label="Open Sidebar"
+              className="shrink-0 rounded-2xl border border-slate-200 p-2.5 text-primary-color transition-colors hover:bg-yellow-400/20 lg:hidden dark:border-slate-800"
+            >
+              <PanelLeft className="h-6 w-6 text-primary-color" />
+            </button>
 
-          <div className="flex min-w-0 items-center gap-3">
-            {Icon && (
-              <div className="shrink-0 rounded-2xl bg-yellow-400/20 p-2 text-yellow-600">
-                <Icon className="h-7 w-7 text-primary-color" />
-              </div>
-            )}
-
-            <h1 className="max-w-[160px] truncate text-2xl font-black tracking-tight text-primary-color sm:max-w-none">
-              {current.title}
-            </h1>
-          </div>
-        </div>
-
-        {/* ===================================== */}
-        {/* Search */}
-        {/* ===================================== */}
-
-        <div className="relative mx-4 hidden w-full max-w-md md:block">
-          <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary-color opacity-50" />
-
-          <Input
-            placeholder="ស្វែងរកអ្វីមួយ..."
-            value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
-            onFocus={() => setSearchOpen(true)}
-            className="rounded-2xl border-2 border-slate-200/60 bg-slate-100 py-6 pl-12 pr-4 text-lg font-bold text-primary-color placeholder:text-primary-color/50 transition-all focus-visible:ring-yellow-400 dark:border-slate-700/60 dark:bg-slate-800"
-          />
-        </div>
-
-        {/* ===================================== */}
-        {/* Desktop Right Controls */}
-        {/* ===================================== */}
-
-        <div className="hidden shrink-0 items-center gap-4 md:flex">
-          {/* Theme */}
-
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label="Toggle Theme"
-            className="rounded-2xl border border-slate-200 bg-slate-100 p-3 text-primary-color transition-all hover:bg-yellow-400/20 dark:border-slate-700 dark:bg-slate-800"
-          >
-            {darkMode ? (
-              <SunMedium className="h-6 w-6 text-yellow-400" />
-            ) : (
-              <Moon className="h-6 w-6 text-primary-color" />
-            )}
-          </button>
-
-          {/* Notifications */}
-
-          <NotificationBell />
-
-          {/* ================================= */}
-          {/* Session loading */}
-          {/* ================================= */}
-
-          {status === "loading" ? (
-            <div className="flex items-center gap-3 border-l-2 border-slate-200 pl-4 dark:border-slate-800">
-              <div className="h-11 w-11 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700" />
-
-              <div className="h-4 w-24 animate-pulse rounded bg-slate-200 dark:bg-slate-700" />
-            </div>
-          ) : status === "authenticated" && session?.user ? (
-            /* ================================= */
-            /* Logged-in profile */
-            /* ================================= */
-
-            <div className="relative border-l-2 border-slate-200 pl-4 dark:border-slate-800">
-              <button
-                type="button"
-                onClick={() => setProfileOpen((prev) => !prev)}
-                className="flex items-center gap-3 rounded-xl px-2 py-1.5 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
-              >
-                <Avatar className="h-11 w-11 border-2 border-yellow-400 shadow-sm">
-                  {userAvatarUrl && (
-                    <AvatarImage src={userAvatarUrl} alt={userName} />
-                  )}
-
-                  <AvatarFallback className="bg-yellow-400 text-lg font-extrabold text-red-600">
-                    {userInitial}
-                  </AvatarFallback>
-                </Avatar>
-
-                <div className="hidden min-w-0 text-left lg:block">
-                  <p className="max-w-[140px] truncate text-base font-extrabold text-primary-color">
-                    {userName}
-                  </p>
-
-                  {userEmail && (
-                    <p className="max-w-[160px] truncate text-xs font-medium text-slate-500 dark:text-slate-400">
-                      {userEmail}
-                    </p>
-                  )}
-                </div>
-
-                <ChevronDown
-                  className={`h-4 w-4 text-slate-500 transition-transform ${
-                    profileOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-
-              {/* ================================= */}
-              {/* Profile Dropdown */}
-              {/* ================================= */}
-
-              {profileOpen && (
-                <div className="absolute right-0 top-full z-50 mt-3 w-72 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
-                  {/* User */}
-
-                  <div className="border-b border-slate-100 p-4 dark:border-slate-800">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-12 w-12 border-2 border-yellow-400">
-                        {userAvatarUrl && (
-                          <AvatarImage src={userAvatarUrl} alt={userName} />
-                        )}
-
-                        <AvatarFallback className="bg-yellow-400 font-bold text-red-600">
-                          {userInitial}
-                        </AvatarFallback>
-                      </Avatar>
-
-                      <div className="min-w-0">
-                        <p className="truncate font-bold text-primary-color">
-                          {userName}
-                        </p>
-
-                        {userEmail && (
-                          <p className="truncate text-sm text-slate-500 dark:text-slate-400">
-                            {userEmail}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-
-                  <div className="p-2">
-                    <Link
-                      href="/profile"
-                      onClick={() => setProfileOpen(false)}
-                      className="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
-                    >
-                      <User className="h-5 w-5" />
-
-                      <span>Profile</span>
-                    </Link>
-
-                    <button
-                      type="button"
-                      onClick={handleLogout}
-                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10"
-                    >
-                      <LogOut className="h-5 w-5" />
-
-                      <span>Logout</span>
-                    </button>
-                  </div>
+            <div className="flex min-w-0 items-center gap-3">
+              {Icon && (
+                <div className="shrink-0 rounded-2xl bg-yellow-400/20 p-2 text-yellow-600">
+                  <Icon className="h-7 w-7 text-primary-color" />
                 </div>
               )}
+
+              <h1 className="max-w-[160px] truncate text-2xl font-black tracking-tight text-primary-color sm:max-w-none">
+                {current.title}
+              </h1>
             </div>
-          ) : null}
-        </div>
+          </div>
 
-        {/* ===================================== */}
-        {/* Mobile Controls */}
-        {/* ===================================== */}
-
-        <div className="flex shrink-0 items-center gap-2 md:hidden">
-          <button
-            type="button"
-            onClick={toggleTheme}
-            aria-label="Toggle Theme"
-            className="rounded-2xl border border-slate-200 bg-slate-100 p-2.5 text-primary-color transition-all hover:bg-yellow-400/20 dark:border-slate-700 dark:bg-slate-800"
-          >
-            {darkMode ? (
-              <SunMedium className="h-5 w-5 text-yellow-400" />
-            ) : (
-              <Moon className="h-5 w-5 text-primary-color" />
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setIsOpen((prev) => !prev)}
-            aria-label="Toggle Menu"
-            className="rounded-2xl p-2.5 shadow-md transition-all"
-          >
-            {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
-        </div>
-      </div>
-
-      {/* ===================================== */}
-      {/* Mobile Dropdown */}
-      {/* ===================================== */}
-
-      {isOpen && (
-        <div className="animate-in slide-in-from-top space-y-5 border-t-2 border-slate-100 bg-white px-6 py-5 duration-300 md:hidden dark:border-slate-800 dark:bg-slate-900">
+          {/* ===================================== */}
           {/* Search */}
+          {/* ===================================== */}
 
-          <div className="relative">
+          <div className="relative mx-4 hidden w-full max-w-md md:block">
             <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary-color opacity-50" />
 
             <Input
@@ -390,71 +202,267 @@ export default function SubNavbar({
               value={searchQuery}
               onChange={(event) => setSearchQuery(event.target.value)}
               onFocus={() => setSearchOpen(true)}
-              className="rounded-2xl border-2 border-slate-200 bg-slate-100 py-5 pl-12 pr-4 text-lg font-bold text-primary-color placeholder:text-primary-color/50 dark:border-slate-700 dark:bg-slate-800"
+              className="rounded-2xl border-2 border-slate-200/60 bg-slate-100 py-6 pl-12 pr-4 text-lg font-bold text-primary-color placeholder:text-primary-color/50 transition-all focus-visible:ring-yellow-400 dark:border-slate-700/60 dark:bg-slate-800"
             />
           </div>
 
-          {/* ================================= */}
-          {/* Mobile Profile */}
-          {/* ================================= */}
+          {/* ===================================== */}
+          {/* Desktop Right Controls */}
+          {/* ===================================== */}
 
-          {status === "authenticated" && session?.user && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between pt-2">
-                <div className="flex min-w-0 items-center gap-3">
-                  <Avatar className="h-12 w-12 shrink-0">
+          <div className="hidden shrink-0 items-center gap-4 md:flex">
+            {/* Theme */}
+
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label="Toggle Theme"
+              className="rounded-full p-1.5 text-primary-color transition-colors hover:bg-yellow-400/20 dark:hover:bg-slate-800/50"
+            >
+              {darkMode ? (
+                <SunMedium className="h-6 w-6 text-yellow-400" />
+              ) : (
+                <Moon className="h-6 w-6 text-primary-color" />
+              )}
+            </button>
+
+            {/* Notifications */}
+
+            <NotificationBell />
+
+            {/* ================================= */}
+            {/* Session loading */}
+            {/* ================================= */}
+
+            {status === "loading" ? (
+              <div className="flex items-center gap-3 border-l-2 border-slate-200 pl-4 dark:border-slate-800">
+                <div className="h-11 w-11 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700" />
+
+                <div className="h-4 w-24 animate-pulse rounded bg-slate-200 dark:bg-slate-700" />
+              </div>
+            ) : status === "authenticated" && session?.user ? (
+              /* ================================= */
+              /* Logged-in profile */
+              /* ================================= */
+
+              <div className="relative border-l-2 border-slate-200 pl-4 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setProfileOpen((prev) => !prev)}
+                  className="flex items-center gap-3 rounded-xl px-2 py-1.5 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  <Avatar className="h-11 w-11 border-2 border-yellow-400 shadow-sm">
                     {userAvatarUrl && (
                       <AvatarImage src={userAvatarUrl} alt={userName} />
                     )}
 
-                    <AvatarFallback className="bg-init-color text-lg font-extrabold text-secondary-color">
+                    <AvatarFallback className="bg-yellow-400 text-lg font-extrabold text-red-600">
                       {userInitial}
                     </AvatarFallback>
                   </Avatar>
 
-                  <div className="min-w-0">
-                    <p className="truncate text-lg font-extrabold text-primary-color">
+                  {/* <div className="hidden min-w-0 text-left lg:block">
+                    <p className="max-w-[140px] truncate text-base font-extrabold text-primary-color">
                       {userName}
                     </p>
 
                     {userEmail && (
-                      <p className="truncate text-sm text-slate-500 dark:text-slate-400">
+                      <p className="max-w-[160px] truncate text-xs font-medium text-slate-500 dark:text-slate-400">
                         {userEmail}
                       </p>
                     )}
+                  </div> */}
+
+                  <ChevronDown
+                    className={`h-4 w-4 text-slate-500 transition-transform ${
+                      profileOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {/* ================================= */}
+                {/* Profile Dropdown */}
+                {/* ================================= */}
+
+                {profileOpen && (
+                  <div className="absolute right-0 top-full z-50 mt-3 w-72 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
+                    {/* User */}
+
+                    <div className="border-b border-slate-100 p-4 dark:border-slate-800">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-12 w-12 border-2 border-yellow-400">
+                          {userAvatarUrl && (
+                            <AvatarImage src={userAvatarUrl} alt={userName} />
+                          )}
+
+                          <AvatarFallback className="bg-yellow-400 font-bold text-red-600">
+                            {userInitial}
+                          </AvatarFallback>
+                        </Avatar>
+
+                        <div className="min-w-0">
+                          <p className="truncate font-bold text-primary-color">
+                            {userName}
+                          </p>
+
+                          {userEmail && (
+                            <p className="truncate text-sm text-slate-500 dark:text-slate-400">
+                              {userEmail}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Actions */}
+
+                    <div className="p-2">
+                      <Link
+                        href="/profile"
+                        onClick={() => setProfileOpen(false)}
+                        className="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+                      >
+                        <User className="h-5 w-5" />
+
+                        <span>Profile</span>
+                      </Link>
+
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10"
+                      >
+                        <LogOut className="h-5 w-5" />
+
+                        <span>Logout</span>
+                      </button>
+                    </div>
                   </div>
+                )}
+              </div>
+            ) : null}
+          </div>
+
+          {/* ===================================== */}
+          {/* Mobile Controls */}
+          {/* ===================================== */}
+
+          <div className="flex shrink-0 items-center gap-2 md:hidden">
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label="Toggle Theme"
+              className="rounded-2xl border border-slate-200 bg-slate-100 p-2.5 text-primary-color transition-all hover:bg-yellow-400/20 dark:border-slate-700 dark:bg-slate-800"
+            >
+              {darkMode ? (
+                <SunMedium className="h-5 w-5 text-yellow-400" />
+              ) : (
+                <Moon className="h-5 w-5 text-primary-color" />
+              )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsOpen((prev) => !prev)}
+              aria-label="Toggle Menu"
+              className="rounded-2xl p-2.5 shadow-md transition-all"
+            >
+              {isOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* ===================================== */}
+        {/* Mobile Dropdown */}
+        {/* ===================================== */}
+
+        {isOpen && (
+          <div className="animate-in slide-in-from-top space-y-5 border-t-2 border-slate-100 bg-white px-6 py-5 duration-300 md:hidden dark:border-slate-800 dark:bg-slate-900">
+            {/* Search */}
+
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary-color opacity-50" />
+
+              <Input
+                placeholder="ស្វែងរកអ្វីមួយ..."
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                onFocus={() => setSearchOpen(true)}
+                className="rounded-2xl border-2 border-slate-200 bg-slate-100 py-5 pl-12 pr-4 text-lg font-bold text-primary-color placeholder:text-primary-color/50 dark:border-slate-700 dark:bg-slate-800"
+              />
+            </div>
+
+            {/* ================================= */}
+            {/* Mobile Profile */}
+            {/* ================================= */}
+
+            {status === "authenticated" && session?.user && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between pt-2">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <Avatar className="h-12 w-12 shrink-0">
+                      {userAvatarUrl && (
+                        <AvatarImage src={userAvatarUrl} alt={userName} />
+                      )}
+
+                      <AvatarFallback className="bg-init-color text-lg font-extrabold text-secondary-color">
+                        {userInitial}
+                      </AvatarFallback>
+                    </Avatar>
+
+                    <div className="min-w-0">
+                      <p className="truncate text-lg font-extrabold text-primary-color">
+                        {userName}
+                      </p>
+
+                      {userEmail && (
+                        <p className="truncate text-sm text-slate-500 dark:text-slate-400">
+                          {userEmail}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <NotificationBell />
                 </div>
 
-                <NotificationBell />
+                {/* Profile */}
+
+                <Link
+                  href="/profile"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+                >
+                  <User className="h-5 w-5" />
+                  Profile
+                </Link>
+
+                {/* Logout */}
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10"
+                >
+                  <LogOut className="h-5 w-5" />
+                  Logout
+                </button>
               </div>
-
-              {/* Profile */}
-
-              <Link
-                href="/profile"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
-              >
-                <User className="h-5 w-5" />
-                Profile
-              </Link>
-
-              {/* Logout */}
-
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10"
-              >
-                <LogOut className="h-5 w-5" />
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
+      </header>
+      {searchOpen && (
+        <SearchModal
+          open
+          initialQuery={searchQuery}
+          onClose={() => setSearchOpen(false)}
+        />
       )}
-    </header>
-    {searchOpen && <SearchModal open initialQuery={searchQuery} onClose={() => setSearchOpen(false)} />}
     </>
   );
 }
