@@ -1,105 +1,116 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { BookmarkCourseCard } from "@/components/bookmark/BookmarkCourseCard";
-import { BookmarkedCourse } from "@/types/course";
+import Link from "next/link";
+import { BookmarkIcon, RefreshCw } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { CourseGrid } from "@/components/courses/CourseGrid";
+import { mapApiCourseToCourse } from "@/lib/course/course-adapter";
+import { useGetBookmarkedCoursesQuery } from "@/redux/service/bookmarkApi";
 
-// Extended interface to support optional progressPercent
-interface BookmarkedCourseWithProgress extends BookmarkedCourse {
-  progressPercent?: number;
+function BookmarkLoading() {
+  return (
+    <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: 6 }, (_, index) => (
+        <div
+          key={index}
+          className="h-[390px] animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800"
+        />
+      ))}
+    </div>
+  );
 }
 
-const bookmarkedCourses: BookmarkedCourseWithProgress[] = [
-  {
-    id: "1",
-    thumbnailUrl: "/images/Web-dvelopment.jpg",
-    category: "FRONTEND",
-    title: "HTML & CSS Fundamentals",
-    description: "រៀនបង្កើត Responsive Website ជាមួយ HTML និង CSS ពីកម្រិតដំបូង",
-    duration: "៦ម៉ោង ២៥នាទី",
-    status: "in_progress",
-    isBookmarked: true,
-    progressPercent: 30, // Shows 30% progress bar
-  },
-  {
-    id: "2",
-    thumbnailUrl: "/images/cyber-photo.svg",
-    category: "BACKEND",
-    title: "Node.js & Express API Development",
-    description: "បង្កើត RESTful APIs និង backend systems ដែលមានសុវត្ថិភាព",
-    duration: "៨ម៉ោង ៤០នាទី",
-    status: "paid",
-    isBookmarked: true,
-    // No progress -> Hides progress bar & shows "ចាប់ផ្តើមសិក្សា" button
-  },
-  {
-    id: "3",
-    thumbnailUrl: "/images/Web-dvelopment.jpg",
-    category: "FULLSTACK",
-    title: "Next.js & Tailwind CSS Architecture",
-    description: "រៀនបង្កើត Full-stack Web Apps ជាមួយ Next.js App Router ទំនើប",
-    duration: "១២ម៉ោង ១៥នាទី",
-    status: "in_progress",
-    isBookmarked: true,
-    progressPercent: 75, // Shows 75% progress bar
-  },
-  {
-    id: "4",
-    thumbnailUrl: "/images/cyber-photo.svg",
-    category: "MOBILE",
-    title: "Flutter & Dart App Development",
-    description: "បង្កើត Cross-platform Mobile Applications សម្រាប់ iOS និង Android",
-    duration: "១៤ម៉ោង",
-    status: "paid",
-    isBookmarked: true,
-    // No progress -> Hides progress bar & shows "ចាប់ផ្តើមសិក្សា" button
-  },
-  {
-    id: "5",
-    thumbnailUrl: "/images/cyber-photo.svg",
-    category: "CYBERSECURITY",
-    title: "Cybersecurity សម្រាប់អ្នកចាប់ផ្តើម",
-    description: "ស្វែងយល់ពីមូលដ្ឋានគ្រឹះ Network Security និង Ethical Hacking",
-    duration: "២០ម៉ោង",
-    status: "in_progress",
-    isBookmarked: true,
-    progressPercent: 50, // Shows 50% progress bar
-  },
-  {
-    id: "6",
-    thumbnailUrl: "/images/cyber-photo.svg",
-    category: "DEVOPS",
-    title: "Docker & Kubernetes Essentials",
-    description: "គ្រប់គ្រង Containerization និង Deployment សម្រាប់ Enterprise",
-    duration: "៩ម៉ោង ៥០នាទី",
-    status: "paid",
-    isBookmarked: true,
-    // No progress -> Hides progress bar & shows "ចាប់ផ្តើមសិក្សា" button
-  },
-];
-
 export default function Bookmark() {
+  const { status } = useSession();
+  const { data, isLoading, isFetching, error, refetch } =
+    useGetBookmarkedCoursesQuery(undefined, {
+      skip: status !== "authenticated",
+    });
+
+  const courses = (data ?? []).map(mapApiCourseToCourse);
+
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-7 p-4 sm:p-6">
       <div>
-        <h1 className="text-3xl font-bold text-primary-color">ចំណាំ (Bookmarks)</h1>
-        <p className="text-lg text-slate-600 dark:text-slate-400 mt-1">
-          ចូលមើលព័ត៌មានវគ្គសិក្សា ដែលអ្នកកំពុងចាប់អារម្មណ៍និងបានរក្សាទុកនៅក្នុងបញ្ជីនេះ
-        </p>
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-[#002455] dark:bg-blue-950/50 dark:text-blue-300">
+            <BookmarkIcon className="h-5 w-5" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-[#002455] dark:text-slate-100 sm:text-3xl">
+              Bookmarked courses
+            </h1>
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 sm:text-base">
+              Courses you saved for later appear here.
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {bookmarkedCourses.map((course, i) => (
-          <motion.div
-            key={course.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.08, duration: 0.4 }}
+      <nav
+        aria-label="Bookmark type"
+        className="inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+      >
+        <Link
+          href="/documentation/bookmark"
+          className="rounded-lg px-5 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+        >
+          Documents
+        </Link>
+        <Link
+          href="/courses/bookmark"
+          aria-current="page"
+          className="rounded-lg bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white dark:bg-blue-600"
+        >
+          Courses
+        </Link>
+      </nav>
+
+      {status === "loading" || isLoading ? (
+        <BookmarkLoading />
+      ) : status !== "authenticated" ? (
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center dark:border-slate-700 dark:bg-slate-900">
+          <p className="font-semibold text-slate-800 dark:text-slate-100">
+            Sign in to see your bookmarked courses.
+          </p>
+          <Link
+            href="/"
+            className="mt-5 inline-flex rounded-xl bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#003b80]"
           >
-            <BookmarkCourseCard course={course} />
-          </motion.div>
-        ))}
-      </div>
+            Return home to sign in
+          </Link>
+        </div>
+      ) : error ? (
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-900 dark:bg-red-950/30">
+          <p className="font-semibold text-red-800 dark:text-red-200">
+            Unable to load your bookmarked courses.
+          </p>
+          <button
+            type="button"
+            onClick={() => refetch()}
+            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700"
+          >
+            <RefreshCw className="h-4 w-4" /> Try again
+          </button>
+        </div>
+      ) : courses.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center dark:border-slate-700 dark:bg-slate-900">
+          <BookmarkIcon className="mx-auto h-8 w-8 text-slate-400" />
+          <p className="mt-4 font-semibold text-slate-800 dark:text-slate-100">
+            You have no bookmarked courses yet.
+          </p>
+          <Link
+            href="/courses"
+            className="mt-5 inline-flex rounded-xl bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#003b80] dark:bg-blue-600 dark:hover:bg-blue-500"
+          >
+            Browse public courses
+          </Link>
+        </div>
+      ) : (
+        <div className={isFetching ? "opacity-70 transition-opacity" : ""}>
+          <CourseGrid courses={courses} />
+        </div>
+      )}
     </div>
   );
 }

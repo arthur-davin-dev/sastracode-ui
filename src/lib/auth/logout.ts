@@ -30,9 +30,8 @@ export async function logoutUser(redirectTo = "/") {
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => null);
-
-      console.error("Backend logout failed:", errorData);
+      const data = await response.json().catch(() => null);
+      console.error("Remote logout failed:", data);
     }
   } catch (error) {
     console.error("Backend logout request failed:", error);

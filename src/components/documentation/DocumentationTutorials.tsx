@@ -32,6 +32,7 @@ export function toCourse(tutorial: TutorialSummary): Course {
     coverImage: tutorial.coverFileId
       ? `/api/v1/files/${encodeURIComponent(tutorial.coverFileId)}`
       : "/images/doc-hero.png",
+    viewCount: tutorial.viewCount ?? 0,
     ctaLabel: "រៀនឥឡូវ",
   };
 }

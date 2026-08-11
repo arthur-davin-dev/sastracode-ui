@@ -8,8 +8,14 @@ import { LearningPathProgress } from "@/components/achievement/LearningPathProgr
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserSummary, AchievementBadge, Activity, LearningPath } from "@/types/achievement";
 import { XpLevelCard } from "./XpLevelCard";
+import { useSession } from "next-auth/react";
+import { useGetMyProfileQuery } from "@/redux/service/profile-api";
+import {
+  useGetMyXpQuery,
+  useGetMyXpTransactionsQuery,
+} from "@/redux/service/achievementApi";
 
-const userData: UserSummary = {
+const fallbackUserData: UserSummary = {
   name: "ឆាយ​ ដាវីន",
   avatarUrl: "/images/mysql.jpg",
   currentXp: 12450,
@@ -41,6 +47,55 @@ const paths: LearningPath[] = [
 ];
 
 export default function Achievement() {
+  const { status } = useSession();
+  const authenticated = status === "authenticated";
+  const profileQuery = useGetMyProfileQuery(undefined, { skip: !authenticated });
+  const xpQuery = useGetMyXpQuery(undefined, { skip: !authenticated });
+  const transactionsQuery = useGetMyXpTransactionsQuery(undefined, {
+    skip: !authenticated,
+  });
+
+  const totalXp = xpQuery.data?.totalXp ?? 0;
+  const currentLevel = Math.floor(totalXp / 1000) + 1;
+  const currentLevelStart = (currentLevel - 1) * 1000;
+  const nextLevelXp = currentLevel * 1000;
+  const levelProgressPercent = Math.min(
+    100,
+    Math.round(((totalXp - currentLevelStart) / 1000) * 100),
+  );
+  const profileName = [profileQuery.data?.firstName, profileQuery.data?.lastName]
+    .filter(Boolean)
+    .join(" ");
+
+  const userData: UserSummary = {
+        name: profileName || profileQuery.data?.username || "Learner",
+        avatarUrl:
+          profileQuery.data?.avatarUrl || "/images/sastra_code_logo.png",
+        currentXp: totalXp,
+        nextLevelXp,
+        levelProgressPercent,
+        nextLevel: currentLevel + 1,
+        badges: badges.filter((badge) => !badge.locked).length,
+        score: xpQuery.data?.totalScore ?? 0,
+        certificates: paths.filter((path) => path.progressPercent === 100).length,
+      };
+
+  const apiActivities: Activity[] =
+    transactionsQuery.data?.content.map((transaction) => ({
+      id: String(transaction.id),
+      icon: "⚡",
+      title:
+        transaction.description || transaction.sourceType.replaceAll("_", " "),
+      subtitle: transaction.createdAt
+        ? new Intl.DateTimeFormat(undefined, {
+            dateStyle: "medium",
+            timeStyle: "short",
+          }).format(new Date(transaction.createdAt))
+        : "XP activity",
+      xp: transaction.xpAmount,
+    })) ?? [];
+  const displayedActivities = apiActivities;
+
   return (
     <div className="min-h-screen bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 space-y-8 p-6 transition-colors duration-300">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -95,7 +150,12 @@ export default function Achievement() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {activities.map((a, i) => (
+            {!transactionsQuery.isLoading && displayedActivities.length === 0 && (
+              <p className="rounded-xl border border-dashed border-slate-300 p-6 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400">
+                No XP activity yet. Complete a lesson or quiz to earn XP.
+              </p>
+            )}
+            {displayedActivities.map((a, i) => (
               <motion.div
                 key={a.id}
                 initial={{ opacity: 0, x: -20 }}

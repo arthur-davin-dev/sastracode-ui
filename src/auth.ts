@@ -63,6 +63,8 @@ async function refreshAccessToken(token: JWT): Promise<JWT> {
 
       refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
 
+      idToken: refreshedTokens.id_token ?? token.idToken,
+
       error: undefined,
     };
   } catch (error) {
@@ -101,6 +103,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.accessToken = account.access_token;
 
         token.refreshToken = account.refresh_token;
+
+        token.idToken = account.id_token;
 
         token.accessTokenExpires = account.expires_at
           ? account.expires_at * 1000

@@ -156,7 +156,7 @@ export function UpNextCard({
   const safeThumbnail = getValidImageUrl(thumbnail);
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <div className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-base font-semibold text-slate-900 dark:text-white">
@@ -229,7 +229,7 @@ export function UpNextCard({
       {href ? (
         <Link
           href={href}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-primary-color py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#002455] py-2.5 text-sm font-semibold text-white transition hover:bg-[#003b80] dark:bg-indigo-600 dark:hover:bg-indigo-500"
         >
           <Play className="h-3.5 w-3.5 fill-current" />
           ដំណើរការមេរៀនបន្ទាប់

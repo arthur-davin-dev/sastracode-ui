@@ -32,36 +32,6 @@ export default function ConsolePage() {
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 font-khmer transition-colors duration-300">
-      
-      {/* Top Nav Bar */}
-      <div className="flex items-center justify-between px-6 lg:px-10 py-4 border-b border-slate-100 dark:border-slate-800">
-        <nav className="flex items-center gap-2">
-          {navItems.map((item, i) => (
-            <button
-              key={item}
-              onClick={() => setActiveNav(i)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                activeNav === i
-                  ? "bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100"
-                  : "text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200"
-              }`}
-            >
-              {item}
-            </button>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-4">
-          <Sun className="h-5 w-5 text-slate-500 dark:text-slate-400 cursor-pointer hover:text-slate-700 dark:hover:text-slate-200 transition-colors" />
-          <button className="flex items-center gap-2 rounded-full border-2 border-blue-600 dark:border-blue-500 px-3 py-1.5 text-sm font-medium text-slate-900 dark:text-slate-100">
-            <span aria-hidden>🇰🇭</span>
-            ខ្មែរ
-          </button>
-          <button className="text-sm font-medium text-red-500 hover:text-red-600 transition-colors">
-            ចុះឈ្មោះ
-          </button>
-        </div>
-      </div>
 
       <div className="px-6 lg:px-10 py-8">
         

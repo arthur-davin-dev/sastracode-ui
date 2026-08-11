@@ -1,12 +1,52 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { Bookmark, Eye } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 import { Course } from "@/types/course";
+import {
+  useAddBookmarkMutation,
+  useGetMyBookmarksQuery,
+  useRemoveBookmarkMutation,
+} from "@/redux/service/bookmarkApi";
 
 interface CourseCardProps {
   course: Course;
 }
 
 export default function CourseCard({ course }: CourseCardProps) {
+  const { status } = useSession();
+  const { data: bookmarkData } = useGetMyBookmarksQuery("TUTORIAL", {
+    skip: status !== "authenticated",
+  });
+  const [addBookmark, addState] = useAddBookmarkMutation();
+  const [removeBookmark, removeState] = useRemoveBookmarkMutation();
+  const bookmark = bookmarkData?.data?.content.find(
+    (item) => item.itemId === course.id,
+  );
+  const bookmarkLoading = addState.isLoading || removeState.isLoading;
+
+  async function toggleBookmark() {
+    if (status !== "authenticated") {
+      toast.error("Please sign in to save this tutorial.");
+      return;
+    }
+
+    try {
+      if (bookmark) {
+        await removeBookmark(bookmark.id).unwrap();
+        toast.success("Tutorial removed from bookmarks.");
+      } else {
+        await addBookmark({ itemType: "TUTORIAL", itemId: course.id }).unwrap();
+        toast.success("Tutorial saved to bookmarks.");
+      }
+    } catch {
+      toast.error("Unable to update this bookmark. Please try again.");
+    }
+  }
+
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 font-khmer transition-all duration-300 ease-in-out hover:border-blue-200 dark:hover:border-blue-800 hover:shadow-lg hover:shadow-slate-200/50 dark:hover:shadow-none">
       
@@ -24,6 +64,20 @@ export default function CourseCard({ course }: CourseCardProps) {
         <span className="absolute left-3 top-3 z-10 rounded-lg bg-blue-600 px-2.5 py-1 text-xs font-semibold text-white tracking-wide shadow-sm transition-transform duration-300 group-hover:-translate-y-0.5">
           ឥតគិតថ្លៃ
         </span>
+
+        <button
+          type="button"
+          onClick={toggleBookmark}
+          disabled={bookmarkLoading}
+          aria-label={bookmark ? "Remove tutorial bookmark" : "Bookmark tutorial"}
+          aria-pressed={Boolean(bookmark)}
+          className="absolute right-3 top-3 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/60 bg-white/95 text-[#002455] shadow-md backdrop-blur transition hover:scale-105 hover:bg-white disabled:cursor-wait disabled:opacity-60 dark:border-slate-700 dark:bg-slate-900/95 dark:text-blue-400"
+        >
+          <Bookmark
+            className="h-5 w-5"
+            fill={bookmark ? "currentColor" : "none"}
+          />
+        </button>
       </div>
 
       {/* Main Details Body */}
@@ -38,6 +92,11 @@ export default function CourseCard({ course }: CourseCardProps) {
         <p className="mb-5 line-clamp-2 min-h-[2.75rem] flex-1 overflow-hidden text-ellipsis text-sm leading-relaxed text-slate-500 dark:text-slate-400">
           {course.description}
         </p>
+
+        <div className="mb-4 flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
+          <Eye className="h-4 w-4" aria-hidden="true" />
+          <span>{(course.viewCount ?? 0).toLocaleString()} views</span>
+        </div>
 
         {/* Action Button Link */}
         <Link

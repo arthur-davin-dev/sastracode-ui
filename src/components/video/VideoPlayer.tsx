@@ -43,7 +43,7 @@ export function VideoPlayer({
 }: VideoPlayerProps) {
   if (!src) {
     return (
-      <div className="flex aspect-video items-center justify-center overflow-hidden rounded-2xl bg-gray-900 px-6 text-center">
+      <div className="flex aspect-video items-center justify-center overflow-hidden rounded-2xl border border-slate-800 bg-slate-950 px-6 text-center shadow-sm">
         <div>
           <p className="text-lg font-semibold text-white">Video unavailable</p>
           <p className="mt-2 text-sm text-gray-300">
@@ -62,7 +62,7 @@ export function VideoPlayer({
     }&rel=0`;
 
     return (
-      <div className="aspect-video overflow-hidden rounded-2xl bg-black">
+      <div className="aspect-video overflow-hidden rounded-2xl border border-slate-200 bg-black shadow-sm dark:border-slate-800">
         <iframe
           key={embedUrl}
           className="h-full w-full border-0"
@@ -77,7 +77,7 @@ export function VideoPlayer({
   }
 
   return (
-    <div className="aspect-video overflow-hidden rounded-2xl bg-black">
+    <div className="aspect-video overflow-hidden rounded-2xl border border-slate-200 bg-black shadow-sm dark:border-slate-800">
       <video
         key={src}
         className="h-full w-full"
