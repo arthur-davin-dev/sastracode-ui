@@ -16,3 +16,5 @@ declare module "next-auth/jwt" {
     error?: "RefreshAccessTokenError";
   }
 }
+
+export {};

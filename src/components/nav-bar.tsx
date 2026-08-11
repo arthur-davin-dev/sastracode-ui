@@ -243,9 +243,7 @@ export default function Navbar() {
           {/* Authentication */}
           {/* -------------------------------- */}
 
-          {status === "authenticated" && session?.user && (
-            <NotificationBell />
-          )}
+          {status === "authenticated" && session?.user && <NotificationBell />}
 
           {status === "loading" ? (
             // Session loading
@@ -254,14 +252,15 @@ export default function Navbar() {
             </div>
           ) : status === "authenticated" && session?.user ? (
             // Logged in
-            <div className="relative hidden md:block">
+            <div className="relative hidden md:block" data-profile-menu>
               <button
                 type="button"
                 onClick={() => setProfileOpen((prev) => !prev)}
-                className="flex items-center gap-2 rounded-full border border-[#002455]/20 bg-white/40 p-1.5 pr-3 transition-colors hover:bg-white/70 dark:border-slate-700 dark:bg-slate-900/40 dark:hover:bg-slate-800"
+                aria-haspopup="menu"
+                aria-expanded={profileOpen}
+                className="flex items-center gap-1.5 rounded-full border border-[#002455]/20 bg-white/40 p-1.5 transition-colors hover:bg-white/70 dark:border-slate-700 dark:bg-slate-900/40 dark:hover:bg-slate-800"
               >
                 {/* Avatar */}
-
                 {userImage ? (
                   <img
                     src={userImage}
@@ -274,22 +273,8 @@ export default function Navbar() {
                   </div>
                 )}
 
-                {/* Name */}
-
-                <div className="hidden min-w-0 text-left lg:block">
-                  <p className="max-w-32 truncate text-sm font-semibold text-[#002455] dark:text-white">
-                    {userName}
-                  </p>
-
-                  {userEmail && (
-                    <p className="max-w-32 truncate text-xs text-gray-500 dark:text-gray-400">
-                      {userEmail}
-                    </p>
-                  )}
-                </div>
-
                 <ChevronDown
-                  className={`h-4 w-4 text-gray-500 transition-transform ${
+                  className={`h-4 w-4 shrink-0 text-gray-500 transition-transform ${
                     profileOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -302,7 +287,6 @@ export default function Navbar() {
               {profileOpen && (
                 <div className="absolute right-0 top-full z-50 mt-3 w-72 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
                   {/* User information */}
-
                   <div className="border-b border-gray-100 p-4 dark:border-slate-800">
                     <div className="flex items-center gap-3">
                       {userImage ? (
@@ -321,7 +305,6 @@ export default function Navbar() {
                         <p className="truncate font-semibold text-[#002455] dark:text-white">
                           {userName}
                         </p>
-
                         {userEmail && (
                           <p className="truncate text-sm text-gray-500 dark:text-gray-400">
                             {userEmail}
@@ -332,7 +315,6 @@ export default function Navbar() {
                   </div>
 
                   {/* Profile link */}
-
                   <div className="p-2">
                     <Link
                       href="/profile"
@@ -340,19 +322,16 @@ export default function Navbar() {
                       className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-800"
                     >
                       <User className="h-5 w-5" />
-
                       <span>Profile</span>
                     </Link>
 
                     {/* Logout */}
-
                     <button
                       type="button"
                       onClick={handleLogout}
                       className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10"
                     >
                       <LogOut className="h-5 w-5" />
-
                       <span>Logout</span>
                     </button>
                   </div>
@@ -361,7 +340,9 @@ export default function Navbar() {
             </div>
           ) : (
             // Not logged in
-            <Login />
+            <div className="hidden md:block">
+              <Login />
+            </div>
           )}
 
           {/* Mobile hamburger */}
@@ -449,8 +430,14 @@ export default function Navbar() {
 
             {/* Mobile login */}
 
+            {/* {status === "unauthenticated" && (
+              <div className="mt-2 border-t border-gray-200 pt-4 dark:border-slate-800">
+                <Login />
+              </div>
+            )} */}
+
             {status === "unauthenticated" && (
-              <div className="border-t border-gray-200 pt-4 dark:border-slate-800">
+              <div className="mt-2 border-t border-gray-200 pt-4 dark:border-slate-800 [&_button]:!flex [&_button]:w-full">
                 <Login />
               </div>
             )}
