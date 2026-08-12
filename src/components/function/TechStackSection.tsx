@@ -1,9 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, useAnimationFrame, useMotionValue, useTransform } from "framer-motion";
+import {
+  motion,
+  useAnimationFrame,
+  useMotionValue,
+  useTransform,
+} from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslations";
-
 
 /**
  * TechStackSection
@@ -36,7 +40,7 @@ const defaultNodes: StackNode[] = [
     y: 285,
     ring: "#2f6fed",
     orbitSpeed: 1.0,
-    orbitRadius: 1.0
+    orbitRadius: 1.0,
   },
   {
     icon: <img src="/home/technology-stack/css3-svgrepo-com.svg" alt="css" />,
@@ -44,7 +48,7 @@ const defaultNodes: StackNode[] = [
     y: 259,
     ring: "#e14e2c",
     orbitSpeed: 1.0,
-    orbitRadius: 1.0
+    orbitRadius: 1.0,
   },
   {
     icon: <img src="/home/technology-stack/java-svgrepo-com.svg" alt="java" />,
@@ -52,7 +56,7 @@ const defaultNodes: StackNode[] = [
     y: 285,
     ring: "#2f6fed",
     orbitSpeed: 1.0,
-    orbitRadius: 1.0
+    orbitRadius: 1.0,
   },
   {
     icon: <img src="/home/technology-stack/javascript.png" alt="javascript" />,
@@ -60,31 +64,40 @@ const defaultNodes: StackNode[] = [
     y: 386,
     ring: "#e14e2c",
     orbitSpeed: 1.0,
-    orbitRadius: 1.0
+    orbitRadius: 1.0,
   },
   {
-    icon: <img src="/home/technology-stack/laravel-svgrepo-com.svg" alt="laravel" />,
+    icon: (
+      <img src="/home/technology-stack/laravel-svgrepo-com.svg" alt="laravel" />
+    ),
     x: 609,
     y: 386,
     ring: "#e0b400",
     orbitSpeed: 1.0,
-    orbitRadius: 1.0
+    orbitRadius: 1.0,
   },
   {
-    icon: <img src="/home/technology-stack/mysql-logo-svgrepo-com.svg" alt="mySql" />,
+    icon: (
+      <img
+        src="/home/technology-stack/mysql-logo-svgrepo-com.svg"
+        alt="mySql"
+      />
+    ),
     x: 294,
     y: 499,
     ring: "#3aa876",
     orbitSpeed: 1.0,
-    orbitRadius: 1.0
+    orbitRadius: 1.0,
   },
   {
-    icon: <img src="/home/technology-stack/python-svgrepo-com.svg" alt="python" />,
+    icon: (
+      <img src="/home/technology-stack/python-svgrepo-com.svg" alt="python" />
+    ),
     x: 382,
     y: 573,
     ring: "#38bdf8",
     orbitSpeed: 1.0,
-    orbitRadius: 1.0
+    orbitRadius: 1.0,
   },
   {
     icon: <img src="/home/technology-stack/tailwind.svg" alt="tailwind" />,
@@ -92,7 +105,7 @@ const defaultNodes: StackNode[] = [
     y: 573,
     ring: "#2f6fed",
     orbitSpeed: 1.0,
-    orbitRadius: 1.0
+    orbitRadius: 1.0,
   },
   {
     icon: <img src="/home/technology-stack/vue.svg" alt="vue" />,
@@ -100,19 +113,17 @@ const defaultNodes: StackNode[] = [
     y: 499,
     ring: "#e0793c",
     orbitSpeed: 1.0,
-    orbitRadius: 1.0
+    orbitRadius: 1.0,
   },
 ];
 
 // Orbiting node component with smooth animation
 const OrbitingNode = ({
   node,
-  index,
-  totalNodes
+  lineColor,
 }: {
   node: StackNode;
-  index: number;
-  totalNodes: number;
+  lineColor: string;
 }) => {
   const pct = (v: number, total: number) => `${(v / total) * 100}%`;
 
@@ -126,7 +137,6 @@ const OrbitingNode = ({
 
   // Motion values for smooth animation
   const angle = useMotionValue(startAngle);
-  const [isHovered, setIsHovered] = useState(false);
 
   // Animate the angle continuously
   useAnimationFrame((time, delta) => {
@@ -136,42 +146,61 @@ const OrbitingNode = ({
 
   // Calculate position based on current angle
   const x = useTransform(angle, (currentAngle) => {
-    return CENTER.x + (distance * radiusMultiplier * Math.cos(currentAngle));
+    return CENTER.x + distance * radiusMultiplier * Math.cos(currentAngle);
   });
 
   const y = useTransform(angle, (currentAngle) => {
-    return CENTER.y + (distance * radiusMultiplier * Math.sin(currentAngle));
+    return CENTER.y + distance * radiusMultiplier * Math.sin(currentAngle);
   });
 
   // Convert to percentage strings
   const xPct = useTransform(x, (val) => pct(val, CANVAS_W));
   const yPct = useTransform(y, (val) => pct(val, CANVAS_H));
+  const lineRotation = useTransform(
+    angle,
+    (currentAngle) => (currentAngle * 180) / Math.PI,
+  );
 
   return (
-    <motion.div
-      className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 bg-white shadow-md dark:bg-slate-800 dark:shadow-xl transition-colors duration-300"
-      style={{
-        left: xPct,
-        top: yPct,
-        width: "9%",
-        aspectRatio: "1 / 1",
-        borderColor: node.ring ?? "#2f4fd6",
-        zIndex: 10,
-        cursor: "pointer",
-      }}
-      whileHover={{
-        scale: 1.2,
-        zIndex: 50,
-        boxShadow:
-          "0 0 35px rgba(96,165,250,.45), 0 10px 35px rgba(0,0,0,.45)",
-      }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-    >
-      <div className="flex h-[60%] w-[60%] items-center justify-center">
-        {node.icon}
-      </div>
-    </motion.div>
+    <>
+      <motion.div
+        className="absolute pointer-events-none"
+        style={{
+          left: pct(CENTER.x, CANVAS_W),
+          top: pct(CENTER.y, CANVAS_H),
+          width: `${distance}px`,
+          height: "1.5px",
+          borderRadius: 999,
+          background: lineColor,
+          opacity: 0.4,
+          transformOrigin: "0 50%",
+          rotate: lineRotation,
+        }}
+      />
+
+      <motion.div
+        className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 bg-white shadow-md dark:bg-slate-800 dark:shadow-xl transition-colors duration-300"
+        style={{
+          left: xPct,
+          top: yPct,
+          width: "9%",
+          aspectRatio: "1 / 1",
+          borderColor: node.ring ?? "#2f4fd6",
+          zIndex: 10,
+          cursor: "pointer",
+        }}
+        whileHover={{
+          scale: 1.2,
+          zIndex: 50,
+          boxShadow:
+            "0 0 35px rgba(96,165,250,.45), 0 10px 35px rgba(0,0,0,.45)",
+        }}
+      >
+        <div className="flex h-[60%] w-[60%] items-center justify-center">
+          {node.icon}
+        </div>
+      </motion.div>
+    </>
   );
 };
 
@@ -212,7 +241,10 @@ export default function TechStackSection({
             {currentT.technologyStack.description}
           </p>
         </div>
-        <div className="relative mx-auto w-full max-w-225" style={{ aspectRatio: `${CANVAS_W} / ${CANVAS_H}` }}>
+        <div
+          className="relative mx-auto w-full max-w-225"
+          style={{ aspectRatio: `${CANVAS_W} / ${CANVAS_H}` }}
+        >
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-gray-400 dark:text-gray-500">Loading...</span>
           </div>
@@ -241,35 +273,6 @@ export default function TechStackSection({
         className="relative mx-auto w-full max-w-[900px]"
         style={{ aspectRatio: `${CANVAS_W} / ${CANVAS_H}` }}
       >
-        {/* Connecting lines - animated with pulse */}
-        <svg
-          className="absolute inset-0 h-full w-full pointer-events-none"
-          viewBox={`0 0 ${CANVAS_W} ${CANVAS_H}`}
-          preserveAspectRatio="none"
-        >
-          {nodes.map((n, i) => (
-            <line
-              key={i}
-              x1={CENTER.x}
-              y1={CENTER.y}
-              x2={n.x}
-              y2={n.y}
-              stroke={lineColor}
-              strokeWidth="1.5"
-              strokeDasharray="5 5"
-              opacity="0.4"
-              className="dark:opacity-30"
-            >
-              <animate
-                attributeName="opacity"
-                values="0.2;0.6;0.2"
-                dur={`${3 + i * 0.3}s`}
-                repeatCount="indefinite"
-              />
-            </line>
-          ))}
-        </svg>
-
         {/* Center hub - pulsing glow */}
         <style>{`
           @keyframes pulse-glow {
@@ -328,12 +331,7 @@ export default function TechStackSection({
 
         {/* Orbiting nodes */}
         {nodes.map((node, index) => (
-          <OrbitingNode
-            key={index}
-            node={node}
-            index={index}
-            totalNodes={nodes.length}
-          />
+          <OrbitingNode key={index} node={node} lineColor={lineColor} />
         ))}
 
         {/* Mascot - floating up and down */}
@@ -347,9 +345,7 @@ export default function TechStackSection({
               zIndex: 20,
             }}
           >
-            <div className="mascot-float">
-              {mascot}
-            </div>
+            <div className="mascot-float">{mascot}</div>
           </div>
         )}
       </div>

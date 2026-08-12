@@ -234,11 +234,36 @@ export const overallProgress: OverallProgressData = {
 };
 
 export const techOptions: TechOption[] = [
-  { id: "python", label: "Python", icon: "/icons/python.svg" },
-  { id: "javascript", label: "JavaScript", icon: "/icons/javascript.svg" },
-  { id: "java", label: "Java", icon: "/icons/java.svg" },
-  { id: "css", label: "CSS", icon: "/icons/css.svg" },
-  { id: "html", label: "HTML", icon: "/icons/html.svg" },
+  {
+    id: "python",
+    label: "Python",
+    icon: "/icons/python.svg",
+    href: "/documentation/python",
+  },
+  {
+    id: "javascript",
+    label: "JavaScript",
+    icon: "/icons/javascript.svg",
+    href: "/documentation/javascript",
+  },
+  {
+    id: "java",
+    label: "Java",
+    icon: "/icons/java.svg",
+    href: "/documentation/java",
+  },
+  {
+    id: "css",
+    label: "CSS",
+    icon: "/icons/css.svg",
+    href: "/documentation/css",
+  },
+  {
+    id: "html",
+    label: "HTML",
+    icon: "/icons/html.svg",
+    href: "/documentation/html",
+  },
 ];
 
 export const lessons: Course[] = [
@@ -316,7 +341,8 @@ export const forumPosts: ForumPost[] = [
     author: "អ្នកប្រើប្រាស់",
     timeAgo: "៤៥ នាទ",
     title: "របៀបគ្រប់គ្រង State ក្នុង React Hooks",
-    excerpt: "ស្វែងយល់ useState, useEffect និង useContext ក្នុងការអភិវឌ្ឍ UI ស្មុគស្មាញ",
+    excerpt:
+      "ស្វែងយល់ useState, useEffect និង useContext ក្នុងការអភិវឌ្ឍ UI ស្មុគស្មាញ",
     href: "/playground/react-hooks",
   },
   {
@@ -325,7 +351,8 @@ export const forumPosts: ForumPost[] = [
     author: "SQL",
     timeAgo: "៦០ នាទ",
     title: "តើធ្វើដូចម្តេចដើម្បីសរសេរ SQL Query ស្មុគ្រស្មាញ?",
-    excerpt: "SELECT, JOIN, GROUP BY និងបច្ចេកទេសសំខាន់ៗសម្រាប់គ្រប់គ្រង Database។",
+    excerpt:
+      "SELECT, JOIN, GROUP BY និងបច្ចេកទេសសំខាន់ៗសម្រាប់គ្រប់គ្រង Database។",
     href: "/playground/sql-query",
   },
 ];
@@ -340,9 +367,34 @@ export const promoBanner: PromoBannerData = {
   image: "/images/promo/python-data-science.png",
 };
 export const docsNavItems: SidebarNavItem[] = [
-  { id: "home", label: "ទំព័រដើម", href: "/documentation/dashboard", icon: "home" },
-  { id: "courses", label: "វគ្គសិក្សា", href: "/documentation/java", icon: "book" },
-  { id: "resources", label: "Resources", href: "/documentation/resources", icon: "folder" },
-  { id: "bookmark", label: "Bookmark", href: "/documentation/bookmark", icon: "bookmark" },
-  { id: "help", label: "Help Center", href: "/documentation/help", icon: "help" },
+  {
+    id: "home",
+    label: "ទំព័រដើម",
+    href: "/documentation/dashboard",
+    icon: "home",
+  },
+  {
+    id: "courses",
+    label: "វគ្គសិក្សា",
+    href: "/documentation/java",
+    icon: "book",
+  },
+  {
+    id: "resources",
+    label: "Resources",
+    href: "/documentation/resources",
+    icon: "folder",
+  },
+  {
+    id: "bookmark",
+    label: "Bookmark",
+    href: "/documentation/bookmark",
+    icon: "bookmark",
+  },
+  {
+    id: "help",
+    label: "Help Center",
+    href: "/documentation/help",
+    icon: "help",
+  },
 ];
