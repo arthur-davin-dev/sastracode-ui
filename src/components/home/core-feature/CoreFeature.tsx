@@ -66,7 +66,7 @@ export default function CoreFeatures() {
   const currentT = useTranslation();
 
   return (
-    <section className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-10 py-6 sm:py-20 lg:pt-20 lg:pb-10">
+    <section className="mx-auto max-w-300 px-4 sm:px-6 lg:px-10 py-6 sm:py-20 lg:pt-20 lg:pb-10">
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
           <span className="inline-block rounded-full border border-blue-600/15 dark:border-blue-400/20 bg-blue-100 dark:bg-blue-950/30 px-5 py-2 font-khmer text-sm font-bold uppercase text-primary-color dark:text-blue-300 transition-colors duration-300">
@@ -76,7 +76,7 @@ export default function CoreFeatures() {
             <span className="text-primary-color dark:text-white">
               {currentT.coreFeature.headingPrefix}
             </span>
-            <span className="text-secondary-color gradient-features dark:bg-gradient-to-r dark:from-purple-400 dark:to-blue-400 dark:bg-clip-text dark:text-transparent">
+            <span className="text-secondary-color gradient-features dark:bg-linear-to-r dark:from-purple-400 dark:to-blue-400 dark:bg-clip-text dark:text-transparent">
               {currentT.coreFeature.headingHighlight}
             </span>
           </h2>
@@ -88,8 +88,8 @@ export default function CoreFeatures() {
         <div className="mt-12 grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 px-1 sm:px-2 lg:px-3">
           {currentT.coreFeature.cards.map((card, i) => {
             const style = cardStyles[i];
-            const isClickable = !!style.href;
-            const CardWrapper = isClickable ? Link : "div";
+            const isClickable =
+              typeof style?.href === "string" && style.href.length > 0;
             // Define colors for each card
             const cardColors = [
               {
@@ -143,48 +143,60 @@ export default function CoreFeatures() {
             ];
 
             const colors = cardColors[i] || cardColors[0];
+            const cardBody = (
+              <article className="h-full">
+                <div
+                  className={`flex size-10 sm:size-10.5 items-center justify-center rounded-[14px] border ${colors.border} ${colors.iconBg} transition-colors duration-300`}
+                >
+                  <img
+                    src={style.icon}
+                    alt=""
+                    className={`size-4.5 sm:size-5 ${colors.iconColor}`}
+                  />
+                </div>
+                <h3
+                  className={`mt-4 text-xl sm:text-[1.4rem] font-extrabold ${colors.titleColor} transition-colors duration-300`}
+                >
+                  {card.title}
+                </h3>
+                <p className="mt-2.5 font-khmer text-sm sm:text-[15px] leading-6 text-primary-color dark:text-gray-400 transition-colors duration-300">
+                  {card.description}
+                </p>
+                {isClickable ? (
+                  <span
+                    className={`mt-5 inline-flex items-center gap-1.5 text-xs font-bold transition-colors duration-300 ${colors.linkColor}`}
+                  >
+                    {currentT.coreFeature.cta}
+                    <img
+                      src={style.arrow}
+                      alt=""
+                      className={`size-3.25 ${colors.iconColor}`}
+                    />
+                  </span>
+                ) : null}
+              </article>
+            );
+
+            const wrapperClassName = `block rounded-[20px] border ${colors.border} ${colors.bg} p-4 pt-4 pb-4 sm:p-5 sm:pt-5 sm:pb-5 shadow-[0_4px_10px_rgba(13,27,62,0.07)] dark:shadow-[0_4px_10px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${colors.shadow} ${
+              isClickable ? "cursor-pointer" : "cursor-default"
+            }`;
+
+            if (isClickable) {
+              return (
+                <Link
+                  key={card.title}
+                  href={style.href as string}
+                  className={wrapperClassName}
+                >
+                  {cardBody}
+                </Link>
+              );
+            }
 
             return (
-              <CardWrapper
-                key={card.title}
-                href={isClickable ? style.href : undefined}
-                className={`block rounded-[20px] border ${colors.border} ${colors.bg} p-4 pt-4 pb-4 sm:p-5 sm:pt-5 sm:pb-5 shadow-[0_4px_10px_rgba(13,27,62,0.07)] dark:shadow-[0_4px_10px_rgba(0,0,0,0.3)]
-            transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${colors.shadow} ${
-              isClickable ? "cursor-pointer" : "cursor-default"
-            }`}
-              >
-                <article className="h-full">
-                  <div
-                    className={`flex size-[40px] sm:size-[42px] items-center justify-center rounded-[14px] border ${colors.border} ${colors.iconBg} transition-colors duration-300`}
-                  >
-                    <img
-                      src={style.icon}
-                      alt=""
-                      className={`size-[18px] sm:size-[20px] ${colors.iconColor}`}
-                    />
-                  </div>
-                  <h3
-                    className={`mt-4 text-xl sm:text-[1.4rem] font-extrabold ${colors.titleColor} transition-colors duration-300`}
-                  >
-                    {card.title}
-                  </h3>
-                  <p className="mt-2.5 font-khmer text-sm sm:text-[15px] leading-6 text-primary-color dark:text-gray-400 transition-colors duration-300">
-                    {card.description}
-                  </p>
-                  {isClickable ? (
-                    <span
-                      className={`mt-5 inline-flex items-center gap-1.5 text-xs font-bold transition-colors duration-300 ${colors.linkColor}`}
-                    >
-                      {currentT.coreFeature.cta}
-                      <img
-                        src={style.arrow}
-                        alt=""
-                        className={`size-[13px] ${colors.iconColor}`}
-                      />
-                    </span>
-                  ) : null}
-                </article>
-              </CardWrapper>
+              <div key={card.title} className={wrapperClassName}>
+                {cardBody}
+              </div>
             );
           })}
         </div>
