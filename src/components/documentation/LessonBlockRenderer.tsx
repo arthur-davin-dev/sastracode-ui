@@ -14,9 +14,15 @@ import {
   Quote,
   TriangleAlert,
 } from "lucide-react";
-import { useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import type { TutorialBlock } from "@/types/tutorial-reader";
+import {
+  type QuizAttemptDetail,
+  type QuizScope,
+  useStartQuizAttemptMutation,
+  useSubmitQuizAttemptMutation,
+} from "@/redux/api/quiz-attempt-api";
 
 interface LessonBlockRendererProps {
   block: TutorialBlock;
@@ -25,6 +31,176 @@ interface LessonBlockRendererProps {
 type BlockData = Record<string, unknown>;
 
 type CalloutTone = "INFO" | "TIP" | "WARNING" | "SUCCESS" | "DANGER" | "NOTE";
+
+interface QuizResult {
+  correct: boolean;
+}
+
+function displayAnswer(value: unknown): string {
+  if (value === null || value === undefined) return "—";
+  if (typeof value === "object") {
+    const record = value as Record<string, unknown>;
+    return String(record.text ?? record.label ?? record.value ?? record.id ?? JSON.stringify(value));
+  }
+  return String(value);
+}
+
+interface QuizContextValue {
+  total: number;
+  results: Record<string, QuizResult>;
+  activeQuizId: string | null;
+  register: (id: string) => void;
+  submit: (id: string, answer: number, localCorrect?: boolean) => void;
+  isLast: (id: string) => boolean;
+  position: (id: string) => number;
+  reset: () => void;
+  summary: QuizAttemptDetail | null;
+}
+
+const QuizContext = createContext<QuizContextValue | null>(null);
+
+export function QuizResultsProvider({
+  children,
+  total,
+  tutorialId,
+  scope,
+  scopeId,
+}: {
+  children: React.ReactNode;
+  total: number;
+  tutorialId?: string;
+  scope?: QuizScope;
+  scopeId?: string;
+}) {
+  const [results, setResults] = useState<Record<string, QuizResult>>({});
+  const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [quizIds, setQuizIds] = useState<string[]>([]);
+  const [activeQuizId, setActiveQuizId] = useState<string | null>(null);
+  const [attemptId, setAttemptId] = useState<string | null>(null);
+  const [summary, setSummary] = useState<QuizAttemptDetail | null>(null);
+  const [showReview, setShowReview] = useState(false);
+  const [startAttempt] = useStartQuizAttemptMutation();
+  const [submitAttempt] = useSubmitQuizAttemptMutation();
+  const answered = Object.keys(results).length;
+  const correct = Object.values(results).filter((result) => result.correct).length;
+  const complete = total > 0 && answered === total;
+  const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+  async function submitAnswer(id: string, answer: number, localCorrect = false) {
+    const nextAnswers = { ...answers, [id]: answer };
+    setAnswers(nextAnswers);
+
+    const lastQuestion = quizIds[quizIds.length - 1] === id;
+    if (!lastQuestion) {
+      setActiveQuizId(quizIds[quizIds.indexOf(id) + 1] ?? null);
+      return;
+    }
+
+    if (tutorialId && scope && scopeId) {
+      try {
+        const activeAttemptId =
+          attemptId ??
+          (
+            await startAttempt({ tutorialId, scope, scopeId }).unwrap()
+          ).data.id;
+        if (!attemptId) setAttemptId(activeAttemptId);
+
+        const response = await submitAttempt({
+          tutorialId,
+          scope,
+          scopeId,
+          attemptId: activeAttemptId,
+          answers: Object.entries(nextAnswers).map(([blockId, value]) => ({
+            blockId,
+            answer: value,
+          })),
+        }).unwrap();
+        const backendResults = Object.fromEntries(
+          (response.data.answers ?? []).map((item) => [item.blockId, { correct: item.correct }]),
+        );
+        setResults(backendResults);
+        setSummary(response.data);
+        return;
+      } catch {
+        // Keep local feedback available when the attempt service is unavailable.
+      }
+    }
+
+    setResults((current) => ({ ...current, [id]: { correct: localCorrect } }));
+  }
+
+  function reset() {
+    setResults({});
+    setAnswers({});
+    setAttemptId(null);
+    setSummary(null);
+    setShowReview(false);
+    window.location.reload();
+  }
+
+  return (
+    <QuizContext.Provider
+      value={{
+        total,
+        results,
+        activeQuizId,
+        register: (id) => {
+          setQuizIds((current) => {
+            if (current.includes(id)) return current;
+            const next = [...current, id];
+            setActiveQuizId((active) => active ?? id);
+            return next;
+          });
+        },
+        submit: submitAnswer,
+        isLast: (id) => quizIds[quizIds.length - 1] === id,
+        position: (id) => quizIds.indexOf(id) + 1,
+        reset,
+        summary,
+      }}
+    >
+      {complete ? (
+        <section className="mt-10 rounded-2xl border border-emerald-200 bg-white p-6 text-center shadow-sm dark:border-emerald-900 dark:bg-slate-900">
+          <h2 className="font-khmer text-4xl font-bold text-[#002455] dark:text-white">លទ្ធផល</h2>
+          <p className="mt-4 font-khmer text-xl text-slate-700 dark:text-slate-200">
+            ឆ្លើយត្រូវ {correct} ក្នុងចំណោម {total} សំណួរ
+          </p>
+          <p className="mt-2 text-3xl font-black text-emerald-600">{percent}%</p>
+          {summary?.xpEarned !== undefined && (
+            <p className="mt-3 font-khmer text-xl font-bold text-amber-600">
+              +{summary.xpEarned} XP
+            </p>
+          )}
+          <p className="mt-2 font-khmer text-lg text-slate-600 dark:text-slate-300">
+            {percent >= 80 ? "ល្អណាស់!" : percent >= 50 ? "ធ្វើបានល្អ សូមបន្តអនុវត្ត។" : "សូមរៀនបន្ថែម ហើយសាកល្បងម្ដងទៀត។"}
+          </p>
+          <div className="mt-5 flex flex-wrap justify-center gap-3">
+            <button type="button" onClick={() => setShowReview((value) => !value)} className="rounded-xl bg-emerald-600 px-5 py-3 font-khmer text-lg font-bold text-white hover:bg-emerald-700">
+              {showReview ? "លាក់ចម្លើយ" : "ពិនិត្យចម្លើយ"}
+            </button>
+            <button type="button" onClick={reset} className="rounded-xl bg-blue-600 px-5 py-3 font-khmer text-lg font-bold text-white hover:bg-blue-700">
+              សាកល្បងម្ដងទៀត
+            </button>
+          </div>
+
+          {showReview && summary?.answers && summary.answers.length > 0 && (
+            <div className="mt-8 space-y-3 text-left">
+              <h3 className="font-khmer text-2xl font-bold text-[#002455] dark:text-white">ប្រវត្តិចម្លើយ</h3>
+              {summary.answers.map((answer, index) => (
+                <div key={answer.blockId} className={`rounded-xl border p-4 ${answer.correct ? "border-emerald-200 bg-emerald-50/70 dark:border-emerald-900 dark:bg-emerald-950/20" : "border-red-200 bg-red-50/70 dark:border-red-900 dark:bg-red-950/20"}`}>
+                  <p className="font-khmer text-lg font-bold">សំណួរ {index + 1} — {answer.correct ? "ត្រឹមត្រូវ" : "មិនត្រឹមត្រូវ"}</p>
+                  <p className="mt-1 font-khmer text-base">ចម្លើយរបស់អ្នក៖ {displayAnswer(answer.submittedAnswer)}</p>
+                  {!answer.correct && <p className="mt-1 font-khmer text-base">ចម្លើយត្រឹមត្រូវ៖ {displayAnswer(answer.correctAnswer)}</p>}
+                  {answer.explanation && <p className="mt-1 font-khmer text-base text-slate-600 dark:text-slate-300">{answer.explanation}</p>}
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      ) : children}
+    </QuizContext.Provider>
+  );
+}
 
 function stringValue(data: BlockData, ...keys: string[]): string {
   for (const key of keys) {
@@ -45,9 +221,72 @@ function numberValue(data: BlockData, ...keys: string[]): number | undefined {
     if (typeof value === "number" && Number.isFinite(value)) {
       return value;
     }
+
+    if (typeof value === "string" && value.trim() !== "") {
+      const parsed = Number(value);
+      if (Number.isFinite(parsed)) return parsed;
+    }
   }
 
   return undefined;
+}
+
+function answerTokenValue(data: BlockData, ...keys: string[]): string {
+  for (const key of keys) {
+    const value = data[key];
+    if (typeof value === "string" || typeof value === "number") return String(value);
+    if (value && typeof value === "object") {
+      const record = value as Record<string, unknown>;
+      const token = record.id ?? record.optionId ?? record.value ?? record.text ?? record.label;
+      if (typeof token === "string" || typeof token === "number") return String(token);
+    }
+  }
+  return "";
+}
+
+interface QuizOption {
+  id: string;
+  text: string;
+  correct?: boolean;
+}
+
+function quizOptionsValue(data: BlockData): QuizOption[] {
+  for (const key of ["options", "choices", "answers"]) {
+    const value = data[key];
+    if (!Array.isArray(value)) continue;
+
+    return value.flatMap((option, index) => {
+      if (typeof option === "string") {
+        return [{ id: String(index), text: option }];
+      }
+
+      if (option && typeof option === "object") {
+        const record = option as Record<string, unknown>;
+        const text =
+          record.text ??
+          record.label ??
+          record.value ??
+          record.answer ??
+          record.optionText ??
+          record.content;
+        if (typeof text !== "string" || !text.trim()) return [];
+        return [
+          {
+            id: String(record.id ?? record.optionId ?? index),
+            text: text.trim(),
+            correct:
+              record.correct === true ||
+              record.isCorrect === true ||
+              String(record.correct ?? record.isCorrect ?? "").toLowerCase() === "true",
+          },
+        ];
+      }
+
+      return [];
+    });
+  }
+
+  return [];
 }
 
 function stringArrayValue(data: BlockData, ...keys: string[]): string[] {
@@ -341,11 +580,92 @@ function ImageBlock({ data }: { data: BlockData }) {
   );
 }
 
-function QuizBlock({ data }: { data: BlockData }) {
+function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
+  const quizContext = useContext(QuizContext);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
   const question = stringValue(data, "question", "text", "title");
-  const options = stringArrayValue(data, "options", "choices", "answers");
+  const options = quizOptionsValue(data);
+  const correctAnswer = answerTokenValue(
+    data,
+    "correctAnswer",
+    "correctOption",
+    "correctOptionId",
+    "answer",
+    "answerKey",
+  );
+  const correctIndex = numberValue(
+    data,
+    "correctIndex",
+    "correctAnswerIndex",
+    "correctOptionIndex",
+    "correctChoiceIndex",
+  );
+  const correctAnswerNumber = numberValue(
+    data,
+    "correctAnswer",
+    "correctOption",
+    "answer",
+    "answerKey",
+  );
+  const normalizedCorrectAnswer = correctAnswer.trim().toLocaleLowerCase();
+  const letterCorrectOption = /^[a-z]$/i.test(correctAnswer)
+    ? options[correctAnswer.toUpperCase().charCodeAt(0) - 65]
+    : undefined;
+  const correctOption =
+    options.find((option) => option.correct) ??
+    letterCorrectOption ??
+    (correctIndex !== undefined
+      ? options[correctIndex] ?? options[correctIndex - 1]
+      : undefined) ??
+    (correctAnswerNumber !== undefined
+      ? options[correctAnswerNumber] ?? options[correctAnswerNumber - 1]
+      : undefined) ??
+    options.find(
+      (option) =>
+        option.id.trim().toLocaleLowerCase() === normalizedCorrectAnswer ||
+        option.text.trim().toLocaleLowerCase() === normalizedCorrectAnswer,
+    );
+  const resolvedCorrectAnswer = correctOption?.id ?? "";
+  const selectedOption = options.find((option) => option.id === selected);
+  const backendResult = quizContext?.results[blockId];
+  const selectedOptionIndex = selectedOption
+    ? options.findIndex((option) => option.id === selectedOption.id)
+    : -1;
+  const isCorrectSelection = Boolean(
+    selectedOption &&
+      correctOption &&
+      (selectedOption.id === correctOption.id ||
+        selectedOption.text.trim().toLocaleLowerCase() ===
+          correctOption.text.trim().toLocaleLowerCase() ||
+        selectedOptionIndex === options.findIndex((option) => option.id === correctOption.id) ||
+        (correctIndex !== undefined && selectedOptionIndex === correctIndex) ||
+        (correctAnswerNumber !== undefined && selectedOptionIndex === correctAnswerNumber)),
+  );
+
+  useEffect(() => {
+    quizContext?.register(blockId);
+  }, [blockId, quizContext]);
+
+  function selectOption(option: string) {
+    if (submitted) return;
+    setSelected(option);
+  }
+
+  function submitAnswer() {
+    if (!selected) return;
+    if (!resolvedCorrectAnswer) {
+      setSubmitted(true);
+      quizContext?.submit(blockId, selectedOptionIndex, false);
+      return;
+    }
+    const isCorrect = isCorrectSelection;
+    setSubmitted(true);
+    quizContext?.submit(blockId, selectedOptionIndex, isCorrect);
+  }
 
   if (!question) return null;
+  if (quizContext?.activeQuizId && quizContext.activeQuizId !== blockId) return null;
 
   return (
     <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
@@ -357,6 +677,9 @@ function QuizBlock({ data }: { data: BlockData }) {
           <p className="font-khmer text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
             សំណួរសាកល្បង
           </p>
+          <p className="font-khmer mt-1 text-sm font-semibold text-blue-600 dark:text-blue-400">
+            សំណួរ {quizContext?.position(blockId) ?? 1} ក្នុងចំណោម {quizContext?.total ?? 1}
+          </p>
           <p className="font-khmer mt-0.5 text-base font-bold text-slate-900 dark:text-slate-100">
             {question}
           </p>
@@ -365,17 +688,34 @@ function QuizBlock({ data }: { data: BlockData }) {
 
       {options.length > 0 && (
         <div className="grid gap-2.5 p-4 sm:p-5">
-          {options.map((option, index) => (
-            <div
-              key={`${option}-${index}`}
-              className="font-khmer flex items-start gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-[15px] leading-6 text-slate-700 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-300"
+          {options.map((option) => (
+            <button
+              type="button"
+              key={option.id}
+              onClick={() => selectOption(option.id)}
+              className={`font-khmer flex w-full items-start gap-3 rounded-xl border px-4 py-3 text-left text-lg leading-7 transition ${
+                backendResult?.correct && option.id === resolvedCorrectAnswer
+                  ? "border-emerald-500 bg-emerald-50 text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-300"
+                  : backendResult && !backendResult.correct && option.id === selected
+                    ? "border-red-500 bg-red-50 text-red-800 dark:bg-red-950/30 dark:text-red-300"
+                    : selected === option.id
+                      ? "border-blue-600 bg-blue-50 text-blue-800 dark:bg-blue-950/30 dark:text-blue-300"
+                      : "border-slate-200 bg-slate-100 text-slate-700 hover:border-blue-400 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-300"
+              }`}
             >
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-                {String.fromCharCode(65 + index)}
-              </span>
-              <span>{option}</span>
-            </div>
+              <span className={`mt-1 h-5 w-5 shrink-0 rounded-full border-2 ${selected === option.id ? "border-blue-600 bg-blue-600 ring-4 ring-blue-100" : "border-slate-300 bg-white"}`} />
+              <span>{option.text}</span>
+            </button>
           ))}
+          {!submitted ? (
+            <button type="button" onClick={submitAnswer} disabled={!selected} className="mt-2 w-fit rounded-xl bg-emerald-600 px-5 py-3 font-khmer text-lg font-bold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50">
+              {quizContext?.isLast(blockId) ? "ដាក់ស្នើ" : "បន្ទាប់"}
+            </button>
+          ) : backendResult ? (
+            <p className={`font-khmer text-lg font-bold ${backendResult.correct ? "text-emerald-600" : "text-red-600"}`}>
+              {backendResult.correct ? "ចម្លើយត្រឹមត្រូវ!" : "ចម្លើយមិនត្រឹមត្រូវទេ។ សូមពិនិត្យលទ្ធផលសរុប។"}
+            </p>
+          ) : null}
         </div>
       )}
     </section>
@@ -464,7 +804,7 @@ export default function LessonBlockRenderer({
       return <ImageBlock data={data} />;
 
     case "QUIZ":
-      return <QuizBlock data={data} />;
+      return <QuizBlock data={data} blockId={block.id} />;
 
     case "LIST":
     case "BULLET_LIST":

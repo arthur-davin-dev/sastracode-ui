@@ -23,6 +23,22 @@ export interface LeaderboardSnapshotResponse {
   score: number;
   rank: number;
   createdAt?: string;
+  name?: string;
+  fullName?: string;
+  username?: string;
+  firstName?: string;
+  lastName?: string;
+  avatarUrl?: string;
+  avatarFileId?: string;
+  user?: {
+    name?: string;
+    fullName?: string;
+    username?: string;
+    firstName?: string;
+    lastName?: string;
+    avatarUrl?: string;
+    avatarFileId?: string;
+  };
 }
 
 export interface LeaderboardPageResponse {

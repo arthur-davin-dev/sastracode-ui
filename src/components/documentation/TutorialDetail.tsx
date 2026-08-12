@@ -458,7 +458,9 @@ import {
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import LessonBlockRenderer from "@/components/documentation/LessonBlockRenderer";
+import LessonBlockRenderer, {
+  QuizResultsProvider,
+} from "@/components/documentation/LessonBlockRenderer";
 import SidebarLeftLesson from "@/components/documentation/SidebarLeftLesson";
 import { getBlockAnchor } from "@/components/documentation/SidebarRightLesson";
 import {
@@ -724,6 +726,12 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
               </header>
 
               {activeLesson.blocks.length > 0 ? (
+                <QuizResultsProvider
+                  total={activeLesson.blocks.filter((block) => block.type.trim().toUpperCase() === "QUIZ").length}
+                  tutorialId={tutorial.id}
+                  scope={activeLesson.type === "SECTION" ? "SECTION" : "SUBSECTION"}
+                  scopeId={activeLesson.id}
+                >
                 <div className="space-y-7 sm:space-y-8">
                   {activeLesson.blocks.map((block) => (
                     <div
@@ -735,6 +743,7 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
                     </div>
                   ))}
                 </div>
+                </QuizResultsProvider>
               ) : (
                 <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center dark:border-slate-700 dark:bg-slate-900/50">
                   <BookOpen className="mx-auto h-6 w-6 text-slate-300 dark:text-slate-600" />

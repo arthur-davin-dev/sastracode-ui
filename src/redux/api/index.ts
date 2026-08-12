@@ -5,4 +5,4 @@ export * from "./tutorial-api";
 export * from "./document-api";
 export * from "./search-api";
 export * from "./leaderboard-api";
-export * from "./course-api";
+export * from "./quiz-attempt-api";
