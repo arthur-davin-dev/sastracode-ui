@@ -6,9 +6,10 @@ interface CourseGridProps {
   title: string;
   courses: Course[];
   seeAllHref?: string;
+  columns?: 2 | 3;
 }
 
-export default function CourseGrid({ title, courses, seeAllHref }: CourseGridProps) {
+export default function CourseGrid({ title, courses, seeAllHref, columns = 3 }: CourseGridProps) {
   return (
     <section className="space-y-6">
       {/* Header Row */}
@@ -32,7 +33,11 @@ export default function CourseGrid({ title, courses, seeAllHref }: CourseGridPro
       </div>
 
       {/* Grid List */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        className={`grid grid-cols-1 gap-6 sm:grid-cols-2 ${
+          columns === 3 ? "lg:grid-cols-3" : "lg:grid-cols-2"
+        }`}
+      >
         {courses.map((course) => (
           <CourseCard key={course.id} course={course} />
         ))}
