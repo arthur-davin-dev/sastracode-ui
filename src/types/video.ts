@@ -1,3 +1,1 @@
-export type video ={
-    
-}
+export type video = Record<string, never>

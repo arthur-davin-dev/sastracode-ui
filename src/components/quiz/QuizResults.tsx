@@ -87,7 +87,7 @@ export default function QuizResults({ quizId }: { quizId: string }) {
       router.replace(`/quiz/${quizId}`);
       return;
     }
-    setResult(JSON.parse(raw));
+    queueMicrotask(() => setResult(JSON.parse(raw) as StoredResult));
   }, [quizId, router]);
 
   if (!result) return null;

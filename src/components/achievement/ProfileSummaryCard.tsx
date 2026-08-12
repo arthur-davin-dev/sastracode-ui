@@ -3,6 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Award, TrendingUp, FileBadge, Zap } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { UserSummary } from "@/types/achievement";
 
 export function ProfileSummaryCard({ user }: { user: UserSummary }) {
@@ -107,7 +108,7 @@ function Stat({
   label, 
   bgColor 
 }: { 
-  icon: any; 
+  icon: LucideIcon;
   value: number | string; 
   label: string;
   bgColor: string;

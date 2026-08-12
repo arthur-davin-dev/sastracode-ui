@@ -116,6 +116,7 @@ export default function Hero() {
                       <td className="pl-4">
                         <span className="text-amber-700 dark:text-amber-300">console</span>.
                         <span className="text-blue-600 dark:text-blue-400">log</span>(
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                         <span className="text-emerald-700 dark:text-emerald-400">"សួស្តីពិភពលោក!"</span>);
                       </td>
                     </tr>

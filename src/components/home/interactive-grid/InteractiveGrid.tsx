@@ -4,7 +4,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 
 // 1. The Reusable Tech Card Component
@@ -29,33 +29,23 @@ const TECH_DATA = [
     { icon: 'JS', name: 'JavaScript' },
 ];
 
+const animationTiming = [
+    { duration: 7.2, delay: 1.1 },
+    { duration: 8.6, delay: 4.3 },
+    { duration: 9.4, delay: 6.7 },
+];
+
+const subscribeToResize = (callback: () => void) => {
+    window.addEventListener('resize', callback);
+    return () => window.removeEventListener('resize', callback);
+};
+
+const getDeviceType = () => window.innerWidth < 768 ? 'mobile' : window.innerWidth < 1024 ? 'tablet' : 'desktop';
+
 
 export default function InteractiveGrid() {
     const { theme, setTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-    const [deviceType, setDeviceType] = useState('desktop');
-
-    // 1. Detect Screen Width
-    useEffect(() => {
-        setMounted(true);
-
-        const handleResize = () => {
-            const width = window.innerWidth;
-            if (width < 768) {
-                setDeviceType('mobile');
-            } else if (width >= 768 && width < 1024) {
-                setDeviceType('tablet');
-            } else {
-                setDeviceType('desktop');
-            }
-        };
-
-        handleResize(); // Run on mount
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    if (!mounted) return null;
+    const deviceType = useSyncExternalStore(subscribeToResize, getDeviceType, () => 'desktop');
 
     // for the path light
     const bottomY = 500; // Adjust this value to control the gap
@@ -72,8 +62,8 @@ export default function InteractiveGrid() {
                         key={index}
                         className="relative w-full h-24 flex items-center justify-center"
                         style={{
-                            animation: `flashSlide ${Math.random() * 4 + 6}s linear infinite`,
-                            animationDelay: `${Math.random() * 8}s`
+                            animation: `flashSlide ${animationTiming[index].duration}s linear infinite`,
+                            animationDelay: `${animationTiming[index].delay}s`
                         }}
                     >
                         <svg

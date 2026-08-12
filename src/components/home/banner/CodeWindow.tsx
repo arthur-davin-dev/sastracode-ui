@@ -29,7 +29,7 @@ export default function CodeWindow() {
             </span>
             <span className="text-gray-700 dark:text-gray-300">(</span>
             <span className="text-green-600 dark:text-green-400">
-              "DOMContentLoaded"
+              &quot;DOMContentLoaded&quot;
             </span>
             <span className="text-gray-700 dark:text-gray-300">
               , () =&gt; {"{"}
@@ -58,7 +58,7 @@ export default function CodeWindow() {
               addEventListener
             </span>
             <span className="text-gray-700 dark:text-gray-300">(</span>
-            <span className="text-green-600 dark:text-green-400">"click"</span>
+            <span className="text-green-600 dark:text-green-400">&quot;click&quot;</span>
             <span className="text-gray-700 dark:text-gray-300">
               , () =&gt; {"{"}
             </span>
@@ -119,10 +119,10 @@ export default function CodeWindow() {
           <span className="text-gray-700 dark:text-gray-300">color: </span>
           <span className="text-[#6a1b9e] dark:text-purple-400">#6a1b9e;</span>
           <span className="text-gray-400 dark:text-gray-500">
-            /* deep purple */
+            {"/* deep purple */"}
           </span>
           <span className="text-gray-700 dark:text-gray-300">
-            font-family: 'Inter', sans-serif;
+            font-family: &apos;Inter&apos;, sans-serif;
           </span>
           <span className="text-gray-700 dark:text-gray-300">
             font-size: 24px;
@@ -139,7 +139,7 @@ export default function CodeWindow() {
           </span>
           <span className="text-[#6a1b9e] dark:text-purple-400">#d1c4e9;</span>
           <span className="text-gray-400 dark:text-gray-500">
-            /* soft violet */
+            {"/* soft violet */"}
           </span>
           <span className="font-bold text-[#6a1b9e] dark:text-purple-400">
             {"}"}

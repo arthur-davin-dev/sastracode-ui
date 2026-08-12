@@ -1,3 +1,1 @@
-export type lesson ={
-    
-}
+export type lesson = Record<string, never>

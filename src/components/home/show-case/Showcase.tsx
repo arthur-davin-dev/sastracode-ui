@@ -342,7 +342,7 @@ export default function Showcase() {
       }
     };
 
-    const getCardStyle = (card: any) => ({
+    const getCardStyle = (card: { colStart: number; colEnd: number; rowStart: number; rowEnd: number }) => ({
       gridColumn: `${card.colStart} / ${card.colEnd}`,
       gridRow: `${card.rowStart} / ${card.rowEnd}`,
     });
@@ -499,10 +499,10 @@ export default function Showcase() {
         {screenSize === 'mobile' && <FloatingCard />}
 
         {/* Tablet: Grid-based scattered */}
-        {screenSize === 'tablet' && <TabletLayout />}
+        {screenSize === 'tablet' && TabletLayout()}
 
         {/* Desktop: Original absolute floating with animations */}
-        {screenSize === 'desktop' && <DesktopLayout />}
+        {screenSize === 'desktop' && DesktopLayout()}
 
         <HeroCharacter />
       </div>

@@ -1,13 +1,13 @@
 import {
-  LayoutGrid,
   GraduationCap,
   Trophy,
   Award,
   Bell,
   Users,
+  type LucideIcon,
 } from "lucide-react";
 
-export const pageConfig: Record<string, { title: string; icon: any }> = {
+export const pageConfig: Record<string, { title: string; icon: LucideIcon }> = {
   // "/achivement": { title: "ផ្ទាំងគ្រប់គ្រង", icon: LayoutGrid },
   "/achivement/": { title: "ព័ត៌មានលម្អិតអំពីមេដាយ", icon: Award }, 
   "/courses/private-courses": { title: "វគ្គសិក្សាឯកជន", icon: GraduationCap },

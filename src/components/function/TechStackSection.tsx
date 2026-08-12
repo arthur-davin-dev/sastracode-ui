@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { motion, useAnimationFrame, useMotionValue, useTransform } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslations";
 
@@ -194,15 +194,10 @@ export default function TechStackSection({
   mascot?: React.ReactNode;
   lineColor?: string;
 }) {
-  const [isClient, setIsClient] = useState(false);
   const pct = (v: number, total: number) => `${(v / total) * 100}%`;
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   const currentT = useTranslation();
-  if (!isClient) {
+  if (typeof window === "undefined") {
     // Return a static version for SSR
     return (
       <section className="w-full overflow-hidden bg-white px-4 py-14 sm:px-8 dark:bg-gray-900 transition-colors duration-300">

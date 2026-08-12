@@ -71,16 +71,7 @@ export default function SidebarRightLesson({
   const [activeHeading, setActiveHeading] = useState<string | null>(null);
 
   useEffect(() => {
-    if (headings.length === 0) {
-      setActiveHeading(null);
-      return;
-    }
-
-    setActiveHeading((current) =>
-      current && headings.some((heading) => heading.id === current)
-        ? current
-        : headings[0].id,
-    );
+    if (headings.length === 0) return;
 
     const observer = new IntersectionObserver(
       (entries) => {

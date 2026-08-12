@@ -24,7 +24,7 @@ export default function NotFound() {
     const prefersDark = window.matchMedia(
       "(prefers-color-scheme: dark)"
     ).matches;
-    setIsDark(prefersDark);
+    queueMicrotask(() => setIsDark(prefersDark));
     document.documentElement.classList.toggle("dark", prefersDark);
   }, []);
 
