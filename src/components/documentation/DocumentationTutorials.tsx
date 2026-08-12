@@ -1,6 +1,7 @@
 "use client";
 
 import CourseGrid from "@/components/documentation/CourseGrid";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   type TutorialSummary,
   useListTutorialsQuery,
@@ -37,18 +38,58 @@ export function toCourse(tutorial: TutorialSummary): Course {
   };
 }
 
-function LoadingGrid() {
+function DocumentationCardSkeleton() {
   return (
     <div
-      className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      className="overflow-hidden rounded-2xl border border-slate-100 bg-white dark:border-slate-800 dark:bg-slate-900"
+      aria-hidden="true"
+    >
+      <div className="relative">
+        <Skeleton className="h-44 w-full rounded-none bg-slate-200 dark:bg-slate-800" />
+        <Skeleton className="absolute left-3 top-3 h-7 w-20 rounded-lg bg-slate-300 dark:bg-slate-700" />
+        <Skeleton className="absolute right-3 top-3 h-10 w-10 rounded-full bg-slate-300 dark:bg-slate-700" />
+      </div>
+
+      <div className="space-y-4 p-5">
+        <Skeleton className="h-6 w-4/5 bg-slate-200 dark:bg-slate-800" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-800" />
+          <Skeleton className="h-4 w-3/4 bg-slate-200 dark:bg-slate-800" />
+        </div>
+        <Skeleton className="h-4 w-24 bg-slate-200 dark:bg-slate-800" />
+        <Skeleton className="h-11 w-full rounded-xl bg-slate-200 dark:bg-slate-800" />
+      </div>
+    </div>
+  );
+}
+
+function LoadingGrid({ showSections }: { showSections: boolean }) {
+  const sections = showSections ? 3 : 1;
+  const cardsPerSection = showSections ? 3 : 6;
+
+  return (
+    <div
+      className="contents"
+      role="status"
       aria-label="កំពុងទាញយកមេរៀន"
     >
-      {Array.from({ length: 6 }, (_, index) => (
-        <div
-          key={index}
-          className="h-80 animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800"
-        />
+      {Array.from({ length: sections }, (_, sectionIndex) => (
+        <section key={sectionIndex} className="space-y-6">
+          <div className="flex items-center justify-between">
+            <Skeleton className="h-8 w-56 bg-slate-200 dark:bg-slate-800" />
+            {showSections && (
+              <Skeleton className="h-5 w-24 bg-slate-200 dark:bg-slate-800" />
+            )}
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: cardsPerSection }, (_, cardIndex) => (
+              <DocumentationCardSkeleton key={cardIndex} />
+            ))}
+          </div>
+        </section>
       ))}
+      <span className="sr-only">Loading documentation...</span>
     </div>
   );
 }
@@ -63,7 +104,7 @@ export default function DocumentationTutorials({
     sort: "publishedAt,desc",
   });
 
-  if (isLoading) return <LoadingGrid />;
+  if (isLoading) return <LoadingGrid showSections={showSections} />;
 
   if (error) {
     return (
