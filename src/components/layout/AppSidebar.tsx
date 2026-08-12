@@ -104,7 +104,7 @@ export default function AppSidebar({
             quality={1000}
             priority
             className={`transition-all duration-300 object-contain ${
-              isCollapsed ? "h-12 w-12" : "h-20 w-auto"
+              isCollapsed ? "h-10 w-10 sm:h-12 sm:w-12" : "w-16 h-auto sm:w-20"
             }`}
           />
           {/* {!isCollapsed && (
@@ -212,11 +212,6 @@ export default function AppSidebar({
 
       {/* Footer */}
       <div className="px-4 mt-4 border-t border-slate-200 dark:border-slate-800 pt-4 space-y-2">
-        {/* <button onClick={goToLink} className="flex items-center gap-3.5 px-4 py-3 text-lg font-bold text-primary-color hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl w-full transform-none select-none">
-          <HelpCircle size={24} className="shrink-0 text-primary-color" />
-          {!isCollapsed && <span className="truncate">ជំនួយ</span>}
-        </button> */}
-
         <button
           onClick={handleLogout}
           className="flex items-center gap-3.5 px-4 py-3 text-lg font-bold text-secondary-color hover:bg-slate-100 dark:hover:bg-slate-800 rounded-2xl w-full transform-none select-none"
