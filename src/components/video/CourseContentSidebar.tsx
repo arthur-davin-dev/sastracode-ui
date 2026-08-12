@@ -39,7 +39,7 @@ export function CourseContentSidebar({ sections, totalLessons, courseId }: Cours
                 onClick={() => setOpenSectionId(isOpen ? null : section.id)}
                 className="flex w-full items-center justify-between px-5 py-3.5 text-left transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
               >
-                <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                <span className="min-w-0 whitespace-normal break-words pr-3 text-xl leading-8 font-semibold text-slate-800 dark:text-slate-200">
                   {section.title}
                 </span>
                 <div className="flex items-center gap-2">
@@ -77,7 +77,7 @@ export function CourseContentSidebar({ sections, totalLessons, courseId }: Cours
                         <Circle className="h-4 w-4 shrink-0 text-slate-300 dark:text-slate-600" />
                       )}
                       <span
-                        className={`flex-1 truncate text-sm ${
+                        className={`min-w-0 flex-1 whitespace-normal break-words text-lg leading-7 ${
                           lesson.status === "current"
                             ? "font-semibold text-indigo-600 dark:text-indigo-300"
                             : "text-slate-600 dark:text-slate-400"

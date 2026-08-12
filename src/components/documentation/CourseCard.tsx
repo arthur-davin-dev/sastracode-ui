@@ -54,7 +54,7 @@ export default function CourseCard({ course }: CourseCardProps) {
   }
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 font-khmer transition-all duration-300 ease-in-out hover:border-blue-200 dark:hover:border-blue-800 hover:shadow-lg hover:shadow-slate-200/50 dark:hover:shadow-none">
+    <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-100 bg-white font-khmer transition-all duration-300 ease-in-out hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-lg hover:shadow-slate-200/50 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-800 dark:hover:shadow-none">
       {/* Top Media Section */}
       <div className="relative h-44 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
         <Image
@@ -114,7 +114,7 @@ export default function CourseCard({ course }: CourseCardProps) {
               disabled={bookmarkLoading}
               aria-label={bookmark ? "Remove tutorial bookmark" : "Bookmark tutorial"}
               aria-pressed={Boolean(bookmark)}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-[#002455] shadow-sm transition hover:scale-105 hover:bg-slate-50 disabled:cursor-wait disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800 dark:text-blue-400 dark:hover:bg-slate-700"
+              className="relative z-20 flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-[#002455] shadow-sm transition hover:scale-105 hover:bg-slate-50 disabled:cursor-wait disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800 dark:text-blue-400 dark:hover:bg-slate-700"
             >
               <Bookmark
                 className="h-4 w-4"

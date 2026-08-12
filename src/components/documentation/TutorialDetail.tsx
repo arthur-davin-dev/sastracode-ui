@@ -460,11 +460,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import LessonBlockRenderer from "@/components/documentation/LessonBlockRenderer";
 import SidebarLeftLesson from "@/components/documentation/SidebarLeftLesson";
-import SidebarRightLesson, {
-  getBlockAnchor,
-  hasHeadingBlocks,
-} from "@/components/documentation/SidebarRightLesson";
-import TodayLessonHero from "@/components/documentation/TodayLessonHero";
+import { getBlockAnchor } from "@/components/documentation/SidebarRightLesson";
 import {
   useGetTutorialByIdQuery,
   useIncrementTutorialViewMutation,
@@ -644,12 +640,6 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
   const nextLesson =
     activeIndex < lessons.length - 1 ? lessons[activeIndex + 1] : null;
 
-  const progress = lessons.length
-    ? Math.round(((activeIndex + 1) / lessons.length) * 100)
-    : 0;
-
-  const showToc = activeLesson ? hasHeadingBlocks(activeLesson.blocks) : false;
-
   useEffect(() => {
     if (!sidebarOpen) return;
 
@@ -700,11 +690,7 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
         />
       )}
 
-      <div
-        className={`mx-auto grid min-h-screen max-w-[1720px] lg:grid-cols-[264px_minmax(0,1fr)] ${
-          showToc ? "2xl:grid-cols-[264px_minmax(0,1fr)_250px]" : ""
-        }`}
-      >
+      <div className="mx-auto grid min-h-screen max-w-[1720px] lg:grid-cols-[340px_minmax(0,1fr)]">
         <aside
           className={`fixed inset-y-0 left-0 z-50 w-[286px] transform border-r border-slate-200 bg-slate-50/95 shadow-2xl transition-transform duration-300 ease-out lg:sticky lg:top-0 lg:z-20 lg:h-screen lg:w-auto lg:translate-x-0 lg:shadow-none dark:border-slate-800 dark:bg-slate-950 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -728,56 +714,13 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
           </div>
         </aside>
 
-        <article className="min-w-0 bg-white dark:bg-slate-950">
-          <div className="mx-auto w-full max-w-[940px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <Link
-                href={LESSONS_ROUTE}
-                className="font-khmer inline-flex h-9 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-600 shadow-sm transition hover:bg-slate-50 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
-              >
-                <ChevronLeft className="h-4 w-4" />
-                ត្រឡប់ក្រោយ
-              </Link>
-
-              <span className="font-khmer inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-500 dark:bg-slate-900 dark:text-slate-400">
-                <BookOpen className="h-3.5 w-3.5" />
-                {activeIndex + 1} / {lessons.length}
-              </span>
-            </div>
-
-            <nav
-              aria-label="Breadcrumb"
-              className="font-khmer mb-4 flex min-w-0 flex-wrap items-center gap-2 text-[13px] text-slate-400 dark:text-slate-500"
-            >
-              <span className="max-w-[70%] truncate">{tutorial.title}</span>
-              <ChevronRight className="h-3.5 w-3.5 shrink-0" />
-              <span className="font-semibold text-slate-600 dark:text-slate-300">
-                {activeLesson.sectionTitle}
-              </span>
-            </nav>
-
-            <TodayLessonHero
-              title={activeLesson.title}
-              description={tutorial.summary || `រៀនអំពី ${activeLesson.title}`}
-              percent={progress}
-              href="#lesson-content"
-            />
-
-            <section id="lesson-content" className="mt-10 scroll-mt-28">
-              <header className="mb-7 border-b border-slate-200 pb-5 dark:border-slate-800">
-                <div className="mb-2 flex items-center gap-2">
-                  <span className="font-khmer text-xs font-bold text-blue-600 dark:text-blue-400">
-                    មេរៀនទី {activeIndex + 1}
-                  </span>
-                  <span className="h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-700" />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400">
-                    {activeLesson.type === "SECTION" ? "Section" : "Subsection"}
-                  </span>
-                </div>
-
-                <h2 className="font-khmer text-2xl font-bold leading-tight tracking-tight text-[#002455] sm:text-3xl dark:text-white">
-                  {activeLesson.title}
-                </h2>
+        <article className="min-w-0 bg-slate-50 dark:bg-slate-950">
+          <div className="w-full px-5 py-7 sm:px-8 lg:px-12 lg:py-8">
+            <section id="lesson-content" className="scroll-mt-28">
+              <header className="mb-6">
+                <h1 className="font-khmer text-[28px] font-bold leading-[1.45] text-blue-600 sm:text-[32px] dark:text-blue-400">
+                  {activeIndex + 1}. {activeLesson.title}
+                </h1>
               </header>
 
               {activeLesson.blocks.length > 0 ? (
@@ -849,13 +792,6 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
           </div>
         </article>
 
-        {showToc && (
-          <aside className="hidden border-l border-slate-200 bg-white 2xl:block dark:border-slate-800 dark:bg-slate-950">
-            <div className="sticky top-0 h-screen overflow-y-auto overscroll-contain">
-              <SidebarRightLesson blocks={activeLesson.blocks} />
-            </div>
-          </aside>
-        )}
       </div>
     </main>
   );

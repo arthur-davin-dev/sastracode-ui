@@ -159,6 +159,23 @@ body {
     var(--font-google-sans), Arial, Helvetica, sans-serif;
 }
 
+/* Give every interactive control a consistent clickable affordance. */
+:where(
+  a[href],
+  button:not(:disabled),
+  select:not(:disabled),
+  summary,
+  label[for],
+  [role="button"]:not([aria-disabled="true"]),
+  [role="link"]:not([aria-disabled="true"])
+) {
+  cursor: pointer;
+}
+
+:where(button:disabled, select:disabled, [aria-disabled="true"]) {
+  cursor: not-allowed;
+}
+
 /* Enable class-based dark mode in Tailwind v4 */
 @variant dark (&:where(.dark, .dark *));
 @keyframes spin-slow {
