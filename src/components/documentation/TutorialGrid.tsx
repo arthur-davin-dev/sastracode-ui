@@ -14,7 +14,10 @@ import {
 
 function TutorialCover({ fileId, title }: { fileId?: string; title: string }) {
   const [failed, setFailed] = useState(false);
-  const src = fileId && !failed ? `/api/v1/files/${encodeURIComponent(fileId)}` : "/images/doc-hero.png";
+  const normalizedFileId = fileId?.trim();
+  const src = normalizedFileId && !failed
+    ? `/api/files/${encodeURIComponent(normalizedFileId)}`
+    : "/images/doc-hero.png";
 
   return (
     <div className="relative h-44 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">

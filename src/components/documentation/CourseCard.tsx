@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { Course } from "@/types/course";
 
 interface CourseCardProps {
@@ -7,8 +10,9 @@ interface CourseCardProps {
 }
 
 export default function CourseCard({ course }: CourseCardProps) {
-  const coverFileId = course.coverFileId.trim();
-  const coverSrc = !coverFileId
+  const [coverFailed, setCoverFailed] = useState(false);
+  const coverFileId = course.coverFileId?.trim() ?? "";
+  const coverSrc = !coverFileId || coverFailed
     ? "/images/html.png"
     : coverFileId.startsWith("/") || /^https?:\/\//i.test(coverFileId)
       ? coverFileId
@@ -25,6 +29,7 @@ export default function CourseCard({ course }: CourseCardProps) {
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          onError={() => setCoverFailed(true)}
         />
         
         {/* Badge */}

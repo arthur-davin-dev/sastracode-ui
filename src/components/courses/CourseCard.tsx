@@ -75,7 +75,7 @@ function resolveCourseImage(
 
 
   // Local/frontend route:
-  // /api/files/{id}/content
+  // /api/files/{id}
   // /assets/images/example.jpg
   if (value.startsWith("/")) {
     return value;
@@ -87,7 +87,7 @@ function resolveCourseImage(
   if (isUuid(value)) {
     return `/api/files/${encodeURIComponent(
       value,
-    )}/content`;
+    )}`;
   }
 
 

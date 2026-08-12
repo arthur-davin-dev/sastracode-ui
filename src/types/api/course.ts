@@ -66,6 +66,8 @@ export interface CourseDetailResponse {
   price?: number;
   discount?: number;
   currency?: string;
+  coverFileId?: string;
+  /** @deprecated Kept temporarily for older backend responses. */
   thumbnailFileId?: FileSummaryResponse;
   instructorId?: InstructorSummaryResponse;
   status?: CourseStatus;

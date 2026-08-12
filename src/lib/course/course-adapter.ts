@@ -519,7 +519,7 @@ const FALLBACK_AVATAR =
  * Always use the file UUID with the Next.js
  * file proxy:
  *
- * /api/files/{fileId}/content
+ * /api/files/{fileId}
  *
  * The proxy then requests:
  * GET /api/v1/files/{fileId}
@@ -537,7 +537,7 @@ function resolveCourseImage(
 
   return `/api/files/${encodeURIComponent(
     value,
-  )}/content`;
+  )}`;
 }
 
 /*
@@ -939,8 +939,8 @@ export function mapApiCourseToCourse(
    */
   const image =
     resolveCourseImage(
-      course.thumbnailFileId
-        ?.id,
+      course.coverFileId ??
+        course.thumbnailFileId?.id,
     );
 
   return {

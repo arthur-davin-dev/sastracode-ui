@@ -288,11 +288,6 @@ export default function CourseListingPage() {
               seeAllHref="/courses?sort=POPULAR"
             />
           </div>
-        ) : (
-          <>
-            {isFetching && <p className="mb-4 text-sm text-slate-500">Refreshing courses...</p>}
-            <CourseGrid title="Courses" courses={filteredCourses} />
-          </>
         )}
       </main>
     </div>

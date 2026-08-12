@@ -29,9 +29,8 @@ export function toCourse(tutorial: TutorialSummary): Course {
     description: tutorial.summary || "Open this tutorial to start learning.",
     tag: getTechTag(tutorial),
     href: `/documentation/lessons/${tutorial.id}`,
-    coverImage: tutorial.coverFileId
-      ? `/api/v1/files/${encodeURIComponent(tutorial.coverFileId)}`
-      : "/images/doc-hero.png",
+    // Keep the UUID unchanged; CourseCard turns it into the image proxy URL.
+    coverFileId: tutorial.coverFileId?.trim() || undefined,
     ctaLabel: "រៀនឥឡូវ",
   };
 }

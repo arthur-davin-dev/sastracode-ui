@@ -13,7 +13,7 @@ export interface Course {
   description: string;
   tag: TechTag;
   href: string;
-  coverFileId: string;
+  coverFileId?: string;
   ctaLabel: string;
 }
 
