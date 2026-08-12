@@ -53,7 +53,7 @@ export default function SidebarLeftLesson({
         </div>
 
         <div className="space-y-1.5">
-          {sortedSections.map((section, sectionIndex) => {
+          {sortedSections.map((section) => {
             const subsections = [...(section.subsections ?? [])].sort(
               (a, b) => a.orderIndex - b.orderIndex,
             );
@@ -89,16 +89,6 @@ export default function SidebarLeftLesson({
                           : "text-slate-700 hover:bg-white hover:text-[#002455] dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"
                     }`}
                   >
-                    <span
-                      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[10px] font-bold tabular-nums transition-colors ${
-                        sectionActive
-                          ? "bg-white/12 text-white"
-                          : "bg-slate-200/70 text-slate-500 group-hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-400"
-                      }`}
-                    >
-                      {String(sectionIndex + 1).padStart(2, "0")}
-                    </span>
-
                     <span className="min-w-0 flex-1 whitespace-normal break-words font-khmer text-xl font-semibold leading-8">
                       {section.title}
                     </span>
@@ -125,7 +115,7 @@ export default function SidebarLeftLesson({
                 {hasSubsections && isOpen && (
                   <div className="relative ml-[26px] mt-1 border-l border-slate-200 pl-3 dark:border-slate-800">
                     <div className="space-y-0.5 py-1">
-                      {subsections.map((subsection, index) => {
+                      {subsections.map((subsection) => {
                         const active = activeLessonId === subsection.id;
 
                         return (
@@ -143,9 +133,6 @@ export default function SidebarLeftLesson({
                               <span className="absolute -left-[16px] top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-[#002455] ring-4 ring-slate-50 dark:bg-blue-400 dark:ring-slate-950" />
                             )}
 
-                            <span className="mt-0.5 w-4 shrink-0 text-[10px] font-bold tabular-nums text-slate-300 dark:text-slate-600">
-                              {String(index + 1).padStart(2, "0")}
-                            </span>
                             <span className="min-w-0 whitespace-normal break-words">
                               {subsection.title}
                             </span>

@@ -719,7 +719,7 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
             <section id="lesson-content" className="scroll-mt-28">
               <header className="mb-6">
                 <h1 className="font-khmer text-[28px] font-bold leading-[1.45] text-blue-600 sm:text-[32px] dark:text-blue-400">
-                  {activeIndex + 1}. {activeLesson.title}
+                  {activeLesson.title}
                 </h1>
               </header>
 
