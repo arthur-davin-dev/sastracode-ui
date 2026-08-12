@@ -49,13 +49,21 @@ export default function LandingCourses() {
         const recommendedData: CourseApiResponse =
           await recommendedCoursesResponse.json();
 
-        setNewCourses(
-          (newData.content ?? []).slice(0, 6).map(mapApiCourseToCourse),
+        const mappedNewCourses = (newData.content ?? []).map(
+          mapApiCourseToCourse,
+        );
+        const visibleNewCourses = mappedNewCourses.slice(0, 6);
+        const visibleNewCourseIds = new Set(
+          visibleNewCourses.map((course) => course.id),
         );
 
-        setRecommendedCourses(
-          (recommendedData.content ?? []).slice(2, 8).map(mapApiCourseToCourse),
-        );
+        const uniqueRecommendedCourses = (recommendedData.content ?? [])
+          .map(mapApiCourseToCourse)
+          .filter((course) => !visibleNewCourseIds.has(course.id))
+          .slice(0, 6);
+
+        setNewCourses(visibleNewCourses);
+        setRecommendedCourses(uniqueRecommendedCourses);
       } catch (error) {
         console.error("LANDING COURSE ERROR:", error);
       } finally {
@@ -74,7 +82,7 @@ export default function LandingCourses() {
     <>
       <CardSection title="វគ្គសិក្សាថ្មីៗ" courses={newCourses} />
 
-      <CardSection title="វគ្គសិក្សាដែលណែនាំ" courses={recommendedCourses} />
+      <CardSection title="វគ្គសិក្សាអនុសាសន៍" courses={recommendedCourses} />
     </>
   );
 }
