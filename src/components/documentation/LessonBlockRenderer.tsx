@@ -77,7 +77,7 @@ function HeadingBlock({ data, type }: { data: BlockData; type: string }) {
 
   if (level === 1) {
     return (
-      <h2 className="font-khmer text-balance text-3xl font-bold tracking-tight text-[#002455] sm:text-[2rem] dark:text-slate-50">
+      <h2 className="font-khmer text-balance text-3xl font-bold tracking-tight text-blue-600 sm:text-[2rem] dark:text-blue-400">
         {text}
       </h2>
     );
@@ -85,7 +85,7 @@ function HeadingBlock({ data, type }: { data: BlockData; type: string }) {
 
   if (level >= 3) {
     return (
-      <h3 className="font-khmer text-balance text-xl font-bold leading-8 text-slate-900 sm:text-2xl dark:text-slate-100">
+      <h3 className="font-khmer text-balance text-xl font-bold leading-8 text-blue-600 sm:text-2xl dark:text-blue-400">
         {text}
       </h3>
     );
@@ -94,7 +94,7 @@ function HeadingBlock({ data, type }: { data: BlockData; type: string }) {
   return (
     <div className="pt-2">
       <div className="mb-3 h-1 w-9 rounded-full bg-[#002455]/90 dark:bg-blue-400" />
-      <h2 className="font-khmer text-balance text-2xl font-bold leading-tight tracking-tight text-[#002455] sm:text-[1.75rem] dark:text-slate-50">
+      <h2 className="font-khmer text-balance text-2xl font-bold leading-tight tracking-tight text-blue-600 sm:text-[1.75rem] dark:text-blue-400">
         {text}
       </h2>
     </div>
@@ -107,7 +107,7 @@ function ParagraphBlock({ data }: { data: BlockData }) {
   if (!text) return null;
 
   return (
-    <p className="font-khmer whitespace-pre-line text-[16px] leading-8 text-slate-700 sm:text-[17px] dark:text-slate-300">
+    <p className="font-khmer whitespace-pre-line text-lg leading-9 text-slate-800 dark:text-slate-200">
       {text}
     </p>
   );
@@ -402,7 +402,7 @@ function ListBlock({
         <span className="font-khmer">ចំណុចសំខាន់ៗ</span>
       </div>
       <ListTag
-        className={`font-khmer space-y-2 pl-5 text-[16px] leading-7 text-slate-700 dark:text-slate-300 ${
+        className={`font-khmer space-y-2 pl-5 text-lg leading-8 text-slate-700 dark:text-slate-300 ${
           ordered ? "list-decimal" : "list-disc"
         }`}
       >

@@ -42,7 +42,7 @@ export default function SidebarLeftLesson({
         <div className="mb-5 flex items-center justify-between gap-3 px-2">
           <div className="flex min-w-0 items-center gap-2.5">
             <BookOpen className="h-4 w-4 shrink-0 text-[#002455] dark:text-blue-300" />
-            <h2 className="font-khmer truncate text-sm font-bold text-[#002455] dark:text-white">
+            <h2 className="font-khmer text-sm font-bold text-[#002455] dark:text-white">
               មាតិកាមេរៀន
             </h2>
           </div>
@@ -81,7 +81,7 @@ export default function SidebarLeftLesson({
                         toggleSection(section.id);
                       }
                     }}
-                    className={`group flex min-w-0 flex-1 items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 ${
+                    className={`group flex min-w-0 flex-1 items-start gap-3 rounded-xl px-3 py-2.5 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 ${
                       sectionActive
                         ? "bg-[#002455] text-white shadow-sm"
                         : containsActiveLesson
@@ -99,7 +99,7 @@ export default function SidebarLeftLesson({
                       {String(sectionIndex + 1).padStart(2, "0")}
                     </span>
 
-                    <span className="font-khmer min-w-0 flex-1 truncate text-[14px] font-semibold leading-6">
+                    <span className="min-w-0 flex-1 whitespace-normal break-words font-khmer text-xl font-semibold leading-8">
                       {section.title}
                     </span>
                   </button>
@@ -133,7 +133,7 @@ export default function SidebarLeftLesson({
                             key={subsection.id}
                             type="button"
                             onClick={() => onSelectLesson(subsection.id)}
-                            className={`font-khmer group relative flex w-full items-start gap-2 rounded-lg px-3 py-2 text-left text-[13.5px] leading-6 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 ${
+                            className={`font-khmer group relative flex w-full items-start gap-2 rounded-lg px-3 py-2 text-left text-lg leading-7 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 ${
                               active
                                 ? "bg-blue-50 font-semibold text-[#002455] dark:bg-blue-950/25 dark:text-blue-300"
                                 : "text-slate-500 hover:bg-white hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-slate-200"
@@ -146,7 +146,7 @@ export default function SidebarLeftLesson({
                             <span className="mt-0.5 w-4 shrink-0 text-[10px] font-bold tabular-nums text-slate-300 dark:text-slate-600">
                               {String(index + 1).padStart(2, "0")}
                             </span>
-                            <span className="line-clamp-2 min-w-0">
+                            <span className="min-w-0 whitespace-normal break-words">
                               {subsection.title}
                             </span>
                           </button>
