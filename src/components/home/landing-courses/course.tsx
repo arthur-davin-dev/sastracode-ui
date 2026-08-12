@@ -5,10 +5,41 @@ import { useEffect, useState } from "react";
 import type { Course } from "@/lib/course/courses";
 import type { CourseDetailResponse } from "@/types/api/course";
 import { mapApiCourseToCourse } from "@/lib/course/course-adapter";
+import { Skeleton } from "@/components/ui/skeleton";
 import CardSection from "./card-section";
 
 interface CourseApiResponse {
   content: CourseDetailResponse[];
+}
+
+function CourseSectionSkeleton() {
+  return (
+    <section className="py-10" aria-hidden="true">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <Skeleton className="mb-6 h-9 w-64 bg-slate-200 dark:bg-slate-800" />
+
+        <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }, (_, index) => (
+            <div
+              key={index}
+              className="overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
+            >
+              <Skeleton className="aspect-video w-full rounded-none bg-slate-200 dark:bg-slate-800" />
+              <div className="space-y-4 p-5">
+                <Skeleton className="h-3 w-24 bg-slate-200 dark:bg-slate-800" />
+                <Skeleton className="h-5 w-4/5 bg-slate-200 dark:bg-slate-800" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-800" />
+                  <Skeleton className="h-4 w-2/3 bg-slate-200 dark:bg-slate-800" />
+                </div>
+                <Skeleton className="h-4 w-1/2 bg-slate-200 dark:bg-slate-800" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }
 
 export default function LandingCourses() {
@@ -75,7 +106,13 @@ export default function LandingCourses() {
   }, []);
 
   if (loading) {
-    return <div className="py-10 text-center">Loading courses...</div>;
+    return (
+      <div role="status" aria-label="Loading homepage courses">
+        <CourseSectionSkeleton />
+        <CourseSectionSkeleton />
+        <span className="sr-only">Loading courses...</span>
+      </div>
+    );
   }
 
   return (

@@ -275,7 +275,7 @@ export default function CourseListingPage() {
 
             {/* Recommended */}
             <CourseGrid
-              title="វគ្គសិក្សាណែនាំសម្រាប់អ្នក"
+              title="វគ្គសិក្សាអនុសាសន៍"
               courses={recommendedCourses.slice(3, 8)}
               seeAllHref="/courses?sort=RECOMMEND"
             />

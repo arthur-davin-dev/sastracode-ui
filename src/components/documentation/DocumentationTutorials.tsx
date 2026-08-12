@@ -109,12 +109,12 @@ export default function DocumentationTutorials({
   return (
     <div className="contents" aria-busy={isFetching}>
       <CourseGrid
-        title="ចុងក្រោយបំផុត"
+        title="មេរៀនចុងក្រោយបំផុត"
         courses={latestCourses}
         seeAllHref="/documentation/lessons?category=latest"
       />
       <CourseGrid
-        title="ណែនាំសម្រាប់អ្នក"
+        title="មេរៀនសិក្សាអនុសាសន៍"
         courses={recommendedCourses}
         seeAllHref="/documentation/lessons?category=recommended"
       />
