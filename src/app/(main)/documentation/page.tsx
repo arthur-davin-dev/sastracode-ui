@@ -1,7 +1,5 @@
 import Hero from "@/components/documentation/Hero";
-import CourseProgressCard from "@/components/documentation/CourseProgressCard";
 import DocumentationTutorials from "@/components/documentation/DocumentationTutorials";
-import { currentProgress } from "@/lib/data/courses";
 
 export default function DocumentationHomePage() {
   return (
@@ -11,10 +9,10 @@ export default function DocumentationHomePage() {
       <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 pb-16 sm:px-6 lg:px-8">
         
         {/* Continue Learning Area */}
-        <section className="flex flex-col gap-4">
+        {/* <section className="flex flex-col gap-4">
           <h2 className="text-[24px] font-semibold text-primary-color">បន្តការសិក្សា</h2>
           <CourseProgressCard progress={currentProgress} />
-        </section>
+        </section> */}
 
         <DocumentationTutorials />
       </div>

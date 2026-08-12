@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import CourseGrid from "@/components/documentation/CourseGrid";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -10,6 +11,8 @@ import type { Course, TechTag } from "@/types/course";
 
 interface DocumentationTutorialsProps {
   showSections?: boolean;
+  category?: "all" | "latest" | "recommended" | "popular";
+  page?: number;
 }
 
 export function getTechTag(tutorial: TutorialSummary): TechTag {
@@ -82,7 +85,11 @@ function LoadingGrid({ showSections }: { showSections: boolean }) {
             )}
           </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div
+            className={`grid grid-cols-1 gap-6 sm:grid-cols-2 ${
+              showSections ? "lg:grid-cols-3" : "lg:grid-cols-2"
+            }`}
+          >
             {Array.from({ length: cardsPerSection }, (_, cardIndex) => (
               <DocumentationCardSkeleton key={cardIndex} />
             ))}
@@ -96,6 +103,8 @@ function LoadingGrid({ showSections }: { showSections: boolean }) {
 
 export default function DocumentationTutorials({
   showSections = true,
+  category = "all",
+  page = 1,
 }: DocumentationTutorialsProps) {
   const { data, isLoading, isFetching, error, refetch } = useListTutorialsQuery({
     status: "PUBLISHED",
@@ -121,7 +130,11 @@ export default function DocumentationTutorials({
     );
   }
 
-  const tutorials = data?.data?.content ?? [];
+  const tutorials = Array.from(
+    new Map(
+      (data?.data?.content ?? []).map((tutorial) => [tutorial.id, tutorial]),
+    ).values(),
+  );
   const courses = tutorials.map(toCourse);
 
   if (!courses.length) {
@@ -133,42 +146,145 @@ export default function DocumentationTutorials({
   }
 
   if (!showSections) {
+    const sortedCourses =
+      category === "popular"
+        ? [...courses].sort((a, b) => (b.viewCount ?? 0) - (a.viewCount ?? 0))
+        : courses;
+    const categoryTitles = {
+      all: "មេរៀនទាំងអស់",
+      latest: "មេរៀនចុងក្រោយបំផុត",
+      recommended: "មេរៀនសិក្សាអនុសាសន៍",
+      popular: "មេរៀនពេញនិយម",
+    };
+    const pageSize = 6;
+    const totalPages = Math.max(1, Math.ceil(sortedCourses.length / pageSize));
+    const currentPage = Math.min(page, totalPages);
+    const categoryCourses = sortedCourses.slice(
+      (currentPage - 1) * pageSize,
+      currentPage * pageSize,
+    );
+    const visiblePages = Array.from(
+      { length: Math.min(5, totalPages) },
+      (_, index) => {
+        const start = Math.min(
+          Math.max(1, currentPage - 2),
+          Math.max(1, totalPages - 4),
+        );
+        return start + index;
+      },
+    );
+    const pageHref = (targetPage: number) => {
+      const params = new URLSearchParams();
+      if (category !== "all") params.set("category", category);
+      if (targetPage > 1) params.set("page", String(targetPage));
+      const query = params.toString();
+      return query ? `/documentation/lessons?${query}` : "/documentation/lessons";
+    };
+
     return (
-      <div aria-busy={isFetching}>
-        <CourseGrid title="មេរៀនទាំងអស់" courses={courses} />
+      <div className="space-y-10" aria-busy={isFetching}>
+        <CourseGrid title={categoryTitles[category]} courses={categoryCourses} columns={2} />
+
+        {totalPages > 1 && (
+          <nav className="flex items-center justify-center gap-2" aria-label="Lesson pages">
+            <Link
+              href={pageHref(Math.max(1, currentPage - 1))}
+              aria-disabled={currentPage === 1}
+              className={`flex h-10 w-10 items-center justify-center rounded-full border text-lg transition-colors ${
+                currentPage === 1
+                  ? "pointer-events-none border-slate-200 text-slate-300 dark:border-slate-800 dark:text-slate-700"
+                  : "border-slate-300 text-slate-600 hover:border-blue-600 hover:text-blue-600 dark:border-slate-700 dark:text-slate-300"
+              }`}
+            >
+              <span aria-hidden="true">‹</span>
+              <span className="sr-only">Previous page</span>
+            </Link>
+
+            {visiblePages.map((pageNumber) => (
+              <Link
+                key={pageNumber}
+                href={pageHref(pageNumber)}
+                aria-current={pageNumber === currentPage ? "page" : undefined}
+                className={`flex h-10 w-10 items-center justify-center rounded-full border text-base font-semibold transition-colors ${
+                  pageNumber === currentPage
+                    ? "border-primary-color bg-primary-color text-white dark:border-blue-600 dark:bg-blue-600"
+                    : "border-slate-300 bg-white text-slate-600 hover:border-blue-600 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+                }`}
+              >
+                {pageNumber}
+              </Link>
+            ))}
+
+            <Link
+              href={pageHref(Math.min(totalPages, currentPage + 1))}
+              aria-disabled={currentPage >= totalPages}
+              className={`flex h-10 w-10 items-center justify-center rounded-full border text-lg transition-colors ${
+                currentPage >= totalPages
+                  ? "pointer-events-none border-slate-200 text-slate-300 dark:border-slate-800 dark:text-slate-700"
+                  : "border-slate-300 text-slate-600 hover:border-blue-600 hover:text-blue-600 dark:border-slate-700 dark:text-slate-300"
+              }`}
+            >
+              <span aria-hidden="true">›</span>
+              <span className="sr-only">Next page</span>
+            </Link>
+          </nav>
+        )}
       </div>
     );
   }
 
-  const latestCourses = courses.slice(0, 3);
-  const recommendedCourses = courses.slice(1, 4);
-  const popularCourses = [...tutorials]
-    .sort((a, b) => (b.viewCount ?? 0) - (a.viewCount ?? 0))
-    .slice(0, 3)
-    .map(toCourse);
+  const displayedCourseIds = new Set<string>();
+  const takeUndisplayed = (candidates: Course[], limit?: number) => {
+    const selected: Course[] = [];
+
+    for (const course of candidates) {
+      if (displayedCourseIds.has(course.id)) continue;
+      displayedCourseIds.add(course.id);
+      selected.push(course);
+      if (limit && selected.length === limit) break;
+    }
+
+    return selected;
+  };
+
+  const latestCourses = takeUndisplayed(courses, 3);
+  const recommendedCourses = takeUndisplayed(courses, 3);
+  const popularCourses = takeUndisplayed(
+    [...courses].sort((a, b) => (b.viewCount ?? 0) - (a.viewCount ?? 0)),
+    3,
+  );
+  const remainingCourses = takeUndisplayed(courses);
 
   return (
     <div className="contents" aria-busy={isFetching}>
-      <CourseGrid
-        title="មេរៀនចុងក្រោយបំផុត"
-        courses={latestCourses}
-        seeAllHref="/documentation/lessons?category=latest"
-      />
-      <CourseGrid
-        title="មេរៀនសិក្សាអនុសាសន៍"
-        courses={recommendedCourses}
-        seeAllHref="/documentation/lessons?category=recommended"
-      />
-      <CourseGrid
-        title="មេរៀនពេញនិយម"
-        courses={popularCourses}
-        seeAllHref="/documentation/lessons?category=popular"
-      />
-      <CourseGrid
-        title="មេរៀនទាំងអស់"
-        courses={courses}
-        seeAllHref="/documentation/lessons"
-      />
+      {latestCourses.length > 0 && (
+        <CourseGrid
+          title="មេរៀនចុងក្រោយបំផុត"
+          courses={latestCourses}
+          seeAllHref="/documentation/lessons?category=latest"
+        />
+      )}
+      {recommendedCourses.length > 0 && (
+        <CourseGrid
+          title="មេរៀនសិក្សាអនុសាសន៍"
+          courses={recommendedCourses}
+          seeAllHref="/documentation/lessons?category=recommended"
+        />
+      )}
+      {popularCourses.length > 0 && (
+        <CourseGrid
+          title="មេរៀនពេញនិយម"
+          courses={popularCourses}
+          seeAllHref="/documentation/lessons?category=popular"
+        />
+      )}
+      {remainingCourses.length > 0 && (
+        <CourseGrid
+          title="មេរៀនទាំងអស់"
+          courses={remainingCourses}
+          seeAllHref="/documentation/lessons"
+        />
+      )}
     </div>
   );
 }
