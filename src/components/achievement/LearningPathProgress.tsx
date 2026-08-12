@@ -81,7 +81,7 @@ export function LearningPathProgress({ paths, completedCount, totalCount }: Lear
       {/* Action Footer (Continue Learning Link) */}
       <div className="flex justify-end pt-2">
         <a 
-          href="#" 
+          href="/documentation" 
           className="group inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary-color hover:bg-blue-300
            text-white text-lg font-bold shadow-md hover:shadow-lg transition-all duration-300"
         >
