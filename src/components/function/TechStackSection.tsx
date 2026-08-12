@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   motion,
   useAnimationFrame,
@@ -226,32 +226,6 @@ export default function TechStackSection({
   const pct = (v: number, total: number) => `${(v / total) * 100}%`;
 
   const currentT = useTranslation();
-  if (typeof window === "undefined") {
-    // Return a static version for SSR
-    return (
-      <section className="w-full overflow-hidden bg-white px-4 py-14 sm:px-8 dark:bg-gray-900 transition-colors duration-300">
-        <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
-          <span className="mb-4 rounded-full border border-[#c9d3f5] dark:border-blue-700 bg-[#eef1fd] dark:bg-blue-950 px-4 py-1 text-[11px] font-semibold tracking-wide text-[#3a52c9] dark:text-blue-300 transition-colors duration-300">
-            {currentT.technologyStack.badge}
-          </span>
-          <h2 className="text-3xl font-extrabold text-[#0c1c4a] dark:text-white sm:text-4xl transition-colors duration-300">
-            {currentT.technologyStack.title1}
-          </h2>
-          <p className="mt-3 text-sm text-[#4a5578] dark:text-gray-300 sm:text-base transition-colors duration-300">
-            {currentT.technologyStack.description}
-          </p>
-        </div>
-        <div
-          className="relative mx-auto w-full max-w-225"
-          style={{ aspectRatio: `${CANVAS_W} / ${CANVAS_H}` }}
-        >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-gray-400 dark:text-gray-500">Loading...</span>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section className="flex w-full overflow-hidden bg-white px-4 py-14 sm:px-8 dark:bg-gray-900 transition-colors duration-300 items-center justify-between">
