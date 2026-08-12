@@ -8,6 +8,7 @@ import CourseBanner from "./course-banner";
 import { SearchBar } from "./SearchBar";
 import { CategoryFilter } from "./CategoryFilter";
 import { CourseGrid } from "./CourseGrid";
+import { Skeleton } from "@/components/ui/skeleton";
 
 
 import type { Course } from "@/lib/course/courses";
@@ -18,6 +19,42 @@ import { useGetPublicCoursesQuery } from "@/redux/api/course-api";
 const ALL = "ទាំងអស់";
 const FREE = "Free Course";
 const PREMIUM = "Premium";
+
+
+function CourseCardSkeleton() {
+  return (
+    <div
+      className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
+      aria-hidden="true"
+    >
+      <div className="relative">
+        <Skeleton className="aspect-video w-full rounded-none bg-slate-200 dark:bg-slate-800" />
+        <Skeleton className="absolute left-3 top-3 h-7 w-20 rounded-full bg-slate-300 dark:bg-slate-700" />
+        <Skeleton className="absolute right-3 top-3 h-10 w-10 rounded-full bg-slate-300 dark:bg-slate-700" />
+      </div>
+
+      <div className="space-y-4 p-5">
+        <Skeleton className="h-3 w-24 bg-slate-200 dark:bg-slate-800" />
+        <div className="space-y-2">
+          <Skeleton className="h-5 w-5/6 bg-slate-200 dark:bg-slate-800" />
+          <Skeleton className="h-5 w-2/3 bg-slate-200 dark:bg-slate-800" />
+        </div>
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-full bg-slate-200 dark:bg-slate-800" />
+          <Skeleton className="h-4 w-3/4 bg-slate-200 dark:bg-slate-800" />
+        </div>
+        <div className="flex gap-4">
+          <Skeleton className="h-4 w-20 bg-slate-200 dark:bg-slate-800" />
+          <Skeleton className="h-4 w-16 bg-slate-200 dark:bg-slate-800" />
+        </div>
+        <div className="flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-800">
+          <Skeleton className="h-4 w-16 bg-slate-200 dark:bg-slate-800" />
+          <Skeleton className="h-4 w-28 bg-slate-200 dark:bg-slate-800" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 
 function removeDuplicateCourses(courses: Course[]) {
@@ -223,13 +260,15 @@ export default function CourseListingPage() {
 
 
         {isLoading && allCourses.length === 0 ? (
-          <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
+          <div
+            className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3"
+            role="status"
+            aria-label="កំពុងទាញយកវគ្គសិក្សា"
+          >
             {Array.from({ length: 6 }).map((_, index) => (
-              <div
-                key={index}
-                className="h-96 animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800"
-              />
+              <CourseCardSkeleton key={index} />
             ))}
+            <span className="sr-only">Loading courses...</span>
           </div>
         ) : hasError ? (
           /* =========================
@@ -275,7 +314,7 @@ export default function CourseListingPage() {
 
             {/* Recommended */}
             <CourseGrid
-              title="វគ្គសិក្សាណែនាំសម្រាប់អ្នក"
+              title="វគ្គសិក្សាអនុសាសន៍"
               courses={recommendedCourses.slice(3, 8)}
               seeAllHref="/courses?sort=RECOMMEND"
             />

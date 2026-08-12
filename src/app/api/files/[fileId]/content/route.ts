@@ -34,12 +34,19 @@ export async function GET(
 
     const session = await auth();
 
-    if (!session?.accessToken) {
-      return new Response(
-        "Unauthorized",
-        {
-          status: 401,
-        },
+    const metadataHeaders =
+      new Headers({
+        Accept:
+          "application/json",
+      });
+
+    // Public course thumbnails must also load for signed-out users.
+    // The backend decides whether the requested file is public; when a
+    // session exists, keep forwarding its token for protected files.
+    if (session?.accessToken) {
+      metadataHeaders.set(
+        "Authorization",
+        `Bearer ${session.accessToken}`,
       );
     }
 
@@ -60,13 +67,8 @@ export async function GET(
         {
           method: "GET",
 
-          headers: {
-            Accept:
-              "application/json",
-
-            Authorization:
-              `Bearer ${session.accessToken}`,
-          },
+          headers:
+            metadataHeaders,
 
           cache: "no-store",
         },
@@ -138,6 +140,7 @@ export async function GET(
     // If it comes from MinIO presigned URL,
     // do NOT add Authorization.
     if (
+      session?.accessToken &&
       backendOrigin === assetOrigin
     ) {
       assetHeaders.set(

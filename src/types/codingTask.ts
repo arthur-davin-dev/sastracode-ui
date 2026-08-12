@@ -1,3 +1,1 @@
-export type codingTask ={
-    
-}
+export type codingTask = Record<string, never>

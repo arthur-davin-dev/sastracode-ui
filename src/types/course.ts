@@ -15,6 +15,7 @@ export interface Course {
   href: string;
   coverFileId?: string;
   ctaLabel: string;
+  viewCount?: number;
 }
 
 export interface CourseProgress {

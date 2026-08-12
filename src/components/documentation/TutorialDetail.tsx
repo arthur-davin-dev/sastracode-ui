@@ -456,7 +456,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import LessonBlockRenderer from "@/components/documentation/LessonBlockRenderer";
 import SidebarLeftLesson from "@/components/documentation/SidebarLeftLesson";
@@ -465,7 +465,10 @@ import SidebarRightLesson, {
   hasHeadingBlocks,
 } from "@/components/documentation/SidebarRightLesson";
 import TodayLessonHero from "@/components/documentation/TodayLessonHero";
-import { useGetTutorialByIdQuery } from "@/redux/api/tutorial-api";
+import {
+  useGetTutorialByIdQuery,
+  useIncrementTutorialViewMutation,
+} from "@/redux/api/tutorial-api";
 import type {
   TutorialDetailData,
   TutorialLesson,
@@ -601,11 +604,22 @@ function EmptyTutorial() {
 export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
   const { data, isLoading, error, refetch } =
     useGetTutorialByIdQuery(tutorialId);
+  const [incrementView] = useIncrementTutorialViewMutation();
+  const countedTutorialRef = useRef<string | null>(null);
 
   const [activeLessonId, setActiveLessonId] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const tutorial: TutorialDetailData | undefined = data?.data;
+
+  useEffect(() => {
+    if (!tutorial || countedTutorialRef.current === tutorialId) return;
+
+    countedTutorialRef.current = tutorialId;
+    void incrementView(tutorialId).unwrap().catch(() => {
+      // Reading the tutorial must continue even when analytics is unavailable.
+    });
+  }, [incrementView, tutorial, tutorialId]);
 
   const sections = useMemo(
     () => sortSections(tutorial?.sections ?? []),

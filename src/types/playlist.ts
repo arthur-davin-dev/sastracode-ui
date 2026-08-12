@@ -1,3 +1,1 @@
-export type playlist ={
-    
-}
+export type playlist = Record<string, never>

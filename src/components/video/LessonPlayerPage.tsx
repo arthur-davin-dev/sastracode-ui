@@ -81,7 +81,7 @@ export default function LessonPlayerPage({
     : lessonPosition;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 mt-15">
+    <div className="min-h-screen bg-slate-50 py-8 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
           {/* Main Video & Discussion Section */}
@@ -93,7 +93,7 @@ export default function LessonPlayerPage({
               autoplay={autoplay}
             />
 
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-colors duration-300">
+            <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
               <LessonHeader
                 title={lessonTitle}
                 sectionLabel={sectionLabel}

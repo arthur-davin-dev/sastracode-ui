@@ -1,3 +1,1 @@
-export type quiz ={
-    
-}
+export type quiz = Record<string, never>

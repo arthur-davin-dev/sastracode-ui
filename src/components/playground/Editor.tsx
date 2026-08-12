@@ -17,6 +17,9 @@ import {
   RotateCcw,
   Trash2,
   Eraser,
+  Code2,
+  TerminalSquare,
+  Sparkles,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -216,104 +219,104 @@ console.log(result);`,
   // REACT - LIVE PREVIEW
   // ====================================================
 
-//   {
-//     label: "React",
-//     value: "javascript",
-//     extension: "jsx",
-//     color: "#61DAFB",
-//     mode: "preview",
+  //   {
+  //     label: "React",
+  //     value: "javascript",
+  //     extension: "jsx",
+  //     color: "#61DAFB",
+  //     mode: "preview",
 
-//     starterCode: `function App() {
-//   const [count, setCount] =
-//     React.useState(0);
+  //     starterCode: `function App() {
+  //   const [count, setCount] =
+  //     React.useState(0);
 
-//   return (
-//     <div
-//       style={{
-//         minHeight: "100vh",
-//         padding: "40px",
-//         background: "#f8fafc",
-//         fontFamily: "Arial, sans-serif"
-//       }}
-//     >
+  //   return (
+  //     <div
+  //       style={{
+  //         minHeight: "100vh",
+  //         padding: "40px",
+  //         background: "#f8fafc",
+  //         fontFamily: "Arial, sans-serif"
+  //       }}
+  //     >
 
-//       <div
-//         style={{
-//           maxWidth: "480px",
-//           margin: "40px auto",
-//           padding: "30px",
-//           background: "white",
-//           borderRadius: "20px",
-//           boxShadow:
-//             "0 10px 30px rgba(0, 0, 0, 0.08)"
-//         }}
-//       >
+  //       <div
+  //         style={{
+  //           maxWidth: "480px",
+  //           margin: "40px auto",
+  //           padding: "30px",
+  //           background: "white",
+  //           borderRadius: "20px",
+  //           boxShadow:
+  //             "0 10px 30px rgba(0, 0, 0, 0.08)"
+  //         }}
+  //       >
 
-//         <h1
-//           style={{
-//             color: "#002455"
-//           }}
-//         >
-//           សួស្តី React!
-//         </h1>
+  //         <h1
+  //           style={{
+  //             color: "#002455"
+  //           }}
+  //         >
+  //           សួស្តី React!
+  //         </h1>
 
-//         <p>
-//           Welcome to SastraCode React Playground.
-//         </p>
+  //         <p>
+  //           Welcome to SastraCode React Playground.
+  //         </p>
 
-//         <p>
-//           Count: {count}
-//         </p>
+  //         <p>
+  //           Count: {count}
+  //         </p>
 
-//         <button
-//           onClick={() =>
-//             setCount(
-//               (previous) =>
-//                 previous + 1
-//             )
-//           }
-//           style={{
-//             padding: "12px 20px",
-//             background: "#002455",
-//             color: "white",
-//             border: "none",
-//             borderRadius: "10px",
-//             cursor: "pointer"
-//           }}
-//         >
-//           Increase Count
-//         </button>
+  //         <button
+  //           onClick={() =>
+  //             setCount(
+  //               (previous) =>
+  //                 previous + 1
+  //             )
+  //           }
+  //           style={{
+  //             padding: "12px 20px",
+  //             background: "#002455",
+  //             color: "white",
+  //             border: "none",
+  //             borderRadius: "10px",
+  //             cursor: "pointer"
+  //           }}
+  //         >
+  //           Increase Count
+  //         </button>
 
-//       </div>
+  //       </div>
 
-//     </div>
-//   );
-// }`,
-//   },
+  //     </div>
+  //   );
+  // }`,
+  //   },
 
   // ====================================================
   // PHP
   // ====================================================
 
-//   {
-//     label: "PHP",
-//     value: "php",
-//     extension: "php",
-//     color: "#777BB4",
-//     mode: "execute",
+  //   {
+  //     label: "PHP",
+  //     value: "php",
+  //     extension: "php",
+  //     color: "#777BB4",
+  //     mode: "execute",
 
-//     starterCode: `<?php
+  //     starterCode: `<?php
 
-// $name = "SastraCode";
+  // $name = "SastraCode";
 
-// echo "Hello " . $name . "!\\n";
+  // echo "Hello " . $name . "!\\n";
 
-// for ($i = 1; $i <= 5; $i++) {
-//     echo "Number: " . $i . "\\n";
-// }
+  // for ($i = 1; $i <= 5; $i++) {
+  //     echo "Number: " . $i . "\\n";
+  // }
 
-// ?>`,
-//   },
+  // ?>`,
+  //   },
 
   // ====================================================
   // NODE.JS
@@ -462,57 +465,57 @@ users.forEach((user, index) => {
   // C
   // ====================================================
 
-//   {
-//     label: "C",
-//     value: "c",
-//     extension: "c",
-//     color: "#A8B9CC",
-//     mode: "execute",
+  //   {
+  //     label: "C",
+  //     value: "c",
+  //     extension: "c",
+  //     color: "#A8B9CC",
+  //     mode: "execute",
 
-//     starterCode: `#include <stdio.h>
+  //     starterCode: `#include <stdio.h>
 
-// int main() {
+  // int main() {
 
-//     printf("Hello SastraCode!\\n");
+  //     printf("Hello SastraCode!\\n");
 
-//     for (int i = 1; i <= 5; i++) {
-//         printf("Number: %d\\n", i);
-//     }
+  //     for (int i = 1; i <= 5; i++) {
+  //         printf("Number: %d\\n", i);
+  //     }
 
-//     return 0;
-// }`,
-//   },
+  //     return 0;
+  // }`,
+  //   },
 
   // ====================================================
   // C++
   // ====================================================
 
-//   {
-//     label: "C++",
-//     value: "cpp",
-//     extension: "cpp",
-//     color: "#00599C",
-//     mode: "execute",
+  //   {
+  //     label: "C++",
+  //     value: "cpp",
+  //     extension: "cpp",
+  //     color: "#00599C",
+  //     mode: "execute",
 
-//     starterCode: `#include <iostream>
+  //     starterCode: `#include <iostream>
 
-// using namespace std;
+  // using namespace std;
 
-// int main() {
+  // int main() {
 
-//     cout
-//       << "Hello SastraCode!"
-//       << endl;
+  //     cout
+  //       << "Hello SastraCode!"
+  //       << endl;
 
-//     for (int i = 1; i <= 5; i++) {
-//         cout
-//           << "Number: "
-//           << i
-//           << endl;
-//     }
+  //     for (int i = 1; i <= 5; i++) {
+  //         cout
+  //           << "Number: "
+  //           << i
+  //           << endl;
+  //     }
 
-//     return 0;
-// }`,
+  //     return 0;
+  // }`,
   // },
 
   // ====================================================
@@ -580,57 +583,57 @@ print(
   // C#
   // ====================================================
 
-//   {
-//     label: "C#",
-//     value: "csharp",
-//     extension: "cs",
-//     color: "#9B4F96",
-//     mode: "execute",
+  //   {
+  //     label: "C#",
+  //     value: "csharp",
+  //     extension: "cs",
+  //     color: "#9B4F96",
+  //     mode: "execute",
 
-//     starterCode: `using System;
+  //     starterCode: `using System;
 
-// class Program
-// {
-//     static void Main()
-//     {
-//         Console.WriteLine(
-//             "Hello SastraCode!"
-//         );
+  // class Program
+  // {
+  //     static void Main()
+  //     {
+  //         Console.WriteLine(
+  //             "Hello SastraCode!"
+  //         );
 
-//         for (int i = 1; i <= 5; i++)
-//         {
-//             Console.WriteLine(
-//                 "Number: " + i
-//             );
-//         }
-//     }
-// }`,
-//   },
+  //         for (int i = 1; i <= 5; i++)
+  //         {
+  //             Console.WriteLine(
+  //                 "Number: " + i
+  //             );
+  //         }
+  //     }
+  // }`,
+  //   },
 
   // ====================================================
   // KOTLIN
   // ====================================================
 
-//   {
-//     label: "Kotlin",
-//     value: "kotlin",
-//     extension: "kt",
-//     color: "#7F52FF",
-//     mode: "execute",
+  //   {
+  //     label: "Kotlin",
+  //     value: "kotlin",
+  //     extension: "kt",
+  //     color: "#7F52FF",
+  //     mode: "execute",
 
-//     starterCode: `fun main() {
+  //     starterCode: `fun main() {
 
-//     println(
-//         "Hello SastraCode!"
-//     )
+  //     println(
+  //         "Hello SastraCode!"
+  //     )
 
-//     for (i in 1..5) {
-//         println(
-//             "Number: $i"
-//         )
-//     }
-// }`,
-//   },
+  //     for (i in 1..5) {
+  //         println(
+  //             "Number: $i"
+  //         )
+  //     }
+  // }`,
+  //   },
 ];
 
 // ======================================================
@@ -1310,606 +1313,634 @@ export default function Editor() {
   // ====================================================
 
   return (
-    <div className="bg-white px-4 pb-8 pt-6 font-khmer transition-colors duration-300 dark:bg-slate-950 sm:px-6 lg:px-8">
-      {/* ================================================= */}
-      {/* LANGUAGE TABS */}
-      {/* ================================================= */}
-
-      <div className="no-scrollbar flex items-center gap-1 overflow-x-auto pb-3">
-        {languages.map((item) => {
-          const isActive = activeLabel === item.label;
-
-          const itemTextColor =
-            item.color === "#F0DB4F" || item.color === "#A8B9CC"
-              ? "#0f172a"
-              : "#ffffff";
-
-          const dotColor = isActive ? itemTextColor : item.color;
-
-          return (
-            <button
-              type="button"
-              key={item.label}
-              onClick={() => handleSelectLanguage(item)}
-              style={
-                isActive
-                  ? {
-                      backgroundColor: item.color,
-
-                      color: itemTextColor,
-                    }
-                  : undefined
-              }
-              className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
-                isActive
-                  ? ""
-                  : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
-              }`}
-            >
-              <span
-                className="h-1.5 w-1.5 rounded-full"
-                style={{
-                  backgroundColor: dotColor,
-                }}
-              />
-
-              {item.label}
-
-              {item.mode === "preview" && (
-                <span
-                  className={`ml-1 text-[9px] font-bold uppercase ${
-                    isActive ? "opacity-70" : "text-emerald-500"
-                  }`}
-                >
-                  Live
-                </span>
-              )}
-            </button>
-          );
-        })}
+    <div className="min-h-screen bg-[#f4f7fb] px-3 pb-10 pt-5 font-khmer text-slate-900 transition-colors duration-300 dark:bg-[#070b14] dark:text-slate-100 sm:px-5 lg:px-7">
+      <div className="mx-auto mb-4 flex max-w-[1800px] flex-col gap-4 rounded-2xl border border-slate-200/80 bg-white px-5 py-4 shadow-sm dark:border-white/10 dark:bg-[#0d1320] sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#002455] text-white shadow-lg shadow-blue-950/15 dark:bg-blue-600">
+            <Code2 className="h-5 w-5" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-bold tracking-tight sm:text-xl">
+                Code Playground
+              </h1>
+              <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
+                Ready
+              </span>
+            </div>
+            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400 sm:text-sm">
+              Write, run, and preview code in one focused workspace.
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+          <Sparkles className="h-4 w-4 text-amber-500" />
+          <span>Tip: press Ctrl + Enter to run your code</span>
+        </div>
       </div>
 
-      {/* ================================================= */}
-      {/* TOOLBAR */}
-      {/* ================================================= */}
+      <div className="mx-auto max-w-[1800px] overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-xl shadow-slate-900/5 dark:border-white/10 dark:bg-[#0d1320] dark:shadow-black/30">
+        {/* ================================================= */}
+        {/* LANGUAGE TABS */}
+        {/* ================================================= */}
 
-      <div className="flex flex-wrap items-center justify-between gap-3 border-y border-slate-200 py-3 dark:border-slate-800">
-        {/* LEFT TOOLBAR */}
+        <div className="no-scrollbar flex items-center gap-1 overflow-x-auto border-b border-slate-200 bg-slate-50/80 px-3 py-2 dark:border-white/10 dark:bg-[#0a0f1a]">
+          {languages.map((item) => {
+            const isActive = activeLabel === item.label;
 
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Language Badge */}
+            const itemTextColor =
+              item.color === "#F0DB4F" || item.color === "#A8B9CC"
+                ? "#0f172a"
+                : "#ffffff";
 
-          <span
-            className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold"
-            style={{
-              backgroundColor: activeColor,
+            const dotColor = isActive ? itemTextColor : item.color;
 
-              color: activeTextColor,
-            }}
-          >
-            {activeLabel} Lab
-          </span>
+            return (
+              <button
+                type="button"
+                key={item.label}
+                onClick={() => handleSelectLanguage(item)}
+                style={
+                  isActive
+                    ? {
+                        backgroundColor: item.color,
 
-          {/* Live status */}
+                        color: itemTextColor,
+                      }
+                    : undefined
+                }
+                className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-all ${
+                  isActive
+                    ? ""
+                    : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+                }`}
+              >
+                <span
+                  className="h-1.5 w-1.5 rounded-full"
+                  style={{
+                    backgroundColor: dotColor,
+                  }}
+                />
 
-          {isPreviewMode && (
-            <div className="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-semibold text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-400">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                {item.label}
 
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-              </span>
-              Live Preview
-            </div>
-          )}
+                {item.mode === "preview" && (
+                  <span
+                    className={`ml-1 text-[9px] font-bold uppercase ${
+                      isActive ? "opacity-70" : "text-emerald-500"
+                    }`}
+                  >
+                    Live
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
 
-          {/* Editor Font Size */}
+        {/* ================================================= */}
+        {/* TOOLBAR */}
+        {/* ================================================= */}
 
-          <div className="flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1 dark:border-slate-800">
-            <span className="pr-1 text-xs text-slate-500 dark:text-slate-400">
-              Editor:
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-4 py-3 dark:border-white/10">
+          {/* LEFT TOOLBAR */}
+
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Language Badge */}
+
+            <span
+              className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold"
+              style={{
+                backgroundColor: activeColor,
+
+                color: activeTextColor,
+              }}
+            >
+              {activeLabel} Lab
             </span>
 
-            <button
-              type="button"
-              onClick={() => zoom(setEditorFontSize, -1)}
-              className="rounded p-1 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
-              <ZoomOut className="h-3.5 w-3.5" />
-            </button>
+            {/* Live status */}
 
-            <span className="w-8 text-center text-xs text-slate-700 dark:text-slate-300">
-              {editorFontSize}px
-            </span>
+            {isPreviewMode && (
+              <div className="flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-sm font-semibold text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-400">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
 
-            <button
-              type="button"
-              onClick={() => zoom(setEditorFontSize, 1)}
-              className="rounded p-1 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
-              <ZoomIn className="h-3.5 w-3.5" />
-            </button>
-          </div>
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                </span>
+                Live Preview
+              </div>
+            )}
 
-          {/* Output Font Size */}
+            {/* Editor Font Size */}
 
-          {!isPreviewMode && (
             <div className="flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1 dark:border-slate-800">
               <span className="pr-1 text-xs text-slate-500 dark:text-slate-400">
-                Output:
+                Editor:
               </span>
 
               <button
                 type="button"
-                onClick={() => zoom(setOutputFontSize, -1)}
+                onClick={() => zoom(setEditorFontSize, -1)}
                 className="rounded p-1 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
               >
                 <ZoomOut className="h-3.5 w-3.5" />
               </button>
 
               <span className="w-8 text-center text-xs text-slate-700 dark:text-slate-300">
-                {outputFontSize}px
+                {editorFontSize}px
               </span>
 
               <button
                 type="button"
-                onClick={() => zoom(setOutputFontSize, 1)}
+                onClick={() => zoom(setEditorFontSize, 1)}
                 className="rounded p-1 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
               >
                 <ZoomIn className="h-3.5 w-3.5" />
               </button>
             </div>
-          )}
 
-          {/* Line Numbers */}
+            {/* Output Font Size */}
 
-          <button
-            type="button"
-            onClick={() => setShowLineNumbers((previous) => !previous)}
-            className={`flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 dark:border-slate-800 dark:text-slate-300 ${
-              showLineNumbers
-                ? "bg-slate-100 dark:bg-slate-800"
-                : "text-slate-500"
-            }`}
-          >
-            <ListOrdered className="h-3.5 w-3.5" />
-            Line
-          </button>
+            {!isPreviewMode && (
+              <div className="flex items-center gap-1 rounded-lg border border-slate-200 px-2 py-1 dark:border-slate-800">
+                <span className="pr-1 text-xs text-slate-500 dark:text-slate-400">
+                  Output:
+                </span>
 
-          {/* Output Scroll Anchor */}
+                <button
+                  type="button"
+                  onClick={() => zoom(setOutputFontSize, -1)}
+                  className="rounded p-1 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                >
+                  <ZoomOut className="h-3.5 w-3.5" />
+                </button>
 
-          {!isPreviewMode && (
+                <span className="w-8 text-center text-xs text-slate-700 dark:text-slate-300">
+                  {outputFontSize}px
+                </span>
+
+                <button
+                  type="button"
+                  onClick={() => zoom(setOutputFontSize, 1)}
+                  className="rounded p-1 text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                >
+                  <ZoomIn className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            )}
+
+            {/* Line Numbers */}
+
             <button
               type="button"
-              onClick={() =>
-                setOutputAnchor((previous) =>
-                  previous === "Bottom" ? "Top" : "Bottom",
-                )
-              }
-              className="flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 dark:border-slate-800 dark:text-slate-300"
+              onClick={() => setShowLineNumbers((previous) => !previous)}
+              className={`flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 dark:border-slate-800 dark:text-slate-300 ${
+                showLineNumbers
+                  ? "bg-slate-100 dark:bg-slate-800"
+                  : "text-slate-500"
+              }`}
             >
-              {outputAnchor === "Bottom" ? (
-                <ChevronDown className="h-3.5 w-3.5" />
-              ) : (
-                <ChevronUp className="h-3.5 w-3.5" />
-              )}
-
-              {outputAnchor}
+              <ListOrdered className="h-3.5 w-3.5" />
+              Line
             </button>
-          )}
 
-          {/* Fullscreen */}
+            {/* Output Scroll Anchor */}
 
-          <button
-            type="button"
-            onClick={toggleFullscreen}
-            className="rounded-lg border border-slate-200 p-2 text-slate-700 dark:border-slate-800 dark:text-slate-300"
-          >
-            {isFullscreen ? (
-              <Minimize2 className="h-3.5 w-3.5" />
-            ) : (
-              <Maximize2 className="h-3.5 w-3.5" />
-            )}
-          </button>
-        </div>
-
-        {/* ================================================= */}
-        {/* ACTION BUTTONS */}
-        {/* ================================================= */}
-
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Run only compiler/backend languages */}
-
-          {!isPreviewMode && (
-            <Button
-              type="button"
-              onClick={handleRun}
-              disabled={isRunning}
-              style={{
-                backgroundColor: activeColor,
-
-                color: activeTextColor,
-              }}
-              className="gap-2 hover:opacity-90"
-            >
-              <Play className="h-4 w-4" />
-
-              {isRunning ? "Running..." : "Run"}
-            </Button>
-          )}
-
-          {/* Copy */}
-
-          <Button
-            type="button"
-            variant="outline"
-            className="gap-2"
-            onClick={handleCopy}
-          >
-            <Copy className="h-4 w-4" />
-            Copy
-          </Button>
-
-          {/* Download */}
-
-          <Button
-            type="button"
-            variant="outline"
-            className="gap-2"
-            onClick={handleDownload}
-          >
-            <Download className="h-4 w-4" />
-            Download
-          </Button>
-
-          {/* Reset */}
-
-          <Button
-            type="button"
-            variant="outline"
-            className="gap-2"
-            onClick={handleReset}
-          >
-            <RotateCcw className="h-4 w-4" />
-            Reset
-          </Button>
-
-          {/* Clear Editor */}
-
-          <Button
-            type="button"
-            variant="outline"
-            className="gap-2"
-            onClick={handleClearEditor}
-          >
-            <Trash2 className="h-4 w-4" />
-            Clear
-          </Button>
-
-          {/* Clear Output only for executable languages */}
-
-          {!isPreviewMode && (
-            <Button
-              type="button"
-              variant="outline"
-              className="gap-2"
-              onClick={handleClearOutput}
-            >
-              <Eraser className="h-4 w-4" />
-              Clear Output
-            </Button>
-          )}
-        </div>
-      </div>
-
-      {/* ================================================= */}
-      {/* STANDARD INPUT */}
-      {/* ================================================= */}
-
-      {!isPreviewMode && (
-        <div className="pt-4">
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-900">
-            <div className="mb-2 flex items-center justify-between">
-              <label
-                htmlFor="stdin"
-                className="text-sm font-semibold text-slate-700 dark:text-slate-300"
-              >
-                Standard Input (stdin)
-              </label>
-
+            {!isPreviewMode && (
               <button
                 type="button"
-                onClick={() => setStdin("")}
-                className="text-xs text-slate-500 transition-colors hover:text-red-500"
+                onClick={() =>
+                  setOutputAnchor((previous) =>
+                    previous === "Bottom" ? "Top" : "Bottom",
+                  )
+                }
+                className="flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 dark:border-slate-800 dark:text-slate-300"
               >
-                Clear
+                {outputAnchor === "Bottom" ? (
+                  <ChevronDown className="h-3.5 w-3.5" />
+                ) : (
+                  <ChevronUp className="h-3.5 w-3.5" />
+                )}
+
+                {outputAnchor}
               </button>
-            </div>
+            )}
 
-            <textarea
-              id="stdin"
-              value={stdin}
-              onChange={(event) => setStdin(event.target.value)}
-              placeholder="Enter input for your program..."
-              className="min-h-20 w-full resize-y rounded-lg border border-slate-200 bg-white p-3 font-mono text-sm text-slate-800 outline-none transition focus:border-slate-400 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200"
-            />
+            {/* Fullscreen */}
+
+            <button
+              type="button"
+              onClick={toggleFullscreen}
+              className="rounded-lg border border-slate-200 p-2 text-slate-700 dark:border-slate-800 dark:text-slate-300"
+            >
+              {isFullscreen ? (
+                <Minimize2 className="h-3.5 w-3.5" />
+              ) : (
+                <Maximize2 className="h-3.5 w-3.5" />
+              )}
+            </button>
           </div>
-        </div>
-      )}
 
-      {/* ================================================= */}
-      {/* EDITOR + PREVIEW/OUTPUT */}
-      {/* ================================================= */}
+          {/* ================================================= */}
+          {/* ACTION BUTTONS */}
+          {/* ================================================= */}
 
-      <div className="grid gap-4 pt-4 lg:grid-cols-2">
-        {/* ================================================= */}
-        {/* MONACO EDITOR */}
-        {/* ================================================= */}
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Run only compiler/backend languages */}
 
-        <div
-          className={
-            isFullscreen
-              ? "fixed inset-0 z-50 flex flex-col bg-white dark:bg-slate-950"
-              : "overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
-          }
-        >
-          {/* Editor Header */}
-
-          <div className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-slate-100/90 px-4 py-2 text-slate-800 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-200">
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-semibold tracking-wide">
-                EDITOR
-              </span>
-
-              <span
-                className="rounded px-2 py-0.5 text-[10px] font-bold"
+            {!isPreviewMode && (
+              <Button
+                type="button"
+                onClick={handleRun}
+                disabled={isRunning}
                 style={{
                   backgroundColor: activeColor,
 
                   color: activeTextColor,
                 }}
+                className="h-10 gap-2 rounded-xl px-5 font-bold shadow-md hover:opacity-90"
               >
-                {activeLabel}
-              </span>
-            </div>
+                <Play className="h-4 w-4" />
 
-            <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
-              <Copy
-                className="h-4 w-4 cursor-pointer transition-colors hover:text-slate-900 dark:hover:text-white"
-                onClick={handleCopy}
-              />
+                {isRunning ? "Running..." : "Run"}
+              </Button>
+            )}
 
-              {isFullscreen ? (
-                <Minimize2
-                  className="h-4 w-4 cursor-pointer transition-colors hover:text-slate-900 dark:hover:text-white"
-                  onClick={toggleFullscreen}
-                />
-              ) : (
-                <Maximize2
-                  className="h-4 w-4 cursor-pointer transition-colors hover:text-slate-900 dark:hover:text-white"
-                  onClick={toggleFullscreen}
-                />
-              )}
+            {/* Copy */}
 
-              {isFullscreen && (
-                <X
-                  className="h-5 w-5 cursor-pointer transition-colors hover:text-slate-900 dark:hover:text-white"
-                  onClick={toggleFullscreen}
-                />
-              )}
-            </div>
-          </div>
+            <Button
+              type="button"
+              variant="outline"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              onClick={handleCopy}
+            >
+              <Copy className="h-4 w-4 text-gray-600" />
+              Copy
+            </Button>
 
-          {/* Monaco */}
+            {/* Download */}
 
-          <div className={isFullscreen ? "flex-1" : ""}>
-            <MonacoEditor
-              height={isFullscreen ? "100%" : "500px"}
-              language={language}
-              value={code}
-              onChange={(value) => {
-                setCode(value ?? "");
-              }}
-              onMount={handleEditorMount}
-              theme={isDarkMode ? "vs-dark" : "vs"}
-              options={{
-                fontSize: editorFontSize,
+            <Button
+              type="button"
+              variant="outline"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              onClick={handleDownload}
+            >
+              <Download className="h-4 w-4 text-gray-600" />
+              Download
+            </Button>
 
-                lineNumbers: showLineNumbers ? "on" : "off",
+            {/* Reset */}
 
-                fontFamily:
-                  "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+            <Button
+              type="button"
+              variant="outline"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              onClick={handleReset}
+            >
+              <RotateCcw className="h-4 w-4 text-gray-600" />
+              Reset
+            </Button>
 
-                minimap: {
-                  enabled: false,
-                },
+            {/* Clear Editor */}
 
-                scrollBeyondLastLine: false,
+            <Button
+              type="button"
+              variant="outline"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              onClick={handleClearEditor}
+            >
+              <Trash2 className="h-4 w-4 text-gray-600" />
+              Clear
+            </Button>
 
-                wordWrap: "on",
+            {/* Clear Output only for executable languages */}
 
-                automaticLayout: true,
-
-                padding: {
-                  top: 16,
-                },
-
-                tabSize: 2,
-
-                insertSpaces: true,
-
-                smoothScrolling: true,
-
-                cursorSmoothCaretAnimation: "on",
-              }}
-            />
+            {!isPreviewMode && (
+              <Button
+                type="button"
+                variant="outline"
+                className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+                onClick={handleClearOutput}
+              >
+                <Eraser className="h-4 w-4 text-gray-600" />
+                Clear Output
+              </Button>
+            )}
           </div>
         </div>
 
         {/* ================================================= */}
-        {/* LIVE PREVIEW / CONSOLE */}
+        {/* STANDARD INPUT */}
         {/* ================================================= */}
 
-        {!isFullscreen && (
-          <>
-            {isPreviewMode ? (
-              // =============================================
-              // LIVE PREVIEW
-              // =============================================
+        {!isPreviewMode && (
+          <div className="px-4 pt-4">
+            <div className="rounded-xl border border-slate-200 bg-slate-50/80 p-3 dark:border-white/10 dark:bg-[#0a0f1a]">
+              <div className="mb-2 flex items-center justify-between">
+                <label
+                  htmlFor="stdin"
+                  className="text-sm font-semibold text-slate-700 dark:text-slate-300"
+                >
+                  Standard Input (stdin)
+                </label>
 
-              <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
-                {/* Header */}
+                <button
+                  type="button"
+                  onClick={() => setStdin("")}
+                  className="text-xs text-slate-500 transition-colors hover:text-red-500"
+                >
+                  Clear
+                </button>
+              </div>
 
-                <div className="flex items-center justify-between border-b border-slate-200 bg-slate-100/90 px-4 py-2 dark:border-slate-800 dark:bg-slate-900/50">
-                  <div className="flex items-center gap-2">
-                    <span className="relative flex h-2.5 w-2.5">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+              <textarea
+                id="stdin"
+                value={stdin}
+                onChange={(event) => setStdin(event.target.value)}
+                placeholder="Enter input for your program..."
+                className="min-h-20 w-full resize-y rounded-lg border border-slate-200 bg-white p-3 font-mono text-sm text-slate-800 outline-none transition focus:border-slate-400 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200"
+              />
+            </div>
+          </div>
+        )}
 
-                      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
-                    </span>
+        {/* ================================================= */}
+        {/* EDITOR + PREVIEW/OUTPUT */}
+        {/* ================================================= */}
 
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
-                      LIVE PREVIEW
-                    </span>
-                  </div>
+        <div className="grid gap-4 p-4 lg:grid-cols-2">
+          {/* ================================================= */}
+          {/* MONACO EDITOR */}
+          {/* ================================================= */}
 
-                  <span
-                    className="rounded-md px-2 py-1 text-xs font-semibold"
-                    style={{
-                      backgroundColor: activeColor,
+          <div
+            className={
+              isFullscreen
+                ? "fixed inset-0 z-50 flex flex-col bg-white dark:bg-slate-950"
+                : "overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#0a0f1a]"
+            }
+          >
+            {/* Editor Header */}
 
-                      color: activeTextColor,
-                    }}
-                  >
-                    {activeLabel}
-                  </span>
-                </div>
+            <div className="flex h-11 shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50 px-4 text-slate-800 dark:border-white/10 dark:bg-[#111827] dark:text-slate-200">
+              <div className="flex items-center gap-2">
+                <Code2 className="h-4 w-4 text-slate-400" />
+                <span className="text-xs font-bold uppercase tracking-[0.14em]">
+                  Editor
+                </span>
 
-                {/* Live iframe */}
+                <span
+                  className="rounded px-2 py-0.5 text-[10px] font-bold"
+                  style={{
+                    backgroundColor: activeColor,
 
-                {previewHtml ? (
-                  <iframe
-                    title={`${activeLabel} Live Preview`}
-                    srcDoc={previewHtml}
-                    sandbox="allow-scripts allow-modals"
-                    className="h-[500px] w-full border-0 bg-white"
+                    color: activeTextColor,
+                  }}
+                >
+                  {activeLabel}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
+                <Copy
+                  className="h-4 w-4 cursor-pointer transition-colors hover:text-slate-900 dark:hover:text-white"
+                  onClick={handleCopy}
+                />
+
+                {isFullscreen ? (
+                  <Minimize2
+                    className="h-4 w-4 cursor-pointer transition-colors hover:text-slate-900 dark:hover:text-white"
+                    onClick={toggleFullscreen}
                   />
                 ) : (
-                  <div className="flex h-[500px] items-center justify-center bg-white dark:bg-slate-950">
-                    <div className="px-6 text-center">
-                      <div
-                        className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl"
-                        style={{
-                          backgroundColor: `${activeColor}20`,
-                        }}
-                      >
-                        <Play
-                          className="h-6 w-6"
-                          style={{
-                            color: activeColor,
-                          }}
-                        />
-                      </div>
+                  <Maximize2
+                    className="h-4 w-4 cursor-pointer transition-colors hover:text-slate-900 dark:hover:text-white"
+                    onClick={toggleFullscreen}
+                  />
+                )}
 
-                      <p className="font-semibold text-slate-600 dark:text-slate-300">
-                        {activeLabel} Live Preview
-                      </p>
-
-                      <p className="mt-1 text-sm text-slate-400 dark:text-slate-500">
-                        Start typing and your preview will update automatically.
-                      </p>
-                    </div>
-                  </div>
+                {isFullscreen && (
+                  <X
+                    className="h-5 w-5 cursor-pointer transition-colors hover:text-slate-900 dark:hover:text-white"
+                    onClick={toggleFullscreen}
+                  />
                 )}
               </div>
-            ) : (
-              // =============================================
-              // CONSOLE
-              // =============================================
+            </div>
 
-              <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 text-slate-800 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-950 dark:text-white">
-                {/* Console Header */}
+            {/* Monaco */}
 
-                <div className="flex items-center justify-between border-b border-slate-200 bg-slate-100/90 px-4 py-2 dark:border-slate-800 dark:bg-slate-900/50">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
-                    CONSOLE OUTPUT
-                  </span>
+            <div className={isFullscreen ? "flex-1" : ""}>
+              <MonacoEditor
+                height={isFullscreen ? "100%" : "500px"}
+                language={language}
+                value={code}
+                onChange={(value) => {
+                  setCode(value ?? "");
+                }}
+                onMount={handleEditorMount}
+                theme={isDarkMode ? "vs-dark" : "vs"}
+                options={{
+                  fontSize: editorFontSize,
 
-                  <div className="flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        outputRef.current?.scrollTo({
-                          top: 0,
+                  lineNumbers: showLineNumbers ? "on" : "off",
 
-                          behavior: "smooth",
-                        })
-                      }
-                      className="flex items-center gap-1 text-xs text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                  fontFamily:
+                    "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+
+                  minimap: {
+                    enabled: false,
+                  },
+
+                  scrollBeyondLastLine: false,
+
+                  wordWrap: "on",
+
+                  automaticLayout: true,
+
+                  padding: {
+                    top: 16,
+                  },
+
+                  tabSize: 2,
+
+                  insertSpaces: true,
+
+                  smoothScrolling: true,
+
+                  cursorSmoothCaretAnimation: "on",
+                }}
+              />
+            </div>
+          </div>
+
+          {/* ================================================= */}
+          {/* LIVE PREVIEW / CONSOLE */}
+          {/* ================================================= */}
+
+          {!isFullscreen && (
+            <>
+              {isPreviewMode ? (
+                // =============================================
+                // LIVE PREVIEW
+                // =============================================
+
+                <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#0a0f1a]">
+                  {/* Header */}
+
+                  <div className="flex h-11 items-center justify-between border-b border-slate-200 bg-slate-50 px-4 dark:border-white/10 dark:bg-[#111827]">
+                    <div className="flex items-center gap-2">
+                      <span className="relative flex h-2.5 w-2.5">
+                        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+
+                        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                      </span>
+
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+                        LIVE PREVIEW
+                      </span>
+                    </div>
+
+                    <span
+                      className="rounded-md px-2 py-1 text-xs font-semibold"
+                      style={{
+                        backgroundColor: activeColor,
+
+                        color: activeTextColor,
+                      }}
                     >
-                      <ChevronUp className="h-3.5 w-3.5" />
-                      Top
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() =>
-                        outputRef.current?.scrollTo({
-                          top: outputRef.current.scrollHeight,
-
-                          behavior: "smooth",
-                        })
-                      }
-                      className="flex items-center gap-1 text-xs text-slate-500 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-                    >
-                      <ChevronDown className="h-3.5 w-3.5" />
-                      Bottom
-                    </button>
+                      {activeLabel}
+                    </span>
                   </div>
-                </div>
 
-                {/* Console Body */}
+                  {/* Live iframe */}
 
-                <div
-                  ref={outputRef}
-                  style={{
-                    fontSize: outputFontSize,
-                  }}
-                  className="h-[500px] space-y-1 overflow-y-auto p-4 font-mono"
-                >
-                  {output.length === 0 ? (
-                    <p className="italic text-slate-400 dark:text-slate-500">
-                      Click &quot;Run&quot; to see output here.
-                    </p>
+                  {previewHtml ? (
+                    <iframe
+                      title={`${activeLabel} Live Preview`}
+                      srcDoc={previewHtml}
+                      sandbox="allow-scripts allow-modals"
+                      className="h-[500px] w-full border-0 bg-white"
+                    />
                   ) : (
-                    output.map((line, index) => (
-                      <p
-                        key={index}
-                        className={
-                          line === "Success! Output:"
-                            ? "font-semibold text-emerald-600 dark:text-emerald-400"
-                            : line === "Error:" ||
-                                line.startsWith("Execution failed") ||
-                                line.startsWith("Execution timed out") ||
-                                line.startsWith("Error:")
-                              ? "font-semibold text-red-600 dark:text-red-400"
-                              : line.startsWith("Process finished") ||
-                                  line.startsWith("Execution time:")
-                                ? "text-slate-400 dark:text-slate-500"
-                                : line.startsWith("Running")
-                                  ? "text-blue-600 dark:text-blue-400"
-                                  : "text-slate-900 dark:text-slate-100"
-                        }
-                      >
-                        {line || "\u00A0"}
-                      </p>
-                    ))
+                    <div className="flex h-[500px] items-center justify-center bg-white dark:bg-slate-950">
+                      <div className="px-6 text-center">
+                        <div
+                          className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl"
+                          style={{
+                            backgroundColor: `${activeColor}20`,
+                          }}
+                        >
+                          <Play
+                            className="h-6 w-6"
+                            style={{
+                              color: activeColor,
+                            }}
+                          />
+                        </div>
+
+                        <p className="font-semibold text-slate-600 dark:text-slate-300">
+                          {activeLabel} Live Preview
+                        </p>
+
+                        <p className="mt-1 text-sm text-slate-400 dark:text-slate-500">
+                          Start typing and your preview will update
+                          automatically.
+                        </p>
+                      </div>
+                    </div>
                   )}
                 </div>
-              </div>
-            )}
-          </>
-        )}
+              ) : (
+                // =============================================
+                // CONSOLE
+                // =============================================
+
+<div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50 shadow-sm transition-colors duration-300 dark:border-white/10 dark:bg-[#0a0f1a]">
+  {/* Console Header */}
+
+  <div className="flex h-11 items-center justify-between border-b border-slate-200 bg-slate-100 px-4 dark:border-white/10 dark:bg-[#111827]">
+    <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-slate-700 dark:text-slate-300">
+      <TerminalSquare className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />{" "}
+      Console
+    </span>
+
+    <div className="flex items-center gap-3">
+      <button
+        type="button"
+        onClick={() =>
+          outputRef.current?.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          })
+        }
+        className="flex items-center gap-1 text-xs text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+      >
+        <ChevronUp className="h-3.5 w-3.5" />
+        Top
+      </button>
+
+      <button
+        type="button"
+        onClick={() =>
+          outputRef.current?.scrollTo({
+            top: outputRef.current.scrollHeight,
+            behavior: "smooth",
+          })
+        }
+        className="flex items-center gap-1 text-xs text-slate-600 transition-colors hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+      >
+        <ChevronDown className="h-3.5 w-3.5" />
+        Bottom
+      </button>
+    </div>
+  </div>
+
+  {/* Console Body */}
+
+  <div
+    ref={outputRef}
+    style={{
+      fontSize: outputFontSize,
+    }}
+    className="h-[500px] space-y-1 overflow-y-auto bg-white p-4 font-mono transition-colors duration-300 dark:bg-[#090d16]"
+  >
+    {output.length === 0 ? (
+      <p className="italic text-slate-400 dark:text-slate-500">
+        Click &quot;Run&quot; to see output here.
+      </p>
+    ) : (
+      output.map((line, index) => (
+        <p
+          key={index}
+          className={
+            line === "Success! Output:"
+              ? "font-semibold text-emerald-600 dark:text-emerald-400"
+              : line === "Error:" ||
+                  line.startsWith("Execution failed") ||
+                  line.startsWith("Execution timed out") ||
+                  line.startsWith("Error:")
+                ? "font-semibold text-red-600 dark:text-red-400"
+                : line.startsWith("Process finished") ||
+                    line.startsWith("Execution time:")
+                  ? "text-slate-500 dark:text-slate-400"
+                  : line.startsWith("Running")
+                    ? "text-blue-600 dark:text-blue-400"
+                    : "text-slate-800 dark:text-slate-100"
+          }
+        >
+          {line || "\u00A0"}
+        </p>
+      ))
+    )}
+  </div>
+</div>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

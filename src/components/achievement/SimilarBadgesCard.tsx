@@ -1,10 +1,10 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Terminal, Gauge, Sparkles, Award } from "lucide-react";
+import { Terminal, Gauge, Sparkles, Award, type LucideIcon } from "lucide-react";
 import { SimilarBadge } from "@/types/achievement";
 
-const iconMap: Record<string, any> = {
+const iconMap: Record<string, LucideIcon> = {
   terminal: Terminal,
   gauge: Gauge,
 };

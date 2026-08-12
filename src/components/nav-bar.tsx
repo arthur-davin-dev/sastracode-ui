@@ -164,6 +164,7 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     setProfileOpen(false);
+    setIsOpen(false);
 
     await logoutUser("/");
   };
@@ -208,13 +209,13 @@ export default function Navbar() {
         {/* -------------------------------- */}
 
         <div className="flex shrink-0 items-center space-x-2 md:space-x-3 lg:space-x-5">
-          {/* Theme */}
+          {/* Theme — desktop/tablet only, lives in mobile menu below */}
 
           <button
             type="button"
             onClick={toggleTheme}
             aria-label="Toggle Theme"
-            className="shrink-0 rounded-full p-1.5 text-gray-700 transition-colors hover:bg-gray-100/50 hover:text-[#DC0000] dark:text-gray-300 dark:hover:bg-slate-800/50"
+            className="hidden shrink-0 rounded-full p-1.5 text-gray-700 transition-colors hover:bg-gray-100/50 hover:text-[#DC0000] sm:flex dark:text-gray-300 dark:hover:bg-slate-800/50"
           >
             {darkMode ? (
               <SunMedium className="cursor-pointer" />
@@ -223,12 +224,12 @@ export default function Navbar() {
             )}
           </button>
 
-          {/* Language */}
+          {/* Language — desktop/tablet only, lives in mobile menu below */}
 
           <button
             type="button"
             onClick={toggleLanguage}
-            className="flex shrink-0 cursor-pointer items-center space-x-1.5 rounded-full border border-[#002455] bg-white/30 px-2.5 py-1.5 text-[14px] font-medium text-[#002455] backdrop-blur-xs transition-colors hover:text-[#DC0000] sm:space-x-2 sm:px-3 sm:py-2 lg:text-[16px] dark:border-slate-700 dark:bg-slate-900/30 dark:text-gray-200 dark:hover:bg-slate-800/50"
+            className="hidden shrink-0 cursor-pointer items-center space-x-1.5 rounded-full border border-[#002455] bg-white/30 px-2.5 py-1.5 text-[14px] font-medium text-[#002455] backdrop-blur-xs transition-colors hover:text-[#DC0000] sm:flex sm:space-x-2 sm:px-3 sm:py-2 lg:text-[16px] dark:border-slate-700 dark:bg-slate-900/30 dark:text-gray-200 dark:hover:bg-slate-800/50"
           >
             <img
               src={currentT.flagSrc}
@@ -243,9 +244,7 @@ export default function Navbar() {
           {/* Authentication */}
           {/* -------------------------------- */}
 
-          {status === "authenticated" && session?.user && (
-            <NotificationBell />
-          )}
+          {status === "authenticated" && session?.user && <NotificationBell />}
 
           {status === "loading" ? (
             // Session loading
@@ -254,14 +253,15 @@ export default function Navbar() {
             </div>
           ) : status === "authenticated" && session?.user ? (
             // Logged in
-            <div className="relative hidden md:block">
+            <div className="relative hidden md:block" data-profile-menu>
               <button
                 type="button"
                 onClick={() => setProfileOpen((prev) => !prev)}
-                className="flex items-center gap-2 rounded-full border border-[#002455]/20 bg-white/40 p-1.5 pr-3 transition-colors hover:bg-white/70 dark:border-slate-700 dark:bg-slate-900/40 dark:hover:bg-slate-800"
+                aria-haspopup="menu"
+                aria-expanded={profileOpen}
+                className="flex items-center gap-1.5 rounded-full border border-[#002455]/20 bg-white/40 p-1.5 transition-colors hover:bg-white/70 dark:border-slate-700 dark:bg-slate-900/40 dark:hover:bg-slate-800"
               >
                 {/* Avatar */}
-
                 {userImage ? (
                   <img
                     src={userImage}
@@ -274,22 +274,8 @@ export default function Navbar() {
                   </div>
                 )}
 
-                {/* Name */}
-
-                <div className="hidden min-w-0 text-left lg:block">
-                  <p className="max-w-32 truncate text-sm font-semibold text-[#002455] dark:text-white">
-                    {userName}
-                  </p>
-
-                  {userEmail && (
-                    <p className="max-w-32 truncate text-xs text-gray-500 dark:text-gray-400">
-                      {userEmail}
-                    </p>
-                  )}
-                </div>
-
                 <ChevronDown
-                  className={`h-4 w-4 text-gray-500 transition-transform ${
+                  className={`h-4 w-4 shrink-0 text-gray-500 transition-transform ${
                     profileOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -302,7 +288,6 @@ export default function Navbar() {
               {profileOpen && (
                 <div className="absolute right-0 top-full z-50 mt-3 w-72 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
                   {/* User information */}
-
                   <div className="border-b border-gray-100 p-4 dark:border-slate-800">
                     <div className="flex items-center gap-3">
                       {userImage ? (
@@ -321,7 +306,6 @@ export default function Navbar() {
                         <p className="truncate font-semibold text-[#002455] dark:text-white">
                           {userName}
                         </p>
-
                         {userEmail && (
                           <p className="truncate text-sm text-gray-500 dark:text-gray-400">
                             {userEmail}
@@ -332,7 +316,6 @@ export default function Navbar() {
                   </div>
 
                   {/* Profile link */}
-
                   <div className="p-2">
                     <Link
                       href="/profile"
@@ -340,19 +323,16 @@ export default function Navbar() {
                       className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-800"
                     >
                       <User className="h-5 w-5" />
-
                       <span>Profile</span>
                     </Link>
 
                     {/* Logout */}
-
                     <button
                       type="button"
                       onClick={handleLogout}
                       className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10"
                     >
                       <LogOut className="h-5 w-5" />
-
                       <span>Logout</span>
                     </button>
                   </div>
@@ -361,7 +341,9 @@ export default function Navbar() {
             </div>
           ) : (
             // Not logged in
-            <Login />
+            <div className="hidden md:block">
+              <Login />
+            </div>
           )}
 
           {/* Mobile hamburger */}
@@ -382,8 +364,10 @@ export default function Navbar() {
       {/* -------------------------------- */}
 
       {isOpen && (
-        <div className="border-t border-gray-200/30 bg-white/70 px-6 py-4 backdrop-blur-xl md:hidden dark:border-slate-800/50 dark:bg-slate-950/70">
+        <div className="max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-gray-200/30 bg-white/70 px-6 py-4 backdrop-blur-xl md:hidden dark:border-slate-800/50 dark:bg-slate-950/70">
           <div className="flex flex-col space-y-3">
+            {/* Nav links */}
+
             {currentT.navItems.map((item) => (
               <Link
                 key={item.href}
@@ -394,6 +378,56 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
+
+            {/* -------------------------------- */}
+            {/* Dark Mode Toggle */}
+            {/* -------------------------------- */}
+
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label="Toggle Dark Mode"
+              className="mt-2 flex w-full items-center justify-between rounded-xl border border-[#002455]/20 bg-white/40 px-3 py-2.5 dark:border-slate-700 dark:bg-slate-900/40"
+            >
+              <span className="font-medium text-[#002455] dark:text-white">
+                Dark Mode
+              </span>
+
+              <span
+                className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
+                  darkMode ? "bg-yellow-400" : "bg-slate-300 dark:bg-slate-600"
+                }`}
+              >
+                <span
+                  className={`absolute top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white shadow-sm transition-transform ${
+                    darkMode ? "translate-x-5" : "translate-x-0.5"
+                  }`}
+                >
+                  {darkMode ? (
+                    <SunMedium className="h-3.5 w-3.5 text-yellow-500" />
+                  ) : (
+                    <Moon className="h-3.5 w-3.5 text-slate-500" />
+                  )}
+                </span>
+              </span>
+            </button>
+
+            {/* -------------------------------- */}
+            {/* Language */}
+            {/* -------------------------------- */}
+
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="flex items-center gap-2 self-start rounded-full border border-[#002455] bg-white/30 px-3 py-2 text-sm font-medium text-[#002455] dark:border-slate-700 dark:bg-slate-900/30 dark:text-gray-200"
+            >
+              <img
+                src={currentT.flagSrc}
+                alt={currentT.langName}
+                className="h-4 w-6 rounded-xs object-cover"
+              />
+              {currentT.langName}
+            </button>
 
             {/* -------------------------------- */}
             {/* Mobile authenticated profile */}
@@ -450,7 +484,7 @@ export default function Navbar() {
             {/* Mobile login */}
 
             {status === "unauthenticated" && (
-              <div className="border-t border-gray-200 pt-4 dark:border-slate-800">
+              <div className="mt-2 border-t border-gray-200 pt-4 dark:border-slate-800 [&_button]:!flex [&_button]:w-full">
                 <Login />
               </div>
             )}

@@ -1,14 +1,16 @@
 
-
-
+"use client";
 
 import Link from "next/link";
 import {
+  Bookmark,
   BookOpen,
   Clock,
   Lock,
   Users,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
 
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +18,11 @@ import { Separator } from "@/components/ui/separator";
 
 
 import type { Course } from "@/lib/course/courses";
+import {
+  useAddBookmarkMutation,
+  useGetMyBookmarksQuery,
+  useRemoveBookmarkMutation,
+} from "@/redux/service/bookmarkApi";
 
 
 interface CourseCardProps {
@@ -98,6 +105,36 @@ function resolveCourseImage(
 export function CourseCard({
   course,
 }: CourseCardProps) {
+  const { status } = useSession();
+  const { data: bookmarkData } = useGetMyBookmarksQuery("COURSE", {
+    skip: status !== "authenticated",
+  });
+  const [addBookmark, addState] = useAddBookmarkMutation();
+  const [removeBookmark, removeState] = useRemoveBookmarkMutation();
+  const bookmark = bookmarkData?.data?.content.find(
+    (item) => item.itemId === course.id,
+  );
+  const bookmarkLoading = addState.isLoading || removeState.isLoading;
+
+  async function toggleBookmark() {
+    if (status !== "authenticated") {
+      toast.error("Please sign in to bookmark this course.");
+      return;
+    }
+
+    try {
+      if (bookmark) {
+        await removeBookmark(bookmark.id).unwrap();
+        toast.success("Course removed from bookmarks.");
+      } else {
+        await addBookmark({ itemType: "COURSE", itemId: course.id }).unwrap();
+        toast.success("Course saved to bookmarks.");
+      }
+    } catch {
+      toast.error("Unable to update this bookmark. Please try again.");
+    }
+  }
+
   const isPrivate =
     course.accessType === "PRIVATE";
 
@@ -116,10 +153,19 @@ export function CourseCard({
 
 
   return (
-    <Link
-      href={href}
-      className="group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
-    >
+    <article className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900">
+      <button
+        type="button"
+        onClick={toggleBookmark}
+        disabled={bookmarkLoading}
+        aria-label={bookmark ? "Remove course bookmark" : "Bookmark course"}
+        aria-pressed={Boolean(bookmark)}
+        className="absolute right-3 top-3 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-white/60 bg-white/95 text-[#002455] shadow-md backdrop-blur transition hover:scale-105 disabled:cursor-wait disabled:opacity-60 dark:border-slate-700 dark:bg-slate-900/95 dark:text-blue-400"
+      >
+        <Bookmark className="h-5 w-5" fill={bookmark ? "currentColor" : "none"} />
+      </button>
+
+      <Link href={href} className="block">
       {/* =========================
           COURSE IMAGE
       ========================== */}
@@ -250,7 +296,8 @@ export function CourseCard({
           </span>
         </div>
       </div>
-    </Link>
+      </Link>
+    </article>
   );
 }
 
