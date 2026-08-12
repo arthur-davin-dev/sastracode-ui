@@ -281,4 +281,8 @@ Please check the repository for the applicable license and usage terms.
 
 Learn programming. Practice coding. Build projects. Become a developer.
 
+<<<<<<< HEAD
 > **SastraCode — Making Programming Easier for Khmer Learners. 🇰🇭**
+=======
+> **SastraCode — Making Programming Easier for Khmer Learners. 🇰🇭**
+>>>>>>> 980af55b5fef71bc153622653b69e726cdaae0a6
