@@ -164,6 +164,7 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     setProfileOpen(false);
+    setIsOpen(false);
 
     await logoutUser("/");
   };
@@ -208,13 +209,13 @@ export default function Navbar() {
         {/* -------------------------------- */}
 
         <div className="flex shrink-0 items-center space-x-2 md:space-x-3 lg:space-x-5">
-          {/* Theme */}
+          {/* Theme — desktop/tablet only, lives in mobile menu below */}
 
           <button
             type="button"
             onClick={toggleTheme}
             aria-label="Toggle Theme"
-            className="shrink-0 rounded-full p-1.5 text-gray-700 transition-colors hover:bg-gray-100/50 hover:text-[#DC0000] dark:text-gray-300 dark:hover:bg-slate-800/50"
+            className="hidden shrink-0 rounded-full p-1.5 text-gray-700 transition-colors hover:bg-gray-100/50 hover:text-[#DC0000] sm:flex dark:text-gray-300 dark:hover:bg-slate-800/50"
           >
             {darkMode ? (
               <SunMedium className="cursor-pointer" />
@@ -223,12 +224,12 @@ export default function Navbar() {
             )}
           </button>
 
-          {/* Language */}
+          {/* Language — desktop/tablet only, lives in mobile menu below */}
 
           <button
             type="button"
             onClick={toggleLanguage}
-            className="flex shrink-0 cursor-pointer items-center space-x-1.5 rounded-full border border-[#002455] bg-white/30 px-2.5 py-1.5 text-[14px] font-medium text-[#002455] backdrop-blur-xs transition-colors hover:text-[#DC0000] sm:space-x-2 sm:px-3 sm:py-2 lg:text-[16px] dark:border-slate-700 dark:bg-slate-900/30 dark:text-gray-200 dark:hover:bg-slate-800/50"
+            className="hidden shrink-0 cursor-pointer items-center space-x-1.5 rounded-full border border-[#002455] bg-white/30 px-2.5 py-1.5 text-[14px] font-medium text-[#002455] backdrop-blur-xs transition-colors hover:text-[#DC0000] sm:flex sm:space-x-2 sm:px-3 sm:py-2 lg:text-[16px] dark:border-slate-700 dark:bg-slate-900/30 dark:text-gray-200 dark:hover:bg-slate-800/50"
           >
             <img
               src={currentT.flagSrc}
@@ -363,8 +364,10 @@ export default function Navbar() {
       {/* -------------------------------- */}
 
       {isOpen && (
-        <div className="border-t border-gray-200/30 bg-white/70 px-6 py-4 backdrop-blur-xl md:hidden dark:border-slate-800/50 dark:bg-slate-950/70">
+        <div className="max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-gray-200/30 bg-white/70 px-6 py-4 backdrop-blur-xl md:hidden dark:border-slate-800/50 dark:bg-slate-950/70">
           <div className="flex flex-col space-y-3">
+            {/* Nav links */}
+
             {currentT.navItems.map((item) => (
               <Link
                 key={item.href}
@@ -375,6 +378,56 @@ export default function Navbar() {
                 {item.label}
               </Link>
             ))}
+
+            {/* -------------------------------- */}
+            {/* Dark Mode Toggle */}
+            {/* -------------------------------- */}
+
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label="Toggle Dark Mode"
+              className="mt-2 flex w-full items-center justify-between rounded-xl border border-[#002455]/20 bg-white/40 px-3 py-2.5 dark:border-slate-700 dark:bg-slate-900/40"
+            >
+              <span className="font-medium text-[#002455] dark:text-white">
+                Dark Mode
+              </span>
+
+              <span
+                className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
+                  darkMode ? "bg-yellow-400" : "bg-slate-300 dark:bg-slate-600"
+                }`}
+              >
+                <span
+                  className={`absolute top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white shadow-sm transition-transform ${
+                    darkMode ? "translate-x-5" : "translate-x-0.5"
+                  }`}
+                >
+                  {darkMode ? (
+                    <SunMedium className="h-3.5 w-3.5 text-yellow-500" />
+                  ) : (
+                    <Moon className="h-3.5 w-3.5 text-slate-500" />
+                  )}
+                </span>
+              </span>
+            </button>
+
+            {/* -------------------------------- */}
+            {/* Language */}
+            {/* -------------------------------- */}
+
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="flex items-center gap-2 self-start rounded-full border border-[#002455] bg-white/30 px-3 py-2 text-sm font-medium text-[#002455] dark:border-slate-700 dark:bg-slate-900/30 dark:text-gray-200"
+            >
+              <img
+                src={currentT.flagSrc}
+                alt={currentT.langName}
+                className="h-4 w-6 rounded-xs object-cover"
+              />
+              {currentT.langName}
+            </button>
 
             {/* -------------------------------- */}
             {/* Mobile authenticated profile */}
@@ -429,12 +482,6 @@ export default function Navbar() {
             )}
 
             {/* Mobile login */}
-
-            {/* {status === "unauthenticated" && (
-              <div className="mt-2 border-t border-gray-200 pt-4 dark:border-slate-800">
-                <Login />
-              </div>
-            )} */}
 
             {status === "unauthenticated" && (
               <div className="mt-2 border-t border-gray-200 pt-4 dark:border-slate-800 [&_button]:!flex [&_button]:w-full">

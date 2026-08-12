@@ -261,18 +261,6 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
                     </AvatarFallback>
                   </Avatar>
 
-                  {/* <div className="hidden min-w-0 text-left lg:block">
-                    <p className="max-w-[140px] truncate text-base font-extrabold text-primary-color">
-                      {userName}
-                    </p>
-
-                    {userEmail && (
-                      <p className="max-w-[160px] truncate text-xs font-medium text-slate-500 dark:text-slate-400">
-                        {userEmail}
-                      </p>
-                    )}
-                  </div> */}
-
                   <ChevronDown
                     className={`h-4 w-4 text-slate-500 transition-transform ${
                       profileOpen ? "rotate-180" : ""
@@ -348,18 +336,11 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
           {/* ===================================== */}
 
           <div className="flex shrink-0 items-center gap-2 md:hidden">
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label="Toggle Theme"
-              className="rounded-2xl border border-slate-200 bg-slate-100 p-2.5 text-primary-color transition-all hover:bg-yellow-400/20 dark:border-slate-700 dark:bg-slate-800"
-            >
-              {darkMode ? (
-                <SunMedium className="h-5 w-5 text-yellow-400" />
-              ) : (
-                <Moon className="h-5 w-5 text-primary-color" />
-              )}
-            </button>
+            {/* Notifications — visible outside the hamburger menu */}
+
+            {status === "authenticated" && session?.user && (
+              <NotificationBell />
+            )}
 
             <button
               type="button"
@@ -382,6 +363,37 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
 
         {isOpen && (
           <div className="animate-in slide-in-from-top space-y-5 border-t-2 border-slate-100 bg-white px-6 py-5 duration-300 md:hidden dark:border-slate-800 dark:bg-slate-900">
+            {/* ================================= */}
+            {/* Dark Mode Toggle */}
+            {/* ================================= */}
+
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label="Toggle Dark Mode"
+              className="flex w-full items-center justify-between rounded-xl border border-slate-200 bg-slate-100 px-3 py-2.5 dark:border-slate-700 dark:bg-slate-800"
+            >
+              <span className="font-medium text-primary-color">Dark Mode</span>
+
+              <span
+                className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
+                  darkMode ? "bg-yellow-400" : "bg-slate-300 dark:bg-slate-600"
+                }`}
+              >
+                <span
+                  className={`absolute top-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-white shadow-sm transition-transform ${
+                    darkMode ? "translate-x-5" : "translate-x-0.5"
+                  }`}
+                >
+                  {darkMode ? (
+                    <SunMedium className="h-3.5 w-3.5 text-yellow-500" />
+                  ) : (
+                    <Moon className="h-3.5 w-3.5 text-slate-500" />
+                  )}
+                </span>
+              </span>
+            </button>
+
             {/* Search */}
 
             <div className="relative">
@@ -402,32 +414,28 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
 
             {status === "authenticated" && session?.user && (
               <div className="space-y-4">
-                <div className="flex items-center justify-between pt-2">
-                  <div className="flex min-w-0 items-center gap-3">
-                    <Avatar className="h-12 w-12 shrink-0">
-                      {userAvatarUrl && (
-                        <AvatarImage src={userAvatarUrl} alt={userName} />
-                      )}
+                <div className="flex items-center gap-3 pt-2">
+                  <Avatar className="h-12 w-12 shrink-0">
+                    {userAvatarUrl && (
+                      <AvatarImage src={userAvatarUrl} alt={userName} />
+                    )}
 
-                      <AvatarFallback className="bg-init-color text-lg font-extrabold text-secondary-color">
-                        {userInitial}
-                      </AvatarFallback>
-                    </Avatar>
+                    <AvatarFallback className="bg-init-color text-lg font-extrabold text-secondary-color">
+                      {userInitial}
+                    </AvatarFallback>
+                  </Avatar>
 
-                    <div className="min-w-0">
-                      <p className="truncate text-lg font-extrabold text-primary-color">
-                        {userName}
+                  <div className="min-w-0">
+                    <p className="truncate text-lg font-extrabold text-primary-color">
+                      {userName}
+                    </p>
+
+                    {userEmail && (
+                      <p className="truncate text-sm text-slate-500 dark:text-slate-400">
+                        {userEmail}
                       </p>
-
-                      {userEmail && (
-                        <p className="truncate text-sm text-slate-500 dark:text-slate-400">
-                          {userEmail}
-                        </p>
-                      )}
-                    </div>
+                    )}
                   </div>
-
-                  <NotificationBell />
                 </div>
 
                 {/* Profile */}
