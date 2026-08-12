@@ -8,7 +8,7 @@ import { LeaderboardTable } from "@/components/leaderboard/LeaderboardTable";
 import { WeeklyGoalCard } from "@/components/leaderboard/WeeklyGoalCard";
 import { YourStatsCard } from "@/components/leaderboard/YourStatsCard";
 import { TopPerformersCard } from "@/components/leaderboard/TopPerformersCard";
-import type { LeaderboardEntry, LeaderboardPeriod, WeeklyGoalDay, UserStat } from "@/types/leaderboard";
+import type { LeaderboardEntry, LeaderboardPeriod, LeaderboardSnapshotResponse, WeeklyGoalDay, UserStat } from "@/types/leaderboard";
 import {
   useGetLeaderboardQuery,
   useGetMyLeaderboardRankQuery,
@@ -27,8 +27,27 @@ const weeklyDays: WeeklyGoalDay[] = [
 
 type SupportedPeriod = Exclude<LeaderboardPeriod, "COURSE">;
 
-function learnerName(rank: number) {
-  return `Learner #${rank}`;
+function learnerName(entry: LeaderboardSnapshotResponse) {
+  const profile = entry.user;
+  return (
+    entry.fullName ||
+    entry.name ||
+    [entry.firstName, entry.lastName].filter(Boolean).join(" ") ||
+    entry.username ||
+    profile?.fullName ||
+    profile?.name ||
+    [profile?.firstName, profile?.lastName].filter(Boolean).join(" ") ||
+    profile?.username ||
+    "អ្នកសិក្សា"
+  );
+}
+
+function learnerAvatar(entry: LeaderboardSnapshotResponse) {
+  const avatarUrl = entry.avatarUrl || entry.user?.avatarUrl;
+  if (avatarUrl) return avatarUrl;
+
+  const fileId = entry.avatarFileId || entry.user?.avatarFileId;
+  return fileId ? `/api/v1/files/${encodeURIComponent(fileId)}` : "";
 }
 
 export default function Leaderboard() {
@@ -44,11 +63,12 @@ export default function Leaderboard() {
     () =>
       (data?.content ?? []).map((entry) => ({
         rank: entry.rank,
-        name: learnerName(entry.rank),
-        avatarUrl: "",
+        name: learnerName(entry),
+        avatarUrl: learnerAvatar(entry),
         xp: entry.score,
+        isCurrentUser: Boolean(myRank?.userId && entry.userId === myRank.userId),
       })),
-    [data?.content],
+    [data?.content, myRank],
   );
 
   const currentUser: LeaderboardEntry | undefined = myRank
@@ -69,10 +89,11 @@ export default function Leaderboard() {
     { icon: "chart", value: myRank?.rank ? `#${myRank.rank}` : "—", label: "Your rank", color: "" },
   ];
 
-  const topPerformers = entries.slice(0, 3).map(({ rank, name, xp }) => ({
+  const topPerformers = entries.slice(0, 3).map(({ rank, name, xp, avatarUrl }) => ({
     rank,
     name,
     xp,
+    avatarUrl,
   }));
 
   const filteredEntries = useMemo(() => {

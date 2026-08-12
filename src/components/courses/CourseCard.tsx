@@ -234,12 +234,12 @@ export function CourseCard({
         </Badge>
 
 
-        <h3 className="mb-2 line-clamp-2 text-base font-semibold leading-snug text-slate-900 transition-colors group-hover:text-indigo-800 dark:text-slate-100 dark:group-hover:text-indigo-400">
+        <h3 className="mb-2 line-clamp-1 text-[22px] font-bold leading-snug text-slate-800 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
           {course.title}
         </h3>
 
 
-        <p className="line-clamp-2 min-h-10 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+        <p className="line-clamp-2 min-h-[3.65rem] text-lg leading-relaxed text-slate-500 dark:text-slate-400">
           {course.description ||
             "មិនទាន់មានសេចក្ដីពិពណ៌នា"}
         </p>
