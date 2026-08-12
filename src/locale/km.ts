@@ -168,28 +168,27 @@ export const km = {
     quickLinks: {
       title: "តំណភ្ជាប់រហ័ស",
       about: "អំពីសាស្ត្រាកូដ",
-      team: "ក្រុមការងារ",
-      partners: "ដៃគូសហការ",
+      course: "វគ្គសិក្សា",
+      contact: "ទាក់ទងពួកយើង",
     },
 
     study: {
       title: "ការសិក្សា",
-      certificate: "វិញ្ញាបនបត្រ",
-      fullstack: "Full-Stack Track",
-      dataScience: "Data Science",
-      systemDesign: "System Design",
+      lesson: "មេរៀន",
+      playground: "កន្លែងសាកល្បងកូដ",
+      feature: "មុខងារ",
     },
 
     contact: {
       title: "ទំនាក់ទំនង",
-      address: "ភូមិ ១៣, ផ្លូវលេខ ៥០, Street 273, Phnom Penh 12151",
+      address: "ភូមិ 13, ផ្ទះលេខ 40, ផ្លូវ 273, ភ្នំពេញ 12151",
     },
 
-    email: "contact@sastracode.tech",
+    email: "sastracode.edu@gmail.com",
 
-    sponsor: "រៀបចំ និងឧបត្ថម្ភដោយ",
+    sponsor: "ឧបត្ថម្ភ និងរៀបចំដោយ",
 
-    copyright: "រក្សាសិទ្ធិគ្រប់យ៉ាង © ២០២៦ SastraCode",
+    copyright: "រក្សាសិទ្ធិគ្រប់យ៉ាង © 2026 SastraCode",
 
     privacy: "គោលការណ៍ឯកជនភាព",
     terms: "លក្ខខណ្ឌសេវាកម្ម",

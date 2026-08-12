@@ -9,14 +9,14 @@ export default function HeroCharacter() {
 
   return (
     /* Full-width outer section for page-wide background color */
-    <section className="relative w-full bg-white dark:bg-gray-900 transition-colors duration-300 pt-40 py-20">
+    <section className="relative flex min-h-screen w-full items-center bg-white dark:bg-gray-900 transition-colors duration-300 py-20 pt-28">
       
       {/* Centered inner container for grid content and bounds */}
-      <div className="relative mx-auto max-w-7xl px-6">
+      <div className="relative mx-auto w-full max-w-7xl px-6">
         
         {/* Corner decorations */}
-        <div className="pointer-events-none absolute left-0 top-0 h-[87px] w-[87px] rounded-tl-2xl border-l-[14px] border-t-[14px] border-[#ff383c] dark:border-red-500"></div>
-        <div className="pointer-events-none absolute bottom-0 right-0 h-[87px] w-[87px] rotate-180 rounded-tl-2xl border-l-[14px] border-t-[14px] border-[#ff383c] dark:border-red-500"></div>
+        <div className="pointer-events-none absolute left-0 top-0 h-21.75 w-21.75 rounded-tl-2xl border-l-14 border-t-14 border-[#ff383c] dark:border-red-500"></div>
+        <div className="pointer-events-none absolute bottom-0 right-0 h-21.75 w-21.75 rotate-180 rounded-tl-2xl border-l-14 border-t-14 border-[#ff383c] dark:border-red-500"></div>
 
         <div className="grid items-center gap-12 lg:grid-cols-2">
           {/* Left Column: Text & Content */}
@@ -46,19 +46,19 @@ export default function HeroCharacter() {
               {currentT.showCase.heroCharacter.description}
             </p>
 
-          <Link
-            href="/playground/editor"
-            className="inline-flex items-center gap-2 rounded-xl border border-[#bfc8d5] dark:border-gray-700 bg-white dark:bg-gray-800 px-5 py-3 text-sm font-medium text-black dark:text-white transition-all duration-300 hover:bg-slate-50 dark:hover:bg-gray-700"
-          >
-            <img src="/home/svg/coding.svg" alt="" className="size-6 dark:invert" />
-            <span className="font-khmer">
-              {currentT.showCase.heroCharacter.button}
-            </span>
-          </Link>
-        </div>
+            <Link
+              href="/playground/editor"
+              className="inline-flex items-center gap-2 rounded-xl border border-[#bfc8d5] dark:border-gray-700 bg-white dark:bg-gray-800 px-5 py-3 text-sm font-medium text-black dark:text-white transition-all duration-300 hover:bg-slate-50 dark:hover:bg-gray-700"
+            >
+              <img src="/home/svg/coding.svg" alt="" className="size-6 dark:invert" />
+              <span className="font-khmer">
+                {currentT.showCase.heroCharacter.button}
+              </span>
+            </Link>
+          </div>
 
           {/* Right Column: Photo Collage */}
-          <div className="relative mx-auto h-[260px] w-full max-w-xs sm:h-[340px] sm:max-w-md lg:h-[420px] lg:max-w-lg">
+          <div className="relative mx-auto h-65 w-full max-w-xs sm:h-85 sm:max-w-md lg:h-105 lg:max-w-lg">
             <img
               src="/home/support-team/chatSovanney.jpg"
               alt="Team member"
