@@ -12,9 +12,9 @@ export default function Page() {
       {/* <Hero /> */}
       <Banner />
       <RightWavyStack />
-      <Resource />
+      {/* <Resource /> */}
       {/* <InteractiveGrid /> */}
-      <CoreFeatures />
+      {/* <CoreFeatures /> */}
       <LandingCourses />
       {/* <HomePopularDoc />
       <HomePopularCourse /> */}
