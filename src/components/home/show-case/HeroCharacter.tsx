@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useTranslation } from "@/hooks/useTranslations";
 import Link from "next/link";
 
@@ -13,8 +12,8 @@ export default function HeroCharacter() {
       {/* Centered inner container for grid content and bounds */}
       <div className="relative mx-auto max-w-7xl pt-8 px-4">
         {/* Corner decorations */}
-        <div className="pointer-events-none absolute left-0 top-0 h-[87px] w-[87px] rounded-tl-2xl border-l-[14px] border-t-[14px] border-[#ff383c] dark:border-red-500"></div>
-        <div className="pointer-events-none absolute bottom-0 right-0 h-[87px] w-[87px] rotate-180 rounded-tl-2xl border-l-[14px] border-t-[14px] border-[#ff383c] dark:border-red-500"></div>
+        <div className="pointer-events-none absolute left-0 top-0 h-21.75 w-21.75 rounded-tl-2xl border-l-14 border-t-14 border-[#ff383c] dark:border-red-500"></div>
+        <div className="pointer-events-none absolute bottom-0 right-0 h-21.75 w-21.75 rotate-180 rounded-tl-2xl border-l-14 border-t-14 border-[#ff383c] dark:border-red-500"></div>
 
         <div className="grid items-center gap-12 lg:grid-cols-2">
           {/* Left Column: Text & Content */}
@@ -55,7 +54,6 @@ export default function HeroCharacter() {
                 {currentT.showCase.heroCharacter.button}
               </span>
             </Link>
-
             <div className="mt-6 grid max-w-2xl grid-cols-3 gap-2 rounded-[18px] border border-slate-200 bg-white/80 px-4 py-4 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-900/80 sm:gap-4 sm:px-6">
               <div className="text-center">
                 <div className="text-3xl font-black text-primary-color sm:text-4xl">

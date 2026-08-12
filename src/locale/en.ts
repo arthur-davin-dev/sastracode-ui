@@ -173,26 +173,25 @@ export const en = {
     quickLinks: {
       title: "Quick Links",
       about: "About SastraCode",
-      team: "Our Team",
-      partners: "Partners",
+      course: "Courses",
+      contact: "Contact Us",
     },
 
     study: {
       title: "Study",
-      certificate: "Certificates",
-      fullstack: "Full-Stack Track",
-      dataScience: "Data Science",
-      systemDesign: "System Design",
+      lesson: "Lessons",
+      playground: "Playground",
+      feature: "Features",
     },
 
     contact: {
       title: "Contact",
-      address: "Village 13, Street 50, Street 273, Phnom Penh 12151",
+      address: "Village 13, Street 40, Street 273, Phnom Penh 12151",
     },
 
-    email: "contact@sastracode.tech",
+    email: "sastracode.edu@gmail.com",
 
-    sponsor: "Organized & Sponsored By",
+    sponsor: "Sponsored And Organized By",
 
     copyright: "© 2026 SastraCode. All rights reserved.",
 
