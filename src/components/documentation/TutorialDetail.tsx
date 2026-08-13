@@ -641,6 +641,11 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
   const previousLesson = activeIndex > 0 ? lessons[activeIndex - 1] : null;
   const nextLesson =
     activeIndex < lessons.length - 1 ? lessons[activeIndex + 1] : null;
+  const lessonBlocks = [...(activeLesson?.blocks ?? [])].sort(
+    (first, second) =>
+      Number(first.type.trim().toUpperCase() === "QUIZ") -
+      Number(second.type.trim().toUpperCase() === "QUIZ"),
+  );
 
   useEffect(() => {
     if (!sidebarOpen) return;
@@ -725,15 +730,15 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
                 </h1>
               </header>
 
-              {activeLesson.blocks.length > 0 ? (
+              {lessonBlocks.length > 0 ? (
                 <QuizResultsProvider
-                  total={activeLesson.blocks.filter((block) => block.type.trim().toUpperCase() === "QUIZ").length}
+                  total={lessonBlocks.filter((block) => block.type.trim().toUpperCase() === "QUIZ").length}
                   tutorialId={tutorial.id}
                   scope={activeLesson.type === "SECTION" ? "SECTION" : "SUBSECTION"}
                   scopeId={activeLesson.id}
                 >
                 <div className="space-y-7 sm:space-y-8">
-                  {activeLesson.blocks.map((block) => (
+                  {lessonBlocks.map((block) => (
                     <div
                       key={block.id}
                       id={getBlockAnchor(block.id)}

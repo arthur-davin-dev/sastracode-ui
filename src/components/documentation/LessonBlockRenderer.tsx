@@ -46,6 +46,29 @@ function displayAnswer(value: unknown): string {
   return String(value);
 }
 
+function displayQuizAnswer(value: unknown, questionData?: Record<string, unknown>): string {
+  const options = questionData ? quizOptionsValue(questionData) : [];
+  const answerIndex =
+    typeof value === "number"
+      ? value
+      : typeof value === "string" && /^\d+$/.test(value.trim())
+        ? Number(value)
+        : undefined;
+
+  if (answerIndex !== undefined && options[answerIndex]) {
+    return options[answerIndex].text;
+  }
+
+  if (typeof value === "string") {
+    const matchingOption = options.find(
+      (option) => option.id === value || option.text === value,
+    );
+    if (matchingOption) return matchingOption.text;
+  }
+
+  return displayAnswer(value);
+}
+
 interface QuizContextValue {
   total: number;
   results: Record<string, QuizResult>;
@@ -190,8 +213,8 @@ export function QuizResultsProvider({
               {summary.answers.map((answer, index) => (
                 <div key={answer.blockId} className={`rounded-xl border p-4 ${answer.correct ? "border-emerald-200 bg-emerald-50/70 dark:border-emerald-900 dark:bg-emerald-950/20" : "border-red-200 bg-red-50/70 dark:border-red-900 dark:bg-red-950/20"}`}>
                   <p className="font-khmer text-lg font-bold">សំណួរ {index + 1} — {answer.correct ? "ត្រឹមត្រូវ" : "មិនត្រឹមត្រូវ"}</p>
-                  <p className="mt-1 font-khmer text-base">ចម្លើយរបស់អ្នក៖ {displayAnswer(answer.submittedAnswer)}</p>
-                  {!answer.correct && <p className="mt-1 font-khmer text-base">ចម្លើយត្រឹមត្រូវ៖ {displayAnswer(answer.correctAnswer)}</p>}
+                  <p className="mt-1 font-khmer text-base">ចម្លើយរបស់អ្នក៖ {displayQuizAnswer(answer.submittedAnswer, answer.questionData)}</p>
+                  {!answer.correct && <p className="mt-1 font-khmer text-base">ចម្លើយត្រឹមត្រូវ៖ {displayQuizAnswer(answer.correctAnswer, answer.questionData)}</p>}
                   {answer.explanation && <p className="mt-1 font-khmer text-base text-slate-600 dark:text-slate-300">{answer.explanation}</p>}
                 </div>
               ))}
@@ -366,6 +389,23 @@ const CODE_TOKEN_CLASS: Record<CodeTokenTone, string> = {
 
 const CODE_TOKEN_PATTERN = /(\/\*[\s\S]*?\*\/|\/\/[^\n]*|<!--[\s\S]*?-->|(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|<\/?[A-Za-z][^>]*>|\b(?:abstract|as|async|await|break|case|catch|class|const|continue|def|default|delete|do|else|enum|export|extends|false|finally|for|from|function|if|import|in|interface|let|new|null|private|protected|public|return|static|switch|this|throw|true|try|type|undefined|var|void|while|with|yield)\b|\b\d+(?:\.\d+)?\b)/g;
 
+const PLAYGROUND_LANGUAGES = new Set([
+  "html",
+  "html5",
+  "css",
+  "javascript",
+  "js",
+  "node",
+  "nodejs",
+  "node.js",
+  "java",
+  "python",
+  "py",
+  "tailwind",
+  "tailwind css",
+  "tailwindcss",
+]);
+
 function codeTokenTone(token: string): CodeTokenTone {
   if (token.startsWith("//") || token.startsWith("/*") || token.startsWith("<!--")) return "comment";
   if (token.startsWith('"') || token.startsWith("'") || token.startsWith("`")) return "string";
@@ -400,6 +440,7 @@ function CodeBlock({ data }: { data: BlockData }) {
   const code = stringValue(data, "code", "text", "content");
   const language = stringValue(data, "language", "lang") || "code";
   const fileName = stringValue(data, "fileName", "filename", "title");
+  const canTryInPlayground = PLAYGROUND_LANGUAGES.has(language.trim().toLowerCase());
 
   async function copyCode() {
     if (!code) return;
@@ -472,7 +513,7 @@ function CodeBlock({ data }: { data: BlockData }) {
         </pre>
       </div>
 
-      {code && (
+      {code && canTryInPlayground && (
         <div className="border-t border-slate-200 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-white/[0.025] sm:px-5">
           <button
             type="button"
