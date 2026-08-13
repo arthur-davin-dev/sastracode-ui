@@ -5,7 +5,7 @@ import { outerLogos, innerLogos } from "@/lib/data/documentation";
 
 export default function HeroVisual() {
   return (
-    <div className="relative mx-auto h-[350px] w-[350px] sm:h-96 sm:w-96 md:h-[400px] md:w-[400px] animate-bob pointer-events-none select-none">
+    <div className="relative mx-auto h-[450px] w-[450px] sm:h-100 sm:w-100 md:h-[450px] md:w-[450px] animate-bob pointer-events-none select-none">
       
       {/* Character / Main Hero Illustration */}
       <div className="absolute inset-0 overflow-hidden z-0">

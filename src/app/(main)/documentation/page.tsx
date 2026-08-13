@@ -1,21 +1,19 @@
 import Hero from "@/components/documentation/Hero";
 import DocumentationTutorials from "@/components/documentation/DocumentationTutorials";
+import ScrollReveal from "@/components/home/ScrollReveal";
 
 export default function DocumentationHomePage() {
   return (
     <main className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
-      <Hero />
+      <ScrollReveal>
+        <Hero />
+      </ScrollReveal>
 
-      <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 pb-16 sm:px-6 lg:px-8">
-        
-        {/* Continue Learning Area */}
-        {/* <section className="flex flex-col gap-4">
-          <h2 className="text-[24px] font-semibold text-primary-color">បន្តការសិក្សា</h2>
-          <CourseProgressCard progress={currentProgress} />
-        </section> */}
-
-        <DocumentationTutorials />
-      </div>
+      <ScrollReveal delay={0.08}>
+        <div className="mx-auto flex max-w-7xl flex-col gap-10 px-4 pb-16 sm:px-6 lg:px-8">
+          <DocumentationTutorials />
+        </div>
+      </ScrollReveal>
     </main>
   );
 }

@@ -28,7 +28,7 @@ export default function CourseDetailPage({ courseId }: CourseDetailPageProps) {
       (courseQuery.data.accessType === "PRIVATE" &&
         courseQuery.data.hasFullAccess !== true),
   });
-  const relatedQuery = useGetPublicCoursesQuery({ sort: "RECOMMEND" });
+  const relatedQuery = useGetPublicCoursesQuery({ sort: "NEWEST" });
 
   if (courseQuery.isLoading) {
     return (
@@ -66,8 +66,23 @@ export default function CourseDetailPage({ courseId }: CourseDetailPageProps) {
   }
 
   const course = mapApiCourseToCourse(rawCourse);
-  const relatedCourses = (relatedQuery.data ?? [])
-    .filter((item) => item.id !== courseId && item.accessType !== "PRIVATE")
+  const categoryIds = new Set(rawCourse.categories?.map((category) => category.id) ?? []);
+  const instructorId = rawCourse.instructorId?.id;
+  const relatedCourses = [...(relatedQuery.data ?? [])]
+    .filter((item) => {
+      if (item.id === courseId || item.accessType === "PRIVATE") return false;
+
+      const sharesCategory = item.categories?.some((category) => categoryIds.has(category.id));
+      const sharesInstructor = Boolean(
+        instructorId && item.instructorId?.id === instructorId,
+      );
+      return sharesCategory || sharesInstructor;
+    })
+    .sort(
+      (first, second) =>
+        new Date(second.updatedAt ?? second.publishedAt ?? second.createdAt ?? 0).getTime() -
+        new Date(first.updatedAt ?? first.publishedAt ?? first.createdAt ?? 0).getTime(),
+    )
     .slice(0, 6)
     .map(mapApiCourseToCourse);
 
