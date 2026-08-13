@@ -1,85 +1,239 @@
-import React from 'react';
+"use client";
+
+import React from "react";
+import { motion, type Variants } from "framer-motion";
 
 const steps = [
   {
-    number: '01',
-    title: 'គំនិតផ្ដើមដំបូង',
-    description: 'ជួយឱ្យការរៀន Programming កាន់តែងាយស្រួល មានអន្តរកម្ម និងអាចអនុវត្តបាន។',
+    number: "01",
+    title: "គំនិតផ្ដើមដំបូង",
+    description:
+      "ជួយឱ្យការរៀន Programming កាន់តែងាយស្រួល មានអន្តរកម្ម និងអាចអនុវត្តបាន។",
   },
   {
-    number: '02',
-    title: 'ការរៀបចំផែនការ',
-    description: 'បង្កើត Platform ដែលរួមបញ្ចូល Documentation, Coding Practice, Quiz និង Learning Roadmap។',
+    number: "02",
+    title: "ការរៀបចំផែនការ",
+    description:
+      "បង្កើត Platform ដែលរួមបញ្ចូល Documentation, Coding Practice, Quiz និង Learning Roadmap។",
   },
   {
-    number: '03',
-    title: 'ការអភិវឌ្ឍ Platform',
-    description: 'រៀបចំ Platform ដើម្បីផ្តល់បទពិសោធន៍សិក្សាដែល Interactive និងអនុវត្តជាក់ស្ដែង។',
+    number: "03",
+    title: "ការអភិវឌ្ឍ Platform",
+    description:
+      "រៀបចំ Platform ដើម្បីផ្តល់បទពិសោធន៍សិក្សាដែល Interactive និងអនុវត្តជាក់ស្ដែង។",
   },
   {
-    number: '04',
-    title: 'ការសាកល្បង និងកែលម្អ',
-    description: 'សាកល្បង ប្រមូលមតិ និងកែលម្អ Interface, Performance និងបទពិសោធន៍សិក្សា។',
+    number: "04",
+    title: "ការសាកល្បង និងកែលម្អ",
+    description:
+      "សាកល្បង ប្រមូលមតិ និងកែលម្អ Interface, Performance និងបទពិសោធន៍សិក្សា។",
   },
   {
-    number: '05',
-    title: 'ចក្ខុវិស័យនាពេលអនាគត',
-    description: 'ពង្រីកមាតិកា Programming បន្ថែមភាសាច្រើន និងអភិវឌ្ឍ Platform ឱ្យកាន់តែធំ។',
+    number: "05",
+    title: "ចក្ខុវិស័យនាពេលអនាគត",
+    description:
+      "ពង្រីកមាតិកា Programming បន្ថែមភាសាច្រើន និងអភិវឌ្ឍ Platform ឱ្យកាន់តែធំ។",
   },
 ];
 
+// Container animation
+const containerVariants: Variants = {
+  hidden: {
+    opacity: 0,
+  },
+
+  visible: {
+    opacity: 1,
+
+    transition: {
+      staggerChildren: 0.18,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+// Individual item animation
+const itemVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 24,
+    scale: 0.95,
+  },
+
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+
+    transition: {
+      type: "spring",
+      stiffness: 110,
+      damping: 14,
+    },
+  },
+};
+
+// Desktop horizontal line
+const lineVariants: Variants = {
+  hidden: {
+    scaleX: 0,
+    opacity: 0,
+  },
+
+  visible: {
+    scaleX: 1,
+    opacity: 0.8,
+
+    transition: {
+      duration: 0.8,
+      ease: "easeOut",
+    },
+  },
+};
+
+// Mobile vertical line
+const verticalLineVariants: Variants = {
+  hidden: {
+    scaleY: 0,
+    opacity: 0,
+  },
+
+  visible: {
+    scaleY: 1,
+    opacity: 0.8,
+
+    transition: {
+      duration: 0.8,
+      ease: "easeOut",
+    },
+  },
+};
+
 export default function Timeline() {
   return (
-    <section className="w-full bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 py-12 sm:py-10 px-4 sm:px-6 lg:px-8 font-sans transition-colors duration-300">
-      <div className="max-w-7xl mx-auto">
-        
-        {/* Top Badge & Heading */}
-        <div className="text-center mb-10 sm:mb-16">
-          <span className="inline-block bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-3 border border-transparent dark:border-blue-800/40">
+    <section className="w-full overflow-hidden bg-white px-4 py-12 font-sans text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100 sm:px-6 sm:py-16 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        {/* Heading */}
+        <motion.div
+          className="mb-12 text-center sm:mb-16"
+          initial={{
+            opacity: 0,
+            y: -20,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+            amount: 0.5,
+          }}
+          transition={{
+            duration: 0.5,
+          }}
+        >
+          <span className="mb-3 inline-block rounded-full border border-blue-200 bg-blue-100 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-600 shadow-xs dark:border-blue-800/40 dark:bg-blue-950/60 dark:text-blue-400">
             How We Got Here
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight flex items-center justify-center gap-2 sm:gap-3 flex-wrap font-khmer">
+
+          <h2 className="font-khmer flex flex-wrap items-center justify-center gap-2 text-2xl font-extrabold tracking-tight sm:gap-3 sm:text-3xl lg:text-4xl">
             <span>ដំណើរនៃការបង្កើត</span>
-            <span className="text-red-600 dark:text-red-500 font-extrabold">SastraCode</span>
+
+            <motion.span
+              className="inline-block font-extrabold text-red-600 dark:text-red-500"
+              whileHover={{
+                scale: 1.05,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 20,
+              }}
+            >
+              SastraCode
+            </motion.span>
           </h2>
-        </div>
+        </motion.div>
 
-        {/* Timeline Container */}
+        {/* Timeline */}
         <div className="relative">
-          
-          {/* Horizontal Connecting Line (Desktop / lg screens only) */}
-          <div className="hidden lg:block absolute top-5 left-[8%] right-[8%] h-0.5 bg-linear-to-r from-teal-400 via-blue-500 to-indigo-500 dark:from-teal-500 dark:via-blue-400 dark:to-indigo-400 z-0 opacity-80" />
+          {/* Desktop Horizontal Line */}
+          <motion.div
+            className="absolute left-[8%] right-[8%] top-5 z-0 hidden h-0.5 origin-left bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-500 dark:from-teal-500 dark:via-blue-400 dark:to-indigo-400 lg:block"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{
+              once: true,
+              amount: 0.5,
+            }}
+            variants={lineVariants}
+          />
 
-          {/* Vertical Connecting Line (Mobile & Tablet / below lg) */}
-          <div className="lg:hidden absolute top-5 bottom-5 left-5 sm:left-6 w-0.5 bg-linear-to-b from-teal-400 via-blue-500 to-indigo-500 dark:from-teal-500 dark:via-blue-400 dark:to-indigo-400 z-0 opacity-80" />
+          {/* Mobile Vertical Line */}
+          <motion.div
+            className="absolute bottom-5 left-5 top-5 z-0 w-0.5 origin-top bg-gradient-to-b from-teal-400 via-blue-500 to-indigo-500 dark:from-teal-500 dark:via-blue-400 dark:to-indigo-400 sm:left-6 lg:hidden"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{
+              once: true,
+              amount: 0.2,
+            }}
+            variants={verticalLineVariants}
+          />
 
-          {/* Steps Container */}
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-4 relative z-10 font-khmer">
+          {/* Steps */}
+          <motion.div
+            className="font-khmer relative z-10 grid grid-cols-1 gap-8 lg:grid-cols-5 lg:gap-4"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{
+              once: true,
+              amount: 0.15,
+            }}
+            variants={containerVariants}
+          >
             {steps.map((step) => (
-              <div 
-                key={step.number} 
-                className="flex flex-row lg:flex-col items-start lg:items-center gap-4 sm:gap-6 lg:gap-0"
+              <motion.div
+                key={step.number}
+                className="group flex flex-row items-start gap-4 sm:gap-6 lg:flex-col lg:items-center lg:gap-0"
+                variants={itemVariants}
               >
-                
-                {/* Step Circle Badge */}
-                <div className="shrink-0 w-10 h-10 sm:w-12 sm:h-12 lg:w-10 lg:h-10 rounded-full bg-blue-600 dark:bg-blue-500 text-white font-bold text-sm sm:text-base lg:text-sm flex items-center justify-center shadow-md lg:mb-6 ring-4 ring-white dark:ring-slate-950 z-10">
+                {/* Number */}
+                <motion.div
+                  className="z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white shadow-md shadow-blue-500/20 ring-4 ring-white transition-transform duration-300 group-hover:scale-110 group-hover:bg-blue-500 dark:bg-blue-500 dark:ring-slate-950 dark:group-hover:bg-blue-400 sm:h-12 sm:w-12 sm:text-base lg:mb-6 lg:h-10 lg:w-10 lg:text-sm"
+                  whileHover={{
+                    rotate: 360,
+                  }}
+                  transition={{
+                    duration: 0.6,
+                  }}
+                >
                   {step.number}
-                </div>
+                </motion.div>
 
-                {/* Content Card */}
-                <div className="grow w-full h-fit bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-4 sm:p-5 text-left lg:text-center shadow-sm dark:shadow-none hover:shadow-md dark:hover:border-slate-700 transition-all duration-200">
-                  <h3 className="font-bold text-slate-900 dark:text-slate-100 text-base sm:text-lg mb-2">
+                {/* Card */}
+                <motion.div
+                  className="h-fit w-full grow rounded-2xl border border-slate-200/80 bg-slate-50 p-4 text-left shadow-xs transition-all duration-300 group-hover:border-blue-300 group-hover:shadow-xl group-hover:shadow-blue-500/5 dark:border-slate-800/80 dark:bg-slate-900 dark:shadow-none dark:group-hover:border-slate-700 dark:group-hover:shadow-blue-500/10 sm:p-5 lg:text-center"
+                  whileHover={{
+                    y: -6,
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 20,
+                  }}
+                >
+                  <h3 className="mb-2 text-base font-bold text-slate-900 transition-colors duration-200 group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400 sm:text-lg">
                     {step.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+
+                  <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400 sm:text-sm">
                     {step.description}
                   </p>
-                </div>
-
-              </div>
+                </motion.div>
+              </motion.div>
             ))}
-          </div>
-
+          </motion.div>
         </div>
       </div>
     </section>
