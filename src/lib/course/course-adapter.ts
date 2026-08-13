@@ -663,11 +663,7 @@ function hasCourseFullAccess(
 function mapSection(
   section: CourseSectionResponse,
   sectionIndex: number,
-  course: CourseDetailResponse,
 ): Chapter {
-  const fullAccess =
-    hasCourseFullAccess(course);
-
   /*
    * Only published videos.
    */
@@ -705,28 +701,12 @@ function mapSection(
         video,
         videoIndex,
       ) => {
-        const canPreview =
-          video.isPreview === true;
-
         /*
-         * FREE
-         * -> unlocked
-         *
-         * PREMIUM + enrolled
-         * -> unlocked
-         *
-         * PREMIUM + preview
-         * -> unlocked
-         *
-         * PREMIUM without access
-         * -> locked
-         *
-         * PRIVATE without access
-         * -> locked
+         * The curriculum is a public outline. Every published lesson is
+         * displayed as a normal video link; the lesson page/API remains the
+         * authority for access. Guests are redirected to login on click.
          */
-        const locked =
-          !fullAccess &&
-          !canPreview;
+        const locked = false;
 
         return {
           id: video.id,
@@ -745,15 +725,7 @@ function mapSection(
 
           locked,
 
-          /*
-           * Do not expose playable
-           * video URL for locked lessons.
-           */
-          videoUrl: locked
-            ? undefined
-            : resolveVideoUrl(
-                video,
-              ),
+          videoUrl: resolveVideoUrl(video),
         };
       },
     );
@@ -797,13 +769,32 @@ export function mergeCourseSections(
   course: CourseDetailResponse,
   sections?: CourseSectionResponse[],
 ): CourseDetailResponse {
-  if (!sections) {
+  if (!sections || sections.length === 0) {
     return course;
   }
 
+  const courseSectionsById = new Map(
+    (course.sections ?? []).map((section) => [section.id, section]),
+  );
+  const resolvedSections = sections.map((section) => {
+    const embeddedSection = courseSectionsById.get(section.id);
+
+    // Guests receive section metadata from /sections but its videos list can
+    // be empty. The course detail response already includes the public lesson
+    // outline, so preserve it instead of replacing it with an empty array.
+    if (
+      (!section.videos || section.videos.length === 0) &&
+      embeddedSection?.videos?.length
+    ) {
+      return embeddedSection;
+    }
+
+    return section;
+  });
+
   return {
     ...course,
-    sections,
+    sections: resolvedSections,
   };
 }
 
@@ -839,7 +830,6 @@ export function mapApiCourseToCourse(
         mapSection(
           section,
           index,
-          course,
         ),
     );
 
