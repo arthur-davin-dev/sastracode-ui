@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { Send } from 'lucide-react';
-import { FaGithub } from 'react-icons/fa';
-import { fetchAllMentors, MentorType } from '@/lib/mock-data/about-us/mentor';
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Send } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
+import { fetchAllMentors, MentorType } from "@/lib/mock-data/about-us/mentor";
 
 export default function Mentor() {
   const [mentors, setMentors] = useState<MentorType[]>([]);
@@ -17,7 +18,7 @@ export default function Mentor() {
         setLoading(false);
       })
       .catch((err) => {
-        console.error('Failed to fetch mentors:', err);
+        console.error("Failed to fetch mentors:", err);
         setLoading(false);
       });
   }, []);
@@ -25,20 +26,32 @@ export default function Mentor() {
   return (
     <section className="w-full py-10 px-4 sm:px-8 flex flex-col items-center bg-white dark:bg-slate-950 transition-colors duration-300">
       {/* Section Header */}
-      <div className="text-center max-w-2xl mx-auto mb-10">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="text-center max-w-2xl mx-auto mb-10"
+      >
         <h2 className="text-3xl sm:text-4xl font-bold font-khmer text-primary-color dark:text-slate-100 mb-3">
-          អ្នក<span className="text-red-600 dark:text-red-500">ដឹកនាំ</span>របស់យើង
+          អ្នក<span className="text-red-600 dark:text-red-500">ដឹកនាំ</span>
+          របស់យើង
         </h2>
         <p className="font-khmer text-slate-600 dark:text-slate-300 leading-relaxed text-[22px]">
-          ដឹកនាំដោយអ្នកជំនាញក្នុងវិស័យបច្ចេកវិទ្យា ដែលផ្តល់នូវការណែនាំនិងជម្រុញការច្នៃប្រឌិត ដើម្បីភាពជោគជ័យរបស់អ្នកសិក្សា។
+          ដឹកនាំដោយអ្នកជំនាញក្នុងវិស័យបច្ចេកវិទ្យា
+          ដែលផ្តល់នូវការណែនាំនិងជម្រុញការច្នៃប្រឌិត
+          ដើម្បីភាពជោគជ័យរបស់អ្នកសិក្សា។
         </p>
-      </div>
+      </motion.div>
 
       {/* Skeleton Loading State */}
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center max-w-150 w-full">
           {[1, 2].map((n) => (
-            <div key={n} className="flex flex-col items-center w-full max-w-60 animate-pulse py-4">
+            <div
+              key={n}
+              className="flex flex-col items-center w-full max-w-60 animate-pulse py-4"
+            >
               <div className="w-48 h-48 rounded-full bg-slate-200 dark:bg-slate-800 mb-5" />
               <div className="h-6 w-32 bg-slate-200 dark:bg-slate-800 rounded mb-2" />
               <div className="h-4 w-20 bg-slate-200 dark:bg-slate-800 rounded mb-5" />
@@ -52,9 +65,17 @@ export default function Mentor() {
       ) : (
         /* Mentors Grid */
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center max-w-150 w-full">
-          {mentors.slice(0, 2).map((mentor) => (
-            <div 
-              key={mentor.id} 
+          {mentors.slice(0, 2).map((mentor, index) => (
+            <motion.div
+              key={mentor.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.15,
+                ease: "easeOut",
+              }}
               className="group flex flex-col items-center text-center w-full max-w-60 py-4"
             >
               {/* Image Container with Dark Mode Border */}
@@ -100,8 +121,8 @@ export default function Mentor() {
                 >
                   <Send className="w-4 h-4 -translate-x-0.5 translate-y-0.5" />
                 </a>
-              </div>          
-            </div>
+              </div>
+            </motion.div>
           ))}
         </div>
       )}

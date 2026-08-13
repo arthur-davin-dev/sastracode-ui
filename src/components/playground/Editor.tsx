@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import {
   Play,
@@ -643,6 +644,30 @@ print(
 const defaultLanguage =
   languages.find((item) => item.label === "Python") ?? languages[0];
 
+function findPlaygroundLanguage(value: string) {
+  const normalized = value.trim().toLowerCase();
+  const aliases: Record<string, string> = {
+    js: "javascript",
+    javascript: "javascript",
+    ts: "javascript",
+    typescript: "javascript",
+    node: "node.js",
+    nodejs: "node.js",
+    py: "python",
+    html5: "html",
+    tailwind: "tailwind css",
+  };
+  const requested = aliases[normalized] ?? normalized;
+
+  return (
+    languages.find(
+      (item) =>
+        item.label.toLowerCase() === requested ||
+        item.value.toLowerCase() === requested,
+    ) ?? defaultLanguage
+  );
+}
+
 // ======================================================
 // PREVIEW DOCUMENT BUILDER
 // ======================================================
@@ -938,6 +963,7 @@ export default function Editor() {
   const [output, setOutput] = useState<string[]>([]);
 
   const [previewHtml, setPreviewHtml] = useState("");
+  const searchParams = useSearchParams();
 
   // ====================================================
   // RTK QUERY
@@ -950,6 +976,8 @@ export default function Editor() {
   // ====================================================
 
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const [isPreviewFullscreen, setIsPreviewFullscreen] = useState(false);
 
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -1006,6 +1034,41 @@ export default function Editor() {
       observer.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get("example") !== "lesson") return;
+
+    try {
+      const storedExample = window.sessionStorage.getItem("sastra-playground-example");
+      if (!storedExample) return;
+
+      const example: unknown = JSON.parse(storedExample);
+      if (!example || typeof example !== "object") return;
+      const { code: exampleCode, language: exampleLanguage } = example as {
+        code?: unknown;
+        language?: unknown;
+      };
+      if (typeof exampleCode !== "string" || !exampleCode.trim()) return;
+
+      const selected = findPlaygroundLanguage(
+        typeof exampleLanguage === "string" ? exampleLanguage : "",
+      );
+      const timer = window.setTimeout(() => {
+        setActiveLabel(selected.label);
+        setLanguage(selected.value);
+        setActiveColor(selected.color);
+        setMode(selected.mode);
+        setCode(exampleCode);
+        setOutput([]);
+        setPreviewHtml("");
+        editorRef.current?.setValue(exampleCode);
+      }, 0);
+
+      return () => window.clearTimeout(timer);
+    } catch {
+      // Ignore a malformed or unavailable saved lesson example.
+    }
+  }, [searchParams]);
 
   // ====================================================
   // AUTOMATIC LIVE PREVIEW
@@ -1284,6 +1347,10 @@ export default function Editor() {
     setTimeout(() => {
       editorRef.current?.layout();
     }, 50);
+  };
+
+  const togglePreviewFullscreen = () => {
+    setIsPreviewFullscreen((previous) => !previous);
   };
 
   // ====================================================
@@ -1803,16 +1870,27 @@ export default function Editor() {
                       </span>
                     </div>
 
-                    <span
-                      className="rounded-md px-2 py-1 text-xs font-semibold"
-                      style={{
-                        backgroundColor: activeColor,
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="rounded-md px-2 py-1 text-xs font-semibold"
+                        style={{
+                          backgroundColor: activeColor,
 
-                        color: activeTextColor,
-                      }}
-                    >
-                      {activeLabel}
-                    </span>
+                          color: activeTextColor,
+                        }}
+                      >
+                        {activeLabel}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={togglePreviewFullscreen}
+                        className="rounded-md p-1.5 text-slate-500 transition hover:bg-slate-200 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+                        aria-label="Open preview fullscreen"
+                        title="Open preview fullscreen"
+                      >
+                        <Maximize2 className="h-4 w-4" />
+                      </button>
+                    </div>
                   </div>
 
                   {/* Live iframe */}
@@ -1942,6 +2020,44 @@ export default function Editor() {
           )}
         </div>
       </div>
+
+      {isPreviewFullscreen && isPreviewMode && (
+        <div className="fixed inset-0 z-[70] flex flex-col bg-white dark:bg-slate-950">
+          <div className="flex h-14 shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50 px-4 dark:border-white/10 dark:bg-[#111827] sm:px-6">
+            <div className="flex items-center gap-2">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
+              </span>
+              <span className="text-sm font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">
+                {activeLabel} Live Preview
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={togglePreviewFullscreen}
+              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+            >
+              <Minimize2 className="h-4 w-4" />
+              Exit fullscreen
+            </button>
+          </div>
+          {previewHtml ? (
+            <iframe
+              title={`${activeLabel} Fullscreen Live Preview`}
+              srcDoc={previewHtml}
+              sandbox="allow-scripts allow-modals"
+              className="min-h-0 flex-1 w-full border-0 bg-white"
+            />
+          ) : (
+            <div className="flex flex-1 items-center justify-center bg-white px-6 text-center dark:bg-slate-950">
+              <p className="text-slate-500 dark:text-slate-400">
+                Start typing to see the live preview.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

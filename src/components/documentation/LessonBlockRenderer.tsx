@@ -11,10 +11,11 @@ import {
   Info,
   Lightbulb,
   ListChecks,
+  Play,
   Quote,
   TriangleAlert,
 } from "lucide-react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 import type { TutorialBlock } from "@/types/tutorial-reader";
 import {
@@ -352,6 +353,48 @@ function ParagraphBlock({ data }: { data: BlockData }) {
   );
 }
 
+type CodeTokenTone = "comment" | "string" | "keyword" | "number" | "tag" | "plain";
+
+const CODE_TOKEN_CLASS: Record<CodeTokenTone, string> = {
+  comment: "text-slate-500 italic dark:text-slate-400",
+  string: "text-emerald-700 dark:text-emerald-300",
+  keyword: "text-violet-700 dark:text-violet-300",
+  number: "text-amber-700 dark:text-amber-300",
+  tag: "text-sky-700 dark:text-sky-300",
+  plain: "text-slate-800 dark:text-slate-200",
+};
+
+const CODE_TOKEN_PATTERN = /(\/\*[\s\S]*?\*\/|\/\/[^\n]*|<!--[\s\S]*?-->|(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|<\/?[A-Za-z][^>]*>|\b(?:abstract|as|async|await|break|case|catch|class|const|continue|def|default|delete|do|else|enum|export|extends|false|finally|for|from|function|if|import|in|interface|let|new|null|private|protected|public|return|static|switch|this|throw|true|try|type|undefined|var|void|while|with|yield)\b|\b\d+(?:\.\d+)?\b)/g;
+
+function codeTokenTone(token: string): CodeTokenTone {
+  if (token.startsWith("//") || token.startsWith("/*") || token.startsWith("<!--")) return "comment";
+  if (token.startsWith('"') || token.startsWith("'") || token.startsWith("`")) return "string";
+  if (token.startsWith("<")) return "tag";
+  if (/^\d/.test(token)) return "number";
+  return "keyword";
+}
+
+function highlightCode(code: string): ReactNode[] {
+  const tokens: ReactNode[] = [];
+  let lastIndex = 0;
+
+  for (const match of code.matchAll(CODE_TOKEN_PATTERN)) {
+    const token = match[0];
+    const index = match.index ?? 0;
+    if (index > lastIndex) tokens.push(code.slice(lastIndex, index));
+    const tone = codeTokenTone(token);
+    tokens.push(
+      <span key={`${index}-${token}`} className={CODE_TOKEN_CLASS[tone]}>
+        {token}
+      </span>,
+    );
+    lastIndex = index + token.length;
+  }
+
+  if (lastIndex < code.length) tokens.push(code.slice(lastIndex));
+  return tokens.length ? tokens : [code];
+}
+
 function CodeBlock({ data }: { data: BlockData }) {
   const [copied, setCopied] = useState(false);
   const code = stringValue(data, "code", "text", "content");
@@ -370,9 +413,24 @@ function CodeBlock({ data }: { data: BlockData }) {
     }
   }
 
+  function tryCodeInPlayground() {
+    if (!code) return;
+
+    try {
+      window.sessionStorage.setItem(
+        "sastra-playground-example",
+        JSON.stringify({ code, language }),
+      );
+    } catch {
+      // The editor can still be opened if browser storage is unavailable.
+    }
+
+    window.location.assign("/playground/editor?example=lesson");
+  }
+
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-800/90 bg-[#0b1220] shadow-[0_12px_32px_rgba(15,23,42,0.12)]">
-      <div className="flex min-h-12 items-center justify-between gap-3 border-b border-white/10 bg-white/[0.035] px-4 sm:px-5">
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_12px_32px_rgba(15,23,42,0.12)] dark:border-slate-800 dark:bg-[#0b1220]">
+      <div className="flex min-h-12 items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-4 sm:px-5 dark:border-white/10 dark:bg-white/[0.035]">
         <div className="flex min-w-0 items-center gap-3">
           <div
             className="flex shrink-0 items-center gap-1.5"
@@ -383,9 +441,9 @@ function CodeBlock({ data }: { data: BlockData }) {
             <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
           </div>
 
-          <div className="h-4 w-px bg-white/10" />
+          <div className="h-4 w-px bg-slate-200 dark:bg-white/10" />
 
-          <div className="flex min-w-0 items-center gap-2 text-xs font-medium text-slate-400">
+          <div className="flex min-w-0 items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
             <Code2 className="h-3.5 w-3.5 shrink-0" />
             <span className="truncate">{fileName || language}</span>
           </div>
@@ -394,7 +452,7 @@ function CodeBlock({ data }: { data: BlockData }) {
         <button
           type="button"
           onClick={copyCode}
-          className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.04] px-2.5 text-xs font-medium text-slate-300 transition hover:bg-white/[0.09] hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-400/50"
+          className="inline-flex h-8 shrink-0 items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 text-xs font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-400/50 dark:border-white/10 dark:bg-white/[0.04] dark:text-slate-300 dark:hover:bg-white/[0.09] dark:hover:text-white"
           aria-label="Copy code"
         >
           {copied ? (
@@ -409,10 +467,23 @@ function CodeBlock({ data }: { data: BlockData }) {
       </div>
 
       <div className="overflow-x-auto">
-        <pre className="min-w-max p-5 font-mono text-[13.5px] leading-7 text-slate-200 sm:p-6 sm:text-[14px]">
-          <code>{code || "// No code yet"}</code>
+        <pre className="min-w-max p-5 font-mono text-[13.5px] leading-7 sm:p-6 sm:text-[14px]">
+          <code>{highlightCode(code || "// No code yet")}</code>
         </pre>
       </div>
+
+      {code && (
+        <div className="border-t border-slate-200 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-white/[0.025] sm:px-5">
+          <button
+            type="button"
+            onClick={tryCodeInPlayground}
+            className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-[#0b1220]"
+          >
+            <Play className="h-4 w-4" />
+            Try it yourself
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -544,7 +615,20 @@ function CalloutBlock({
 }
 
 function ImageBlock({ data }: { data: BlockData }) {
-  const src = stringValue(data, "url", "src", "imageUrl", "fileUrl");
+  const imageAsset = [data.image, data.file, data.media, data.asset].find(
+    (value): value is Record<string, unknown> => Boolean(value) && typeof value === "object",
+  );
+  const directSource =
+    stringValue(data, "url", "src", "imageUrl", "fileUrl", "contentUrl", "path") ||
+    (imageAsset
+      ? stringValue(imageAsset, "url", "src", "imageUrl", "fileUrl", "contentUrl", "path")
+      : "");
+  const fileId =
+    stringValue(data, "imageFileId", "fileId", "imageId", "mediaId", "assetId") ||
+    (imageAsset
+      ? stringValue(imageAsset, "imageFileId", "fileId", "id", "imageId", "mediaId", "assetId")
+      : "");
+  const src = directSource || (fileId ? `/api/v1/files/${encodeURIComponent(fileId)}` : "");
   const alt = stringValue(data, "alt", "caption", "title") || "Lesson image";
   const caption = stringValue(data, "caption");
 
@@ -562,13 +646,13 @@ function ImageBlock({ data }: { data: BlockData }) {
   }
 
   return (
-    <figure className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <figure className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-sm dark:border-slate-800 dark:bg-slate-950">
       {/* Keeping <img> here avoids requiring Next.js remotePatterns for lesson media URLs. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
         alt={alt}
-        className="h-auto w-full object-cover"
+        className="h-auto max-h-[42rem] w-full object-contain"
         loading="lazy"
       />
       {caption && (
