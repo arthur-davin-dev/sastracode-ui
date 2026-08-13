@@ -2,9 +2,46 @@
 
 import { useTranslation } from "@/hooks/useTranslations";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function HeroCharacter() {
   const currentT = useTranslation();
+  const title = `${currentT.showCase.heroCharacter.title1}${currentT.showCase.heroCharacter.title2}${currentT.showCase.heroCharacter.title3}`;
+  const [visibleTitle, setVisibleTitle] = useState("");
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      const titleTimer = window.setTimeout(() => setVisibleTitle(title), 0);
+      return () => window.clearTimeout(titleTimer);
+    }
+
+    const characters = Array.from(title);
+    let index = 0;
+    let deleting = false;
+    let timer: number | undefined;
+
+    const type = () => {
+      index += deleting ? -1 : 1;
+      setVisibleTitle(characters.slice(0, index).join(""));
+
+      if (!deleting && index === characters.length) {
+        deleting = true;
+        timer = window.setTimeout(type, 2800);
+        return;
+      }
+      if (deleting && index === 0) {
+        deleting = false;
+        timer = window.setTimeout(type, 650);
+        return;
+      }
+
+      timer = window.setTimeout(type, deleting ? 30 : 60);
+    };
+
+    timer = window.setTimeout(type, 350);
+    return () => window.clearTimeout(timer);
+  }, [title]);
 
   return (
     /* Full-width outer section for page-wide background color */
@@ -25,16 +62,9 @@ export default function HeroCharacter() {
               </span>
             </div>
 
-            <h2 className="font-khmer text-4xl font-medium leading-tight sm:text-5xl transition-colors duration-300">
-              <span className="text-primary-color dark:text-blue-400">
-                {currentT.showCase.heroCharacter.title1}
-              </span>{" "}
-              <span className="text-primary-color dark:text-blue-400">
-                {currentT.showCase.heroCharacter.title2}
-              </span>{" "}
-              <span className="text-primary-color dark:text-purple-400">
-                {currentT.showCase.heroCharacter.title3}
-              </span>
+            <h2 aria-label={title} className="font-khmer text-4xl font-medium leading-tight text-primary-color transition-colors duration-300 dark:text-blue-400 sm:text-5xl">
+              <span aria-hidden="true">{visibleTitle}</span>
+              <span aria-hidden="true" className="ml-1 inline-block h-[0.9em] w-[3px] animate-pulse bg-current align-[-0.06em]" />
             </h2>
 
             <p className="max-w-md font-khmer text-lg leading-8 text-black/80 dark:text-gray-300 transition-colors duration-300">

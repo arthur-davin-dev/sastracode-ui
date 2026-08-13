@@ -461,6 +461,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import LessonBlockRenderer, {
   QuizResultsProvider,
 } from "@/components/documentation/LessonBlockRenderer";
+import ScrollReveal from "@/components/home/ScrollReveal";
 import SidebarLeftLesson from "@/components/documentation/SidebarLeftLesson";
 import { getBlockAnchor } from "@/components/documentation/SidebarRightLesson";
 import {
@@ -724,11 +725,13 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
         <article className="min-w-0 bg-slate-50 dark:bg-slate-950">
           <div className="w-full px-5 py-7 sm:px-8 lg:px-12 lg:py-8">
             <section id="lesson-content" className="scroll-mt-28">
+              <ScrollReveal>
               <header className="mb-6">
                 <h1 className="font-khmer text-[28px] font-bold leading-[1.45] text-blue-600 sm:text-[32px] dark:text-blue-400">
                   {activeLesson.title}
                 </h1>
               </header>
+              </ScrollReveal>
 
               {lessonBlocks.length > 0 ? (
                 <QuizResultsProvider
@@ -739,13 +742,14 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
                 >
                 <div className="space-y-7 sm:space-y-8">
                   {lessonBlocks.map((block) => (
-                    <div
-                      key={block.id}
-                      id={getBlockAnchor(block.id)}
-                      className="scroll-mt-32"
-                    >
-                      <LessonBlockRenderer block={block} />
-                    </div>
+                    <ScrollReveal key={block.id}>
+                      <div
+                        id={getBlockAnchor(block.id)}
+                        className="scroll-mt-32"
+                      >
+                        <LessonBlockRenderer block={block} />
+                      </div>
+                    </ScrollReveal>
                   ))}
                 </div>
                 </QuizResultsProvider>

@@ -1,8 +1,6 @@
 "use client";
 
-
 import { useMemo, useState } from "react";
-
 
 import CourseBanner from "./course-banner";
 import { SearchBar } from "./SearchBar";
@@ -10,16 +8,13 @@ import { CategoryFilter } from "./CategoryFilter";
 import { CourseGrid } from "./CourseGrid";
 import { Skeleton } from "@/components/ui/skeleton";
 
-
 import type { Course } from "@/lib/course/courses";
 import { mapApiCourseToCourse } from "@/lib/course/course-adapter";
 import { useGetPublicCoursesQuery } from "@/redux/api/course-api";
 
-
 const ALL = "ទាំងអស់";
 const FREE = "Free Course";
 const PREMIUM = "Premium";
-
 
 function CourseCardSkeleton() {
   return (
@@ -56,18 +51,15 @@ function CourseCardSkeleton() {
   );
 }
 
-
 function removeDuplicateCourses(courses: Course[]) {
   return Array.from(
     new Map(courses.map((course) => [course.id, course])).values(),
   );
 }
 
-
 export default function CourseListingPage() {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState(ALL);
-
 
   /*
    * ===============================
@@ -75,21 +67,17 @@ export default function CourseListingPage() {
    * ===============================
    */
 
-
   const latestQuery = useGetPublicCoursesQuery({
     sort: "NEWEST",
   });
-
 
   const recommendedQuery = useGetPublicCoursesQuery({
     sort: "RECOMMEND",
   });
 
-
   const popularQuery = useGetPublicCoursesQuery({
     sort: "POPULAR",
   });
-
 
   /*
    * ===============================
@@ -97,21 +85,17 @@ export default function CourseListingPage() {
    * ===============================
    */
 
-
   const latestCourses = useMemo(() => {
     return (latestQuery.data ?? []).map(mapApiCourseToCourse);
   }, [latestQuery.data]);
-
 
   const recommendedCourses = useMemo(() => {
     return (recommendedQuery.data ?? []).map(mapApiCourseToCourse);
   }, [recommendedQuery.data]);
 
-
   const popularCourses = useMemo(() => {
     return (popularQuery.data ?? []).map(mapApiCourseToCourse);
   }, [popularQuery.data]);
-
 
   /*
    * Combine all public courses.
@@ -119,7 +103,6 @@ export default function CourseListingPage() {
    * PRIVATE courses are already excluded
    * by useGetPublicCoursesQuery.
    */
-
 
   const allCourses = useMemo(() => {
     return removeDuplicateCourses([
@@ -129,13 +112,11 @@ export default function CourseListingPage() {
     ]);
   }, [latestCourses, recommendedCourses, popularCourses]);
 
-
   /*
    * ===============================
    * CATEGORY FILTER
    * ===============================
    */
-
 
   const categories = useMemo(() => {
     const apiCategories = Array.from(
@@ -146,10 +127,8 @@ export default function CourseListingPage() {
       ),
     );
 
-
     return [ALL, FREE, PREMIUM, ...apiCategories];
   }, [allCourses]);
-
 
   /*
    * ===============================
@@ -157,14 +136,11 @@ export default function CourseListingPage() {
    * ===============================
    */
 
-
   const filteredCourses = useMemo(() => {
     const query = search.trim().toLowerCase();
 
-
     return allCourses.filter((course) => {
       const category = course.category?.toLowerCase() ?? "";
-
 
       const matchesCategory =
         activeCategory === ALL ||
@@ -172,18 +148,15 @@ export default function CourseListingPage() {
         (activeCategory === PREMIUM && course.accessType === "PREMIUM") ||
         category === activeCategory.toLowerCase();
 
-
       const matchesSearch =
         !query ||
         course.title.toLowerCase().includes(query) ||
         course.description?.toLowerCase().includes(query) ||
         course.tags?.some((tag) => tag.toLowerCase().includes(query));
 
-
       return matchesCategory && matchesSearch;
     });
   }, [allCourses, search, activeCategory]);
-
 
   /*
    * ===============================
@@ -191,12 +164,10 @@ export default function CourseListingPage() {
    * ===============================
    */
 
-
   const isLoading =
     latestQuery.isLoading ||
     recommendedQuery.isLoading ||
     popularQuery.isLoading;
-
 
   /*
    * Only show main error if all
@@ -207,9 +178,7 @@ export default function CourseListingPage() {
     Boolean(recommendedQuery.error) &&
     Boolean(popularQuery.error);
 
-
   const isFiltering = search.trim().length > 0 || activeCategory !== ALL;
-
 
   /*
    * ===============================
@@ -217,13 +186,11 @@ export default function CourseListingPage() {
    * ===============================
    */
 
-
   const handleRetry = () => {
     void latestQuery.refetch();
     void recommendedQuery.refetch();
     void popularQuery.refetch();
   };
-
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
@@ -231,20 +198,16 @@ export default function CourseListingPage() {
           COURSE BANNER
       ========================== */}
 
-
       <CourseBanner />
-
 
       {/* =========================
           MAIN
       ========================== */}
 
-
       <main className="mx-auto max-w-7xl px-6 pb-16 pt-10">
         {/* Search + Category */}
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <SearchBar value={search} onChange={setSearch} />
-
 
           <CategoryFilter
             categories={categories}
@@ -253,11 +216,9 @@ export default function CourseListingPage() {
           />
         </div>
 
-
         {/* =========================
             LOADING
         ========================== */}
-
 
         {isLoading && allCourses.length === 0 ? (
           <div
@@ -275,12 +236,10 @@ export default function CourseListingPage() {
               ERROR
           ========================== */
 
-
           <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-900 dark:bg-red-950/20">
             <p className="text-sm font-medium text-red-700 dark:text-red-300">
               មិនអាចទាញយកវគ្គសិក្សាបានទេ
             </p>
-
 
             <button
               type="button"
@@ -295,22 +254,21 @@ export default function CourseListingPage() {
               SEARCH RESULT
           ========================== */
 
-
           <CourseGrid title="លទ្ធផលស្វែងរក" courses={filteredCourses} />
         ) : (
           /* =========================
               DEFAULT COURSE SECTIONS
           ========================== */
 
-
           <div className="space-y-12">
             {/* Latest */}
-            <CourseGrid
-              title="វគ្គសិក្សាថ្មីបំផុត"
-              courses={latestCourses.slice(0, 6)}
-              seeAllHref="/courses?sort=NEWEST"
-            />
-
+            <section id="latest-courses" className="scroll-mt-24">
+              <CourseGrid
+                title="វគ្គសិក្សាថ្មីបំផុត"
+                courses={latestCourses.slice(0, 6)}
+                seeAllHref="/courses?sort=NEWEST"
+              />
+            </section>
 
             {/* Recommended */}
             <CourseGrid
@@ -318,7 +276,6 @@ export default function CourseListingPage() {
               courses={recommendedCourses.slice(3, 8)}
               seeAllHref="/courses?sort=RECOMMEND"
             />
-
 
             {/* Popular */}
             <CourseGrid
@@ -332,4 +289,3 @@ export default function CourseListingPage() {
     </div>
   );
 }
-

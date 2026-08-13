@@ -9,7 +9,63 @@ import {
   Rocket,
   Trophy,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 import DotGrid from "@/components/about-us/DotGrid";
+
+const ABOUT_TITLE = "សាស្រ្តា កូដ\nកសាងអនាគតយុវជនឌីជីថលរបស់កម្ពុជា";
+
+function TypingSlogan() {
+  const [visibleTitle, setVisibleTitle] = useState("");
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      const titleTimer = window.setTimeout(() => setVisibleTitle(ABOUT_TITLE), 0);
+      return () => window.clearTimeout(titleTimer);
+    }
+
+    const characters = Array.from(ABOUT_TITLE);
+    let index = 0;
+    let deleting = false;
+    let timer: number | undefined;
+
+    const type = () => {
+      index += deleting ? -1 : 1;
+      setVisibleTitle(characters.slice(0, index).join(""));
+
+      if (!deleting && index === characters.length) {
+        deleting = true;
+        timer = window.setTimeout(type, 3000);
+        return;
+      }
+      if (deleting && index === 0) {
+        deleting = false;
+        timer = window.setTimeout(type, 700);
+        return;
+      }
+
+      timer = window.setTimeout(type, deleting ? 30 : 60);
+    };
+
+    timer = window.setTimeout(type, 350);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const [mainTitle = "", subtitle = ""] = visibleTitle.split("\n");
+
+  return (
+    <div aria-label={ABOUT_TITLE}>
+      <h1 className="mb-3 font-khmer text-5xl font-extrabold leading-tight text-[#0B2558] dark:text-white sm:text-6xl">
+        <span aria-hidden="true">{mainTitle}</span>
+        {!subtitle && <span aria-hidden="true" className="ml-1 inline-block h-[0.9em] w-[3px] animate-pulse bg-[#B8081C] align-[-0.06em] dark:bg-cyan-400" />}
+      </h1>
+      <h2 className="mb-6 font-khmer text-2xl font-extrabold leading-snug text-[#0B2558] dark:text-slate-200 sm:text-3xl">
+        <span aria-hidden="true">{subtitle}</span>
+        {subtitle && <span aria-hidden="true" className="ml-1 inline-block h-[0.9em] w-[3px] animate-pulse bg-[#B8081C] align-[-0.06em] dark:bg-cyan-400" />}
+      </h2>
+    </div>
+  );
+}
 
 const features = [
   { icon: BookOpen, line1: "ចេះសិក្សា", line2: "មិនអស់" },
@@ -72,13 +128,14 @@ export default function AboutUs() {
           </div>
 
           {/* Heading */}
-          <h1 className="mb-3 font-khmer text-5xl font-extrabold leading-tight text-[#0B2558] dark:text-white sm:text-6xl">
+          <TypingSlogan />
+          <h1 aria-hidden="true" className="hidden mb-3 font-khmer text-5xl font-extrabold leading-tight text-[#0B2558] dark:text-white sm:text-6xl">
             សាស្រ្តា{" "}
             <span className="inline-block rounded-md align-middle text-[#B8081C] dark:text-cyan-400">
               កូដ
             </span>
           </h1>
-          <h2 className="mb-6 font-khmer text-2xl font-extrabold leading-snug text-[#0B2558] dark:text-slate-200 sm:text-3xl">
+          <h2 aria-hidden="true" className="hidden mb-6 font-khmer text-2xl font-extrabold leading-snug text-[#0B2558] dark:text-slate-200 sm:text-3xl">
             កសាងអនាគតយុវជនឌីជីថលរបស់កម្ពុជា
           </h2>
 
@@ -111,7 +168,7 @@ export default function AboutUs() {
           </div>
 
           {/* Buttons */}
-          <div className="mb-10 flex flex-wrap gap-4 font-khmer">
+          {/* <div className="mb-10 flex flex-wrap gap-4 font-khmer">
             <a
               href="#projects"
               className="inline-flex items-center gap-2 rounded-xl bg-[#0B2558] dark:bg-linear-to-r dark:from-cyan-500 dark:to-blue-600 px-6 py-4 text-sm font-bold text-white transition-all shadow-md shadow-[#0B2558]/20 dark:shadow-cyan-500/20 hover:opacity-90 hover:shadow-lg"
@@ -125,7 +182,7 @@ export default function AboutUs() {
             >
               មើលក្រុមការងារ
             </a>
-          </div>
+          </div> */}
 
           {/* Bottom Rule */}
           <div className="flex items-center gap-3">
