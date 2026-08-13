@@ -168,6 +168,11 @@ body {
   font-family: var(--font-google-sans), Arial, Helvetica, sans-serif;
 }
 
+/* Keep descriptive paragraph text readable across every page. */
+p {
+  font-size: 18px !important;
+}
+
 /* Give every interactive control a consistent clickable affordance. */
 :where(
   a[href],

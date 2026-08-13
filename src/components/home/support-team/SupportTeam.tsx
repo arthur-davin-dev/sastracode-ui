@@ -21,7 +21,7 @@ export default function SupportTeam() {
   return (
     <section className="px-6 py-20 bg-white dark:bg-gray-900">
       <div className="max-w-5xl mx-auto text-center">
-        <h2 className="text-2xl md:text-3xl font-extrabold text-navy dark:text-white">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-primary-color">
           Experienced Support Team
         </h2>
         <div className="mt-2 flex justify-center gap-1 text-amber-400">
@@ -56,8 +56,8 @@ export default function SupportTeam() {
               >
                 {member.offset === "up" && (
                   <div className="text-center order-1">
-                    <p className="text-sm font-semibold text-navy dark:text-white">{member.name}</p>
-                    <p className="mt-0.5 flex items-center justify-center gap-1 text-xs text-slate-400 dark:text-gray-400">
+                    <p className="text-[18px] font-semibold text-primary-color">{member.name}</p>
+                    <p className="mt-0.5 flex items-center justify-center gap-1 text-[15px] text-slate-400 dark:text-gray-400">
                       <Mail className="h-3 w-3" /> {member.email}
                     </p>
                   </div>
@@ -76,8 +76,8 @@ export default function SupportTeam() {
                 </div>
                 {member.offset === "down" && (
                   <div className="text-center order-3">
-                    <p className="text-sm font-semibold text-navy dark:text-white">{member.name}</p>
-                    <p className="mt-0.5 flex items-center justify-center gap-1 text-xs text-slate-400 dark:text-gray-400">
+                    <p className="text-[18px] font-semibold text-primary-color">{member.name}</p>
+                    <p className="mt-0.5 flex items-center justify-center gap-1 text-[15px] text-slate-400 dark:text-gray-400">
                       <Mail className="h-3 w-3" /> {member.email}
                     </p>
                   </div>

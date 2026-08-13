@@ -4,6 +4,7 @@ import type {
   LeaderboardPageResponse,
   LeaderboardPeriod,
   LeaderboardSnapshotResponse,
+  LeaderboardUserProfilePage,
 } from "@/types/leaderboard";
 
 interface LeaderboardQueryArgs {
@@ -37,9 +38,23 @@ export const leaderboardApi = sastraApi.injectEndpoints({
       ) => response.data,
       providesTags: [{ type: "Leaderboard", id: "ME" }],
     }),
+    getLeaderboardUserProfiles: builder.query<LeaderboardUserProfilePage, void>({
+      query: () => ({
+        url: "/v1/admin/users",
+        params: { page: 0, size: 100 },
+      }),
+      transformResponse: (
+        response: LeaderboardApiResponse<LeaderboardUserProfilePage>,
+      ) => response.data,
+      providesTags: [{ type: "Leaderboard", id: "PROFILES" }],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetLeaderboardQuery, useGetMyLeaderboardRankQuery } =
+export const {
+  useGetLeaderboardQuery,
+  useGetMyLeaderboardRankQuery,
+  useGetLeaderboardUserProfilesQuery,
+} =
   leaderboardApi;
