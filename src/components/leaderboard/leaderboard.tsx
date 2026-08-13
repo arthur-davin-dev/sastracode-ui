@@ -7,45 +7,38 @@ import { LeaderboardTabs } from "@/components/leaderboard/LeaderboardTabs";
 import { LeaderboardTable } from "@/components/leaderboard/LeaderboardTable";
 import { YourStatsCard } from "@/components/leaderboard/YourStatsCard";
 import { TopPerformersCard } from "@/components/leaderboard/TopPerformersCard";
-import type { LeaderboardEntry, LeaderboardPeriod, LeaderboardSnapshotResponse, WeeklyGoalDay, UserStat } from "@/types/leaderboard";
+import type { LeaderboardEntry, LeaderboardPeriod, LeaderboardSnapshotResponse, LeaderboardUserProfile, UserStat } from "@/types/leaderboard";
 import {
   useGetLeaderboardQuery,
   useGetMyLeaderboardRankQuery,
+  useGetLeaderboardUserProfilesQuery,
 } from "@/redux/service/leaderboardApi";
 import { useGetMyProfileQuery } from "@/redux/service/profile-api";
 
-const weeklyDays: WeeklyGoalDay[] = [
-  { day: "Mon", completed: true },
-  { day: "Tue", completed: true },
-  { day: "Wed", completed: true },
-  { day: "Thu", completed: true },
-  { day: "Fri", completed: false, isToday: true },
-  { day: "Sat", completed: false },
-  { day: "Sun", completed: false },
-];
-
 type SupportedPeriod = Exclude<LeaderboardPeriod, "COURSE">;
 
-function learnerName(entry: LeaderboardSnapshotResponse) {
-  const profile = entry.user;
+function learnerName(entry: LeaderboardSnapshotResponse, profile?: LeaderboardUserProfile) {
+  const leaderboardUser = entry.user;
   return (
+    [profile?.firstName, profile?.lastName].filter(Boolean).join(" ") ||
+    profile?.username ||
     entry.fullName ||
     entry.name ||
     [entry.firstName, entry.lastName].filter(Boolean).join(" ") ||
     entry.username ||
-    profile?.fullName ||
-    profile?.name ||
-    [profile?.firstName, profile?.lastName].filter(Boolean).join(" ") ||
-    profile?.username ||
+    leaderboardUser?.fullName ||
+    leaderboardUser?.name ||
+    [leaderboardUser?.firstName, leaderboardUser?.lastName].filter(Boolean).join(" ") ||
+    leaderboardUser?.username ||
     "អ្នកសិក្សា"
   );
 }
 
-function learnerAvatar(entry: LeaderboardSnapshotResponse) {
+function learnerAvatar(entry: LeaderboardSnapshotResponse, profile?: LeaderboardUserProfile) {
   const avatarUrl = entry.avatarUrl || entry.user?.avatarUrl;
   if (avatarUrl) return avatarUrl;
 
-  const fileId = entry.avatarFileId || entry.user?.avatarFileId;
+  const fileId = profile?.avatarFileId || entry.avatarFileId || entry.user?.avatarFileId;
   return fileId ? `/api/v1/files/${encodeURIComponent(fileId)}` : "";
 }
 
@@ -57,17 +50,27 @@ export default function Leaderboard() {
     useGetLeaderboardQuery({ period: activeTab, size: 50 });
   const { data: myRank } = useGetMyLeaderboardRankQuery(activeTab);
   const { data: myProfile } = useGetMyProfileQuery();
+  const { data: profiles } = useGetLeaderboardUserProfilesQuery(undefined, {
+    skip: !data?.content.length,
+  });
+
+  const profilesByUserId = useMemo(
+    () => new Map(profiles?.content.map((profile) => [profile.userId, profile]) ?? []),
+    [profiles?.content],
+  );
 
   const entries: LeaderboardEntry[] = useMemo(
     () =>
-      (data?.content ?? []).map((entry) => ({
+      (data?.content ?? []).map((entry) => {
+        const profile = profilesByUserId.get(entry.userId);
+        return {
         rank: entry.rank,
-        name: learnerName(entry),
-        avatarUrl: learnerAvatar(entry),
+        name: learnerName(entry, profile),
+        avatarUrl: learnerAvatar(entry, profile),
         xp: entry.score,
         isCurrentUser: Boolean(myRank?.userId && entry.userId === myRank.userId),
-      })),
-    [data?.content, myRank],
+      }}),
+    [data?.content, myRank, profilesByUserId],
   );
 
   const currentUser: LeaderboardEntry | undefined = myRank
@@ -110,7 +113,7 @@ export default function Leaderboard() {
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm font-bold uppercase tracking-wider text-primary-color">
+            <p className="text-lg font-bold uppercase tracking-wider text-primary-color">
               Community ranking
             </p>
             <h1 className="mt-1 text-2xl font-extrabold text-indigo-950 transition-colors duration-300 dark:text-white sm:text-3xl">
@@ -159,7 +162,6 @@ export default function Leaderboard() {
           </div>
 
           <div className="space-y-4">
-            <WeeklyGoalCard days={weeklyDays} completedCount={4} totalCount={5} />
             <YourStatsCard stats={userStats} />
             {topPerformers.length > 0 && <TopPerformersCard performers={topPerformers} />}
           </div>

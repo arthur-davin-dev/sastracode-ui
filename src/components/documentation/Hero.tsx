@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import HeroSearchBar from "./HeroSearchBar";
-import TechStackChips from "./TechStackChips";
 import HeroVisual from "./HeroVisual";
-import { techOptions } from "@/lib/data/courses";
 
-const DOCUMENTATION_TITLE = "មេរៀនបច្ចេកវិទ្យាព័ត៌មានវិទ្យា (IT) ជាភាសាខ្មែរ";
+const TITLE_FIRST_LINE = "មេរៀនបច្ចេកវិទ្យាព័ត៌មានវិទ្យា";
+const TITLE_SECOND_LINE = "(IT) ជាភាសាខ្មែរ";
+
+const FULL_TITLE = `${TITLE_FIRST_LINE}\n${TITLE_SECOND_LINE}`;
 
 function TypingTitle() {
   const [visibleTitle, setVisibleTitle] = useState("");
@@ -15,88 +15,173 @@ function TypingTitle() {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+
+    // Show full title immediately when reduced motion is enabled
     if (reduceMotion) {
-      const titleTimer = window.setTimeout(
-        () => setVisibleTitle(DOCUMENTATION_TITLE),
-        0,
-      );
-      return () => window.clearTimeout(titleTimer);
+      setVisibleTitle(FULL_TITLE);
+      return;
     }
 
-    const characters = Array.from(DOCUMENTATION_TITLE);
+    const characters = Array.from(FULL_TITLE);
+
     let index = 0;
     let deleting = false;
     let timer: number | undefined;
 
     const type = () => {
       index += deleting ? -1 : 1;
-      setVisibleTitle(characters.slice(0, index).join(""));
 
+      setVisibleTitle(
+        characters.slice(0, index).join(""),
+      );
+
+      // Finished typing
       if (!deleting && index === characters.length) {
         deleting = true;
+
         timer = window.setTimeout(type, 3000);
         return;
       }
 
+      // Finished deleting
       if (deleting && index === 0) {
         deleting = false;
+
         timer = window.setTimeout(type, 700);
         return;
       }
 
-      timer = window.setTimeout(type, deleting ? 30 : 60);
+      timer = window.setTimeout(
+        type,
+        deleting ? 30 : 60,
+      );
     };
 
     timer = window.setTimeout(type, 400);
-    return () => window.clearTimeout(timer);
+
+    return () => {
+      if (timer) {
+        window.clearTimeout(timer);
+      }
+    };
   }, []);
+
+  const hasSecondLine = visibleTitle.includes("\n");
+
+  const [firstLine = "", secondLine = ""] =
+    visibleTitle.split("\n");
 
   return (
     <h1
-      aria-label={DOCUMENTATION_TITLE}
-      className="text-primary-color text-4xl font-extrabold leading-tight sm:text-5xl"
+      aria-label={`${TITLE_FIRST_LINE} ${TITLE_SECOND_LINE}`}
+      className="
+        text-4xl
+        font-extrabold
+        leading-[1.4]
+        tracking-tight
+        sm:text-5xl
+      "
     >
-      <span aria-hidden="true" className="text-secondary-color">
-        {visibleTitle}
-      </span>
+      {/* First line - Red / Secondary */}
       <span
         aria-hidden="true"
-        className="ml-1 inline-block h-[0.9em] w-[3px] animate-pulse bg-secondary-color align-[-0.06em]"
-      />
+        className="block text-secondary-color"
+      >
+        {firstLine}
+
+        {/* Cursor while typing first line */}
+        {!hasSecondLine && (
+          <span
+            className="
+              ml-1
+              inline-block
+              h-[0.9em]
+              w-[3px]
+              animate-pulse
+              bg-secondary-color
+              align-[-0.06em]
+            "
+          />
+        )}
+      </span>
+
+      {/* Second line - Blue */}
+      <span
+        aria-hidden="true"
+        className="block text-[#002455]"
+      >
+        {secondLine}
+
+        {/* Cursor while typing second line */}
+        {hasSecondLine && (
+          <span
+            className="
+              ml-1
+              inline-block
+              h-[0.9em]
+              w-[3px]
+              animate-pulse
+              bg-[#002455]
+              align-[-0.06em]
+            "
+          />
+        )}
+      </span>
     </h1>
   );
 }
 
 export default function Hero() {
   return (
-    <section className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8">
+    <section
+      className="
+        mx-auto
+        grid
+        max-w-7xl
+        grid-cols-1
+        items-center
+        gap-10
+        px-4
+        py-16
+        sm:px-6
+        lg:grid-cols-2
+        lg:gap-14
+        lg:px-8
+      "
+    >
+      {/* ================= LEFT CONTENT ================= */}
       <div className="flex flex-col gap-6">
+        {/* Animated Heading */}
         <TypingTitle />
-        <h1
-          aria-hidden="true"
-          className="hidden text-4xl font-extrabold leading-tight sm:text-5xl"
+
+        {/* Description */}
+        <p
+          className="
+            max-w-xl
+            text-[20px]
+            leading-[1.8]
+            text-slate-600
+            transition-colors
+            duration-300
+            dark:text-slate-300
+            sm:text-[22px]
+          "
         >
-          <span className="text-secondary-color">
-            មេរៀនបច្ចេកវិទ្យាព័ត៌មានវិទ្យា{" "}
-          </span>
-
-          <span className="text-primary-color">(IT) ជាភាសាខ្មែរ</span>
-        </h1>
-
-        <p className="max-w-lg text-[20px] sm:text-[22px] leading-relaxed text-slate-600 dark:text-slate-300 transition-colors duration-300">
-          សិក្សាពីមូលដ្ឋានគ្រឹះនៃការសរសេរកូដ ការរចនា និងអភិវឌ្ឍគេហទំព័រ
-          ការដោះស្រាយបញ្ញា មូលដ្ឋាននៃទិន្នន័យ បញ្ញាសិប្បនិម្មិត (AI)
-          ប្រព័ន្ធសន្ដិសុខសាយប័រ វិទ្យាសាស្រ្ដទិន្នន័យ
-          និងបច្ចេកវិទ្យាព័ត៌មានវិទ្យា (IT) ថ្មីៗជាច្រើនទៀត
-          រហូតដល់ក្លាយខ្លួនជាអ្នកជំនាញ និងមានអាជីពវិជ្ជាជីវៈ
+          សិក្សាពីមូលដ្ឋានគ្រឹះនៃការសរសេរកូដ
+          ការរចនា និងអភិវឌ្ឍគេហទំព័រ
+          ការដោះស្រាយបញ្ហា មូលដ្ឋាននៃទិន្នន័យ
+          បញ្ញាសិប្បនិម្មិត (AI)
+          ប្រព័ន្ធសន្តិសុខសាយប័រ
+          វិទ្យាសាស្ត្រទិន្នន័យ
+          និងបច្ចេកវិទ្យាព័ត៌មានវិទ្យា (IT)
+          ថ្មីៗជាច្រើនទៀត
+          រហូតដល់ក្លាយខ្លួនជាអ្នកជំនាញ
+          និងមានអាជីពវិជ្ជាជីវៈ។
         </p>
-
-        {/* <HeroSearchBar /> */}
-
-        {/* <TechStackChips options={techOptions} /> */}
       </div>
 
-      <div className="mx-auto">
+      {/* ================= RIGHT VISUAL ================= */}
+      <div className="mx-auto w-full">
         <HeroVisual />
       </div>
     </section>

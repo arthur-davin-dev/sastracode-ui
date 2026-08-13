@@ -46,6 +46,17 @@ const paths: LearningPath[] = [
   { id: "3", name: "React Dev", status: "កំពុងរៀន", progressPercent: 60 },
 ];
 
+function activityTitle(sourceType?: string) {
+  if (!sourceType) return "XP activity";
+
+  return sourceType
+    .toLowerCase()
+    .split("_")
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export default function Achievement() {
   const { status } = useSession();
   const authenticated = status === "authenticated";
@@ -84,8 +95,8 @@ export default function Achievement() {
     transactionsQuery.data?.content.map((transaction) => ({
       id: String(transaction.id),
       icon: "⚡",
-      title:
-        transaction.description || transaction.sourceType.replaceAll("_", " "),
+      // Descriptions can include source UUIDs. Keep internal IDs out of the learner UI.
+      title: activityTitle(transaction.sourceType),
       subtitle: transaction.createdAt
         ? new Intl.DateTimeFormat(undefined, {
             dateStyle: "medium",
