@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import CodeCoach from "@/components/playground/CodeCoach";
 
 import MonacoEditor, { type OnMount } from "@monaco-editor/react";
 import { useExecuteCodeMutation } from "@/types/playgroundApi";
@@ -1732,6 +1733,13 @@ export default function Editor() {
             </div>
           </div>
         )}
+
+        <div className="px-4 pt-4">
+          <CodeCoach
+            code={code}
+            language={activeLabel}
+          />
+        </div>
 
         {/* ================================================= */}
         {/* EDITOR + PREVIEW/OUTPUT */}
