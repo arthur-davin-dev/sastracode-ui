@@ -521,7 +521,7 @@ function CodeBlock({ data }: { data: BlockData }) {
             className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-[#0b1220]"
           >
             <Play className="h-4 w-4" />
-            Try it yourself
+            Try it with AI
           </button>
         </div>
       )}
