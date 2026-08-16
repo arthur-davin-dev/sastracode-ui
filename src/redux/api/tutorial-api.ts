@@ -140,6 +140,23 @@ export interface TutorialNavigation {
   next?: TutorialNavigationItem;
 }
 
+export interface TutorialLessonProgressItem {
+  sectionId: string;
+  title: string;
+  orderIndex: number;
+  completed: boolean;
+  completedAt?: string;
+}
+
+export interface TutorialProgress {
+  tutorialId: string;
+  completedLessons: number;
+  totalLessons: number;
+  progressPercentage: number;
+  completed: boolean;
+  lessons: TutorialLessonProgressItem[];
+}
+
 export interface CodingTaskSummary {
   id: string;
   title: string;
@@ -209,6 +226,20 @@ export const tutorialApi = sastraApi.injectEndpoints({
       query: (id) => ({ url: `/v1/tutorials/${id}/view`, method: "POST" }),
       invalidatesTags: (_result, _error, id) => [tutorialTag(id)],
     }),
+    getTutorialProgress: builder.query<ApiResponse<TutorialProgress>, string>({
+      query: (tutorialId) => `/v1/tutorials/${tutorialId}/progress`,
+      providesTags: (_result, _error, tutorialId) => [tutorialTag(tutorialId)],
+    }),
+    completeTutorialLesson: builder.mutation<
+      ApiResponse<null>,
+      { tutorialId: string; sectionId: string }
+    >({
+      query: ({ tutorialId, sectionId }) => ({
+        url: `/v1/tutorials/${tutorialId}/sections/${sectionId}/complete`,
+        method: "POST",
+      }),
+      invalidatesTags: (_result, _error, { tutorialId }) => [tutorialTag(tutorialId)],
+    }),
     getTutorialDocument: builder.query<ApiResponse<TutorialDocument>, string>({
       query: (id) => `/v1/tutorials/${id}/document`,
       providesTags: (_result, _error, id) => [tutorialTag(id)],
@@ -244,6 +275,8 @@ export const {
   useUpdateTutorialStatusMutation,
   useDeleteTutorialMutation,
   useIncrementTutorialViewMutation,
+  useGetTutorialProgressQuery,
+  useCompleteTutorialLessonMutation,
   useGetTutorialDocumentQuery,
   useLazyGetTutorialDocumentQuery,
   useCreateTutorialDocumentMutation,

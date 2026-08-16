@@ -8,7 +8,7 @@ interface BadgeStatsCardProps {
   completionPercent: number;
   earnedDate: string;
   category: string;
-  totalEarners: number;
+  totalEarners?: number;
 }
 
 export function BadgeStatsCard({
@@ -109,15 +109,17 @@ export function BadgeStatsCard({
             </span>
           </div>
 
-          <div className="flex justify-between items-center text-lg">
-            <span className="flex items-center gap-2 font-medium text-slate-600 dark:text-slate-400">
-              <Users className="h-5 w-5 text-secondary-color" />
-              ចំនួនអ្នកទទួល
-            </span>
-            <span className="font-bold text-secondary-color dark:text-red-400">
-              {totalEarners.toLocaleString()} នាក់
-            </span>
-          </div>
+          {typeof totalEarners === "number" && (
+            <div className="flex justify-between items-center text-lg">
+              <span className="flex items-center gap-2 font-medium text-slate-600 dark:text-slate-400">
+                <Users className="h-5 w-5 text-secondary-color" />
+                ចំនួនអ្នកទទួល
+              </span>
+              <span className="font-bold text-secondary-color dark:text-red-400">
+                {totalEarners.toLocaleString()} នាក់
+              </span>
+            </div>
+          )}
 
         </div>
 

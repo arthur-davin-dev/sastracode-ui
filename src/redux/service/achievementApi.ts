@@ -21,6 +21,34 @@ export interface XpTransaction {
   createdAt?: string;
 }
 
+export interface BadgeResponse {
+  id: string;
+  code: string;
+  name: string;
+  badgeCategory: string;
+  badgeRarity: string;
+  requirementDescription?: string;
+  requirementRule?: BadgeRequirementRule;
+  iconFileId?: string;
+  xpReward: number;
+}
+
+export interface BadgeRequirementRule {
+  type: string;
+  operator: string;
+  value: number;
+  description: string;
+}
+
+export interface UserBadgeProgress {
+  badge: BadgeResponse;
+  earned: boolean;
+  earnedAt?: string;
+  currentValue: number;
+  targetValue: number;
+  progressPercentage: number;
+}
+
 interface XpTransactionPage {
   content: XpTransaction[];
   totalElements: number;
@@ -42,8 +70,17 @@ export const achievementApi = sastraApi.injectEndpoints({
       transformResponse: (response: ApiResponse<XpTransactionPage>) => response.data,
       providesTags: [{ type: "Achievement", id: "ACTIVITY" }],
     }),
+    getMyBadges: builder.query<UserBadgeProgress[], void>({
+      query: () => "/v1/users/me/badges",
+      transformResponse: (response: ApiResponse<UserBadgeProgress[]>) => response.data,
+      providesTags: [{ type: "Achievement", id: "BADGES" }],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetMyXpQuery, useGetMyXpTransactionsQuery } = achievementApi;
+export const {
+  useGetMyXpQuery,
+  useGetMyXpTransactionsQuery,
+  useGetMyBadgesQuery,
+} = achievementApi;

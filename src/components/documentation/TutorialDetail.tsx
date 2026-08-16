@@ -466,6 +466,8 @@ import SidebarLeftLesson from "@/components/documentation/SidebarLeftLesson";
 import { getBlockAnchor } from "@/components/documentation/SidebarRightLesson";
 import {
   useGetTutorialByIdQuery,
+  useGetTutorialProgressQuery,
+  useCompleteTutorialLessonMutation,
   useIncrementTutorialViewMutation,
 } from "@/redux/api/tutorial-api";
 import type {
@@ -603,11 +605,16 @@ function EmptyTutorial() {
 export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
   const { data, isLoading, error, refetch } =
     useGetTutorialByIdQuery(tutorialId);
+  const { data: progressData, refetch: refetchProgress } =
+    useGetTutorialProgressQuery(tutorialId);
   const [incrementView] = useIncrementTutorialViewMutation();
+  const [completeLesson, { isLoading: isCompletingLesson }] =
+    useCompleteTutorialLessonMutation();
   const countedTutorialRef = useRef<string | null>(null);
 
   const [activeLessonId, setActiveLessonId] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [completionError, setCompletionError] = useState("");
 
   const tutorial: TutorialDetailData | undefined = data?.data;
 
@@ -647,6 +654,35 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
       Number(first.type.trim().toUpperCase() === "QUIZ") -
       Number(second.type.trim().toUpperCase() === "QUIZ"),
   );
+  const tutorialProgress = progressData?.data;
+  const completedSectionIds = useMemo(
+    () =>
+      new Set(
+        tutorialProgress?.lessons
+          .filter((lesson) => lesson.completed)
+          .map((lesson) => lesson.sectionId) ?? [],
+      ),
+    [tutorialProgress?.lessons],
+  );
+  const activeLessonCompleted = completedSectionIds.has(activeLesson?.sectionId ?? "");
+
+  async function markActiveLessonComplete() {
+    if (!activeLesson || activeLessonCompleted) return;
+
+    setCompletionError("");
+
+    try {
+      await completeLesson({
+        tutorialId,
+        sectionId: activeLesson.sectionId,
+      }).unwrap();
+      void refetchProgress();
+    } catch {
+      setCompletionError(
+        "Unable to save lesson progress. Please try again shortly.",
+      );
+    }
+  }
 
   useEffect(() => {
     if (!sidebarOpen) return;
@@ -717,6 +753,7 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
             <SidebarLeftLesson
               sections={sections}
               activeLessonId={activeLesson.id}
+              completedSectionIds={completedSectionIds}
               onSelectLesson={selectLesson}
             />
           </div>
@@ -766,6 +803,25 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
                 aria-label="Lesson navigation"
                 className="mt-12 grid gap-3 border-t border-slate-200 pt-6 sm:grid-cols-2 dark:border-slate-800"
               >
+                <div className="sm:col-span-2">
+                  <button
+                    type="button"
+                    onClick={() => void markActiveLessonComplete()}
+                    disabled={activeLessonCompleted || isCompletingLesson}
+                    className="font-khmer inline-flex min-h-12 items-center justify-center rounded-xl bg-[#002455] px-4 text-sm font-semibold text-white transition hover:bg-[#00346f] disabled:cursor-not-allowed disabled:bg-emerald-600 disabled:opacity-80"
+                  >
+                    {activeLessonCompleted
+                      ? "បានបញ្ចប់"
+                      : isCompletingLesson
+                        ? "កំពុងរក្សាទុក..."
+                        : "សម្គាល់ថាបានបញ្ចប់"}
+                  </button>
+                  {completionError && (
+                    <p className="mt-2 text-sm font-medium text-red-600 dark:text-red-400">
+                      {completionError}
+                    </p>
+                  )}
+                </div>
                 <div>
                   {previousLesson && (
                     <button

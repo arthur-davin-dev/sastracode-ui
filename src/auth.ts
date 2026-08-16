@@ -177,6 +177,8 @@ interface RefreshTokenResponse {
   scope?: string;
 }
 
+const keycloakIssuer = process.env.AUTH_KEYCLOAK_ISSUER!;
+
 async function refreshAccessToken(token: JWT): Promise<JWT> {
   try {
     const issuer = process.env.AUTH_KEYCLOAK_ISSUER;
@@ -245,7 +247,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       clientSecret: process.env.AUTH_KEYCLOAK_SECRET!,
 
-      issuer: process.env.AUTH_KEYCLOAK_ISSUER!,
+      issuer: keycloakIssuer,
+
+      authorization: {
+        url: `${keycloakIssuer}/protocol/openid-connect/auth`,
+        params: { scope: "openid profile email" },
+      },
+
+      token: `${keycloakIssuer}/protocol/openid-connect/token`,
+
+      userinfo: `${keycloakIssuer}/protocol/openid-connect/userinfo`,
     }),
   ],
 

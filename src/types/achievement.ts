@@ -51,7 +51,7 @@ export interface BadgeDetail {
   completionPercent: number;
   earnedDate: string;
   category: string;
-  totalEarners: number;
+  totalEarners?: number;
   requirements: BadgeRequirement[];
   similarBadges: SimilarBadge[];
 }
