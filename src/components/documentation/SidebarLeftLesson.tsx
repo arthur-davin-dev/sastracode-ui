@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, ChevronDown, ChevronRight } from "lucide-react";
+import { BookOpen, CheckCircle2, ChevronDown, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 import type { TutorialSection } from "@/types/tutorial-reader";
@@ -8,12 +8,14 @@ import type { TutorialSection } from "@/types/tutorial-reader";
 interface SidebarLeftLessonProps {
   sections: TutorialSection[];
   activeLessonId: string;
+  completedSectionIds: Set<string>;
   onSelectLesson: (lessonId: string) => void;
 }
 
 export default function SidebarLeftLesson({
   sections,
   activeLessonId,
+  completedSectionIds,
   onSelectLesson,
 }: SidebarLeftLessonProps) {
   const [openSections, setOpenSections] = useState<Set<string>>(new Set());
@@ -79,6 +81,7 @@ export default function SidebarLeftLesson({
             const isDirect =
               section.contentMode === "DIRECT" || !hasSubsections;
             const sectionActive = activeLessonId === section.id;
+            const sectionCompleted = completedSectionIds.has(section.id);
             const containsActiveLesson =
               sectionActive ||
               subsections.some(
@@ -111,6 +114,9 @@ export default function SidebarLeftLesson({
                     <span className="min-w-0 flex-1 whitespace-normal break-words font-khmer text-lg font-semibold leading-7">
                       {section.title}
                     </span>
+                    {sectionCompleted && (
+                      <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-emerald-500" />
+                    )}
                   </button>
 
                   {hasSubsections && (
