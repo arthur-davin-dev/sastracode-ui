@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
+import { notFound, redirect } from "next/navigation";
 import { BadgeDetailHero } from "@/components/achievement/BadgeDetailHero";
 import { BadgeRequirementItem } from "@/components/achievement/BadgeRequirementItem";
 import { XpRewardCard } from "@/components/achievement/XpRewardCard";
@@ -8,75 +9,22 @@ import { SimilarBadgesCard } from "@/components/achievement/SimilarBadgesCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BadgeDetail } from "@/types/achievement";
+import { BadgeResponse, UserBadgeProgress } from "@/redux/service/achievementApi";
+import { auth } from "@/auth";
+import { backendFetch, parseBackendResponse } from "@/types/server/backend-api";
 
-const badgeDetails: Record<string, BadgeDetail> = {
-  "1": {
-    id: "1",
-    name: "ដំបូងបំផុត",
-    iconUrl: "/images/Margin3.png",
-    points: 250,
-    description: "មេដាយនេះផ្តល់ជូនចំពោះអ្នកដែលបានបញ្ចប់មេរៀនមូលដ្ឋានទាំងអស់ជាមួយនឹងលទ្ធផលល្អប្រសើរ",
-    xpReward: 300,
-    xpProgressPercent: 100,
-    completionPercent: 100,
-    earnedDate: "០៦ មិថុនា ២០២៤",
-    category: "ក្រិតខ្លួន",
-    totalEarners: 142,
-    requirements: [
-      { id: "1", title: "ដោះស្រាយបញ្ហា Algorithms កម្រិតខ្ពស់", description: "ដោះស្រាយចំនួន ១០ បញ្ហា Algorithms ថ្នាក់ខ្ពស់", progress: "10/10", completed: true },
-      { id: "2", title: "ដោះស្រាយបញ្ហា Data Structures", description: "បញ្ចប់លំហាត់ក៏ដូចជា Arrays, Linked Lists និង Hash Maps", progress: "10/10", completed: true },
-      { id: "3", title: "សាកល្បងកម្រិតពិបាក", description: "ដោះស្រាយបញ្ហាកម្រិត Hard ចំនួន និងជោគជ័យ", progress: "5/5", completed: true },
-    ],
-    similarBadges: [
-      { id: "2", icon: "terminal", name: "កូដករគំរូ", status: "ចាក់សោ" },
-      { id: "3", icon: "gauge", name: "ល្បឿនពន្លឺ", status: "ចាក់សោ" },
-    ],
-  },
-  "2": {
-    id: "2",
-    name: "អ្នកឈ្នះ",
-    iconUrl: "/images/Margin2.png",
-    points: 500,
-    description: "មេដាយនេះផ្តល់ជូនចំពោះអ្នកដែលទទួលបានជោគជ័យក្នុងការប្រកួតប្រជែងកម្មវិធីច្រើនជាងគេ",
-    xpReward: 500,
-    xpProgressPercent: 100,
-    completionPercent: 100,
-    earnedDate: "១២ កក្កដា ២០២៤",
-    category: "ការប្រកួតប្រជែង",
-    totalEarners: 87,
-    requirements: [
-      { id: "1", title: "ឈ្នះការប្រកួតកូដកម្មវិធី", description: "ឈ្នះការប្រកួតកូដកម្មវិធីចំនួន ៣ ដង", progress: "3/3", completed: true },
-      { id: "2", title: "ដោះស្រាយបញ្ហារហ័ស", description: "ដោះស្រាយបញ្ហាក្នុងរយៈពេលកំណត់ដោយជោគជ័យ", progress: "15/15", completed: true },
-      { id: "3", title: "ចំណាត់ថ្នាក់ខ្ពស់", description: "ស្ថិតក្នុងចំណាត់ថ្នាក់ ១០ ដំបូងក្នុងវិញ្ញាសា", progress: "1/1", completed: true },
-    ],
-    similarBadges: [
-  { id: "2", icon: "terminal", name: "កូដករគំរូ", status: "ចាក់សោ" },
-  { id: "3", icon: "gauge", name: "ល្បឿនពន្លឺ", status: "ចាក់សោ" },
-],
-  },
-  "3": {
-    id: "3",
-    name: "ជើងឯក",
-    iconUrl: "/images/Margin3.png",
-    points: 1000,
-    description: "មេដាយកម្រិតខ្ពស់បំផុត ផ្តល់ជូនចំពោះអ្នកដែលបានឈានដល់ចំណាត់ថ្នាក់កំពូលនៃវេទិកា",
-    xpReward: 1000,
-    xpProgressPercent: 100,
-    completionPercent: 200,
-    earnedDate: "០៣ សីហា ២០២៤",
-    category: "កម្រិតខ្ពស់បំផុត",
-    totalEarners: 24,
-    requirements: [
-      { id: "1", title: "បញ្ចប់វគ្គសិក្សាទាំងអស់", description: "បញ្ចប់វគ្គសិក្សាគ្រប់ប្រភេទក្នុងវេទិកា", progress: "12/12", completed: true },
-      { id: "2", title: "ទទួលបានវិញ្ញាបនបត្រទាំងអស់", description: "ទទួលបានវិញ្ញាបនបត្រគ្រប់វគ្គសិក្សា", progress: "8/8", completed: true },
-      { id: "3", title: "ស្ថិតលេខ ១ ក្នុងតារាងឈ្នះ", description: "ឈរនៅចំណាត់ថ្នាក់លេខ ១ អស់រយៈពេល ១ ខែ", progress: "1/1", completed: true },
-    ],
-    similarBadges: [
-      { id: "2", icon: "terminal", name: "កូដករគំរូ", status: "ចាក់សោ" },
-      { id: "3", icon: "gauge", name: "ល្បឿនពន្លឺ", status: "ចាក់សោ" },
-    ],
-  },
-};
+interface ApiResponse<T> {
+  success: boolean;
+  message?: string;
+  data: T;
+}
+
+function formatEarnedDate(earnedAt?: string) {
+  if (!earnedAt) return "Not earned yet";
+
+  const date = new Date(earnedAt);
+  return Number.isNaN(date.getTime()) ? earnedAt : date.toLocaleDateString();
+}
 
 export default async function BadgeDetailPage({
   params,
@@ -84,11 +32,60 @@ export default async function BadgeDetailPage({
   params: Promise<{ badgeId: string }>;
 }) {
   const { badgeId } = await params;
-  const badge = badgeDetails[badgeId];
+  const session = await auth();
 
-  if (!badge) {
-    return <div className="p-6 text-lg">រកមិនឃើញព័ត៌មានមេដាយនេះទេ</div>;
+  if (!session?.user) {
+    redirect(
+      `/api/auth/login/keycloak?callbackUrl=${encodeURIComponent(`/achivement/${badgeId}`)}`,
+    );
   }
+
+  const [badgeResponse, progressResponse] = await Promise.all([
+    backendFetch(`/api/v1/badges/${encodeURIComponent(badgeId)}`),
+    backendFetch("/api/v1/users/me/badges"),
+  ]);
+
+  if (badgeResponse.status === 404) notFound();
+  if (!badgeResponse.ok) throw new Error("Unable to load badge details.");
+
+  const badgePayload = (await parseBackendResponse(badgeResponse)) as ApiResponse<BadgeResponse>;
+  if (!badgePayload.success || !badgePayload.data) notFound();
+
+  const progressPayload = progressResponse.ok
+    ? ((await parseBackendResponse(progressResponse)) as ApiResponse<UserBadgeProgress[]>)
+    : undefined;
+  const userProgress = progressPayload?.data?.find(({ badge }) => badge.id === badgeId);
+  const badgeData = badgePayload.data;
+  const progressPercent = userProgress?.progressPercentage ?? 0;
+  const requirementDescription =
+    badgeData.requirementDescription ?? badgeData.requirementRule?.description ?? "No requirement description available.";
+
+  const badge: BadgeDetail = {
+    id: badgeData.id,
+    name: badgeData.name,
+    iconUrl: badgeData.iconFileId
+      ? `/api/v1/files/${encodeURIComponent(badgeData.iconFileId)}`
+      : "/images/Margin3.png",
+    points: badgeData.xpReward,
+    description: requirementDescription,
+    xpReward: badgeData.xpReward,
+    xpProgressPercent: progressPercent,
+    completionPercent: progressPercent,
+    earnedDate: formatEarnedDate(userProgress?.earnedAt),
+    category: badgeData.badgeCategory,
+    requirements: [
+      {
+        id: badgeData.id,
+        title: badgeData.name,
+        description: requirementDescription,
+        progress: userProgress
+          ? `${userProgress.currentValue}/${userProgress.targetValue}`
+          : "0/0",
+        completed: userProgress?.earned ?? false,
+      },
+    ],
+    similarBadges: [],
+  };
 
   return (
     <div className="space-y-6 p-6">
@@ -108,12 +105,14 @@ export default async function BadgeDetailPage({
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-base  text-lg text-primary-color">តម្រូវការសម្រាប់ទទួលបាន</CardTitle>
-              <Badge className=" p-4 bg-green-50 text-green-600 hover:bg-green-50 text-lg">បានបញ្ចប់ទាំងអស់</Badge>
+              <CardTitle className="text-base text-lg text-primary-color">តម្រូវការសម្រាប់ទទួលបាន</CardTitle>
+              {userProgress?.earned && (
+                <Badge className="p-4 bg-green-50 text-green-600 hover:bg-green-50 text-lg">បានបញ្ចប់ទាំងអស់</Badge>
+              )}
             </CardHeader>
             <CardContent>
-              {badge.requirements.map((req) => (
-                <BadgeRequirementItem key={req.id} requirement={req} />
+              {badge.requirements.map((requirement) => (
+                <BadgeRequirementItem key={requirement.id} requirement={requirement} />
               ))}
             </CardContent>
           </Card>
@@ -127,7 +126,7 @@ export default async function BadgeDetailPage({
             category={badge.category}
             totalEarners={badge.totalEarners}
           />
-          <SimilarBadgesCard badges={badge.similarBadges} />
+          {badge.similarBadges.length > 0 && <SimilarBadgesCard badges={badge.similarBadges} />}
         </div>
       </div>
     </div>
