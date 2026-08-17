@@ -164,7 +164,7 @@ export default function Profile() {
     return (
       <div className="flex min-h-[600px] items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="h-9 w-9 animate-spin text-violet-600" />
+          <Loader2 className="h-9 w-9 animate-spin text-primary-color" />
 
           <p className="text-sm font-medium text-slate-500">
             កំពុងទាញយកព័ត៌មាន...
