@@ -1,4 +1,9 @@
-import { AtSign, BookOpen, Building2, CalendarDays, Globe2, GraduationCap, Mail, MapPin, Phone, ShieldCheck, User } from "lucide-react";
+"use client";
+
+import { AtSign, BookOpen, Building2, CalendarDays, Globe2, GraduationCap, KeyRound, Loader2, LockKeyhole, Mail, MapPin, Phone, ShieldCheck, User } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { useResetMyPasswordMutation } from "@/redux/service/profile-api";
 import type { UserProfile } from "@/types/profile";
 
 function formatBirthday(value?: string) {
@@ -16,7 +21,18 @@ function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string;
 }
 
 export function ProfileOverviewCards({ profile }: { profile: UserProfile }) {
+  const [resetPassword, { isLoading: isResettingPassword }] = useResetMyPasswordMutation();
   const fullName = [profile.firstName, profile.lastName].filter(Boolean).join(" ").trim() || "Not provided";
+
+  const handleChangePassword = async () => {
+    try {
+      await resetPassword().unwrap();
+      toast.success("Password change instructions have been sent to your email.");
+    } catch (error) {
+      console.error("Password reset failed:", error);
+      toast.error("Unable to start the password change. Please try again.");
+    }
+  };
   return (
     <div className="grid gap-5 lg:grid-cols-2">
       <ProfileCard title="About me" icon={<User />}>
@@ -46,6 +62,22 @@ export function ProfileOverviewCards({ profile }: { profile: UserProfile }) {
           <InfoRow icon={<Globe2 />} label="Language" value={(profile.locale || "Not provided").toUpperCase()} />
           <InfoRow icon={<MapPin />} label="Institution" value={profile.institutionName || "Not provided"} />
           <InfoRow icon={<BookOpen />} label="Profile type" value={profile.workStudyType || "Not provided"} />
+        </div>
+      </ProfileCard>
+
+      <ProfileCard title="Privacy & security" icon={<LockKeyhole />} className="lg:col-span-2">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-4">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-500/10"><KeyRound className="size-5" /></span>
+            <div>
+              <p className="font-semibold text-[#172052] dark:text-white">Password</p>
+              <p className="mt-1 !text-sm text-slate-500 dark:text-slate-400">Request a secure password-change link. Instructions will be sent to your registered email.</p>
+            </div>
+          </div>
+          <Button type="button" variant="outline" disabled={isResettingPassword} onClick={handleChangePassword} className="h-11 shrink-0 rounded-xl border-violet-200 px-5 font-semibold text-violet-700 hover:bg-violet-50 dark:border-violet-500/30 dark:text-violet-300 dark:hover:bg-violet-500/10">
+            {isResettingPassword ? <Loader2 className="mr-2 size-4 animate-spin" /> : <KeyRound className="mr-2 size-4" />}
+            {isResettingPassword ? "Sending…" : "Change password"}
+          </Button>
         </div>
       </ProfileCard>
     </div>

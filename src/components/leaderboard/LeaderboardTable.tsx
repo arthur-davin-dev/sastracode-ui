@@ -42,7 +42,7 @@ export function LeaderboardTable({ entries, currentUser }: LeaderboardTableProps
         <div className="flex flex-col gap-1.5">
           {entries.map((entry, i) => (
             <motion.div
-              key={entry.rank}
+              key={`${entry.id}-${i}`}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.03, duration: 0.2 }}

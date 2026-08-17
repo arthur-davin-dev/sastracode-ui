@@ -35,9 +35,9 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
       </CardHeader>
 
       <CardContent className="p-5 space-y-3">
-        {performers.map((p) => (
+        {performers.map((p, index) => (
           <div
-            key={p.rank}
+            key={`${p.rank}-${p.name}-${index}`}
             className="flex items-center gap-3 p-3 rounded-2xl bg-slate-50/80 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 hover:bg-slate-100/80 dark:hover:bg-slate-800/80 transition-all duration-200"
           >
             {/* Rank Badge */}
