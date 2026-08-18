@@ -72,62 +72,85 @@ function TypingTitle() {
     visibleTitle.split("\n");
 
   return (
-    <h1
-      aria-label={`${TITLE_FIRST_LINE} ${TITLE_SECOND_LINE}`}
-      className="
-        text-4xl
-        font-extrabold
-        leading-[1.4]
-        tracking-tight
-        sm:text-5xl
-      "
-    >
-      {/* First line - Red / Secondary */}
-      <span
+    <div className="relative">
+      {/* Invisible placeholder — always renders the FULL title so the
+          box keeps a fixed size. This stops the page from growing/shrinking
+          while the text types in. */}
+      <div
         aria-hidden="true"
-        className="block text-secondary-color"
+        className="
+          invisible
+          text-4xl
+          font-extrabold
+          leading-[1.4]
+          tracking-tight
+          sm:text-5xl
+        "
       >
-        {firstLine}
+        <span className="block">{TITLE_FIRST_LINE}</span>
+        <span className="block">{TITLE_SECOND_LINE}</span>
+      </div>
 
-        {/* Cursor while typing first line */}
-        {!hasSecondLine && (
-          <span
-            className="
-              ml-1
-              inline-block
-              h-[0.9em]
-              w-[3px]
-              animate-pulse
-              bg-secondary-color
-              align-[-0.06em]
-            "
-          />
-        )}
-      </span>
-
-      {/* Second line - Blue */}
-      <span
-        aria-hidden="true"
-        className="block text-[#002455]"
+      {/* Animated heading — sits exactly on top of the placeholder above */}
+      <h1
+        aria-label={`${TITLE_FIRST_LINE} ${TITLE_SECOND_LINE}`}
+        className="
+          absolute
+          inset-0
+          text-4xl
+          font-extrabold
+          leading-[1.4]
+          tracking-tight
+          sm:text-5xl
+        "
       >
-        {secondLine}
+        {/* First line - Red / Secondary */}
+        <span
+          aria-hidden="true"
+          className="block text-secondary-color"
+        >
+          {firstLine}
 
-        {/* Cursor while typing second line */}
-        {hasSecondLine && (
-          <span
-            className="
-              ml-1
-              inline-block
-              h-[0.9em]
-              w-[3px]
-              animate-pulse
-              bg-[#002455]
-              align-[-0.06em]
-            "
-          />
-        )}
-      </span>
-    </h1>
+          {/* Cursor while typing first line */}
+          {!hasSecondLine && (
+            <span
+              className="
+                ml-1
+                inline-block
+                h-[0.9em]
+                w-[3px]
+                animate-pulse
+                bg-secondary-color
+                align-[-0.06em]
+              "
+            />
+          )}
+        </span>
+
+        {/* Second line - Blue */}
+        <span
+          aria-hidden="true"
+          className="block text-[#002455]"
+        >
+          {secondLine}
+
+          {/* Cursor while typing second line */}
+          {hasSecondLine && (
+            <span
+              className="
+                ml-1
+                inline-block
+                h-[0.9em]
+                w-[3px]
+                animate-pulse
+                bg-[#002455]
+                align-[-0.06em]
+              "
+            />
+          )}
+        </span>
+      </h1>
+    </div>
   );
 }
 
