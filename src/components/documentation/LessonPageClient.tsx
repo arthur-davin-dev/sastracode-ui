@@ -1,13 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, X, ChevronRight } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import type { LessonDocument } from "@/types/documentation";
 import DocsSidebar from "@/components/documentation/DocsSidebarLesson";
 import DocsToc from "@/components/documentation/DocsTocLesson";
 import HeroLesson from "@/components/documentation/HeroLesson";
 import LearningGoals from "@/components/documentation/LearningGoals";
 import VideoCard from "@/components/documentation/VideoCard";
 import QuickQuiz from "@/components/documentation/QuickQuiz";
+import LessonExercise from "@/components/documentation/LessonExercise";
 import LessonFooterNav from "@/components/documentation/LessonFooterNav";
 import Backbutton from "@/components/documentation/Backbutton";
 import { CodeExample } from "@/components/documentation/CodeExample";
@@ -39,7 +41,7 @@ export default function LessonPageClient({ lesson }: LessonPageClientProps) {
           <span>{mobileSidebarOpen ? "បិទ" : "មេរៀន"}</span>
         </button>
 
-        <div className="text-sm font-semibold truncate max-w-[180px]">
+        <div className="text-sm font-semibold truncate max-w-45">
           {lesson.title || "មេរៀន"}
         </div>
 
@@ -51,7 +53,7 @@ export default function LessonPageClient({ lesson }: LessonPageClientProps) {
         {/* ========================================================== */}
         {/* 1. DESKTOP SIDEBAR (Static Left)                           */}
         {/* ========================================================== */}
-        <div className="hidden md:block sticky top-0 h-screen shrink-0 border-r border-slate-200 dark:border-slate-800">
+        <div className="sticky top-16 hidden h-[calc(100dvh-4rem)] w-72 shrink-0 self-start overflow-hidden border-r border-slate-200 md:block dark:border-slate-800">
           <DocsSidebar activeTrack={lesson.trackSlug} activeLessonId={lesson.id} />
         </div>
 
@@ -59,9 +61,9 @@ export default function LessonPageClient({ lesson }: LessonPageClientProps) {
         {/* 2. MOBILE PARTIAL OVERLAY SIDEBAR (W3Schools-style Slide)  */}
         {/* ========================================================== */}
         {mobileSidebarOpen && (
-          <div className="fixed inset-0 z-40 flex md:hidden top-[53px]">
+          <div className="fixed inset-0 z-40 flex md:hidden top-13.25">
             {/* Left Sliding Menu Panel (Width ~ 75% like W3Schools) */}
-            <div className="relative w-[78%] max-w-[300px] h-full bg-[#F2F6FF] dark:bg-slate-900 shadow-2xl border-r border-slate-200 dark:border-slate-800 overflow-y-auto z-10 transition-transform duration-300">
+            <div className="relative w-[78%] max-w-75 h-full bg-[#F2F6FF] dark:bg-slate-900 shadow-2xl border-r border-slate-200 dark:border-slate-800 overflow-y-auto z-10 transition-transform duration-300">
               <DocsSidebar activeTrack={lesson.trackSlug} activeLessonId={lesson.id} />
             </div>
 
@@ -88,6 +90,7 @@ export default function LessonPageClient({ lesson }: LessonPageClientProps) {
           <CodeExample filename={lesson.codeFilename} code={lesson.code} />
           <VideoCard instructor={lesson.instructor} />
           <QuickQuiz quiz={lesson.quiz} />
+          <LessonExercise quiz={lesson.quiz} />
           <LessonFooterNav lesson={lesson} />
         </main>
 
@@ -95,7 +98,7 @@ export default function LessonPageClient({ lesson }: LessonPageClientProps) {
         {/* 4. RIGHT TABLE OF CONTENTS                                 */}
         {/* ========================================================== */}
         {lesson.pageAnchors && lesson.pageAnchors.length > 0 && (
-          <div className="hidden lg:block sticky top-0 h-screen w-64 shrink-0 p-6 border-l border-slate-200 dark:border-slate-800 overflow-y-auto">
+          <div className="sticky top-24 hidden w-72 shrink-0 self-start border-l border-slate-200 dark:border-slate-800 lg:block">
             <DocsToc anchors={lesson.pageAnchors} />
           </div>
         )}
