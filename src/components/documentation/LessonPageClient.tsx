@@ -14,7 +14,6 @@ import LessonFooterNav from "@/components/documentation/LessonFooterNav";
 import Backbutton from "@/components/documentation/Backbutton";
 import { CodeExample } from "@/components/documentation/CodeExample";
 import { KeyPoint } from "@/components/documentation/KeyPoint";
-import type { LessonDocument } from "@/types/documentation";
 
 interface LessonPageClientProps {
   lesson: LessonDocument;
