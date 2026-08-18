@@ -793,6 +793,7 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
                 tutorialId={tutorial.id}
                 lessonType={activeLesson.type}
                 lessonId={activeLesson.id}
+                sectionId={activeLesson.sectionId}
               />
 
               <nav

@@ -25,6 +25,7 @@ import {
 } from "@/redux/service/coding-task-player-api";
 
 import CodeCoach from "@/components/playground/CodeCoach";
+import { getChallengeUIConfig } from "@/utils/coding-task-ui";
 
 interface Props {
   slug: string;
@@ -142,17 +143,17 @@ export function CodingTaskPlayer({
     );
   }
 
-  if (error || !task) {
+    if (error || !task) {
     return (
       <div className="px-5 py-12 text-center sm:px-7">
-        <XCircle className="mx-auto h-8 w-8 text-rose-400" />
-        <p className="mt-3 font-semibold text-white">
+        <XCircle className="mx-auto h-8 w-8 text-rose-500 dark:text-rose-400" />
+        <p className="mt-3 font-semibold text-slate-900 dark:text-white">
           Unable to load this challenge.
         </p>
         <button
           type="button"
           onClick={() => void refetch()}
-          className="mt-4 rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/15"
+          className="mt-4 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
         >
           Try again
         </button>
@@ -188,23 +189,25 @@ export function CodingTaskPlayer({
     task.challengeType,
   );
 
+  const uiConfig = getChallengeUIConfig(task.challengeType);
+
   return (
     <div className="mx-auto max-w-6xl px-5 py-7 sm:px-7 sm:py-8">
       <header className="mb-6 text-center">
         <div className="flex flex-wrap items-center justify-center gap-2">
-          <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-emerald-300">
+          <span className={`rounded-full px-3 py-1 text-xs font-semibold ${uiConfig.tagColorClass}`}>
             {task.challengeType.replaceAll("_", " ")}
           </span>
-          <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-slate-200">
+          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-white/10 dark:text-slate-300">
             {task.difficulty}
           </span>
         </div>
 
-        <h2 className="mt-4 text-xl font-bold text-white sm:text-2xl">
+        <h2 className="mt-4 text-xl font-bold text-slate-900 sm:text-2xl dark:text-white">
           {task.title}
         </h2>
 
-        <p className="mx-auto mt-2 max-w-3xl whitespace-pre-wrap text-sm leading-6 text-slate-200">
+        <p className="mx-auto mt-2 max-w-3xl whitespace-pre-wrap text-sm leading-6 text-slate-600 dark:text-slate-300">
           {task.description}
         </p>
       </header>
@@ -245,16 +248,16 @@ export function CodingTaskPlayer({
         />
       )}
 
-      <div className="mt-7 flex items-center justify-between border-t border-white/10 pt-5">
+      <div className="mt-7 flex items-center justify-between border-t border-slate-200 pt-5 dark:border-slate-800">
         <button
           type="button"
           disabled={!hasPrevious}
           onClick={onPrevious}
-          className="text-sm font-semibold text-slate-300 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+          className="text-sm font-semibold text-slate-500 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-30 dark:text-slate-400 dark:hover:text-white"
         >
           Previous exercise
         </button>
-        <span className="text-xs font-medium text-slate-400">
+        <span className="text-xs font-medium text-slate-400 dark:text-slate-500">
           {index + 1} / {total}
         </span>
       </div>
@@ -295,12 +298,12 @@ function BlankPlayer({
 
   return (
     <div className="mx-auto max-w-4xl">
-      <div className="rounded-2xl bg-[#4a5568] p-5 sm:p-7">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-slate-300">
+      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7 dark:border-slate-800 dark:bg-[#1a1d27]">
+        <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
           Complete the missing code
         </p>
 
-        <div className="overflow-x-auto rounded-xl bg-[#1f2937] p-4 font-mono text-sm leading-8 text-slate-100">
+        <div className="overflow-x-auto rounded-xl border border-slate-200 bg-[#f8fafc] p-4 font-mono text-sm leading-8 text-slate-800 dark:border-slate-700/50 dark:bg-[#0f111a] dark:text-slate-200">
           {parts.map((part, index) => (
             <span key={index}>
               <span className="whitespace-pre-wrap">{part}</span>
@@ -313,7 +316,7 @@ function BlankPlayer({
                     setAnswers(next);
                   }}
                   aria-label={`Blank ${index + 1}`}
-                  className="mx-1 inline-block h-8 min-w-28 rounded-md border border-white/60 bg-slate-800 px-2 font-mono text-sm text-white outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20"
+                  className="mx-1 inline-block h-8 min-w-28 rounded-md border border-slate-300 bg-white px-2 font-mono text-sm text-slate-900 outline-none focus:border-[#04AA6D] focus:ring-2 focus:ring-[#04AA6D]/20 dark:border-slate-600 dark:bg-[#1e1e1e] dark:text-white dark:focus:border-[#04AA6D]"
                 />
               )}
             </span>
@@ -328,7 +331,7 @@ function BlankPlayer({
           type="button"
           disabled={isSubmitting || answers.some((answer) => !answer.trim())}
           onClick={() => void onSubmit(completedCode())}
-          className="inline-flex h-11 items-center gap-2 rounded-xl bg-emerald-500 px-6 text-sm font-bold text-white hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
+          className="inline-flex h-11 items-center gap-2 rounded-xl bg-[#04AA6D] px-6 text-sm font-bold text-white hover:bg-[#059862] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-emerald-600 dark:hover:bg-emerald-500"
         >
           {isSubmitting ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -373,16 +376,16 @@ function ArrangePlayer({
 
   return (
     <div className="mx-auto max-w-4xl">
-      <div className="space-y-2 rounded-2xl bg-[#4a5568] p-4 sm:p-6">
+      <div className="space-y-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 dark:border-slate-800 dark:bg-[#1a1d27]">
         {blocks.map((block, index) => (
           <div
             key={`${index}-${block}`}
-            className="flex items-center gap-3 rounded-xl bg-[#1f2937] px-4 py-3"
+            className="flex items-center gap-3 rounded-xl border border-slate-200 bg-[#f8fafc] px-4 py-3 dark:border-slate-700/50 dark:bg-[#0f111a]"
           >
-            <span className="w-7 text-center text-xs font-bold text-emerald-300">
+            <span className="w-7 text-center text-xs font-bold text-[#04AA6D] dark:text-emerald-400">
               {index + 1}
             </span>
-            <code className="min-w-0 flex-1 overflow-x-auto whitespace-pre text-sm text-slate-100">
+            <code className="min-w-0 flex-1 overflow-x-auto whitespace-pre text-sm text-slate-800 dark:text-slate-200">
               {block}
             </code>
             <div className="flex gap-1">
@@ -390,7 +393,7 @@ function ArrangePlayer({
                 type="button"
                 disabled={index === 0}
                 onClick={() => move(index, -1)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 disabled:opacity-30"
+                className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-200 text-slate-600 transition hover:bg-slate-300 disabled:opacity-30 dark:bg-white/10 dark:text-slate-300 dark:hover:bg-white/20"
               >
                 <ArrowUp className="h-4 w-4" />
               </button>
@@ -398,7 +401,7 @@ function ArrangePlayer({
                 type="button"
                 disabled={index === blocks.length - 1}
                 onClick={() => move(index, 1)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/10 disabled:opacity-30"
+                className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-200 text-slate-600 transition hover:bg-slate-300 disabled:opacity-30 dark:bg-white/10 dark:text-slate-300 dark:hover:bg-white/20"
               >
                 <ArrowDown className="h-4 w-4" />
               </button>
@@ -450,74 +453,138 @@ function EditorPlayer({
       : language;
 
   const preview = useMemo(() => buildPreview(task, code), [task, code]);
+  const uiConfig = getChallengeUIConfig(task.challengeType);
+  const Icon = uiConfig.icon;
 
   return (
-    <div>
-      <div
-        className={`grid overflow-hidden rounded-2xl border border-white/10 bg-[#111827] ${
-          webMode ? "lg:grid-cols-2" : ""
-        }`}
-      >
-        <div className="min-w-0">
-          <div className="flex h-12 items-center justify-between border-b border-white/10 px-4">
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-              <Code2 className="h-4 w-4 text-emerald-400" />
-              Code
+    <div className="flex flex-col gap-4">
+      {webMode ? (
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg dark:border-slate-700/50 dark:bg-[#0f111a]">
+          {/* Header */}
+          <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700/50 dark:bg-[#1a1d27]">
+            <div className="flex items-center gap-2">
+              <Icon className={`h-5 w-5 ${uiConfig.headerColorClass}`} />
+              <span className="font-semibold text-slate-700 dark:text-white">{uiConfig.title}</span>
             </div>
-            <button
-              type="button"
-              onClick={onReset}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
-            >
-              <RotateCcw className="h-3.5 w-3.5" />
-              Reset
-            </button>
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                onClick={onReset}
+                className="flex items-center gap-1 text-xs font-medium text-slate-500 transition hover:text-slate-800 dark:text-slate-400 dark:hover:text-white"
+              >
+                <RotateCcw className="h-3.5 w-3.5" /> Reset
+              </button>
+              <button
+                type="button"
+                disabled={isRunning || isSubmitting}
+                onClick={onRun}
+                className="flex items-center gap-1.5 rounded-lg bg-[#04AA6D] px-4 py-1.5 text-sm font-bold text-white shadow-sm transition hover:bg-[#059862] disabled:opacity-50"
+              >
+                {isRunning ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Play className="h-4 w-4 fill-current" />
+                )}
+                Run ❯
+              </button>
+              <button
+                type="button"
+                disabled={isRunning || isSubmitting}
+                onClick={onSubmit}
+                className="flex items-center gap-1.5 rounded-lg bg-blue-600 px-4 py-1.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-500 disabled:opacity-50"
+              >
+                {isSubmitting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <CheckCircle2 className="h-4 w-4" />
+                )}
+                Check Code
+              </button>
+            </div>
           </div>
 
-          <Editor
-            height="340px"
-            language={language}
-            value={code}
-            onChange={(value) => onChange(value ?? "")}
-            theme="vs-dark"
-            options={{
-              minimap: { enabled: false },
-              fontSize: 14,
-              lineHeight: 22,
-              padding: { top: 16, bottom: 16 },
-              scrollBeyondLastLine: false,
-              automaticLayout: true,
-            }}
-          />
-        </div>
+          {/* Split Pane */}
+          <div className="grid divide-y divide-slate-200 dark:divide-slate-700/50 lg:grid-cols-2 lg:divide-x lg:divide-y-0">
+            {/* Code */}
+            <div className="flex flex-col bg-[#1e1e1e]">
+              <div className="flex h-10 items-center bg-[#2d2d2d] px-4 text-xs font-medium uppercase text-slate-300">
+                {language === "html" ? "index.html" : language === "css" ? "style.css" : language === "javascript" ? "script.js" : language}
+              </div>
+              <Editor
+                height="400px"
+                language={language}
+                value={code}
+                onChange={(value) => onChange(value ?? "")}
+                theme="vs-dark"
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  lineHeight: 22,
+                  padding: { top: 16, bottom: 16 },
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                }}
+              />
+            </div>
 
-        {webMode && (
-          <div className="min-w-0 border-t border-white/10 bg-white lg:border-l lg:border-t-0">
-            <div className="flex h-12 items-center gap-2 border-b border-slate-200 bg-[#252936] px-4">
-              <span className="h-2.5 w-2.5 rounded-full bg-rose-400" />
-              <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
-              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
-              <span className="ml-3 text-xs font-semibold text-white">
+            {/* Preview */}
+            <div className="flex flex-col bg-white">
+              <div className="flex h-10 items-center border-b border-slate-200 bg-[#f8fafc] px-4 text-xs font-medium text-slate-500">
                 Result
-              </span>
+              </div>
+              <iframe
+                title={`${task.title} preview`}
+                srcDoc={preview}
+                sandbox={task.challengeType === "JS_DOM" ? "allow-scripts" : ""}
+                className="h-[400px] w-full border-none bg-white"
+              />
             </div>
-
-            <iframe
-              title={`${task.title} preview`}
-              srcDoc={preview}
-              sandbox={task.challengeType === "JS_DOM" ? "allow-scripts" : ""}
-              className="h-[340px] w-full bg-white"
-            />
           </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <>
+          <div className="grid overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-[#0f111a]">
+            <div className="min-w-0 bg-[#1e1e1e]">
+              <div className="flex h-12 items-center justify-between border-b border-slate-700/50 bg-[#2d2d2d] px-4">
+                <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
+                  <Icon className={`h-4 w-4 ${uiConfig.headerColorClass}`} />
+                  {uiConfig.title}
+                </div>
+                <button
+                  type="button"
+                  onClick={onReset}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
+                >
+                  <RotateCcw className="h-3.5 w-3.5" />
+                  Reset
+                </button>
+              </div>
 
-      <Actions
-        isRunning={isRunning}
-        isSubmitting={isSubmitting}
-        onRun={onRun}
-        onSubmit={onSubmit}
-      />
+              <Editor
+                height="340px"
+                language={language}
+                value={code}
+                onChange={(value) => onChange(value ?? "")}
+                theme="vs-dark"
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  lineHeight: 22,
+                  padding: { top: 16, bottom: 16 },
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                }}
+              />
+            </div>
+          </div>
+
+          <Actions
+            isRunning={isRunning}
+            isSubmitting={isSubmitting}
+            onRun={onRun}
+            onSubmit={onSubmit}
+          />
+        </>
+      )}
 
       <div className="mt-4">
         <CodeCoach
@@ -553,7 +620,7 @@ function Actions({
         type="button"
         disabled={isRunning || isSubmitting}
         onClick={onRun}
-        className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/15 bg-white/5 px-4 text-sm font-semibold text-white hover:bg-white/10 disabled:opacity-50"
+        className="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
       >
         {isRunning ? (
           <Loader2 className="h-4 w-4 animate-spin" />
@@ -567,7 +634,7 @@ function Actions({
         type="button"
         disabled={isRunning || isSubmitting}
         onClick={onSubmit}
-        className="inline-flex h-10 items-center gap-2 rounded-xl bg-emerald-500 px-5 text-sm font-bold text-white hover:bg-emerald-600 disabled:opacity-50"
+        className="inline-flex h-10 items-center gap-2 rounded-xl bg-[#04AA6D] px-5 text-sm font-bold text-white hover:bg-[#059862] disabled:opacity-50 dark:bg-emerald-600 dark:hover:bg-emerald-500"
       >
         {isSubmitting ? (
           <Loader2 className="h-4 w-4 animate-spin" />
@@ -591,8 +658,8 @@ function Result({
     <div
       className={`mt-4 rounded-xl border px-4 py-3 text-sm ${
         result.passed
-          ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-100"
-          : "border-rose-400/30 bg-rose-400/10 text-rose-100"
+          ? "border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-100"
+          : "border-rose-200 bg-rose-50 text-rose-900 dark:border-rose-400/30 dark:bg-rose-400/10 dark:text-rose-100"
       }`}
     >
       <div className="flex items-start gap-3">
@@ -611,7 +678,7 @@ function Result({
             Tests: {result.testsPassed ?? 0}/{result.testsTotal ?? 0}
           </p>
           {result.output && (
-            <pre className="mt-3 max-h-40 overflow-auto whitespace-pre-wrap rounded-lg bg-black/20 p-3 font-mono text-xs">
+            <pre className="mt-3 max-h-40 overflow-auto whitespace-pre-wrap rounded-lg bg-white/60 p-3 font-mono text-xs dark:bg-black/20">
               {result.output}
             </pre>
           )}
@@ -638,11 +705,11 @@ function Success({
 }) {
   return (
     <div className="mx-auto max-w-5xl px-5 py-8 sm:px-7 sm:py-10">
-      <p className="text-center text-lg font-semibold text-white">
+      <p className="text-center text-lg font-semibold text-slate-900 dark:text-white">
         {task.title}
       </p>
 
-      <div className="relative mt-6 overflow-hidden rounded-2xl bg-emerald-500 px-6 py-14 text-center">
+      <div className="relative mt-6 overflow-hidden rounded-2xl bg-[#04AA6D] px-6 py-14 text-center dark:bg-emerald-500">
         <span className="absolute left-[8%] top-[18%] h-3 w-3 rounded-full bg-amber-300" />
         <span className="absolute left-[22%] top-[68%] h-2.5 w-2.5 rounded-full bg-cyan-300" />
         <span className="absolute right-[20%] top-[16%] h-3 w-3 rounded-full bg-violet-300" />
@@ -665,18 +732,18 @@ function Success({
           <button
             type="button"
             onClick={onNext}
-            className="mt-8 rounded-lg bg-slate-800 px-5 py-3 text-sm font-bold text-white hover:bg-slate-900"
+            className="mt-8 rounded-lg bg-white px-5 py-3 text-sm font-bold text-[#04AA6D] shadow-sm hover:bg-emerald-50 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-900"
           >
             Next Question »
           </button>
         ) : (
-          <div className="mt-8 inline-block rounded-lg bg-slate-800/90 px-5 py-3 text-sm font-bold text-white">
+          <div className="mt-8 inline-block rounded-lg bg-white/20 px-5 py-3 text-sm font-bold text-white backdrop-blur-sm dark:bg-slate-800/90">
             All coding challenges completed
           </div>
         )}
       </div>
 
-      <p className="mt-4 text-center text-xs text-slate-300">
+      <p className="mt-4 text-center text-xs text-slate-500 dark:text-slate-300">
         Exercise {index + 1} of {total}
       </p>
     </div>
