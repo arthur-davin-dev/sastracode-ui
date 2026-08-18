@@ -130,12 +130,13 @@ import {
   WandSparkles,
   Wrench,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   useExplainCodeMutation,
   useFixCodeMutation,
   useGetCodeHintMutation,
+  useGetHintStatusQuery,
   useImproveCodeMutation,
   type AiHintResponse,
 } from "@/types/playgroundApi";
@@ -158,15 +159,53 @@ interface CodeCoachProps {
 }
 
 function getRequestError(error: unknown) {
-  if (typeof error === "object" && error !== null && "data" in error) {
-    const apiError = error as {
-      data?: {
-        message?: unknown;
-      };
-    };
+  console.error("AI Coach request failed:", error);
 
-    if (typeof apiError.data?.message === "string") {
-      return apiError.data.message;
+  if (error && typeof error === "object") {
+    if ("data" in error) {
+      const data = (
+        error as {
+          data?: unknown;
+        }
+      ).data;
+
+      if (typeof data === "string") {
+        return data;
+      }
+
+      if (data && typeof data === "object" && "message" in data) {
+        const message = (
+          data as {
+            message?: unknown;
+          }
+        ).message;
+
+        if (typeof message === "string") {
+          return message;
+        }
+      }
+    }
+
+    if ("error" in error) {
+      const message = (
+        error as {
+          error?: unknown;
+        }
+      ).error;
+
+      if (typeof message === "string") {
+        return message;
+      }
+    }
+
+    if ("status" in error) {
+      const status = (
+        error as {
+          status?: unknown;
+        }
+      ).status;
+
+      return `AI request failed (${String(status)}).`;
     }
   }
 
@@ -199,15 +238,39 @@ export default function CodeCoach({
   const [fixCode, { isLoading: isFixing }] = useFixCodeMutation();
 
   const loading = isExplaining || isImproving || isHinting || isFixing;
+
   const hasTask = Boolean(codingTaskId);
-  const fixUnlocked = hintState?.fixUnlocked === true;
+
+  const { data: hintStatus, refetch: refetchHintStatus } =
+    useGetHintStatusQuery(codingTaskId ?? "", {
+      skip: !codingTaskId,
+    });
+
+  useEffect(() => {
+    setResult(null);
+    setError("");
+    setHintState(null);
+    setApplied(false);
+  }, [codingTaskId]);
+
+  const fixUnlocked =
+    hintState?.fixUnlocked === true || hintStatus?.fixUnlocked === true;
 
   const nextHintLevel = useMemo(() => {
-    if (!hintState) return 1;
+    if (typeof hintState?.hintLevel === "number") {
+      return clampHintLevel(hintState.hintLevel + 1);
+    }
 
-    const previousLevel = hintState.hintLevel ?? hintState.hintsUsed ?? 0;
-    return clampHintLevel(previousLevel + 1);
-  }, [hintState]);
+    if (typeof hintStatus?.nextHintLevel === "number") {
+      return clampHintLevel(hintStatus.nextHintLevel);
+    }
+
+    if (typeof hintStatus?.hintsUsed === "number") {
+      return clampHintLevel(hintStatus.hintsUsed + 1);
+    }
+
+    return 1;
+  }, [hintState, hintStatus]);
 
   async function askCoach(mode: HelpMode) {
     if (!code.trim()) {
@@ -243,11 +306,15 @@ export default function CodeCoach({
         }
 
         setHintState(response);
+
         setResult({
           kind: "hint",
           title: `Hint ${response.hintLevel ?? nextHintLevel}`,
           text: response.hint.trim(),
         });
+
+        void refetchHintStatus();
+
         return;
       }
 
@@ -312,6 +379,8 @@ export default function CodeCoach({
           "The AI coach generated a corrected version of your code.",
         code: response.fixedCode?.trim() || undefined,
       });
+
+      void refetchHintStatus();
     } catch (requestError) {
       setError(getRequestError(requestError));
     }
@@ -324,8 +393,13 @@ export default function CodeCoach({
     setApplied(true);
   }
 
-  const remainingHints = hintState?.hintsRemainingUntilFixUnlocked;
-  const hintsUsed = hintState?.hintsUsed ?? 0;
+  const remainingHints =
+    hintState?.hintsRemainingUntilFixUnlocked ?? hintStatus?.hintsRemaining;
+
+  const hintsUsed = hintState?.hintsUsed ?? hintStatus?.hintsUsed ?? 0;
+
+  const hasHintProgress =
+    hintsUsed > 0 || Boolean(hintState) || Boolean(hintStatus);
 
   return (
     <section
@@ -376,7 +450,7 @@ export default function CodeCoach({
           ) : (
             <LockKeyhole className="h-4 w-4" />
           )}
-          {hintState ? `Next Hint (${nextHintLevel}/5)` : "Get Hint"}
+          {hasHintProgress ? `Next Hint (${nextHintLevel}/5)` : "Get Hint"}
         </button>
 
         <button
@@ -479,7 +553,7 @@ export default function CodeCoach({
             <span className="text-xs font-bold text-slate-800 dark:text-slate-100">
               {result.title}
             </span>
-            {result.kind === "hint" && hintState?.fixUnlocked && (
+            {result.kind === "hint" && fixUnlocked && (
               <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">
                 Fix unlocked
               </span>
