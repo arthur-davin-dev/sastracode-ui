@@ -35,7 +35,7 @@ export function InProgressCertificateCard({
           
           {/* Header Row: Title & Status Badge */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <h3 className="text-lg text-bold font-extrabold text-primary-color truncate">
+            <h3 className="text-lg text-bold font-extrabold text-primary-color dark:text-white truncate">
               {certificate.title}
             </h3>
             
@@ -47,7 +47,7 @@ export function InProgressCertificateCard({
           </div>
 
           {/* Progress Percent Text */}
-          <div className="flex items-center justify-between text-lg font-bold text-primary-color">
+          <div className="flex items-center justify-between text-lg font-bold text-primary-color dark:text-white">
             <span className="opacity-80">វឌ្ឍនភាពសិក្សា</span>
             <span className="text-secondary-color">{certificate.progressPercent}%</span>
           </div>
@@ -59,10 +59,10 @@ export function InProgressCertificateCard({
           />
 
           {/* Remaining Days Info */}
-          <div className="flex items-center gap-2 text-lg font-medium text-primary-color opacity-80 pt-1">
+          <div className="flex items-center gap-2 text-lg font-medium text-primary-color dark:text-white opacity-80 pt-1">
             <Clock className="h-5 w-5 text-secondary-color shrink-0" />
             <span>
-              បញ្ចប់ក្នុងរយៈពេល <span className="font-bold text-primary-color">{certificate.daysLeft} ថ្ងៃ</span> (ពី {certificate.totalDays} ថ្ងៃ)
+              បញ្ចប់ក្នុងរយៈពេល <span className="font-bold text-primary-color dark:text-white">{certificate.daysLeft} ថ្ងៃ</span> (ពី {certificate.totalDays} ថ្ងៃ)
             </span>
           </div>
 

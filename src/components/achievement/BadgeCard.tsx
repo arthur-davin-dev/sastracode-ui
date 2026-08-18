@@ -31,7 +31,7 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
             className={`h-20 w-20 rounded-2xl flex items-center justify-center transition-all duration-300  ${
               badge.locked
                 ? "bg-slate-200/80 dark:bg-slate-800 text-slate-400"
-                : "bg-gradient-to-br from-blue-50 via-blue-50 to-blue-100 text-slate-950 "
+                : ""
             }`}
           >
             {badge.locked ? (

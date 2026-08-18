@@ -87,7 +87,7 @@ export function EarnedCertificateCard({
 
           {/* Date + Status */}
           <div className="flex items-center justify-between">
-            <span className="text-lg text-primary-color text-muted-foreground">
+            <span className="text-lg text-primary-color dark:text-white text-muted-foreground">
               {certificate.date}
             </span>
 
@@ -111,10 +111,10 @@ export function EarnedCertificateCard({
           {/* Footer */}
           <div className="mt-auto flex items-center justify-between border-t pt-5">
             <div>
-              <p className="text-lg text-primary-color uppercase tracking-wider text-muted-foreground">
+              <p className="text-lg text-primary-color dark:text-white uppercase tracking-wider text-muted-foreground">
                 Certificate ID
               </p>
-              <p className="text-primary-color text-lg font-semibold">
+              <p className="text-primary-color dark:text-white  text-lg font-semibold">
                 #{certificate.certificateId}
               </p>
             </div>
@@ -123,8 +123,7 @@ export function EarnedCertificateCard({
               onClick={(e) => e.preventDefault()}
               className="
                 text-primary-color
-                dark:text-primary-100
-                hover:text-primary-600
+                dark:text-white
                 rounded-full
                 border
                 p-2.5

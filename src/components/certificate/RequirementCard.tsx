@@ -23,12 +23,12 @@ export function RequirementCard({ requirement }: { requirement: CertificateRequi
         <div className="flex-1 w-full space-y-2">
           
           {/* Requirement Title (text-lg & text-primary-color) */}
-          <h3 className="text-lg font-bold text-primary-color">
+          <h3 className="text-lg font-bold text-primary-color dark:text-white">
             {requirement.title}
           </h3>
 
           {/* Progress Percent Label (text-lg & text-primary-color) */}
-          <div className="flex items-center justify-between text-lg font-medium text-primary-color opacity-80 pt-1">
+          <div className="flex items-center justify-between text-lg font-medium text-primary-color dark:text-white opacity-80 pt-1">
             <span>បញ្ចប់ចំណេះដឹងមូលដ្ឋាន</span>
             <span className="font-bold text-secondary-color">{requirement.progressPercent}%</span>
           </div>

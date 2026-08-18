@@ -63,17 +63,17 @@ export function ClaimCertificateCard({ items }: ClaimCertificateCardProps) {
 
           {/* Title & Subtitle */}
           <div className="space-y-2 max-w-sm">
-            <h3 className="text-2xl font-extrabold text-primary-color leading-tight">
+            <h3 className="text-2xl font-extrabold text-primary-color dark:text-white leading-tight">
               ទាមទារវិញ្ញាបនបត្រ
             </h3>
-            <p className="text-lg text-primary-color opacity-80 leading-relaxed">
+            <p className="text-lg text-primary-color dark:text-white opacity-80 leading-relaxed">
               បំពេញគ្រប់លក្ខខណ្ឌខាងក្រោមដើម្បីទទួលបានវិញ្ញាបនបត្រនេះ
             </p>
           </div>
 
           {/* Progress Status Bar */}
           <div className="w-full max-w-sm space-y-2 pt-1">
-            <div className="flex justify-between items-center text-lg font-bold text-primary-color">
+            <div className="flex justify-between items-center text-lg font-bold text-primary-color dark:text-white">
               <span className="opacity-80">លក្ខខណ្ឌដែលបានបំពេញ</span>
               <span className={allDone ? "text-primary-color" : "text-secondary-color"}>
                 {completedCount} / {totalCount} ({progressPercent}%)

@@ -23,7 +23,7 @@ export function VerificationCard({
 
       <CardHeader className="pt-8 pb-4 space-y-4">
         {/* Title Section (text-2xl) */}
-        <CardTitle className="text-2xl font-extrabold text-primary-color flex items-center gap-3">
+        <CardTitle className="text-2xl font-extrabold text-primary-color dark:text-white flex items-center gap-3">
           <div className="p-3 rounded-2xl bg-init-color/20 border border-init-color/50 flex items-center justify-center">
             <ShieldCheck className="h-7 w-7 text-secondary-color" />
           </div>
@@ -31,7 +31,7 @@ export function VerificationCard({
         </CardTitle>
         
         {/* Description Content (text-lg) */}
-        <p className="text-lg text-primary-color opacity-80 leading-relaxed">
+        <p className="text-lg text-primary-color dark:text-white opacity-80 leading-relaxed">
           វិញ្ញាបនបត្រនេះត្រូវបានចេញផ្តល់ដោយផ្លូវការនិងអាចផ្ទៀងផ្ទាត់បានពី SastraCode។ អ្នកអាចប្រើប្រាស់ QR Code នេះដើម្បីផ្ទៀងផ្ទាត់ភាពត្រឹមត្រូវ។
         </p>
       </CardHeader>
@@ -43,7 +43,7 @@ export function VerificationCard({
           
           {/* Status Row */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-200 dark:border-slate-700">
-            <span className="text-lg font-medium text-primary-color opacity-70">ស្ថានភាព</span>
+            <span className="text-lg font-medium text-primary-color dark:text-white opacity-70">ស្ថានភាព</span>
             <span className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-50 dark:bg-green-950/30 text-green-600 border border-green-200 dark:border-green-900 text-lg font-bold w-fit">
               <CheckCircle2 className="h-5 w-5" /> 
               {status || "ត្រឹមត្រូវ"}
@@ -52,14 +52,14 @@ export function VerificationCard({
 
           {/* Issued Date Row */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-200 dark:border-slate-700">
-            <span className="text-lg font-medium text-primary-color opacity-70">ការចេញផ្តល់</span>
-            <span className="text-lg font-bold text-primary-color">{issuedDate}</span>
+            <span className="text-lg font-medium text-primary-color dark:text-white opacity-70">ការចេញផ្តល់</span>
+            <span className="text-lg font-bold text-primary-color dark:text-white">{issuedDate}</span>
           </div>
 
           {/* ID Row */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <span className="text-lg font-medium text-primary-color opacity-70">ID</span>
-            <span className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-yellow-400/10 border border-yellow-400/40 text-lg font-mono font-bold text-primary-color w-fit">
+            <span className="text-lg font-medium text-primary-color dark:text-white opacity-70">ID</span>
+            <span className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-yellow-400/10 border border-yellow-400/40 text-lg font-mono font-bold text-primary-color dark:text-white  w-fit">
               <Fingerprint className="h-5 w-5 text-secondary-color" />
               {verificationId}
             </span>
