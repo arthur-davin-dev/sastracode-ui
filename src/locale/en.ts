@@ -156,7 +156,7 @@ export const en = {
     description:
       "Modern technologies powering a next-generation learning experience.",
   },
-  popularCourses: {
+  popularCourse: {
     title: "Popular Courses",
     description:
       "Explore our most popular courses and advance your skills with hands-on projects and real-world applications.",
