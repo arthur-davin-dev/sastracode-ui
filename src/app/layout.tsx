@@ -77,11 +77,11 @@ import { Toaster } from "@/components/ui/sonner";
 const googleSans = localFont({
   src: [
     {
-      path: "../../public/font/GoogleSans-VariableFont_GRAD,opsz,wght.ttf",
+      path: "./font/GoogleSans-VariableFont_GRAD,opsz,wght.ttf",
       style: "normal",
     },
     {
-      path: "../../public/font/GoogleSans-Italic-VariableFont_GRAD,opsz,wght.ttf",
+      path: "./font/GoogleSans-Italic-VariableFont_GRAD,opsz,wght.ttf",
       style: "italic",
     },
   ],
