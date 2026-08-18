@@ -16,10 +16,10 @@ export function XpLevelCard({ level, currentXp, nextLevelXp, progressPercent }: 
 
   return (
     <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-200 dark:border-slate-800 bg-white
-     dark:bg-slate-900 shadow-md hover:shadow-xl  transition-all duration-300">
+     dark:bg-slate-900 hover:border-primary-color/25 hover:-translate-y-0.5 transition-all duration-300">
       
       {/* Background Decorative Ambient Glows */}
-      <div className="absolute -top-12 -right-12 h-36 w-36 rounded-full bg-yellow-400/20 blur-3xl" />
+      <div className="absolute -top-12 -right-12 h-36 w-36 rounded-full bg-blue-400/40 blur-3xl" />
       <div className="absolute -bottom-12 -left-12 h-36 w-36 rounded-full bg-blue-600/10 blur-3xl" />
 
       <CardContent className="relative z-10 p-7 md:p-8 space-y-6">
@@ -27,7 +27,7 @@ export function XpLevelCard({ level, currentXp, nextLevelXp, progressPercent }: 
         {/* Card Header Title */}
         <div className="flex items-center justify-between border-b-2 border-slate-100 dark:border-slate-800 pb-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-2xl bg-yellow-400/20 text-primary-color dark:text-yellow-400 border border-yellow-400/40 shadow-xs">
+            <div className="p-2.5 rounded-2xl bg-blue-500/20 text-primary-color dark:text-blue-400 border border-blue-500/40 shadow-xs">
               <Zap className="h-6 w-6 text-init-color fill-init-color" />
             </div>
             <h3 className="text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">

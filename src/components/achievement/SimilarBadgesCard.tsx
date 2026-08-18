@@ -19,8 +19,8 @@ export function SimilarBadgesCard({ badges }: { badges: SimilarBadge[] }) {
 
       <CardHeader className="relative z-10 pb-4 border-b border-slate-100 dark:border-slate-800/80">
         <CardTitle className="text-2xl font-bold text-primary-color dark:text-white flex items-center gap-2.5 transition-colors duration-300">
-          <div className="p-2 rounded-xl bg-yellow-400/20 border border-init-color/40 text-slate-950 dark:text-yellow-400">
-            <Award className="h-6 w-6 text-init-color " />
+          <div className="p-2 rounded-xl bg-primary-color/20 border border-primary-color/40 text-slate-950 dark:text-yellow-400">
+            <Award className="h-6 w-6 text-primary-color " />
           </div>
           <span>មេដាយពាក់ព័ន្ធ</span>
         </CardTitle>
@@ -41,7 +41,7 @@ export function SimilarBadgesCard({ badges }: { badges: SimilarBadge[] }) {
               <div className="flex items-center gap-4">
                 {/* Dynamic Icon Housing */}
                 <div className="relative shrink-0">
-                  <div className="h-12 w-12 rounded-2xl  flex items-center justify-center border border-init-color
+                  <div className="h-12 w-12 rounded-2xl  flex items-center justify-center border border-primary-color
                    shadow-xs group-hover:scale-105 transition-transform duration-300">
                     <Icon className="h-6 w-6 text-slate-950" />
                   </div>

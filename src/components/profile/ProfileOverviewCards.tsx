@@ -13,7 +13,7 @@ function formatBirthday(value?: string) {
 }
 
 function ProfileCard({ title, icon, children, className = "" }: { title: string; icon: React.ReactNode; children: React.ReactNode; className?: string }) {
-  return <section className={`rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 ${className}`}><div className="mb-4 flex items-center gap-3"><span className="flex size-9 items-center justify-center rounded-xl bg-violet-50 text-violet-600 [&>svg]:size-[18px] dark:bg-violet-500/10">{icon}</span><h2 className="font-bold text-[#111936] dark:text-white">{title}</h2></div>{children}</section>;
+  return <section className={`rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 ${className}`}><div className="mb-4 flex items-center gap-3"><span className="flex size-9 items-center justify-center rounded-xl bg-violet-50 text-primary-color [&>svg]:size-[18px] dark:bg-violet-500/10">{icon}</span><h2 className="font-bold text-[#111936] dark:text-white">{title}</h2></div>{children}</section>;
 }
 
 function InfoRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
@@ -51,7 +51,7 @@ export function ProfileOverviewCards({ profile }: { profile: UserProfile }) {
 
       <ProfileCard title="Education & work" icon={<GraduationCap />}>
         <div className="flex items-center gap-5">
-          <span className="flex size-20 shrink-0 items-center justify-center rounded-2xl bg-violet-50 text-violet-500 dark:bg-violet-500/10">{profile.workStudyType === "EMPLOYEE" ? <Building2 className="size-10" /> : <GraduationCap className="size-10" />}</span>
+          <span className="flex size-20 shrink-0 items-center justify-center rounded-2xl bg-violet-50 text-primary-color dark:bg-violet-500/10">{profile.workStudyType === "EMPLOYEE" ? <Building2 className="size-10" /> : <GraduationCap className="size-10" />}</span>
           <div className="min-w-0"><p className="font-bold text-[#172052] dark:text-white">{profile.institutionName || "Institution not provided"}</p><p className="mt-1 !text-sm text-slate-500">{profile.workStudyType === "EMPLOYEE" ? "Employee" : profile.workStudyType === "STUDENT" ? "Student" : "Learning profile"}</p></div>
         </div>
       </ProfileCard>
@@ -68,13 +68,13 @@ export function ProfileOverviewCards({ profile }: { profile: UserProfile }) {
       <ProfileCard title="Privacy & security" icon={<LockKeyhole />} className="lg:col-span-2">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-4">
-            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-500/10"><KeyRound className="size-5" /></span>
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-violet-50 text-primary-color dark:bg-violet-500/10"><KeyRound className="size-5" /></span>
             <div>
               <p className="font-semibold text-[#172052] dark:text-white">Password</p>
               <p className="mt-1 !text-sm text-slate-500 dark:text-slate-400">Request a secure password-change link. Instructions will be sent to your registered email.</p>
             </div>
           </div>
-          <Button type="button" variant="outline" disabled={isResettingPassword} onClick={handleChangePassword} className="h-11 shrink-0 rounded-xl border-violet-200 px-5 font-semibold text-violet-700 hover:bg-violet-50 dark:border-violet-500/30 dark:text-violet-300 dark:hover:bg-violet-500/10">
+          <Button type="button" variant="outline" disabled={isResettingPassword} onClick={handleChangePassword} className="h-11 shrink-0 rounded-xl bg-primary-color border-violet-200 px-5 font-semibold text-white hover:bg-primary-color/50 dark:border-violet-500/30 dark:text-violet-300 dark:hover:bg-violet-500/10">
             {isResettingPassword ? <Loader2 className="mr-2 size-4 animate-spin" /> : <KeyRound className="mr-2 size-4" />}
             {isResettingPassword ? "Sending…" : "Change password"}
           </Button>

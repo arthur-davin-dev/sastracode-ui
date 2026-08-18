@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Lock, Sparkles } from "lucide-react";
 import { AchievementBadge } from "@/types/achievement";
@@ -17,23 +16,22 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
       className={`group relative h-full rounded-3xl border-2 transition-all duration-300 overflow-hidden ${
         badge.locked
           ? "bg-slate-50/80 border-slate-200 dark:bg-slate-800/40 dark:border-slate-800 opacity-80"
-          : "bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-sm hover:shadow-xl hover:border-primary-color hover:-translate-y-1.5"
+          : "bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800 hover:border-primary-color/25 hover:-translate-y-1.5"
       }`}
     >
-      {/* Background Accent Glow for unlocked badges */}
       {!badge.locked && (
-        <div className="absolute -top-12 -right-12 h-28 w-28 rounded-full bg-yellow-400/20 blur-2xl group-hover:bg-blue-600/20 transition-all duration-500" />
+        <div className="absolute -top-12 -right-12 h-28 w-28 rounded-full bg-primary-color/10 blur-2xl group-hover:bg-blue-600/20 transition-all duration-500" />
       )}
 
-      <CardContent className="flex flex-col items-center justify-between gap-4 p-6 text-center h-full relative z-10">
+      <CardContent className="flex flex-col items-center justify-between gap-4 p-4 text-center h-full relative z-10">
         
         {/* Badge Icon Header Container */}
         <div className="relative">
           <div
-            className={`h-20 w-20 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-inner ${
+            className={`h-20 w-20 rounded-2xl flex items-center justify-center transition-all duration-300  ${
               badge.locked
                 ? "bg-slate-200/80 dark:bg-slate-800 text-slate-400"
-                : "bg-gradient-to-br from-yellow-50 via-amber-50 to-yellow-500 text-slate-950 shadow-amber-300/50 group-hover:scale-105"
+                : "bg-gradient-to-br from-blue-50 via-blue-50 to-blue-100 text-slate-950 "
             }`}
           >
             {badge.locked ? (
@@ -41,7 +39,7 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
             ) : (
               <img
                 src={badge.iconUrl || "/images/Margin3.png"}
-                className="h-12 w-12 object-contain filter drop-shadow-md"
+                className="h-12 w-12 object-contain filter"
                 alt={badge.name}
               />
             )}
@@ -51,7 +49,7 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
 
         {/* Title (set to text-2xl & text-primary-color) */}
         <div className="space-y-1">
-          <h3 className="text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300 line-clamp-1">
+          <h3 className="text-lg font-bold text-primary-color dark:text-white transition-colors duration-300 line-clamp-1">
             {badge.locked ? "មិនទាន់ដោះសោ" : badge.name}
           </h3>
 
@@ -68,7 +66,7 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
           {isClaimable && !badge.locked ? (
             <Button
               size="lg"
-              className="w-full h-12 rounded-2xl bg-yellow-500 hover:bg-yellow-300 text-primary-color text-lg font-bold shadow-md transition-all duration-300 hover:scale-[1.02]"
+              className="w-full h-12 rounded-2xl bg-primary-color hover:bg-primary-color/50 text-white text-lg font-bold shadow-md transition-all duration-300 hover:scale-[1.02]"
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
