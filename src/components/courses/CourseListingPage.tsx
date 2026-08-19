@@ -57,6 +57,13 @@ function removeDuplicateCourses(courses: Course[]) {
   );
 }
 
+interface CourseSection {
+  id?: string;
+  title: string;
+  seeAllHref: string;
+  courses: Course[];
+}
+
 export default function CourseListingPage() {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState(ALL);
@@ -67,17 +74,9 @@ export default function CourseListingPage() {
    * ===============================
    */
 
-  const latestQuery = useGetPublicCoursesQuery({
-    sort: "NEWEST",
-  });
-
-  const recommendedQuery = useGetPublicCoursesQuery({
-    sort: "RECOMMEND",
-  });
-
-  const popularQuery = useGetPublicCoursesQuery({
-    sort: "POPULAR",
-  });
+  const latestQuery = useGetPublicCoursesQuery({ sort: "NEWEST" });
+  const recommendedQuery = useGetPublicCoursesQuery({ sort: "RECOMMEND" });
+  const popularQuery = useGetPublicCoursesQuery({ sort: "POPULAR" });
 
   /*
    * ===============================
@@ -99,11 +98,8 @@ export default function CourseListingPage() {
 
   /*
    * Combine all public courses.
-   *
-   * PRIVATE courses are already excluded
-   * by useGetPublicCoursesQuery.
+   * PRIVATE courses are already excluded by useGetPublicCoursesQuery.
    */
-
   const allCourses = useMemo(() => {
     return removeDuplicateCourses([
       ...latestCourses,
@@ -114,10 +110,36 @@ export default function CourseListingPage() {
 
   /*
    * ===============================
+   * DEFAULT SECTIONS (no search/filter)
+   * ===============================
+   */
+  const sections: CourseSection[] = useMemo(
+    () => [
+      {
+        id: "latest-courses",
+        title: "វគ្គសិក្សាថ្មីបំផុត",
+        seeAllHref: "/courses?sort=NEWEST",
+        courses: latestCourses.slice(0, 6),
+      },
+      {
+        title: "វគ្គសិក្សាអនុសាសន៍",
+        seeAllHref: "/courses?sort=RECOMMEND",
+        courses: recommendedCourses.slice(0, 6),
+      },
+      {
+        title: "វគ្គសិក្សាពេញនិយម",
+        seeAllHref: "/courses?sort=POPULAR",
+        courses: popularCourses.slice(0, 6),
+      },
+    ],
+    [latestCourses, recommendedCourses, popularCourses],
+  );
+
+  /*
+   * ===============================
    * CATEGORY FILTER
    * ===============================
    */
-
   const categories = useMemo(() => {
     const apiCategories = Array.from(
       new Set(
@@ -135,7 +157,6 @@ export default function CourseListingPage() {
    * SEARCH + FILTER
    * ===============================
    */
-
   const filteredCourses = useMemo(() => {
     const query = search.trim().toLowerCase();
 
@@ -163,15 +184,11 @@ export default function CourseListingPage() {
    * LOADING
    * ===============================
    */
-
   const isLoading =
-    latestQuery.isLoading ||
-    recommendedQuery.isLoading ||
-    popularQuery.isLoading;
+    latestQuery.isLoading || recommendedQuery.isLoading || popularQuery.isLoading;
 
   /*
-   * Only show main error if all
-   * course requests failed.
+   * Only show main error if all course requests failed.
    */
   const hasError =
     Boolean(latestQuery.error) &&
@@ -185,7 +202,6 @@ export default function CourseListingPage() {
    * RETRY
    * ===============================
    */
-
   const handleRetry = () => {
     void latestQuery.refetch();
     void recommendedQuery.refetch();
@@ -194,31 +210,17 @@ export default function CourseListingPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
-      {/* =========================
-          COURSE BANNER
-      ========================== */}
-
       <CourseBanner />
 
-      {/* =========================
-          MAIN
-      ========================== */}
-
       <main className="mx-auto max-w-7xl px-6 pb-16 pt-10">
-        {/* Search + Category */}
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <SearchBar value={search} onChange={setSearch} />
-
           <CategoryFilter
             categories={categories}
             active={activeCategory}
             onChange={setActiveCategory}
           />
         </div>
-
-        {/* =========================
-            LOADING
-        ========================== */}
 
         {isLoading && allCourses.length === 0 ? (
           <div
@@ -232,15 +234,10 @@ export default function CourseListingPage() {
             <span className="sr-only">Loading courses...</span>
           </div>
         ) : hasError ? (
-          /* =========================
-              ERROR
-          ========================== */
-
           <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-900 dark:bg-red-950/20">
             <p className="text-sm font-medium text-red-700 dark:text-red-300">
               មិនអាចទាញយកវគ្គសិក្សាបានទេ
             </p>
-
             <button
               type="button"
               onClick={handleRetry}
@@ -250,39 +247,22 @@ export default function CourseListingPage() {
             </button>
           </div>
         ) : isFiltering ? (
-          /* =========================
-              SEARCH RESULT
-          ========================== */
-
           <CourseGrid title="លទ្ធផលស្វែងរក" courses={filteredCourses} />
         ) : (
-          /* =========================
-              DEFAULT COURSE SECTIONS
-          ========================== */
-
           <div className="space-y-12">
-            {/* Latest */}
-            <section id="latest-courses" className="scroll-mt-24">
-              <CourseGrid
-                title="វគ្គសិក្សាថ្មីបំផុត"
-                courses={latestCourses.slice(0, 6)}
-                seeAllHref="/courses?sort=NEWEST"
-              />
-            </section>
-
-            {/* Recommended */}
-            <CourseGrid
-              title="វគ្គសិក្សាអនុសាសន៍"
-              courses={recommendedCourses.slice(3, 8)}
-              seeAllHref="/courses?sort=RECOMMEND"
-            />
-
-            {/* Popular */}
-            <CourseGrid
-              title="វគ្គសិក្សាពេញនិយម"
-              courses={popularCourses.slice(5, 1)}
-              seeAllHref="/courses?sort=POPULAR"
-            />
+            {sections.map((section) => (
+              <section
+                key={section.title}
+                id={section.id}
+                className={section.id ? "scroll-mt-24" : undefined}
+              >
+                <CourseGrid
+                  title={section.title}
+                  courses={section.courses}
+                  seeAllHref={section.seeAllHref}
+                />
+              </section>
+            ))}
           </div>
         )}
       </main>

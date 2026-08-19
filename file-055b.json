@@ -1,0 +1,16 @@
+﻿{
+    "success":  true,
+    "message":  "File retrieved successfully",
+    "data":  {
+                 "id":  "055b15ff-83aa-477d-8c3d-fe64b6729e33",
+                 "fileName":  "girl.jpeg",
+                 "extension":  "jpeg",
+                 "fileType":  "image/jpeg",
+                 "sizeBytes":  428825,
+                 "uploadedBy":  "62366049-5854-46b2-bdb6-949189e50831",
+                 "url":  "http://minio-sastracode:9000/sastracode-files/055b15ff-83aa-477d-8c3d-fe64b6729e33.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256\u0026X-Amz-Credential=minioadmin%2F20260809%2Fus-east-1%2Fs3%2Faws4_request\u0026X-Amz-Date=20260809T083336Z\u0026X-Amz-Expires=900\u0026X-Amz-SignedHeaders=host\u0026X-Amz-Signature=0659f7541a5041c08cc0d20c36b2611b0070f1dbf35cad67d47f0c2f2f14ebe6",
+                 "createdAt":  "2026-08-08T07:23:14.936223Z",
+                 "updatedAt":  "2026-08-08T07:23:14.936238Z"
+             },
+    "timestamp":  "2026-08-09T08:33:36.909766697Z"
+}

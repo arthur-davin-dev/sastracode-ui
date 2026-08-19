@@ -23,10 +23,10 @@ export function EnrollmentHeader({ course }: EnrollmentHeaderProps) {
       {/* Title & Wishlist Header Row */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 leading-snug">
+          <h1 className="text-2xl font-bold text-gray-900 font-sans">
             {course.title}
           </h1>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+          <p className="mt-2 max-w-xl text-sm leading-relaxed text-gray-500 font-sans">
             {course.description}
           </p>
         </div>
@@ -54,12 +54,8 @@ export function EnrollmentHeader({ course }: EnrollmentHeaderProps) {
             />
           </div>
           <div>
-            <p className="text-xs text-slate-400 dark:text-slate-500">
-              គ្រូបង្រៀន (Instructor)
-            </p>
-            <p className="text-sm font-semibold text-slate-900 dark:text-slate-200">
-              {instructor.name}
-            </p>
+            <p className="text-xs text-gray-400 font-sans">Instructor</p>
+            <p className="text-sm font-semibold text-gray-900">{instructor.name}</p>
           </div>
         </div>
 

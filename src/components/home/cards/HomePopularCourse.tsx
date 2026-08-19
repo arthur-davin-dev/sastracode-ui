@@ -46,7 +46,7 @@ function CourseCard({
   return (
     <div className={`flex justify-center h-110 bg-surface py-6 transition-all duration-300 ease-in-out ${className}`}>
       <Card className="relative mx-auto w-full max-w-sm pt-0 dark:bg-slate-800 dark:border-slate-700 transition-all duration-300 ease-in-out  hover:shadow-[0_4px_12px_2px_rgba(34,211,238,0.5)]
-  dark:hover:shadow-[0_4px_12px_2px_theme(colors.cyan.500)] hover:scale-[1.02] dark:hover:shadow-slate-700/50 group flex flex-col">
+  dark:hover:shadow-[0_4px_12px_2px_var(--color-cyan-500)] hover:scale-[1.02] dark:hover:shadow-slate-700/50 group flex flex-col">
         <div className="absolute inset-0 z-30 aspect-video dark:bg-black/1 transition-opacity duration-300 group-hover:opacity-75" />
         <img
           src={image}

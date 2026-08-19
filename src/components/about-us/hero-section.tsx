@@ -240,7 +240,7 @@ export default function AboutUs() {
           <div className="relative rounded-[28px] bg-white dark:bg-slate-900 p-3 shadow-xl dark:shadow-2xl border border-slate-200/60 dark:border-slate-800">
             <div className="relative aspect-4/3 overflow-hidden rounded-[20px]">
               <Image
-                src="/team.jpg"
+                src="/images/IMG_5281.jpg"
                 alt="Our team"
                 fill
                 className="object-cover"

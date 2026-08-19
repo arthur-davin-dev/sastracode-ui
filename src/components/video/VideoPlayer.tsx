@@ -1,3 +1,4 @@
+"use client";
 
 interface VideoPlayerProps {
   src?: string;
@@ -94,3 +95,4 @@ export function VideoPlayer({
     </div>
   );
 }
+

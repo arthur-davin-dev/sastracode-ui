@@ -1,0 +1,36 @@
+﻿{
+    "type":  "object",
+    "properties":  {
+                       "id":  {
+                                  "type":  "string",
+                                  "format":  "uuid"
+                              },
+                       "fileName":  {
+                                        "type":  "string"
+                                    },
+                       "extension":  {
+                                         "type":  "string"
+                                     },
+                       "fileType":  {
+                                        "type":  "string"
+                                    },
+                       "sizeBytes":  {
+                                         "type":  "integer",
+                                         "format":  "int64"
+                                     },
+                       "uploadedBy":  {
+                                          "type":  "string"
+                                      },
+                       "url":  {
+                                   "type":  "string"
+                               },
+                       "createdAt":  {
+                                         "type":  "string",
+                                         "format":  "date-time"
+                                     },
+                       "updatedAt":  {
+                                         "type":  "string",
+                                         "format":  "date-time"
+                                     }
+                   }
+}
