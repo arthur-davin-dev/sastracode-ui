@@ -5,7 +5,6 @@ import {
   ArrowLeft,
   BookOpen,
   Bot,
-  CheckCircle2,
   Code2,
   Eye,
   EyeOff,
@@ -14,6 +13,7 @@ import {
 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -94,11 +94,13 @@ function errorMessage(error: unknown) {
 }
 
 export default function RegisterForm() {
+  const router = useRouter();
+
   const [registerUser, { isLoading }] = useRegisterMutation();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [created, setCreated] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
 
   const {
     register,
@@ -106,6 +108,7 @@ export default function RegisterForm() {
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
+
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -118,94 +121,79 @@ export default function RegisterForm() {
 
   const onSubmit = async (values: RegisterFormValues) => {
     try {
-      const result = await registerUser(values).unwrap();
+      const result = await registerUser({
+        firstName: values.firstName.trim(),
+        lastName: values.lastName.trim(),
+        email: values.email.trim(),
+        username: values.username.trim(),
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+      }).unwrap();
 
       if (!result.success) {
-        toast.error(result.message || "មិនអាចបង្កើតគណនីបាន");
+        toast.error(
+          result.message || "មិនអាចបង្កើតគណនីបាន",
+        );
+
         return;
       }
 
-      setCreated(true);
-      toast.success(result.message || "បង្កើតគណនីបានជោគជ័យ");
+      // Store email temporarily for verification screen
+      sessionStorage.setItem(
+        "pendingVerificationEmail",
+        values.email.trim(),
+      );
+
+      toast.success(
+        result.message ||
+          "បង្កើតគណនីបានជោគជ័យ។ សូមផ្ទៀងផ្ទាត់អ៊ីមែល។",
+      );
+
+      // IMPORTANT:
+      // Do NOT call signIn("keycloak") here.
+      //
+      // Calling signIn here will open Keycloak login first
+      // because there is no Keycloak browser session yet.
+
+      router.replace("/verify-email");
     } catch (error) {
       toast.error(errorMessage(error));
     }
   };
 
-  if (created) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-[#f8f9fc] px-6">
-        <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-xl shadow-slate-200/40">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50">
-            <CheckCircle2 className="h-9 w-9 text-emerald-500" />
-          </div>
-
-          <h1 className="mt-6 text-2xl font-extrabold text-[#13235B]">
-            បង្កើតគណនីបានជោគជ័យ
-          </h1>
-
-          <p className="mt-3 text-sm leading-6 text-slate-500">
-            គណនីរបស់អ្នកត្រូវបានបង្កើតរួចរាល់។
-            អ្នកអាចចូលគណនីដើម្បីចាប់ផ្តើមការសិក្សាជាមួយ SastraCode។
-          </p>
-
-          <button
-            type="button"
-            onClick={() => signIn("keycloak", { redirectTo: "/" })}
-            className="mt-7 w-full rounded-xl bg-[#13235B] px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#13235B]/20 transition hover:brightness-110"
-          >
-            ចូលគណនី
-          </button>
-
-          <Link
-            href="/"
-            className="mt-5 inline-block text-sm font-medium text-slate-500 transition hover:text-[#F1524A]"
-          >
-            ត្រឡប់ទៅទំព័រដើម
-          </Link>
-        </div>
-      </main>
-    );
-  }
-
   return (
     <main className="min-h-screen bg-white">
       <div className="mx-auto flex min-h-screen w-full max-w-[1400px]">
-        {/* ================= LEFT ================= */}
-
+        {/* LEFT */}
         <section className="relative hidden flex-1 flex-col justify-center overflow-hidden px-14 py-10 lg:flex xl:px-20">
-          {/* <Link
-            href="/"
-            className="mb-12 inline-flex w-fit items-center gap-2 rounded-full bg-[#13235B] px-5 py-2.5 text-sm font-semibold text-white transition hover:brightness-110"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            ត្រឡប់ក្រោយ
-          </Link> */}
-
           <div>
             <h1 className="text-[46px] font-extrabold leading-[1.35] xl:text-[52px]">
-              <span className="text-[#13235B]">ជំនាញកូដ </span>
-              <span className="text-[#F1524A]">សម្រាប់ថ្ងៃស្អែក</span>
+              <span className="text-[#13235B]">
+                ជំនាញកូដ{" "}
+              </span>
+
+              <span className="text-[#F1524A]">
+                សម្រាប់ថ្ងៃស្អែក
+              </span>
 
               <br />
 
-              <span className="text-[#F1524A]">ដ៏ល្អប្រសើរ</span>
+              <span className="text-[#F1524A]">
+                ដ៏ល្អប្រសើរ
+              </span>
             </h1>
 
             <p className="mt-4 max-w-lg text-sm leading-7 text-slate-500">
-              រៀន សាកល្បង និងអភិវឌ្ឍជំនាញ Programming របស់អ្នក
-              តាមរយៈការអនុវត្តជាក់ស្តែង។
+              រៀន សាកល្បង និងអភិវឌ្ឍជំនាញ Programming
+              របស់អ្នក តាមរយៈការអនុវត្តជាក់ស្តែង។
             </p>
           </div>
 
-          {/* Illustration */}
           <div className="relative mx-auto mt-10 h-[380px] w-full max-w-[570px]">
-            {/* background decoration */}
             <div className="absolute right-1 top-0 h-[230px] w-[230px] rounded-full border-2 border-dashed border-slate-200" />
 
             <div className="absolute bottom-0 left-14 h-[160px] w-[160px] rounded-full bg-[#F1524A]/5" />
 
-            {/* code window */}
             <div className="absolute left-1/2 top-1/2 w-[500px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-300/40">
               <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50 px-5 py-3.5">
                 <span className="h-3 w-3 rounded-full bg-red-400" />
@@ -219,43 +207,83 @@ export default function RegisterForm() {
 
               <pre className="px-6 py-5 text-[13px] leading-7 text-slate-700">
                 <code>
-                  <span className="text-slate-400">01 </span>
-                  <span className="text-violet-500">function</span>{" "}
-                  <span className="text-blue-600">startLearning</span>() {"{"}
+                  <span className="text-slate-400">
+                    01{" "}
+                  </span>
+
+                  <span className="text-violet-500">
+                    function
+                  </span>{" "}
+
+                  <span className="text-blue-600">
+                    startLearning
+                  </span>
+                  () {"{"}
                   {"\n"}
 
-                  <span className="text-slate-400">02 </span>
+                  <span className="text-slate-400">
+                    02{" "}
+                  </span>
                   {"  "}
-                  <span className="text-violet-500">const</span> learning ={" "}
-                  <span className="text-orange-500">true</span>;
+
+                  <span className="text-violet-500">
+                    const
+                  </span>{" "}
+                  learning ={" "}
+
+                  <span className="text-orange-500">
+                    true
+                  </span>
+                  ;
                   {"\n"}
 
-                  <span className="text-slate-400">03 </span>
+                  <span className="text-slate-400">
+                    03{" "}
+                  </span>
                   {"\n"}
 
-                  <span className="text-slate-400">04 </span>
+                  <span className="text-slate-400">
+                    04{" "}
+                  </span>
                   {"  "}
-                  <span className="text-violet-500">while</span> (learning) {"{"}
+
+                  <span className="text-violet-500">
+                    while
+                  </span>{" "}
+                  (learning) {"{"}
                   {"\n"}
 
-                  <span className="text-slate-400">05 </span>
-                  {"    "}practice();
+                  <span className="text-slate-400">
+                    05{" "}
+                  </span>
+                  {"    "}
+                  practice();
                   {"\n"}
 
-                  <span className="text-slate-400">06 </span>
-                  {"    "}buildProjects();
+                  <span className="text-slate-400">
+                    06{" "}
+                  </span>
+                  {"    "}
+                  buildProjects();
                   {"\n"}
 
-                  <span className="text-slate-400">07 </span>
-                  {"    "}becomeBetter();
+                  <span className="text-slate-400">
+                    07{" "}
+                  </span>
+                  {"    "}
+                  becomeBetter();
                   {"\n"}
 
-                  <span className="text-slate-400">08 </span>
+                  <span className="text-slate-400">
+                    08{" "}
+                  </span>
                   {"  "}
                   {"}"}
                   {"\n"}
 
-                  <span className="text-slate-400">09 </span>
+                  <span className="text-slate-400">
+                    09{" "}
+                  </span>
                   {"}"}
                 </code>
               </pre>
@@ -273,7 +301,9 @@ export default function RegisterForm() {
 
             <FeatureCard
               className="-left-6 bottom-14"
-              icon={<Code2 className="h-5 w-5 text-blue-500" />}
+              icon={
+                <Code2 className="h-5 w-5 text-blue-500" />
+              }
               iconBg="bg-blue-50"
               title="Playground"
               subtitle="Code & Practice"
@@ -281,7 +311,9 @@ export default function RegisterForm() {
 
             <FeatureCard
               className="-right-4 top-20"
-              icon={<Bot className="h-5 w-5 text-violet-500" />}
+              icon={
+                <Bot className="h-5 w-5 text-violet-500" />
+              }
               iconBg="bg-violet-50"
               title="AI Assistant"
               subtitle="Get Smart Help"
@@ -289,7 +321,9 @@ export default function RegisterForm() {
 
             <FeatureCard
               className="right-2 bottom-6"
-              icon={<Map className="h-5 w-5 text-amber-500" />}
+              icon={
+                <Map className="h-5 w-5 text-amber-500" />
+              }
               iconBg="bg-amber-50"
               title="Roadmap"
               subtitle="Learn Step by Step"
@@ -297,7 +331,9 @@ export default function RegisterForm() {
 
             <FeatureCard
               className="left-[170px] -bottom-5"
-              icon={<Trophy className="h-5 w-5 text-orange-500" />}
+              icon={
+                <Trophy className="h-5 w-5 text-orange-500" />
+              }
               iconBg="bg-orange-50"
               title="Quiz & Test"
               subtitle="Track Progress"
@@ -305,11 +341,9 @@ export default function RegisterForm() {
           </div>
         </section>
 
-        {/* ================= RIGHT ================= */}
-
+        {/* RIGHT */}
         <section className="flex flex-1 items-center justify-center bg-white px-5 py-10 sm:px-8 lg:px-14 xl:px-20">
           <div className="w-full max-w-[480px]">
-            {/* Mobile back */}
             <Link
               href="/"
               className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-slate-500 lg:hidden"
@@ -325,7 +359,8 @@ export default function RegisterForm() {
                 </h2>
 
                 <p className="mt-2 text-sm leading-6 text-slate-400">
-                  ដោះសោមុខងារពិសេសៗ និងចាប់ផ្តើមរៀននៅថ្ងៃនេះ
+                  ដោះសោមុខងារពិសេសៗ
+                  និងចាប់ផ្តើមរៀននៅថ្ងៃនេះ
                 </p>
               </div>
 
@@ -334,7 +369,6 @@ export default function RegisterForm() {
                 className="space-y-4"
                 noValidate
               >
-                {/* First / Last */}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   <FormField
                     label="នាមខ្លួន"
@@ -344,7 +378,10 @@ export default function RegisterForm() {
                       {...register("firstName")}
                       type="text"
                       placeholder="John"
-                      className={inputClass(!!errors.firstName)}
+                      autoComplete="given-name"
+                      className={inputClass(
+                        !!errors.firstName,
+                      )}
                     />
                   </FormField>
 
@@ -356,12 +393,14 @@ export default function RegisterForm() {
                       {...register("lastName")}
                       type="text"
                       placeholder="Doe"
-                      className={inputClass(!!errors.lastName)}
+                      autoComplete="family-name"
+                      className={inputClass(
+                        !!errors.lastName,
+                      )}
                     />
                   </FormField>
                 </div>
 
-                {/* Email */}
                 <FormField
                   label="អ៊ីមែល"
                   error={errors.email?.message}
@@ -371,11 +410,12 @@ export default function RegisterForm() {
                     type="email"
                     placeholder="john@example.com"
                     autoComplete="email"
-                    className={inputClass(!!errors.email)}
+                    className={inputClass(
+                      !!errors.email,
+                    )}
                   />
                 </FormField>
 
-                {/* Username */}
                 <FormField
                   label="ឈ្មោះគណនី"
                   error={errors.username?.message}
@@ -385,11 +425,12 @@ export default function RegisterForm() {
                     type="text"
                     placeholder="johndoe123"
                     autoComplete="username"
-                    className={inputClass(!!errors.username)}
+                    className={inputClass(
+                      !!errors.username,
+                    )}
                   />
                 </FormField>
 
-                {/* Password */}
                 <FormField
                   label="ពាក្យសម្ងាត់"
                   error={errors.password?.message}
@@ -397,7 +438,11 @@ export default function RegisterForm() {
                   <div className="relative">
                     <input
                       {...register("password")}
-                      type={showPassword ? "text" : "password"}
+                      type={
+                        showPassword
+                          ? "text"
+                          : "password"
+                      }
                       placeholder="••••••••"
                       autoComplete="new-password"
                       className={`${inputClass(
@@ -408,11 +453,15 @@ export default function RegisterForm() {
                     <button
                       type="button"
                       onClick={() =>
-                        setShowPassword((value) => !value)
+                        setShowPassword(
+                          (value) => !value,
+                        )
                       }
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-[#13235B]"
                       aria-label={
-                        showPassword ? "Hide password" : "Show password"
+                        showPassword
+                          ? "Hide password"
+                          : "Show password"
                       }
                     >
                       {showPassword ? (
@@ -424,15 +473,20 @@ export default function RegisterForm() {
                   </div>
                 </FormField>
 
-                {/* Confirm Password */}
                 <FormField
                   label="បញ្ជាក់ពាក្យសម្ងាត់"
-                  error={errors.confirmPassword?.message}
+                  error={
+                    errors.confirmPassword?.message
+                  }
                 >
                   <div className="relative">
                     <input
                       {...register("confirmPassword")}
-                      type={showConfirmPassword ? "text" : "password"}
+                      type={
+                        showConfirmPassword
+                          ? "text"
+                          : "password"
+                      }
                       placeholder="••••••••"
                       autoComplete="new-password"
                       className={`${inputClass(
@@ -443,7 +497,9 @@ export default function RegisterForm() {
                     <button
                       type="button"
                       onClick={() =>
-                        setShowConfirmPassword((value) => !value)
+                        setShowConfirmPassword(
+                          (value) => !value,
+                        )
                       }
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-[#13235B]"
                       aria-label={
@@ -461,7 +517,6 @@ export default function RegisterForm() {
                   </div>
                 </FormField>
 
-                {/* Submit */}
                 <button
                   type="submit"
                   disabled={isLoading}
@@ -472,11 +527,12 @@ export default function RegisterForm() {
                     : "បង្កើតគណនី"}
                 </button>
 
-                {/* Login */}
                 <div className="flex items-center gap-3 pt-2">
                   <div className="h-px flex-1 bg-slate-200" />
 
-                  <span className="text-xs text-slate-400">ឬ</span>
+                  <span className="text-xs text-slate-400">
+                    ឬ
+                  </span>
 
                   <div className="h-px flex-1 bg-slate-200" />
                 </div>
@@ -495,6 +551,7 @@ export default function RegisterForm() {
 
                 <p className="pt-1 text-center text-sm text-slate-400">
                   មានគណនីរួចហើយមែនទេ?{" "}
+
                   <button
                     type="button"
                     onClick={() =>
@@ -516,8 +573,6 @@ export default function RegisterForm() {
   );
 }
 
-/* ================= Components ================= */
-
 function FormField({
   label,
   error,
@@ -530,7 +585,10 @@ function FormField({
   return (
     <div>
       <label className="mb-2 block text-sm font-medium text-slate-700">
-        {label} <span className="text-[#F1524A]">*</span>
+        {label}{" "}
+        <span className="text-[#F1524A]">
+          *
+        </span>
       </label>
 
       {children}

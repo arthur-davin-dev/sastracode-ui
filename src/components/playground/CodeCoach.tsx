@@ -1,124 +1,3 @@
-// "use client";
-
-// import { Lightbulb, Sparkles, Wrench } from "lucide-react";
-// import { useState } from "react";
-
-// type HelpMode = "explain" | "improve";
-
-// interface CodeCoachProps {
-//   code: string;
-//   language: string;
-// }
-
-// export default function CodeCoach({ code, language }: CodeCoachProps) {
-//   const [answer, setAnswer] = useState("");
-//   const [error, setError] = useState("");
-//   const [loading, setLoading] = useState(false);
-
-//   async function askCoach(mode: HelpMode) {
-//     if (!code.trim()) {
-//       setError("Write some code first, then ask the AI tutor for help.");
-//       return;
-//     }
-
-//     setLoading(true);
-//     setError("");
-//     try {
-//     const response = await fetch(
-//       mode === "improve" ? "/api/backend/v1/ai/improve" : "/api/backend/v1/ai/explain",
-//       {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         credentials: "same-origin",
-//         body: JSON.stringify(
-//           mode === "improve"
-//             ? { code, language }
-//             : { code, language, scope: "ALGORITHM" },
-//         ),
-//       },
-//     );
-//       const result: unknown = await response.json();
-//       if (!result || typeof result !== "object") {
-//         throw new Error("The AI tutor returned an invalid response.");
-//       }
-//       const responseBody = result as {
-//         success?: unknown;
-//         message?: unknown;
-//         data?: {
-//           explanation?: unknown;
-//           summary?: unknown;
-//           suggestions?: unknown;
-//           improvedCode?: unknown;
-//         };
-//       };
-//       if (!response.ok) {
-//         throw new Error(
-//           typeof responseBody.message === "string"
-//             ? responseBody.message
-//             : "Unable to get AI help.",
-//         );
-//       }
-//       if (responseBody.success !== true || !responseBody.data) {
-//         throw new Error(
-//           typeof (result as { message?: unknown }).message === "string"
-//             ? (result as { message: string }).message
-//             : "Unable to get AI help.",
-//         );
-//       }
-//       const message =
-//         mode === "explain"
-//           ? responseBody.data.explanation
-//           : [
-//               responseBody.data.summary,
-//               Array.isArray(responseBody.data.suggestions)
-//                 ? responseBody.data.suggestions.map((item) => `• ${String(item)}`).join("\n")
-//                 : "",
-//               typeof responseBody.data.improvedCode === "string"
-//                 ? `\nImproved code:\n\`\`\`${language}\n${responseBody.data.improvedCode}\n\`\`\``
-//                 : "",
-//             ]
-//               .filter(Boolean)
-//               .join("\n\n");
-//       if (typeof message !== "string" || !message.trim()) {
-//         throw new Error("The AI tutor returned no answer.");
-//       }
-//       setAnswer(message);
-//     } catch (requestError) {
-//       setError(requestError instanceof Error ? requestError.message : "Unable to get AI help.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   }
-
-//   return (
-//     <section className="rounded-xl border border-violet-200 bg-violet-50/60 p-4 dark:border-violet-900/70 dark:bg-violet-950/20">
-//       <div className="flex items-start gap-3">
-//         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-600 text-white shadow-sm">
-//           <Sparkles className="h-4 w-4" />
-//         </div>
-//         <div className="min-w-0 flex-1">
-//           <h2 className="text-sm font-bold text-violet-950 dark:text-violet-100">AI code tutor</h2>
-//           <p className="mt-0.5 text-xs leading-5 text-violet-800/80 dark:text-violet-200/80">
-//           Powered by your Sastra Code Gemini service. Explain the current code or get safer improvement suggestions.
-//           </p>
-//         </div>
-//       </div>
-
-//       <div className="mt-3 flex flex-wrap gap-2">
-//         <button type="button" onClick={() => askCoach("explain")} disabled={loading} className="inline-flex items-center gap-1.5 rounded-lg border border-violet-200 bg-white px-3 py-2 text-sm font-semibold text-violet-700 transition hover:bg-violet-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-violet-800 dark:bg-slate-950 dark:text-violet-300">
-//           <Lightbulb className="h-4 w-4" /> Explain code
-//         </button>
-//         <button type="button" onClick={() => askCoach("improve")} disabled={loading} className="inline-flex items-center gap-1.5 rounded-lg bg-violet-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-60">
-//           <Wrench className="h-4 w-4" /> {loading ? "Thinking…" : "Improve code"}
-//         </button>
-//       </div>
-
-//       {error && <p className="mt-3 text-sm font-medium text-red-600 dark:text-red-400">{error}</p>}
-//       {answer && <pre className="mt-3 max-h-80 overflow-auto whitespace-pre-wrap rounded-lg border border-violet-100 bg-white p-3 font-sans text-sm leading-6 text-slate-700 dark:border-violet-900/60 dark:bg-slate-950 dark:text-slate-200">{answer}</pre>}
-//     </section>
-//   );
-// }
-
 "use client";
 
 import {
@@ -130,12 +9,15 @@ import {
   WandSparkles,
   Wrench,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { signIn } from "next-auth/react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   useExplainCodeMutation,
   useFixCodeMutation,
   useGetCodeHintMutation,
+  useGetHintStatusQuery,
   useImproveCodeMutation,
   type AiHintResponse,
 } from "@/types/playgroundApi";
@@ -158,15 +40,57 @@ interface CodeCoachProps {
 }
 
 function getRequestError(error: unknown) {
-  if (typeof error === "object" && error !== null && "data" in error) {
-    const apiError = error as {
-      data?: {
-        message?: unknown;
-      };
-    };
+  console.error("AI Coach request failed:", error);
 
-    if (typeof apiError.data?.message === "string") {
-      return apiError.data.message;
+  if (error && typeof error === "object") {
+    if ("data" in error) {
+      const data = (
+        error as {
+          data?: unknown;
+        }
+      ).data;
+
+      if (typeof data === "string") {
+        return data;
+      }
+
+      if (
+        data &&
+        typeof data === "object" &&
+        "message" in data
+      ) {
+        const message = (
+          data as {
+            message?: unknown;
+          }
+        ).message;
+
+        if (typeof message === "string") {
+          return message;
+        }
+      }
+    }
+
+    if ("error" in error) {
+      const message = (
+        error as {
+          error?: unknown;
+        }
+      ).error;
+
+      if (typeof message === "string") {
+        return message;
+      }
+    }
+
+    if ("status" in error) {
+      const status = (
+        error as {
+          status?: unknown;
+        }
+      ).status;
+
+      return `AI request failed (${String(status)}).`;
     }
   }
 
@@ -175,6 +99,33 @@ function getRequestError(error: unknown) {
   }
 
   return "Unable to get AI help.";
+}
+
+
+function getErrorStatus(
+  error: unknown,
+): number | string | undefined {
+  if (
+    error &&
+    typeof error === "object" &&
+    "status" in error
+  ) {
+    return (
+      error as {
+        status?: number | string;
+      }
+    ).status;
+  }
+
+  return undefined;
+}
+
+function isUnauthorized(
+  error: unknown,
+): boolean {
+  const status = getErrorStatus(error);
+
+  return status === 401 || status === "401";
 }
 
 function clampHintLevel(value: number) {
@@ -188,26 +139,119 @@ export default function CodeCoach({
   compact = false,
   onApplyCode,
 }: CodeCoachProps) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [result, setResult] = useState<CoachResult | null>(null);
   const [error, setError] = useState("");
   const [hintState, setHintState] = useState<AiHintResponse | null>(null);
   const [applied, setApplied] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
 
   const [explainCode, { isLoading: isExplaining }] = useExplainCodeMutation();
   const [improveCode, { isLoading: isImproving }] = useImproveCodeMutation();
   const [getCodeHint, { isLoading: isHinting }] = useGetCodeHintMutation();
   const [fixCode, { isLoading: isFixing }] = useFixCodeMutation();
 
-  const loading = isExplaining || isImproving || isHinting || isFixing;
+  const loading =
+    isExplaining ||
+    isImproving ||
+    isHinting ||
+    isFixing ||
+    redirecting;
+
   const hasTask = Boolean(codingTaskId);
-  const fixUnlocked = hintState?.fixUnlocked === true;
+
+  const {
+    data: hintStatus,
+    refetch: refetchHintStatus,
+  } = useGetHintStatusQuery(
+    codingTaskId ?? "",
+    {
+      skip: !codingTaskId,
+    },
+  );
+
+  useEffect(() => {
+    setResult(null);
+    setError("");
+    setHintState(null);
+    setApplied(false);
+    setRedirecting(false);
+  }, [codingTaskId]);
+
+  const fixUnlocked =
+    hintState?.fixUnlocked === true ||
+    hintStatus?.fixUnlocked === true;
 
   const nextHintLevel = useMemo(() => {
-    if (!hintState) return 1;
+    if (
+      typeof hintState?.hintLevel ===
+      "number"
+    ) {
+      return clampHintLevel(
+        hintState.hintLevel + 1,
+      );
+    }
 
-    const previousLevel = hintState.hintLevel ?? hintState.hintsUsed ?? 0;
-    return clampHintLevel(previousLevel + 1);
-  }, [hintState]);
+    if (
+      typeof hintStatus?.nextHintLevel ===
+      "number"
+    ) {
+      return clampHintLevel(
+        hintStatus.nextHintLevel,
+      );
+    }
+
+    if (
+      typeof hintStatus?.hintsUsed ===
+      "number"
+    ) {
+      return clampHintLevel(
+        hintStatus.hintsUsed + 1,
+      );
+    }
+
+    return 1;
+  }, [hintState, hintStatus]);
+
+  async function redirectToKeycloak() {
+    if (redirecting) {
+      return;
+    }
+
+    setRedirecting(true);
+    setError("");
+
+    const query = searchParams.toString();
+
+    const returnUrl = query
+      ? `${pathname}?${query}`
+      : pathname;
+
+    try {
+      /*
+       * This skips your local /login page and opens the
+       * Keycloak login form directly.
+       *
+       * After successful login, Auth.js returns the user
+       * to the same Playground / Coding Task page.
+       */
+      await signIn("keycloak", {
+        redirectTo: returnUrl || "/",
+      });
+    } catch (signInError) {
+      console.error(
+        "Failed to start Keycloak login:",
+        signInError,
+      );
+
+      setRedirecting(false);
+      setError(
+        "Unable to open the login form. Please try again.",
+      );
+    }
+  }
 
   async function askCoach(mode: HelpMode) {
     if (!code.trim()) {
@@ -243,11 +287,15 @@ export default function CodeCoach({
         }
 
         setHintState(response);
+
         setResult({
           kind: "hint",
           title: `Hint ${response.hintLevel ?? nextHintLevel}`,
           text: response.hint.trim(),
         });
+
+        void refetchHintStatus();
+
         return;
       }
 
@@ -312,7 +360,14 @@ export default function CodeCoach({
           "The AI coach generated a corrected version of your code.",
         code: response.fixedCode?.trim() || undefined,
       });
+
+      void refetchHintStatus();
     } catch (requestError) {
+      if (isUnauthorized(requestError)) {
+        await redirectToKeycloak();
+        return;
+      }
+
       setError(getRequestError(requestError));
     }
   }
@@ -324,8 +379,19 @@ export default function CodeCoach({
     setApplied(true);
   }
 
-  const remainingHints = hintState?.hintsRemainingUntilFixUnlocked;
-  const hintsUsed = hintState?.hintsUsed ?? 0;
+  const remainingHints =
+    hintState?.hintsRemainingUntilFixUnlocked ??
+    hintStatus?.hintsRemaining;
+
+  const hintsUsed =
+    hintState?.hintsUsed ??
+    hintStatus?.hintsUsed ??
+    0;
+
+  const hasHintProgress =
+    hintsUsed > 0 ||
+    Boolean(hintState) ||
+    Boolean(hintStatus);
 
   return (
     <section
@@ -376,7 +442,7 @@ export default function CodeCoach({
           ) : (
             <LockKeyhole className="h-4 w-4" />
           )}
-          {hintState ? `Next Hint (${nextHintLevel}/5)` : "Get Hint"}
+          {hasHintProgress ? `Next Hint (${nextHintLevel}/5)` : "Get Hint"}
         </button>
 
         <button
@@ -460,14 +526,21 @@ export default function CodeCoach({
         </p>
       )}
 
-      {loading && (
+      {redirecting && (
+        <div className="mt-3 flex items-center gap-2 rounded-lg bg-violet-50 px-3 py-2 text-xs font-medium text-violet-700 dark:bg-violet-950/30 dark:text-violet-300">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-violet-500" />
+          Opening Keycloak login...
+        </div>
+      )}
+
+      {loading && !redirecting && (
         <div className="mt-3 flex items-center gap-2 text-xs font-medium text-violet-600 dark:text-violet-300">
           <span className="h-2 w-2 animate-pulse rounded-full bg-violet-500" />
           AI coach is thinking...
         </div>
       )}
 
-      {error && (
+      {error && !redirecting && (
         <p className="mt-3 rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-600 dark:bg-red-950/30 dark:text-red-400">
           {error}
         </p>
@@ -479,7 +552,7 @@ export default function CodeCoach({
             <span className="text-xs font-bold text-slate-800 dark:text-slate-100">
               {result.title}
             </span>
-            {result.kind === "hint" && hintState?.fixUnlocked && (
+            {result.kind === "hint" && fixUnlocked && (
               <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">
                 Fix unlocked
               </span>

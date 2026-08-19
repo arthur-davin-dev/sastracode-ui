@@ -82,6 +82,15 @@ export type AiHintResponse = {
   fixUnlocked?: boolean;
 };
 
+export type AiHintStatusResponse = {
+  codingTaskId?: string;
+  hintsUsed?: number;
+  requiredHints?: number;
+  hintsRemaining?: number;
+  fixUnlocked?: boolean;
+  nextHintLevel?: number;
+};
+
 export type AiFixRequest = {
   codingTaskId: string;
   currentCode: string;
@@ -96,54 +105,118 @@ export type AiFixResponse = {
 
 export const playgroundApi = sastraApi.injectEndpoints({
   endpoints: (builder) => ({
-    executeCode: builder.mutation<CodeExecuteResponse, CodeExecuteRequest>({
+    executeCode: builder.mutation<
+      CodeExecuteResponse,
+      CodeExecuteRequest
+    >({
       query: (body) => ({
-        url: "/v1/code/execute",
+        url: "v1/code/execute",
         method: "POST",
         body,
       }),
-      transformResponse: (response: ApiResponse<CodeExecuteResponse>) =>
-        response.data,
+      transformResponse: (
+        response: ApiResponse<CodeExecuteResponse>,
+      ) => response.data,
     }),
 
-    explainCode: builder.mutation<AiExplainResponse, AiExplainRequest>({
+    explainCode: builder.mutation<
+      AiExplainResponse,
+      AiExplainRequest
+    >({
       query: (body) => ({
-        url: "/v1/ai/explain",
+        url: "v1/ai/explain",
         method: "POST",
         body,
       }),
-      transformResponse: (response: ApiResponse<AiExplainResponse>) =>
-        response.data,
+      transformResponse: (
+        response: ApiResponse<AiExplainResponse>,
+      ) => response.data,
     }),
 
-    improveCode: builder.mutation<AiImproveResponse, AiImproveRequest>({
+    improveCode: builder.mutation<
+      AiImproveResponse,
+      AiImproveRequest
+    >({
       query: (body) => ({
-        url: "/v1/ai/improve",
+        url: "v1/ai/improve",
         method: "POST",
         body,
       }),
-      transformResponse: (response: ApiResponse<AiImproveResponse>) =>
-        response.data,
+      transformResponse: (
+        response: ApiResponse<AiImproveResponse>,
+      ) => response.data,
     }),
 
-    getCodeHint: builder.mutation<AiHintResponse, AiHintRequest>({
+    getCodeHint: builder.mutation<
+      AiHintResponse,
+      AiHintRequest
+    >({
       query: (body) => ({
-        url: "/v1/ai/hint",
+        url: "v1/ai/hint",
         method: "POST",
         body,
       }),
-      transformResponse: (response: ApiResponse<AiHintResponse>) =>
-        response.data,
+      transformResponse: (
+        response: ApiResponse<AiHintResponse>,
+      ) => response.data,
+      invalidatesTags: (
+        _result,
+        _error,
+        { codingTaskId },
+      ) => [
+        {
+          type: "CodingTask",
+          id: `AI-HINT-${codingTaskId}`,
+        },
+      ],
     }),
 
-    fixCode: builder.mutation<AiFixResponse, AiFixRequest>({
+    getHintStatus: builder.query<
+      AiHintStatusResponse,
+      string
+    >({
+      query: (codingTaskId) => ({
+        url: `v1/coding-tasks/${encodeURIComponent(
+          codingTaskId,
+        )}/ai/hint-status`,
+      }),
+      transformResponse: (
+        response: ApiResponse<AiHintStatusResponse>,
+      ) => response.data,
+      providesTags: (
+        _result,
+        _error,
+        codingTaskId,
+      ) => [
+        {
+          type: "CodingTask",
+          id: `AI-HINT-${codingTaskId}`,
+        },
+      ],
+    }),
+
+    fixCode: builder.mutation<
+      AiFixResponse,
+      AiFixRequest
+    >({
       query: (body) => ({
-        url: "/v1/ai/fix",
+        url: "v1/ai/fix",
         method: "POST",
         body,
       }),
-      transformResponse: (response: ApiResponse<AiFixResponse>) =>
-        response.data,
+      transformResponse: (
+        response: ApiResponse<AiFixResponse>,
+      ) => response.data,
+      invalidatesTags: (
+        _result,
+        _error,
+        { codingTaskId },
+      ) => [
+        {
+          type: "CodingTask",
+          id: `AI-HINT-${codingTaskId}`,
+        },
+      ],
     }),
   }),
 
@@ -155,5 +228,6 @@ export const {
   useExplainCodeMutation,
   useImproveCodeMutation,
   useGetCodeHintMutation,
+  useGetHintStatusQuery,
   useFixCodeMutation,
 } = playgroundApi;
