@@ -43,7 +43,8 @@ export default function HomePopularDocumentation() {
     );
   }
 
-  const courses = (data?.data.content ?? []).map(toCourse);
+  // const courses = (data?.data.content ?? []).map(toCourse);
+  const courses = (data?.data.content ?? []).map((tutorial) => toCourse(tutorial));
 
   if (!courses.length) {
     return (

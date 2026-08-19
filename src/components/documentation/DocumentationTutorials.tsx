@@ -3,6 +3,7 @@
 import Link from "next/link";
 import CourseGrid from "@/components/documentation/CourseGrid";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslation } from "@/hooks/useTranslations";
 import {
   type TutorialSummary,
   useListTutorialsQuery,
@@ -25,7 +26,7 @@ export function getTechTag(tutorial: TutorialSummary): TechTag {
   return "HTML";
 }
 
-export function toCourse(tutorial: TutorialSummary): Course {
+export function toCourse(tutorial: TutorialSummary, ctaLabel = "រៀនឥឡូវ"): Course {
   return {
     id: tutorial.id,
     title: tutorial.title,
@@ -37,7 +38,7 @@ export function toCourse(tutorial: TutorialSummary): Course {
       ? `/api/v1/files/${encodeURIComponent(tutorial.coverFileId)}`
       : "/images/doc-hero.png",
     viewCount: tutorial.viewCount ?? 0,
-    ctaLabel: "រៀនឥឡូវ",
+    ctaLabel,
   };
 }
 
@@ -66,16 +67,18 @@ function DocumentationCardSkeleton() {
   );
 }
 
-function LoadingGrid({ showSections }: { showSections: boolean }) {
+function LoadingGrid({
+  showSections,
+  loadingLabel,
+}: {
+  showSections: boolean;
+  loadingLabel: string;
+}) {
   const sections = showSections ? 3 : 1;
   const cardsPerSection = showSections ? 3 : 6;
 
   return (
-    <div
-      className="contents"
-      role="status"
-      aria-label="កំពុងទាញយកមេរៀន"
-    >
+    <div className="contents" role="status" aria-label={loadingLabel}>
       {Array.from({ length: sections }, (_, sectionIndex) => (
         <section key={sectionIndex} className="space-y-6">
           <div className="flex items-center justify-between">
@@ -96,7 +99,7 @@ function LoadingGrid({ showSections }: { showSections: boolean }) {
           </div>
         </section>
       ))}
-      <span className="sr-only">Loading documentation...</span>
+      <span className="sr-only">{loadingLabel}</span>
     </div>
   );
 }
@@ -106,6 +109,9 @@ export default function DocumentationTutorials({
   category = "all",
   page = 1,
 }: DocumentationTutorialsProps) {
+  const currentT = useTranslation();
+  const t = currentT.tutorials;
+
   const { data, isLoading, isFetching, error, refetch } = useListTutorialsQuery({
     status: "PUBLISHED",
     page: 0,
@@ -113,18 +119,18 @@ export default function DocumentationTutorials({
     sort: "publishedAt,desc",
   });
 
-  if (isLoading) return <LoadingGrid showSections={showSections} />;
+  if (isLoading) return <LoadingGrid showSections={showSections} loadingLabel={t.loadingLabel} />;
 
   if (error) {
     return (
       <div className="rounded-2xl border border-red-200 bg-red-50 p-6 font-khmer text-red-800 dark:border-red-900 dark:bg-red-950/40 dark:text-red-200">
-        <p>មិនអាចទាញយកមេរៀនបានទេ។ សូមព្យាយាមម្ដងទៀត។</p>
+        <p>{t.errorMessage}</p>
         <button
           type="button"
           className="mt-3 font-semibold underline"
           onClick={() => refetch()}
         >
-          ព្យាយាមម្ដងទៀត
+          {t.retry}
         </button>
       </div>
     );
@@ -135,12 +141,12 @@ export default function DocumentationTutorials({
       (data?.data?.content ?? []).map((tutorial) => [tutorial.id, tutorial]),
     ).values(),
   );
-  const courses = tutorials.map(toCourse);
+  const courses = tutorials.map((tutorial) => toCourse(tutorial, t.ctaLabel));
 
   if (!courses.length) {
     return (
       <p className="rounded-2xl bg-white p-8 text-center font-khmer text-slate-500 dark:bg-slate-900">
-        មិនទាន់មានមេរៀនដែលបានបោះពុម្ពទេ។
+        {t.empty}
       </p>
     );
   }
@@ -150,12 +156,7 @@ export default function DocumentationTutorials({
       category === "popular"
         ? [...courses].sort((a, b) => (b.viewCount ?? 0) - (a.viewCount ?? 0))
         : courses;
-    const categoryTitles = {
-      all: "មេរៀនទាំងអស់",
-      latest: "មេរៀនចុងក្រោយបំផុត",
-      recommended: "មេរៀនសិក្សាអនុសាសន៍",
-      popular: "មេរៀនពេញនិយម",
-    };
+    const categoryTitles = t.categories;
     const pageSize = 6;
     const totalPages = Math.max(1, Math.ceil(sortedCourses.length / pageSize));
     const currentPage = Math.min(page, totalPages);
@@ -183,7 +184,12 @@ export default function DocumentationTutorials({
 
     return (
       <div className="space-y-10" aria-busy={isFetching}>
-        <CourseGrid title={categoryTitles[category]} courses={categoryCourses} columns={2} />
+        <CourseGrid
+          title={categoryTitles[category]}
+          courses={categoryCourses}
+          columns={2}
+          seeAllLabel={t.seeAll}
+        />
 
         {totalPages > 1 && (
           <nav className="flex items-center justify-center gap-2" aria-label="Lesson pages">
@@ -253,38 +259,33 @@ export default function DocumentationTutorials({
     [...courses].sort((a, b) => (b.viewCount ?? 0) - (a.viewCount ?? 0)),
     3,
   );
-  const remainingCourses = takeUndisplayed(courses);
 
   return (
     <div className="contents" aria-busy={isFetching}>
       {latestCourses.length > 0 && (
         <CourseGrid
-          title="មេរៀនចុងក្រោយបំផុត"
+          title={t.categories.latest}
           courses={latestCourses}
           seeAllHref="/documentation/lessons?category=latest"
+          seeAllLabel={t.seeAll}
         />
       )}
       {recommendedCourses.length > 0 && (
         <CourseGrid
-          title="មេរៀនសិក្សាអនុសាសន៍"
+          title={t.categories.recommended}
           courses={recommendedCourses}
           seeAllHref="/documentation/lessons?category=recommended"
+          seeAllLabel={t.seeAll}
         />
       )}
       {popularCourses.length > 0 && (
         <CourseGrid
-          title="មេរៀនពេញនិយម"
+          title={t.categories.popular}
           courses={popularCourses}
           seeAllHref="/documentation/lessons?category=popular"
+          seeAllLabel={t.seeAll}
         />
       )}
-      {/* {remainingCourses.length > 0 && (
-        <CourseGrid
-          title="មេរៀនទាំងអស់"
-          courses={remainingCourses}
-          seeAllHref="/documentation/lessons"
-        />
-      )} */}
     </div>
   );
 }

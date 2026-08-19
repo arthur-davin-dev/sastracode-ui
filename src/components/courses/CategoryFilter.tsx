@@ -2,10 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 
+interface CategoryOption {
+  id: string;
+  label: string;
+}
+
 interface CategoryFilterProps {
-  categories: string[];
+  categories: CategoryOption[];
   active: string;
-  onChange: (category: string) => void;
+  onChange: (categoryId: string) => void;
 }
 
 export function CategoryFilter({
@@ -15,12 +20,13 @@ export function CategoryFilter({
 }: CategoryFilterProps) {
   return (
     <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-      {categories.map((category) => {
-        const isActive = category === active;
+      {categories.map(({ id, label }) => {
+        const isActive = id === active;
+
         return (
           <Button
-            key={category}
-            onClick={() => onChange(category)}
+            key={id}
+            onClick={() => onChange(id)}
             variant={isActive ? "default" : "outline"}
             className={`h-9 rounded-full px-4 text-sm font-medium transition-colors duration-300 ${
               isActive
@@ -28,7 +34,7 @@ export function CategoryFilter({
                 : "border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/80 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
-            {category}
+            {label}
           </Button>
         );
       })}

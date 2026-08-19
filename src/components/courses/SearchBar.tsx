@@ -12,7 +12,7 @@ interface SearchBarProps {
 export function SearchBar({
   value,
   onChange,
-  placeholder = "ស្វែងរកវគ្គសិក្សា ភាសាកម្មវិធី ឬជំនាញ...",
+  placeholder = "Search...",
 }: SearchBarProps) {
   return (
     <div className="relative w-full sm:w-[320px]">

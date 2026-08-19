@@ -11,10 +11,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import type { Course } from "@/lib/course/courses";
 import { mapApiCourseToCourse } from "@/lib/course/course-adapter";
 import { useGetPublicCoursesQuery } from "@/redux/api/course-api";
+import { useTranslation } from "@/hooks/useTranslations";
 
-const ALL = "ទាំងអស់";
-const FREE = "Free Course";
-const PREMIUM = "Premium";
+const ALL = "ALL";
+const FREE = "FREE";
+const PREMIUM = "PREMIUM";
 
 function CourseCardSkeleton() {
   return (
@@ -64,7 +65,13 @@ interface CourseSection {
   courses: Course[];
 }
 
+interface CategoryOption {
+  id: string;
+  label: string;
+}
+
 export default function CourseListingPage() {
+  const t = useTranslation();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState(ALL);
 
@@ -117,22 +124,22 @@ export default function CourseListingPage() {
     () => [
       {
         id: "latest-courses",
-        title: "វគ្គសិក្សាថ្មីបំផុត",
+        title: t.courses.sections.latest,
         seeAllHref: "/courses?sort=NEWEST",
         courses: latestCourses.slice(0, 6),
       },
       {
-        title: "វគ្គសិក្សាអនុសាសន៍",
+        title: t.courses.sections.recommended,
         seeAllHref: "/courses?sort=RECOMMEND",
         courses: recommendedCourses.slice(0, 6),
       },
       {
-        title: "វគ្គសិក្សាពេញនិយម",
+        title: t.courses.sections.popular,
         seeAllHref: "/courses?sort=POPULAR",
         courses: popularCourses.slice(0, 6),
       },
     ],
-    [latestCourses, recommendedCourses, popularCourses],
+    [latestCourses, recommendedCourses, popularCourses, t],
   );
 
   /*
@@ -140,7 +147,7 @@ export default function CourseListingPage() {
    * CATEGORY FILTER
    * ===============================
    */
-  const categories = useMemo(() => {
+  const categories: CategoryOption[] = useMemo(() => {
     const apiCategories = Array.from(
       new Set(
         allCourses
@@ -149,8 +156,13 @@ export default function CourseListingPage() {
       ),
     );
 
-    return [ALL, FREE, PREMIUM, ...apiCategories];
-  }, [allCourses]);
+    return [
+      { id: ALL, label: t.courses.categories.all },
+      { id: FREE, label: t.courses.categories.free },
+      { id: PREMIUM, label: t.courses.categories.premium },
+      ...apiCategories.map((category) => ({ id: category, label: category })),
+    ];
+  }, [allCourses, t]);
 
   /*
    * ===============================
@@ -214,7 +226,11 @@ export default function CourseListingPage() {
 
       <main className="mx-auto max-w-7xl px-6 pb-16 pt-10">
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <SearchBar value={search} onChange={setSearch} />
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder={t.courses.search.placeholder}
+          />
           <CategoryFilter
             categories={categories}
             active={activeCategory}
@@ -226,33 +242,37 @@ export default function CourseListingPage() {
           <div
             className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3"
             role="status"
-            aria-label="កំពុងទាញយកវគ្គសិក្សា"
+            aria-label={t.courses.states.loading}
           >
             {Array.from({ length: 6 }).map((_, index) => (
               <CourseCardSkeleton key={index} />
             ))}
-            <span className="sr-only">Loading courses...</span>
+            <span className="sr-only">{t.courses.states.loading}</span>
           </div>
         ) : hasError ? (
           <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-900 dark:bg-red-950/20">
             <p className="text-sm font-medium text-red-700 dark:text-red-300">
-              មិនអាចទាញយកវគ្គសិក្សាបានទេ
+              {t.courses.states.error}
             </p>
             <button
               type="button"
               onClick={handleRetry}
               className="mt-4 rounded-xl bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
             >
-              ព្យាយាមម្ដងទៀត
+              {t.courses.states.retry}
             </button>
           </div>
         ) : isFiltering ? (
-          <CourseGrid title="លទ្ធផលស្វែងរក" courses={filteredCourses} />
+          <CourseGrid
+            title={t.courses.sections.searchResults}
+            courses={filteredCourses}
+            emptyMessage={t.courses.states.empty}
+          />
         ) : (
           <div className="space-y-12">
             {sections.map((section) => (
               <section
-                key={section.title}
+                key={section.seeAllHref}
                 id={section.id}
                 className={section.id ? "scroll-mt-24" : undefined}
               >
@@ -260,6 +280,7 @@ export default function CourseListingPage() {
                   title={section.title}
                   courses={section.courses}
                   seeAllHref={section.seeAllHref}
+                  emptyMessage={t.courses.states.empty}
                 />
               </section>
             ))}

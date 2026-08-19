@@ -163,6 +163,55 @@ export const en = {
   },
   popularDoc: {
     title: "Popular Documentation",
+  }, tutorials: {
+    loadingLabel: "Loading lessons...",
+    errorMessage: "Unable to load lessons. Please try again.",
+    retry: "Try again",
+    empty: "No published lessons yet.",
+    ctaLabel: "Learn Now",
+    seeAll: "See all",
+    categories: {
+      all: "All Lessons",
+      latest: "Latest Lessons",
+      recommended: "Recommended Lessons",
+      popular: "Popular Lessons",
+    },
+  }, hero: {
+    titleFirstLine: "IT Lessons",
+    titleSecondLine: "in Khmer",
+    description:
+      "Learn the basics of coding, web design and development, problem solving, databases, AI, cybersecurity, data science, and many more IT skills — until you become a skilled, career-ready professional.",
+  }, courses: {
+    banner: {
+      welcomeText: "Welcome to Sastra Code",
+      titleFirstLine: "Learn to Code in Khmer",
+      titleSecondLine: "From Basics to Real Projects",
+      description:
+        "SastraCode helps you build coding skills step by step through video lessons, learning materials, hands-on exercises, and real projects — easy to learn and understand for Cambodian learners.",
+      features: ["Video Lessons", "Learning Materials", "Exercises & Projects"],
+      cta: "Start Learning",
+    },
+    search: {
+      placeholder: "Search courses, programming languages, or skills...",
+    },
+    categories: {
+      all: "All",
+      free: "Free Course",
+      premium: "Premium",
+    },
+    sections: {
+      latest: "Newest Courses",
+      recommended: "Recommended Courses",
+      popular: "Popular Courses",
+      searchResults: "Search Results",
+      allCourses: "All Courses",
+    },
+    states: {
+      loading: "Loading courses",
+      error: "Unable to load courses",
+      retry: "Try again",
+      empty: "No courses match your search criteria",
+    },
   },
 
 
