@@ -149,7 +149,7 @@ export default function CourseListingPage() {
         category === activeCategory.toLowerCase();
 
       const matchesSearch =
-        !query ||
+        query.length === 0 ||
         course.title.toLowerCase().includes(query) ||
         course.description?.toLowerCase().includes(query) ||
         course.tags?.some((tag) => tag.toLowerCase().includes(query));

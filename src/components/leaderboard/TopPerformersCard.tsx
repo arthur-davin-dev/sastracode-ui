@@ -14,11 +14,11 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
     <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
       
       {/* Top Gradient Ribbon Accent */}
-      <div className="h-1.5 w-full bg-gradient-to-r from-amber-400 to-red-600" />
+      <div className=" w-full" />
 
-      <CardHeader className="flex flex-row items-center justify-between pb-3 pt-5 px-5 border-b border-slate-100 dark:border-slate-800">
+      <CardHeader className="flex flex-row items-center justify-between pb-3  border-b border-slate-100 dark:border-slate-800">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 bg-amber-400/10 text-amber-600 dark:text-amber-400 rounded-xl">
+          <div className="p-2 bg-primary-color/10 text-amber-600 dark:text-amber-400 rounded-xl">
             <Crown size={22} className="fill-amber-400" />
           </div>
           <CardTitle className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">
@@ -34,7 +34,7 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
         </a>
       </CardHeader>
 
-      <CardContent className="p-5 space-y-3">
+      <CardContent className="space-y-3">
         {performers.map((p, index) => (
           <div
             key={`${p.rank}-${p.name}-${index}`}
@@ -52,7 +52,7 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
             {/* Avatar */}
             <Avatar className="h-9 w-9 border border-slate-200 dark:border-slate-700">
               <AvatarImage src={p.avatarUrl} alt={p.name} />
-              <AvatarFallback className="bg-amber-400/20 text-amber-700 dark:text-amber-400 text-xs font-extrabold">
+              <AvatarFallback className="bg-primary-color/20 text-amber-700 dark:text-amber-400 text-xs font-extrabold">
                 {p.name?.[0] || "U"}
               </AvatarFallback>
             </Avatar>

@@ -27,10 +27,16 @@ function SearchDocsModalContent() {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") handleClose();
+      if (event.key === "Escape") {
+        handleClose();
+      }
     };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [handleClose]);
 
   /* -------------------------------------------------------------------------- */
@@ -158,9 +164,10 @@ function SearchDocsModalContent() {
             {/* Input */}
             <input
               type="search"
+              name="q"
               value={inputValue}
               onChange={(event) => setInputValue(event.target.value)}
-              placeholder="Search tutorials…"
+              placeholder="ស្វែងរកមេរៀន..."
               autoFocus
               autoComplete="off"
               className="
@@ -580,5 +587,9 @@ function SearchDocsModalContent() {
 }
 
 export default function SearchDocsModal() {
-  return <Suspense fallback={null}><SearchDocsModalContent /></Suspense>;
+  return (
+    <Suspense fallback={null}>
+      <SearchDocsModalContent />
+    </Suspense>
+  );
 }

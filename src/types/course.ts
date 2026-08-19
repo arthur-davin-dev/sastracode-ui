@@ -13,15 +13,14 @@ export interface Course {
   description: string;
   tag: TechTag;
   href: string;
-  coverFileId?: string;
-  coverImage?: string;
+  coverImage: string;
   ctaLabel: string;
   viewCount?: number;
 }
 
 export interface CourseProgress {
   courseTitle: string;
-  lessonLabel: string;
+  lessonLabel: string; 
   percent: number; // 0-100
   href: string;
 }
@@ -148,5 +147,5 @@ export interface MyCourse {
   description: string;
   studentsCount: string;
   duration: string;
-  status: "not_started" | "in_progress";
+  status: "not_started" | "in_progress"; 
 }

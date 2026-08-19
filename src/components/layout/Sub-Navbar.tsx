@@ -18,6 +18,7 @@ import {
   User,
   LogOut,
   ChevronDown,
+  LayoutDashboard,
 } from "lucide-react";
 
 import { pageConfig } from "@/components/layout/navbar-config";
@@ -246,88 +247,185 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
               /* ================================= */
 
               <div className="relative border-l-2 border-slate-200 pl-4 dark:border-slate-800">
-                <button
-                  type="button"
-                  onClick={() => setProfileOpen((prev) => !prev)}
-                  className="flex items-center gap-3 rounded-xl px-2 py-1.5 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800"
-                >
-                  <Avatar className="h-11 w-11 border-2 border-yellow-400 shadow-sm">
-                    {userAvatarUrl && (
-                      <AvatarImage src={userAvatarUrl} alt={userName} />
-                    )}
+  {/* Profile Trigger */}
+  <button
+    type="button"
+    onClick={() => setProfileOpen((prev) => !prev)}
+    aria-expanded={profileOpen}
+    aria-haspopup="menu"
+    className={`
+      rounded-full p-1
+      transition-all duration-200
+      hover:bg-slate-100
+      dark:hover:bg-slate-800
+      ${
+        profileOpen
+          ? "bg-slate-100 ring-2 ring-primary-color/10 dark:bg-slate-800"
+          : ""
+      }
+    `}
+  >
+    <Avatar className="h-11 w-11 border-2 border-yellow-400 shadow-sm">
+      {userAvatarUrl && (
+        <AvatarImage
+          src={userAvatarUrl}
+          alt={userName}
+          className="object-cover"
+        />
+      )}
 
-                    <AvatarFallback className="bg-yellow-400 text-lg font-extrabold text-red-600">
-                      {userInitial}
-                    </AvatarFallback>
-                  </Avatar>
+      <AvatarFallback className="bg-yellow-400 text-lg font-extrabold text-red-600">
+        {userInitial}
+      </AvatarFallback>
+    </Avatar>
+  </button>
 
-                  <ChevronDown
-                    className={`h-4 w-4 text-slate-500 transition-transform ${
-                      profileOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
+  {/* Profile Dropdown */}
+  {profileOpen && (
+    <div
+      role="menu"
+      className="
+        absolute right-0 top-full z-50 mt-3
+        w-72 overflow-hidden
+        rounded-2xl
+        border border-slate-200
+        bg-white
+        shadow-[0_20px_50px_-15px_rgba(15,23,42,0.25)]
+        dark:border-slate-700
+        dark:bg-slate-900
+      "
+    >
+      {/* User Information */}
+      <div className="border-b border-slate-100 p-4 dark:border-slate-800">
+        <div className="flex items-center gap-3">
+          <Avatar className="h-12 w-12 shrink-0 border-2 border-yellow-400">
+            {userAvatarUrl && (
+              <AvatarImage
+                src={userAvatarUrl}
+                alt={userName}
+                className="object-cover"
+              />
+            )}
 
-                {/* ================================= */}
-                {/* Profile Dropdown */}
-                {/* ================================= */}
+            <AvatarFallback className="bg-yellow-400 font-bold text-red-600">
+              {userInitial}
+            </AvatarFallback>
+          </Avatar>
 
-                {profileOpen && (
-                  <div className="absolute right-0 top-full z-50 mt-3 w-72 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
-                    {/* User */}
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-bold text-primary-color dark:text-white">
+              {userName}
+            </p>
 
-                    <div className="border-b border-slate-100 p-4 dark:border-slate-800">
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-12 w-12 border-2 border-yellow-400">
-                          {userAvatarUrl && (
-                            <AvatarImage src={userAvatarUrl} alt={userName} />
-                          )}
+            {userEmail && (
+              <p className="mt-0.5 truncate text-sm text-slate-500 dark:text-slate-400">
+                {userEmail}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
 
-                          <AvatarFallback className="bg-yellow-400 font-bold text-red-600">
-                            {userInitial}
-                          </AvatarFallback>
-                        </Avatar>
+      {/* Actions */}
+      <div className="p-2">
+        {/* Dashboard */}
+        <Link
+          href="/achivement"
+          onClick={() => setProfileOpen(false)}
+          role="menuitem"
+          className="
+            group flex items-center gap-3
+            rounded-xl px-3 py-2.5
+            font-medium text-slate-700
+            transition-colors duration-150
+            hover:bg-primary-color/5
+            hover:text-primary-color
+            dark:text-slate-200
+            dark:hover:bg-slate-800
+            dark:hover:text-white
+          "
+        >
+          <div
+            className="
+              flex h-8 w-8 items-center justify-center
+              rounded-lg bg-slate-100
+              transition-colors
+              group-hover:bg-primary-color/10
+              dark:bg-slate-800
+            "
+          >
+            <LayoutDashboard className="h-4 w-4" />
+          </div>
 
-                        <div className="min-w-0">
-                          <p className="truncate font-bold text-primary-color">
-                            {userName}
-                          </p>
+          <span>Dashboard</span>
+        </Link>
 
-                          {userEmail && (
-                            <p className="truncate text-sm text-slate-500 dark:text-slate-400">
-                              {userEmail}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
+        {/* Profile */}
+        <Link
+          href="/profile"
+          onClick={() => setProfileOpen(false)}
+          role="menuitem"
+          className="
+            group mt-1 flex items-center gap-3
+            rounded-xl px-3 py-2.5
+            font-medium text-slate-700
+            transition-colors duration-150
+            hover:bg-primary-color/5
+            hover:text-primary-color
+            dark:text-slate-200
+            dark:hover:bg-slate-800
+            dark:hover:text-white
+          "
+        >
+          <div
+            className="
+              flex h-8 w-8 items-center justify-center
+              rounded-lg bg-slate-100
+              transition-colors
+              group-hover:bg-primary-color/10
+              dark:bg-slate-800
+            "
+          >
+            <User className="h-4 w-4" />
+          </div>
 
-                    {/* Actions */}
+          <span>Profile</span>
+        </Link>
 
-                    <div className="p-2">
-                      <Link
-                        href="/profile"
-                        onClick={() => setProfileOpen(false)}
-                        className="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
-                      >
-                        <User className="h-5 w-5" />
+        {/* Divider */}
+        <div className="my-2 h-px bg-slate-100 dark:bg-slate-800" />
 
-                        <span>Profile</span>
-                      </Link>
+        {/* Logout */}
+        <button
+          type="button"
+          onClick={handleLogout}
+          role="menuitem"
+          className="
+            group flex w-full items-center gap-3
+            rounded-xl px-3 py-2.5
+            font-medium text-red-500
+            transition-colors duration-150
+            hover:bg-red-50
+            dark:hover:bg-red-500/10
+          "
+        >
+          <div
+            className="
+              flex h-8 w-8 items-center justify-center
+              rounded-lg bg-red-50
+              group-hover:bg-red-100
+              dark:bg-red-500/10
+            "
+          >
+            <LogOut className="h-4 w-4" />
+          </div>
 
-                      <button
-                        type="button"
-                        onClick={handleLogout}
-                        className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10"
-                      >
-                        <LogOut className="h-5 w-5" />
-
-                        <span>Logout</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+  )}
+</div>
             ) : null}
           </div>
 

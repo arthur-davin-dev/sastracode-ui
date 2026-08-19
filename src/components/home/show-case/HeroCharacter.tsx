@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslation } from "@/hooks/useTranslations";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -45,9 +46,11 @@ export default function HeroCharacter() {
 
   return (
     /* Full-width outer section for page-wide background color */
-    <section className="relative w-full bg-white dark:bg-gray-900 transition-colors duration-300 pt-40 py-20">
+    <section className="relative flex min-h-screen w-full items-center bg-white dark:bg-gray-900 transition-colors duration-300 py-20 pt-28">
+      
       {/* Centered inner container for grid content and bounds */}
-      <div className="relative mx-auto max-w-7xl pt-8 px-4">
+      <div className="relative mx-auto w-full max-w-7xl px-6">
+        
         {/* Corner decorations */}
         <div className="pointer-events-none absolute left-0 top-0 h-21.75 w-21.75 rounded-tl-2xl border-l-14 border-t-14 border-[#ff383c] dark:border-red-500"></div>
         <div className="pointer-events-none absolute bottom-0 right-0 h-21.75 w-21.75 rotate-180 rounded-tl-2xl border-l-14 border-t-14 border-[#ff383c] dark:border-red-500"></div>
@@ -75,45 +78,15 @@ export default function HeroCharacter() {
               href="/playground/editor"
               className="inline-flex items-center gap-2 rounded-xl border border-[#bfc8d5] dark:border-gray-700 bg-white dark:bg-gray-800 px-5 py-3 text-sm font-medium text-black dark:text-white transition-all duration-300 hover:bg-slate-50 dark:hover:bg-gray-700"
             >
-              <img
-                src="/home/svg/coding.svg"
-                alt=""
-                className="size-6 dark:invert"
-              />
+              <img src="/home/svg/coding.svg" alt="" className="size-6 dark:invert" />
               <span className="font-khmer">
                 {currentT.showCase.heroCharacter.button}
               </span>
             </Link>
-            <div className="mt-6 grid max-w-2xl grid-cols-3 gap-2 rounded-[18px] border border-slate-200 bg-white/80 px-4 py-4 shadow-sm backdrop-blur-sm dark:border-slate-700 dark:bg-slate-900/80 sm:gap-4 sm:px-6">
-              <div className="text-center">
-                <div className="text-3xl font-black text-primary-color sm:text-4xl">
-                  ១០០%
-                </div>
-                <div className="mt-1 text-xs font-medium text-slate-600 dark:text-slate-300 sm:text-sm">
-                  មិនចាំបាច់ Browser
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-black text-primary-color sm:text-4xl">
-                  ២៤/៧
-                </div>
-                <div className="mt-1 text-xs font-medium text-slate-600 dark:text-slate-300 sm:text-sm">
-                  AI Assistant
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-black text-primary-color sm:text-4xl">
-                  ៣,០០០+
-                </div>
-                <div className="mt-1 text-xs font-medium text-slate-600 dark:text-slate-300 sm:text-sm">
-                  អ្នករៀន
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Right Column: Photo Collage */}
-          <div className="relative mx-auto mt-8 h-[260px] w-full max-w-xs sm:mt-10 sm:h-[340px] sm:max-w-md lg:mt-14 lg:h-[420px] lg:max-w-lg">
+          <div className="relative mx-auto h-65 w-full max-w-xs sm:h-85 sm:max-w-md lg:h-105 lg:max-w-lg">
             <img
               src="/home/support-team/chatSovanney.jpg"
               alt="Team member"
@@ -131,6 +104,7 @@ export default function HeroCharacter() {
             />
           </div>
         </div>
+
       </div>
     </section>
   );

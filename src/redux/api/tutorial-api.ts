@@ -42,35 +42,6 @@ export interface DocumentBlock {
   updatedAt?: string;
 }
 
-export interface TutorialSubsection {
-  id: string;
-  sectionId: string;
-  title: string;
-  orderIndex: number;
-  contentMode?: "EMPTY" | "DIRECT" | "GROUPED";
-  settings?: QuizSettings | null;
-  blocks?: DocumentBlock[];
-  subsections?: TutorialSubsection[];
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface QuizSettings {
-  durationSeconds?: number;
-  passingPercentage?: number;
-}
-
-export interface TutorialSubsection {
-  id: string;
-  sectionId: string;
-  title: string;
-  orderIndex: number;
-  settings?: QuizSettings | null;
-  blocks?: DocumentBlock[];
-  createdAt?: string;
-  updatedAt?: string;
-}
-
 export interface TutorialSection {
   id: string;
   documentId: string;

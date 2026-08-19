@@ -3,11 +3,15 @@ import { Search, Sparkles } from "lucide-react";
 import DocsShell from "@/components/documentation/DocsShell";
 import DocumentationSearchResults from "@/components/documentation/DocumentationSearchResults";
 
-interface SearchPageProps {
-  searchParams: Promise<{ q?: string | string[] }>;
-}
+type SearchPageProps = {
+  searchParams: Promise<{
+    q?: string | string[];
+  }>;
+};
 
-export default async function SearchDocsPage({ searchParams }: SearchPageProps) {
+export default async function SearchDocsPage({
+  searchParams,
+}: SearchPageProps) {
   const params = await searchParams;
 
   const query = Array.isArray(params.q)

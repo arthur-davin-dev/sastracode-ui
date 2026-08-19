@@ -31,7 +31,7 @@ export function RecentActivityItem({ activity }: { activity: Activity }) {
         <div className="flex items-center self-start sm:self-center shrink-0">
           <Badge 
             variant="secondary" 
-            className="gap-2 px-1.5 py-4 text-lg font-medium bg-primary-color text-white dark:text-white border border-primary-color/40 rounded-xl shadow-xs group-hover:bg-primary-color/20 group-hover:text-slate-950 transition-all duration-300"
+            className="gap-2 px-1.5 py-4 text-lg font-medium bg-primary-color text-white dark:text-white border border-primary-color/40 rounded-xl shadow-xs   transition-all duration-300"
           >
             <Zap className="h-5 w-5 text-red-600 fill-red-600" />
             <span>+{activity.xp} XP</span>

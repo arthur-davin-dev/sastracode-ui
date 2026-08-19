@@ -9,15 +9,20 @@
 //   X,
 // } from "lucide-react";
 // import Link from "next/link";
-// import { useEffect, useMemo, useState } from "react";
+// import { useEffect, useMemo, useRef, useState } from "react";
 
-// import LessonBlockRenderer from "@/components/documentation/LessonBlockRenderer";
+// import LessonBlockRenderer, {
+//   QuizResultsProvider,
+// } from "@/components/documentation/LessonBlockRenderer";
+// import ScrollReveal from "@/components/home/ScrollReveal";
 // import SidebarLeftLesson from "@/components/documentation/SidebarLeftLesson";
-// import SidebarRightLesson, {
-//   getBlockAnchor,
-// } from "@/components/documentation/SidebarRightLesson";
-// import TodayLessonHero from "@/components/documentation/TodayLessonHero";
-// import { useGetTutorialByIdQuery } from "@/redux/api/tutorial-api";
+// import { getBlockAnchor } from "@/components/documentation/SidebarRightLesson";
+// import {
+//   useGetTutorialByIdQuery,
+//   useGetTutorialProgressQuery,
+//   useCompleteTutorialLessonMutation,
+//   useIncrementTutorialViewMutation,
+// } from "@/redux/api/tutorial-api";
 // import type {
 //   TutorialDetailData,
 //   TutorialLesson,
@@ -75,38 +80,25 @@
 
 // function TutorialLoading() {
 //   return (
-//     <main className="min-h-screen bg-slate-50 dark:bg-slate-950">
-//       <div className="mx-auto grid min-h-screen max-w-[1800px] lg:grid-cols-[280px_minmax(0,1fr)] xl:grid-cols-[280px_minmax(0,1fr)_280px]">
-//         <aside className="hidden border-r border-slate-200 bg-white p-5 lg:block dark:border-slate-800 dark:bg-slate-950">
-//           <div className="space-y-4 animate-pulse">
-//             <div className="h-9 w-36 rounded-lg bg-slate-200 dark:bg-slate-800" />
-//             <div className="h-11 rounded-xl bg-slate-100 dark:bg-slate-900" />
-//             <div className="h-11 rounded-xl bg-slate-100 dark:bg-slate-900" />
-//             <div className="h-11 rounded-xl bg-slate-100 dark:bg-slate-900" />
+//     <main className="min-h-screen bg-white dark:bg-slate-950">
+//       <div className="mx-auto grid min-h-screen max-w-[1720px] lg:grid-cols-[264px_minmax(0,1fr)]">
+//         <aside className="hidden border-r border-slate-200 bg-slate-50/80 p-5 lg:block dark:border-slate-800 dark:bg-slate-950">
+//           <div className="animate-pulse space-y-3">
+//             <div className="h-7 w-36 rounded-lg bg-slate-200 dark:bg-slate-800" />
+//             <div className="h-11 rounded-xl bg-slate-200/70 dark:bg-slate-900" />
+//             <div className="h-11 rounded-xl bg-slate-200/70 dark:bg-slate-900" />
 //           </div>
 //         </aside>
 
-//         <section className="min-w-0 bg-white px-4 py-7 sm:px-6 lg:px-10 dark:bg-slate-950">
-//           <div className="mx-auto w-full max-w-[980px] animate-pulse space-y-7">
-//             <div className="h-10 w-36 rounded-xl bg-slate-200 dark:bg-slate-800" />
+//         <section className="min-w-0 px-4 py-8 sm:px-6 lg:px-10">
+//           <div className="mx-auto w-full max-w-[920px] animate-pulse space-y-6">
+//             <div className="h-10 w-32 rounded-xl bg-slate-200 dark:bg-slate-800" />
 //             <div className="h-4 w-72 max-w-full rounded bg-slate-200 dark:bg-slate-800" />
-//             <div className="h-64 rounded-3xl bg-slate-200 dark:bg-slate-800" />
-//             <div className="rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
-//               <div className="h-4 w-36 rounded bg-slate-200 dark:bg-slate-800" />
-//               <div className="mt-4 h-9 w-72 max-w-full rounded-lg bg-slate-200 dark:bg-slate-800" />
-//               <div className="mt-8 h-40 rounded-2xl bg-slate-100 dark:bg-slate-800/70" />
-//             </div>
+//             <div className="h-64 rounded-[26px] bg-slate-100 dark:bg-slate-900" />
+//             <div className="h-8 w-64 rounded-lg bg-slate-200 dark:bg-slate-800" />
+//             <div className="h-40 rounded-2xl bg-slate-100 dark:bg-slate-900" />
 //           </div>
 //         </section>
-
-//         <aside className="hidden border-l border-slate-200 bg-slate-50/70 p-5 xl:block dark:border-slate-800 dark:bg-slate-950">
-//           <div className="animate-pulse space-y-4">
-//             <div className="h-5 w-32 rounded bg-slate-200 dark:bg-slate-800" />
-//             <div className="h-3 w-full rounded bg-slate-200 dark:bg-slate-800" />
-//             <div className="h-3 w-4/5 rounded bg-slate-200 dark:bg-slate-800" />
-//             <div className="h-3 w-3/4 rounded bg-slate-200 dark:bg-slate-800" />
-//           </div>
-//         </aside>
 //       </div>
 //     </main>
 //   );
@@ -119,18 +111,16 @@
 //         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-red-50 text-red-600 dark:bg-red-950/40 dark:text-red-400">
 //           <RefreshCw className="h-5 w-5" />
 //         </div>
-
-//         <h1 className="mt-5 text-xl font-bold text-slate-900 dark:text-white">
+//         <h1 className="font-khmer mt-5 text-xl font-bold text-slate-900 dark:text-white">
 //           មិនអាចបង្ហាញមេរៀនបានទេ
 //         </h1>
-//         <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+//         <p className="font-khmer mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
 //           សូមព្យាយាមផ្ទុកទិន្នន័យម្តងទៀត។
 //         </p>
-
 //         <button
 //           type="button"
 //           onClick={onRetry}
-//           className="mt-6 inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#002455] px-5 text-sm font-semibold text-white transition hover:bg-[#00346f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/30 focus-visible:ring-offset-2 dark:ring-offset-slate-900"
+//           className="font-khmer mt-6 inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#002455] px-5 text-sm font-semibold text-white transition hover:bg-[#00346f]"
 //         >
 //           <RefreshCw className="h-4 w-4" />
 //           ព្យាយាមម្តងទៀត
@@ -147,17 +137,15 @@
 //         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-[#002455] dark:bg-blue-950/40 dark:text-blue-300">
 //           <BookOpen className="h-5 w-5" />
 //         </div>
-
-//         <h1 className="mt-5 text-xl font-bold text-slate-900 dark:text-white">
+//         <h1 className="font-khmer mt-5 text-xl font-bold text-slate-900 dark:text-white">
 //           មិនទាន់មានមេរៀន
 //         </h1>
-//         <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+//         <p className="font-khmer mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
 //           Tutorial នេះមិនទាន់មានមាតិកាសម្រាប់អានទេ។
 //         </p>
-
 //         <Link
 //           href={LESSONS_ROUTE}
-//           className="mt-6 inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 px-5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+//           className="font-khmer mt-6 inline-flex h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 px-5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
 //         >
 //           <ChevronLeft className="h-4 w-4" />
 //           ត្រឡប់ទៅបញ្ជីមេរៀន
@@ -170,11 +158,27 @@
 // export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
 //   const { data, isLoading, error, refetch } =
 //     useGetTutorialByIdQuery(tutorialId);
+//   const { data: progressData, refetch: refetchProgress } =
+//     useGetTutorialProgressQuery(tutorialId);
+//   const [incrementView] = useIncrementTutorialViewMutation();
+//   const [completeLesson, { isLoading: isCompletingLesson }] =
+//     useCompleteTutorialLessonMutation();
+//   const countedTutorialRef = useRef<string | null>(null);
 
 //   const [activeLessonId, setActiveLessonId] = useState("");
 //   const [sidebarOpen, setSidebarOpen] = useState(false);
+//   const [completionError, setCompletionError] = useState("");
 
-//   const tutorial = data?.data as TutorialDetailData | undefined;
+//   const tutorial: TutorialDetailData | undefined = data?.data;
+
+//   useEffect(() => {
+//     if (!tutorial || countedTutorialRef.current === tutorialId) return;
+
+//     countedTutorialRef.current = tutorialId;
+//     void incrementView(tutorialId).unwrap().catch(() => {
+//       // Reading the tutorial must continue even when analytics is unavailable.
+//     });
+//   }, [incrementView, tutorial, tutorialId]);
 
 //   const sections = useMemo(
 //     () => sortSections(tutorial?.sections ?? []),
@@ -198,10 +202,40 @@
 //   const previousLesson = activeIndex > 0 ? lessons[activeIndex - 1] : null;
 //   const nextLesson =
 //     activeIndex < lessons.length - 1 ? lessons[activeIndex + 1] : null;
+//   const lessonBlocks = [...(activeLesson?.blocks ?? [])].sort(
+//     (first, second) =>
+//       Number(first.type.trim().toUpperCase() === "QUIZ") -
+//       Number(second.type.trim().toUpperCase() === "QUIZ"),
+//   );
+//   const tutorialProgress = progressData?.data;
+//   const completedSectionIds = useMemo(
+//     () =>
+//       new Set(
+//         tutorialProgress?.lessons
+//           .filter((lesson) => lesson.completed)
+//           .map((lesson) => lesson.sectionId) ?? [],
+//       ),
+//     [tutorialProgress?.lessons],
+//   );
+//   const activeLessonCompleted = completedSectionIds.has(activeLesson?.sectionId ?? "");
 
-//   const progress = lessons.length
-//     ? Math.round(((activeIndex + 1) / lessons.length) * 100)
-//     : 0;
+//   async function markActiveLessonComplete() {
+//     if (!activeLesson || activeLessonCompleted) return;
+
+//     setCompletionError("");
+
+//     try {
+//       await completeLesson({
+//         tutorialId,
+//         sectionId: activeLesson.sectionId,
+//       }).unwrap();
+//       void refetchProgress();
+//     } catch {
+//       setCompletionError(
+//         "Unable to save lesson progress. Please try again shortly.",
+//       );
+//     }
+//   }
 
 //   useEffect(() => {
 //     if (!sidebarOpen) return;
@@ -210,9 +244,7 @@
 //     document.body.style.overflow = "hidden";
 
 //     const handleEscape = (event: KeyboardEvent) => {
-//       if (event.key === "Escape") {
-//         setSidebarOpen(false);
-//       }
+//       if (event.key === "Escape") setSidebarOpen(false);
 //     };
 
 //     window.addEventListener("keydown", handleEscape);
@@ -226,36 +258,23 @@
 //   function selectLesson(lessonId: string) {
 //     setActiveLessonId(lessonId);
 //     setSidebarOpen(false);
-
-//     window.scrollTo({
-//       top: 0,
-//       behavior: "smooth",
-//     });
+//     window.scrollTo({ top: 0, behavior: "smooth" });
 //   }
 
-//   if (isLoading) {
-//     return <TutorialLoading />;
-//   }
-
-//   if (error || !tutorial) {
-//     return <TutorialError onRetry={() => refetch()} />;
-//   }
-
-//   if (!activeLesson) {
-//     return <EmptyTutorial />;
-//   }
+//   if (isLoading) return <TutorialLoading />;
+//   if (error || !tutorial) return <TutorialError onRetry={() => refetch()} />;
+//   if (!activeLesson) return <EmptyTutorial />;
 
 //   return (
-//     <main className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-//       {/* Mobile lesson menu */}
+//     <main className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
 //       <button
 //         type="button"
 //         onClick={() => setSidebarOpen(true)}
 //         aria-label="បើកបញ្ជីមេរៀន"
 //         aria-expanded={sidebarOpen}
-//         className="fixed right-5 bottom-5 z-40 inline-flex h-12 items-center gap-2 rounded-full bg-[#002455] px-4 text-sm font-semibold text-white shadow-lg shadow-slate-900/15 transition hover:-translate-y-0.5 hover:bg-[#00346f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/30 focus-visible:ring-offset-2 lg:hidden"
+//         className="fixed bottom-5 right-5 z-40 inline-flex h-11 items-center gap-2 rounded-full bg-[#002455] px-4 text-sm font-semibold text-white shadow-lg transition hover:bg-[#00346f] lg:hidden"
 //       >
-//         <Menu className="h-5 w-5" />
+//         <Menu className="h-4 w-4" />
 //         <span className="font-khmer">មេរៀន</span>
 //       </button>
 
@@ -268,138 +287,107 @@
 //         />
 //       )}
 
-//       <div className="mx-auto grid min-h-screen max-w-[1800px] lg:grid-cols-[280px_minmax(0,1fr)] xl:grid-cols-[280px_minmax(0,1fr)_280px]">
-//         {/* Left lesson navigation */}
+//       <div className="mx-auto grid min-h-screen max-w-[1720px] lg:grid-cols-[340px_minmax(0,1fr)]">
 //         <aside
-//           className={`fixed inset-y-0 left-0 z-50 w-[290px] transform border-r border-slate-200 bg-white shadow-2xl transition-transform duration-300 ease-out lg:sticky lg:top-0 lg:z-20 lg:h-screen lg:w-auto lg:translate-x-0 lg:shadow-none dark:border-slate-800 dark:bg-slate-950 ${
+//           className={`fixed inset-y-0 left-0 z-50 w-[286px] transform border-r border-slate-200 bg-slate-50/95 shadow-2xl transition-transform duration-300 ease-out lg:sticky lg:top-0 lg:z-20 lg:h-screen lg:w-auto lg:translate-x-0 lg:shadow-none dark:border-slate-800 dark:bg-slate-950 ${
 //             sidebarOpen ? "translate-x-0" : "-translate-x-full"
 //           }`}
 //         >
-//           <div className="absolute top-3 right-3 z-10 lg:hidden">
-//             <button
-//               type="button"
-//               onClick={() => setSidebarOpen(false)}
-//               aria-label="បិទបញ្ជីមេរៀន"
-//               className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 shadow-sm transition hover:bg-slate-50 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
-//             >
-//               <X className="h-4 w-4" />
-//             </button>
-//           </div>
+//           <button
+//             type="button"
+//             onClick={() => setSidebarOpen(false)}
+//             aria-label="បិទបញ្ជីមេរៀន"
+//             className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 shadow-sm lg:hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+//           >
+//             <X className="h-4 w-4" />
+//           </button>
 
 //           <div className="h-full overflow-y-auto overscroll-contain">
 //             <SidebarLeftLesson
 //               sections={sections}
 //               activeLessonId={activeLesson.id}
+//               completedSectionIds={completedSectionIds}
 //               onSelectLesson={selectLesson}
 //             />
 //           </div>
 //         </aside>
 
-//         {/* Main reading area */}
-//         <article className="min-w-0 bg-white xl:border-x xl:border-slate-200 dark:bg-slate-950 dark:xl:border-slate-800">
-//           <div className="mx-auto w-full max-w-[980px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
-//             {/* Utility navigation */}
-//             <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-//               <Link
-//                 href={LESSONS_ROUTE}
-//                 className="inline-flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 text-sm font-semibold text-slate-600 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-700 dark:hover:bg-slate-800 dark:hover:text-white"
-//               >
-//                 <ChevronLeft className="h-4 w-4" />
-//                 ត្រឡប់ក្រោយ
-//               </Link>
-
-//               <div className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold text-slate-500 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
-//                 <BookOpen className="h-3.5 w-3.5" />
-//                 <span>
-//                   {activeIndex + 1}/{lessons.length} មេរៀន
-//                 </span>
-//               </div>
-//             </div>
-
-//             {/* Breadcrumb */}
-//             <nav
-//               aria-label="Breadcrumb"
-//               className="font-khmer mb-4 flex min-w-0 flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-slate-400"
-//             >
-//               <span className="max-w-full truncate">{tutorial.title}</span>
-//               <ChevronRight className="h-3.5 w-3.5 shrink-0 text-slate-300 dark:text-slate-700" />
-//               <span className="font-semibold text-[#002455] dark:text-blue-300">
-//                 {activeLesson.sectionTitle}
-//               </span>
-//             </nav>
-
-//             <TodayLessonHero
-//               title={activeLesson.title}
-//               description={tutorial.summary || `រៀនអំពី ${activeLesson.title}`}
-//               percent={progress}
-//               href="#lesson-content"
-//             />
-
-//             {/* Lesson content */}
-//             <section
-//               id="lesson-content"
-//               className="mt-8 scroll-mt-24 rounded-3xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7 lg:p-8 dark:border-slate-800 dark:bg-slate-900/40"
-//             >
-//               <header className="border-b border-slate-200 pb-6 dark:border-slate-800">
-//                 <div className="flex flex-wrap items-center gap-2">
-//                   <span className="font-khmer text-sm font-semibold text-blue-600 dark:text-blue-400">
-//                     មេរៀនទី {activeIndex + 1}
-//                   </span>
-//                   <span className="h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-700" />
-//                   <span className="text-xs font-medium uppercase tracking-[0.14em] text-slate-400">
-//                     {activeLesson.type === "SECTION" ? "Section" : "Subsection"}
-//                   </span>
-//                 </div>
-
-//                 <h1 className="font-khmer mt-3 text-2xl font-bold leading-tight tracking-tight text-[#002455] sm:text-3xl lg:text-4xl dark:text-white">
+//         <article className="min-w-0 bg-slate-50 dark:bg-slate-950">
+//           <div className="w-full px-5 py-7 sm:px-8 lg:px-12 lg:py-8">
+//             <section id="lesson-content" className="scroll-mt-28">
+//               <ScrollReveal>
+//               <header className="mb-6">
+//                 <h1 className="font-khmer text-[28px] font-bold leading-[1.45] text-blue-600 sm:text-[32px] dark:text-blue-400">
 //                   {activeLesson.title}
 //                 </h1>
 //               </header>
+//               </ScrollReveal>
 
-//               <div className="pt-7">
-//                 {activeLesson.blocks.length > 0 ? (
-//                   <div className="space-y-7">
-//                     {activeLesson.blocks.map((block) => (
+//               {lessonBlocks.length > 0 ? (
+//                 <QuizResultsProvider
+//                   total={lessonBlocks.filter((block) => block.type.trim().toUpperCase() === "QUIZ").length}
+//                   tutorialId={tutorial.id}
+//                   scope={activeLesson.type === "SECTION" ? "SECTION" : "SUBSECTION"}
+//                   scopeId={activeLesson.id}
+//                 >
+//                 <div className="space-y-7 sm:space-y-8">
+//                   {lessonBlocks.map((block) => (
+//                     <ScrollReveal key={block.id}>
 //                       <div
-//                         key={block.id}
 //                         id={getBlockAnchor(block.id)}
-//                         className="scroll-mt-28"
+//                         className="scroll-mt-32"
 //                       >
 //                         <LessonBlockRenderer block={block} />
 //                       </div>
-//                     ))}
-//                   </div>
-//                 ) : (
-//                   <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50/70 px-6 py-12 text-center dark:border-slate-700 dark:bg-slate-900">
-//                     <BookOpen className="mx-auto h-6 w-6 text-slate-300 dark:text-slate-600" />
-//                     <p className="font-khmer mt-3 text-sm font-medium text-slate-500 dark:text-slate-400">
-//                       មេរៀននេះមិនទាន់មានមាតិកាទេ។
-//                     </p>
-//                   </div>
-//                 )}
-//               </div>
+//                     </ScrollReveal>
+//                   ))}
+//                 </div>
+//                 </QuizResultsProvider>
+//               ) : (
+//                 <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center dark:border-slate-700 dark:bg-slate-900/50">
+//                   <BookOpen className="mx-auto h-6 w-6 text-slate-300 dark:text-slate-600" />
+//                   <p className="font-khmer mt-3 text-sm font-medium text-slate-500 dark:text-slate-400">
+//                     មេរៀននេះមិនទាន់មានមាតិកាទេ។
+//                   </p>
+//                 </div>
+//               )}
 
-//               {/* Previous / Next */}
 //               <nav
 //                 aria-label="Lesson navigation"
-//                 className="mt-10 grid gap-3 border-t border-slate-200 pt-6 sm:grid-cols-2 dark:border-slate-800"
+//                 className="mt-12 grid gap-3 border-t border-slate-200 pt-6 sm:grid-cols-2 dark:border-slate-800"
 //               >
+//                 <div className="sm:col-span-2">
+//                   <button
+//                     type="button"
+//                     onClick={() => void markActiveLessonComplete()}
+//                     disabled={activeLessonCompleted || isCompletingLesson}
+//                     className="font-khmer inline-flex min-h-12 items-center justify-center rounded-xl bg-[#002455] px-4 text-sm font-semibold text-white transition hover:bg-[#00346f] disabled:cursor-not-allowed disabled:bg-emerald-600 disabled:opacity-80"
+//                   >
+//                     {activeLessonCompleted
+//                       ? "បានបញ្ចប់"
+//                       : isCompletingLesson
+//                         ? "កំពុងរក្សាទុក..."
+//                         : "សម្គាល់ថាបានបញ្ចប់"}
+//                   </button>
+//                   {completionError && (
+//                     <p className="mt-2 text-sm font-medium text-red-600 dark:text-red-400">
+//                       {completionError}
+//                     </p>
+//                   )}
+//                 </div>
 //                 <div>
 //                   {previousLesson && (
 //                     <button
 //                       type="button"
 //                       onClick={() => selectLesson(previousLesson.id)}
-//                       className="group flex min-h-20 w-full items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 text-left transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md hover:shadow-slate-900/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
+//                       className="group flex min-h-16 w-full items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5 text-left transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-900"
 //                     >
-//                       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition group-hover:bg-blue-50 group-hover:text-blue-600 dark:bg-slate-800 dark:text-slate-400 dark:group-hover:bg-blue-950/40 dark:group-hover:text-blue-300">
-//                         <ChevronLeft className="h-4 w-4 transition group-hover:-translate-x-0.5" />
-//                       </span>
-
+//                       <ChevronLeft className="h-4 w-4 shrink-0 text-slate-400 transition group-hover:-translate-x-0.5" />
 //                       <span className="min-w-0">
-//                         <span className="font-khmer block text-xs font-medium text-slate-400">
+//                         <span className="font-khmer block text-[11px] font-semibold text-slate-400">
 //                           មេរៀនមុន
 //                         </span>
-//                         <span className="font-khmer mt-1 block truncate font-semibold text-[#002455] dark:text-white">
+//                         <span className="font-khmer mt-0.5 block truncate text-sm font-semibold text-[#002455] dark:text-white">
 //                           {previousLesson.title}
 //                         </span>
 //                       </span>
@@ -412,20 +400,17 @@
 //                     <button
 //                       type="button"
 //                       onClick={() => selectLesson(nextLesson.id)}
-//                       className="group flex min-h-20 w-full items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white p-4 text-left transition hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md hover:shadow-slate-900/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002455]/20 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
+//                       className="group flex min-h-16 w-full items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-3.5 text-left transition hover:border-slate-300 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-950 dark:hover:bg-slate-900"
 //                     >
 //                       <span className="min-w-0">
-//                         <span className="font-khmer block text-xs font-medium text-slate-400">
+//                         <span className="font-khmer block text-[11px] font-semibold text-slate-400">
 //                           មេរៀនបន្ទាប់
 //                         </span>
-//                         <span className="font-khmer mt-1 block truncate font-semibold text-[#002455] dark:text-white">
+//                         <span className="font-khmer mt-0.5 block truncate text-sm font-semibold text-[#002455] dark:text-white">
 //                           {nextLesson.title}
 //                         </span>
 //                       </span>
-
-//                       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-500 transition group-hover:bg-blue-50 group-hover:text-blue-600 dark:bg-slate-800 dark:text-slate-400 dark:group-hover:bg-blue-950/40 dark:group-hover:text-blue-300">
-//                         <ChevronRight className="h-4 w-4 transition group-hover:translate-x-0.5" />
-//                       </span>
+//                       <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition group-hover:translate-x-0.5" />
 //                     </button>
 //                   )}
 //                 </div>
@@ -434,12 +419,6 @@
 //           </div>
 //         </article>
 
-//         {/* Right table of contents */}
-//         <aside className="hidden bg-slate-50/70 xl:block dark:bg-slate-950">
-//           <div className="sticky top-0 h-screen overflow-y-auto overscroll-contain">
-//             <SidebarRightLesson blocks={activeLesson.blocks} />
-//           </div>
-//         </aside>
 //       </div>
 //     </main>
 //   );
@@ -463,6 +442,7 @@ import LessonBlockRenderer, {
 } from "@/components/documentation/LessonBlockRenderer";
 import ScrollReveal from "@/components/home/ScrollReveal";
 import SidebarLeftLesson from "@/components/documentation/SidebarLeftLesson";
+import { CodingTaskLessonSection } from "@/components/coding-task-player/CodingTaskLessonSection";
 import { getBlockAnchor } from "@/components/documentation/SidebarRightLesson";
 import {
   useGetTutorialByIdQuery,
@@ -622,9 +602,11 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
     if (!tutorial || countedTutorialRef.current === tutorialId) return;
 
     countedTutorialRef.current = tutorialId;
-    void incrementView(tutorialId).unwrap().catch(() => {
-      // Reading the tutorial must continue even when analytics is unavailable.
-    });
+    void incrementView(tutorialId)
+      .unwrap()
+      .catch(() => {
+        // Reading the tutorial must continue even when analytics is unavailable.
+      });
   }, [incrementView, tutorial, tutorialId]);
 
   const sections = useMemo(
@@ -664,7 +646,9 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
       ),
     [tutorialProgress?.lessons],
   );
-  const activeLessonCompleted = completedSectionIds.has(activeLesson?.sectionId ?? "");
+  const activeLessonCompleted = completedSectionIds.has(
+    activeLesson?.sectionId ?? "",
+  );
 
   async function markActiveLessonComplete() {
     if (!activeLesson || activeLessonCompleted) return;
@@ -763,32 +747,38 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
           <div className="w-full px-5 py-7 sm:px-8 lg:px-12 lg:py-8">
             <section id="lesson-content" className="scroll-mt-28">
               <ScrollReveal>
-              <header className="mb-6">
-                <h1 className="font-khmer text-[28px] font-bold leading-[1.45] text-blue-600 sm:text-[32px] dark:text-blue-400">
-                  {activeLesson.title}
-                </h1>
-              </header>
+                <header className="mb-6">
+                  <h1 className="font-khmer text-[28px] font-bold leading-[1.45] text-blue-600 sm:text-[32px] dark:text-blue-400">
+                    {activeLesson.title}
+                  </h1>
+                </header>
               </ScrollReveal>
 
               {lessonBlocks.length > 0 ? (
                 <QuizResultsProvider
-                  total={lessonBlocks.filter((block) => block.type.trim().toUpperCase() === "QUIZ").length}
+                  total={
+                    lessonBlocks.filter(
+                      (block) => block.type.trim().toUpperCase() === "QUIZ",
+                    ).length
+                  }
                   tutorialId={tutorial.id}
-                  scope={activeLesson.type === "SECTION" ? "SECTION" : "SUBSECTION"}
+                  scope={
+                    activeLesson.type === "SECTION" ? "SECTION" : "SUBSECTION"
+                  }
                   scopeId={activeLesson.id}
                 >
-                <div className="space-y-7 sm:space-y-8">
-                  {lessonBlocks.map((block) => (
-                    <ScrollReveal key={block.id}>
-                      <div
-                        id={getBlockAnchor(block.id)}
-                        className="scroll-mt-32"
-                      >
-                        <LessonBlockRenderer block={block} />
-                      </div>
-                    </ScrollReveal>
-                  ))}
-                </div>
+                  <div className="space-y-7 sm:space-y-8">
+                    {lessonBlocks.map((block) => (
+                      <ScrollReveal key={block.id}>
+                        <div
+                          id={getBlockAnchor(block.id)}
+                          className="scroll-mt-32"
+                        >
+                          <LessonBlockRenderer block={block} />
+                        </div>
+                      </ScrollReveal>
+                    ))}
+                  </div>
                 </QuizResultsProvider>
               ) : (
                 <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-6 py-12 text-center dark:border-slate-700 dark:bg-slate-900/50">
@@ -798,6 +788,13 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
                   </p>
                 </div>
               )}
+
+              <CodingTaskLessonSection
+                tutorialId={tutorial.id}
+                lessonType={activeLesson.type}
+                lessonId={activeLesson.id}
+                sectionId={activeLesson.sectionId}
+              />
 
               <nav
                 aria-label="Lesson navigation"
@@ -865,7 +862,6 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
             </section>
           </div>
         </article>
-
       </div>
     </main>
   );
