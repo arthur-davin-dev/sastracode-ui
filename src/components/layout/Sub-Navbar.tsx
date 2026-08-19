@@ -247,13 +247,13 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
               /* ================================= */
 
               <div className="relative border-l-2 border-slate-200 pl-4 dark:border-slate-800">
-  {/* Profile Trigger */}
-  <button
-    type="button"
-    onClick={() => setProfileOpen((prev) => !prev)}
-    aria-expanded={profileOpen}
-    aria-haspopup="menu"
-    className={`
+                {/* Profile Trigger */}
+                <button
+                  type="button"
+                  onClick={() => setProfileOpen((prev) => !prev)}
+                  aria-expanded={profileOpen}
+                  aria-haspopup="menu"
+                  className={`
       rounded-full p-1
       transition-all duration-200
       hover:bg-slate-100
@@ -264,27 +264,27 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
           : ""
       }
     `}
-  >
-    <Avatar className="h-11 w-11 border-2 border-yellow-400 shadow-sm">
-      {userAvatarUrl && (
-        <AvatarImage
-          src={userAvatarUrl}
-          alt={userName}
-          className="object-cover"
-        />
-      )}
+                >
+                  <Avatar className="h-11 w-11 border-2 border-yellow-400 shadow-sm">
+                    {userAvatarUrl && (
+                      <AvatarImage
+                        src={userAvatarUrl}
+                        alt={userName}
+                        className="object-cover"
+                      />
+                    )}
 
-      <AvatarFallback className="bg-yellow-400 text-lg font-extrabold text-red-600">
-        {userInitial}
-      </AvatarFallback>
-    </Avatar>
-  </button>
+                    <AvatarFallback className="bg-yellow-400 text-lg font-extrabold text-red-600">
+                      {userInitial}
+                    </AvatarFallback>
+                  </Avatar>
+                </button>
 
-  {/* Profile Dropdown */}
-  {profileOpen && (
-    <div
-      role="menu"
-      className="
+                {/* Profile Dropdown */}
+                {profileOpen && (
+                  <div
+                    role="menu"
+                    className="
         absolute right-0 top-full z-50 mt-3
         w-72 overflow-hidden
         rounded-2xl
@@ -294,46 +294,46 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
         dark:border-slate-700
         dark:bg-slate-900
       "
-    >
-      {/* User Information */}
-      <div className="border-b border-slate-100 p-4 dark:border-slate-800">
-        <div className="flex items-center gap-3">
-          <Avatar className="h-12 w-12 shrink-0 border-2 border-yellow-400">
-            {userAvatarUrl && (
-              <AvatarImage
-                src={userAvatarUrl}
-                alt={userName}
-                className="object-cover"
-              />
-            )}
+                  >
+                    {/* User Information */}
+                    <div className="border-b border-slate-100 p-4 dark:border-slate-800">
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-12 w-12 shrink-0 border-2 border-yellow-400">
+                          {userAvatarUrl && (
+                            <AvatarImage
+                              src={userAvatarUrl}
+                              alt={userName}
+                              className="object-cover"
+                            />
+                          )}
 
-            <AvatarFallback className="bg-yellow-400 font-bold text-red-600">
-              {userInitial}
-            </AvatarFallback>
-          </Avatar>
+                          <AvatarFallback className="bg-yellow-400 font-bold text-red-600">
+                            {userInitial}
+                          </AvatarFallback>
+                        </Avatar>
 
-          <div className="min-w-0 flex-1">
-            <p className="truncate font-bold text-primary-color dark:text-white">
-              {userName}
-            </p>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-bold text-primary-color dark:text-white">
+                            {userName}
+                          </p>
 
-            {userEmail && (
-              <p className="mt-0.5 truncate text-sm text-slate-500 dark:text-slate-400">
-                {userEmail}
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
+                          {userEmail && (
+                            <p className="mt-0.5 truncate text-sm text-slate-500 dark:text-slate-400">
+                              {userEmail}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
 
-      {/* Actions */}
-      <div className="p-2">
-        {/* Dashboard */}
-        <Link
-          href="/achivement"
-          onClick={() => setProfileOpen(false)}
-          role="menuitem"
-          className="
+                    {/* Actions */}
+                    <div className="p-2">
+                      {/* Dashboard */}
+                      <Link
+                        href="/achivement"
+                        onClick={() => setProfileOpen(false)}
+                        role="menuitem"
+                        className="
             group flex items-center gap-3
             rounded-xl px-3 py-2.5
             font-medium text-slate-700
@@ -344,28 +344,28 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
             dark:hover:bg-slate-800
             dark:hover:text-white
           "
-        >
-          <div
-            className="
+                      >
+                        <div
+                          className="
               flex h-8 w-8 items-center justify-center
               rounded-lg bg-slate-100
               transition-colors
               group-hover:bg-primary-color/10
               dark:bg-slate-800
             "
-          >
-            <LayoutDashboard className="h-4 w-4" />
-          </div>
+                        >
+                          <LayoutDashboard className="h-4 w-4" />
+                        </div>
 
-          <span>Dashboard</span>
-        </Link>
+                        <span>Dashboard</span>
+                      </Link>
 
-        {/* Profile */}
-        <Link
-          href="/profile"
-          onClick={() => setProfileOpen(false)}
-          role="menuitem"
-          className="
+                      {/* Profile */}
+                      <Link
+                        href="/profile"
+                        onClick={() => setProfileOpen(false)}
+                        role="menuitem"
+                        className="
             group mt-1 flex items-center gap-3
             rounded-xl px-3 py-2.5
             font-medium text-slate-700
@@ -376,31 +376,31 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
             dark:hover:bg-slate-800
             dark:hover:text-white
           "
-        >
-          <div
-            className="
+                      >
+                        <div
+                          className="
               flex h-8 w-8 items-center justify-center
               rounded-lg bg-slate-100
               transition-colors
               group-hover:bg-primary-color/10
               dark:bg-slate-800
             "
-          >
-            <User className="h-4 w-4" />
-          </div>
+                        >
+                          <User className="h-4 w-4" />
+                        </div>
 
-          <span>Profile</span>
-        </Link>
+                        <span>Profile</span>
+                      </Link>
 
-        {/* Divider */}
-        <div className="my-2 h-px bg-slate-100 dark:bg-slate-800" />
+                      {/* Divider */}
+                      <div className="my-2 h-px bg-slate-100 dark:bg-slate-800" />
 
-        {/* Logout */}
-        <button
-          type="button"
-          onClick={handleLogout}
-          role="menuitem"
-          className="
+                      {/* Logout */}
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        role="menuitem"
+                        className="
             group flex w-full items-center gap-3
             rounded-xl px-3 py-2.5
             font-medium text-red-500
@@ -408,24 +408,24 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
             hover:bg-red-50
             dark:hover:bg-red-500/10
           "
-        >
-          <div
-            className="
+                      >
+                        <div
+                          className="
               flex h-8 w-8 items-center justify-center
               rounded-lg bg-red-50
               group-hover:bg-red-100
               dark:bg-red-500/10
             "
-          >
-            <LogOut className="h-4 w-4" />
-          </div>
+                        >
+                          <LogOut className="h-4 w-4" />
+                        </div>
 
-          <span>Logout</span>
-        </button>
-      </div>
-    </div>
-  )}
-</div>
+                        <span>Logout</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             ) : null}
           </div>
 
@@ -510,12 +510,21 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
             {/* Mobile Profile */}
             {/* ================================= */}
 
+            {/* ================================= */}
+            {/* Mobile Profile */}
+            {/* ================================= */}
+
             {status === "authenticated" && session?.user && (
               <div className="space-y-4">
+                {/* User Info */}
                 <div className="flex items-center gap-3 pt-2">
                   <Avatar className="h-12 w-12 shrink-0">
                     {userAvatarUrl && (
-                      <AvatarImage src={userAvatarUrl} alt={userName} />
+                      <AvatarImage
+                        src={userAvatarUrl}
+                        alt={userName}
+                        className="object-cover"
+                      />
                     )}
 
                     <AvatarFallback className="bg-init-color text-lg font-extrabold text-secondary-color">
@@ -524,7 +533,7 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
                   </Avatar>
 
                   <div className="min-w-0">
-                    <p className="truncate text-lg font-extrabold text-primary-color">
+                    <p className="truncate text-lg font-extrabold text-primary-color dark:text-white">
                       {userName}
                     </p>
 
@@ -536,27 +545,101 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
                   </div>
                 </div>
 
-                {/* Profile */}
+                {/* Menu */}
+                <div className="space-y-1">
+                  {/* Dashboard */}
+                  <Link
+                    href="/achivement"
+                    onClick={() => setIsOpen(false)}
+                    className="
+          group flex items-center gap-3
+          rounded-xl px-3 py-2.5
+          font-medium text-slate-700
+          transition-colors
+          hover:bg-primary-color/5
+          hover:text-primary-color
+          dark:text-slate-200
+          dark:hover:bg-slate-800
+          dark:hover:text-white
+        "
+                  >
+                    <div
+                      className="
+            flex h-8 w-8 items-center justify-center
+            rounded-lg bg-slate-100
+            transition-colors
+            group-hover:bg-primary-color/10
+            dark:bg-slate-800
+          "
+                    >
+                      <LayoutDashboard className="h-4 w-4" />
+                    </div>
 
-                <Link
-                  href="/profile"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
-                >
-                  <User className="h-5 w-5" />
-                  Profile
-                </Link>
+                    <span>Dashboard</span>
+                  </Link>
 
-                {/* Logout */}
+                  {/* Profile */}
+                  <Link
+                    href="/profile"
+                    onClick={() => setIsOpen(false)}
+                    className="
+          group flex items-center gap-3
+          rounded-xl px-3 py-2.5
+          font-medium text-slate-700
+          transition-colors
+          hover:bg-primary-color/5
+          hover:text-primary-color
+          dark:text-slate-200
+          dark:hover:bg-slate-800
+          dark:hover:text-white
+        "
+                  >
+                    <div
+                      className="
+            flex h-8 w-8 items-center justify-center
+            rounded-lg bg-slate-100
+            transition-colors
+            group-hover:bg-primary-color/10
+            dark:bg-slate-800
+          "
+                    >
+                      <User className="h-4 w-4" />
+                    </div>
 
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10"
-                >
-                  <LogOut className="h-5 w-5" />
-                  Logout
-                </button>
+                    <span>Profile</span>
+                  </Link>
+
+                  {/* Divider */}
+                  <div className="my-2 h-px bg-slate-100 dark:bg-slate-800" />
+
+                  {/* Logout */}
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="
+          group flex w-full items-center gap-3
+          rounded-xl px-3 py-2.5
+          font-medium text-red-500
+          transition-colors
+          hover:bg-red-50
+          dark:hover:bg-red-500/10
+        "
+                  >
+                    <div
+                      className="
+            flex h-8 w-8 items-center justify-center
+            rounded-lg bg-red-50
+            transition-colors
+            group-hover:bg-red-100
+            dark:bg-red-500/10
+          "
+                    >
+                      <LogOut className="h-4 w-4" />
+                    </div>
+
+                    <span>Logout</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>

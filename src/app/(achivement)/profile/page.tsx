@@ -146,6 +146,7 @@ import { Loader2, RefreshCw } from "lucide-react";
 
 import { ProfileHeaderCard } from "@/components/profile/ProfileHeaderCard";
 import { ProfileForm } from "@/components/profile/ProfileForm";
+import { ProfileOverviewCards } from "@/components/profile/ProfileOverviewCards";
 import { useGetMyProfileQuery } from "@/redux/service/profile-api";
 
 export default function Profile() {
@@ -220,15 +221,19 @@ export default function Profile() {
           onEditClick={() => setIsEditing(true)}
         />
 
-        <ProfileForm
-          profile={profile}
-          isEditing={isEditing}
-          onCancel={() => setIsEditing(false)}
-          onSaved={() => {
-            setIsEditing(false);
-            void refetch();
-          }}
-        />
+        {isEditing ? (
+          <ProfileForm
+            profile={profile}
+            isEditing
+            onCancel={() => setIsEditing(false)}
+            onSaved={() => {
+              setIsEditing(false);
+              void refetch();
+            }}
+          />
+        ) : (
+          <ProfileOverviewCards profile={profile} />
+        )}
 
         {isFetching && !isLoading && (
           <div className="flex justify-center">
