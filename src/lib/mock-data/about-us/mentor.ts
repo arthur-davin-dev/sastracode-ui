@@ -13,16 +13,16 @@ export const mockMentors: MentorType[] = [
     name: 'ចាន់ ឆៃយ៉ា',
     role: 'អ្នកណែនាំ',
     image: '/images/chan_chhaya.jpg',
-    githubUrl: "https://github.com",
-    telegramUrl: "https://t.me",
+    githubUrl: "https://github.com/it-chhaya",
+    telegramUrl: "https://t.me/chhayadevkh",
   },
     {
     id: '2',
     name: 'ស្រេង ជីប៉',
     role: 'អ្នកណែនាំ',
     image: '/images/sreng_chipor.jpg',
-    githubUrl: "https://github.com",
-    telegramUrl: "https://t.me",
+    githubUrl: "https://github.com/jiporCK",
+    telegramUrl: "https://t.me/jiporsreng",
   },
 
 ];
