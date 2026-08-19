@@ -8,6 +8,7 @@ import {
   User,
   LogOut,
   ChevronDown,
+  LayoutDashboard,
 } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -263,110 +264,190 @@ export default function Navbar() {
           ) : status === "authenticated" && session?.user ? (
             // Logged in
             <div className="relative hidden md:block">
-              <button
-                type="button"
-                onClick={() => setProfileOpen((prev) => !prev)}
-                className="flex items-center gap-2 rounded-full border border-[#002455]/20 bg-white/40 p-1.5 pr-3 transition-colors hover:bg-white/70 dark:border-slate-700 dark:bg-slate-900/40 dark:hover:bg-slate-800"
-              >
-                {/* Avatar */}
+  {/* Profile Trigger */}
+  <button
+  type="button"
+  onClick={() => setProfileOpen((prev) => !prev)}
+  aria-expanded={profileOpen}
+  aria-haspopup="menu"
+  className={`
+    group flex items-center rounded-full
+    p-1.5 transition-all duration-200
+    ${
+      profileOpen
+        ? "bg-[#002455]/5 ring-2 ring-[#002455]/10"
+        : "hover:bg-[#002455]/5"
+    }
+    dark:hover:bg-slate-800
+  `}
+>
+  <div className="relative">
+    {userImage ? (
+      <img
+        src={userImage}
+        alt={userName}
+        className="h-9 w-9 rounded-full object-cover"
+      />
+    ) : (
+      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#002455] text-sm font-semibold text-white">
+        {userInitial}
+      </div>
+    )}
 
-                {userImage ? (
-                  <img
-                    src={userImage}
-                    alt={userName}
-                    className="h-9 w-9 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#002455] text-sm font-bold text-white">
-                    {userInitial}
-                  </div>
-                )}
+    <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500 dark:border-slate-900" />
+  </div>
+</button>         
 
-                {/* Name */}
+  {/* Profile Dropdown */}
+  {profileOpen && (
+    <div
+      role="menu"
+      className="
+        absolute right-0 top-full z-50 mt-3 w-72
+        origin-top-right overflow-hidden
+        rounded-2xl border border-gray-200/80
+        bg-white
+        shadow-[0_20px_60px_-15px_rgba(0,36,85,0.25)]
+        dark:border-slate-700
+        dark:bg-slate-900
+      "
+    >
+      {/* User Header */}
+      <div className="bg-gradient-to-br from-[#002455]/5 to-transparent p-4 dark:from-white/5">
+        <div className="flex items-center gap-3">
+          {/* Avatar */}
+          <div className="relative shrink-0">
+            {userImage ? (
+              <img
+                src={userImage}
+                alt={userName}
+                className="h-12 w-12 rounded-full object-cover ring-2 ring-white shadow-sm dark:ring-slate-800"
+              />
+            ) : (
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#002455] text-lg font-semibold text-white shadow-sm">
+                {userInitial}
+              </div>
+            )}
 
-                {/* <div className="hidden min-w-0 text-left lg:block">
-                  <p className="max-w-32 truncate text-sm font-semibold text-[#002455] dark:text-white">
-                    {userName}
-                  </p>
+            <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 dark:border-slate-900" />
+          </div>
 
-                  {userEmail && (
-                    <p className="max-w-32 truncate text-xs text-gray-500 dark:text-gray-400">
-                      {userEmail}
-                    </p>
-                  )}
-                </div> */}
+          {/* User info */}
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold text-[#002455] dark:text-white">
+              {userName}
+            </p>
 
-                <ChevronDown
-                  className={`h-4 w-4 text-gray-500 transition-transform ${
-                    profileOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
+            {userEmail && (
+              <p className="mt-0.5 truncate text-xs text-gray-500 dark:text-gray-400">
+                {userEmail}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
 
-              {/* -------------------------------- */}
-              {/* Profile Dropdown */}
-              {/* -------------------------------- */}
+      <div className="h-px bg-gray-100 dark:bg-slate-800" />
 
-              {profileOpen && (
-                <div className="absolute right-0 top-full z-50 mt-3 w-72 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
-                  {/* User information */}
+      {/* Menu */}
+      <div className="p-2">
+        {/* Dashboard */}
+        <Link
+          href="/achivement"
+          onClick={() => setProfileOpen(false)}
+          role="menuitem"
+          className="
+            group flex items-center gap-3 rounded-xl
+            px-3 py-2.5
+            text-sm font-medium text-gray-700
+            transition-all duration-150
+            hover:bg-[#002455]/5 hover:text-[#002455]
+            dark:text-gray-200
+            dark:hover:bg-slate-800
+            dark:hover:text-white
+          "
+        >
+          <div
+            className="
+              flex h-8 w-8 items-center justify-center
+              rounded-lg bg-gray-100
+              transition-colors
+              group-hover:bg-[#002455]/10
+              dark:bg-slate-800
+            "
+          >
+            <LayoutDashboard className="h-4 w-4" />
+          </div>
 
-                  <div className="border-b border-gray-100 p-4 dark:border-slate-800">
-                    <div className="flex items-center gap-3">
-                      {userImage ? (
-                        <img
-                          src={userImage}
-                          alt={userName}
-                          className="h-12 w-12 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#002455] text-lg font-bold text-white">
-                          {userInitial}
-                        </div>
-                      )}
+          <span>Dashboard</span>
+        </Link>
 
-                      <div className="min-w-0">
-                        <p className="truncate font-semibold text-[#002455] dark:text-white">
-                          {userName}
-                        </p>
+        {/* Profile */}
+        <Link
+          href="/profile"
+          onClick={() => setProfileOpen(false)}
+          role="menuitem"
+          className="
+            group mt-1 flex items-center gap-3 rounded-xl
+            px-3 py-2.5
+            text-sm font-medium text-gray-700
+            transition-all duration-150
+            hover:bg-[#002455]/5 hover:text-[#002455]
+            dark:text-gray-200
+            dark:hover:bg-slate-800
+            dark:hover:text-white
+          "
+        >
+          <div
+            className="
+              flex h-8 w-8 items-center justify-center
+              rounded-lg bg-gray-100
+              transition-colors
+              group-hover:bg-[#002455]/10
+              dark:bg-slate-800
+            "
+          >
+            <User className="h-4 w-4" />
+          </div>
 
-                        {userEmail && (
-                          <p className="truncate text-sm text-gray-500 dark:text-gray-400">
-                            {userEmail}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+          <span>Profile</span>
+        </Link>
 
-                  {/* Profile link */}
+        {/* Divider */}
+        <div className="my-2 h-px bg-gray-100 dark:bg-slate-800" />
 
-                  <div className="p-2">
-                    <Link
-                      href="/profile"
-                      onClick={() => setProfileOpen(false)}
-                      className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-800"
-                    >
-                      <User className="h-5 w-5" />
+        {/* Logout */}
+        <button
+          type="button"
+          onClick={handleLogout}
+          role="menuitem"
+          className="
+            group flex w-full items-center gap-3
+            rounded-xl px-3 py-2.5
+            text-sm font-medium text-red-500
+            transition-all duration-150
+            hover:bg-red-50
+            dark:hover:bg-red-500/10
+          "
+        >
+          <div
+            className="
+              flex h-8 w-8 items-center justify-center
+              rounded-lg bg-red-50
+              transition-colors
+              group-hover:bg-red-100
+              dark:bg-red-500/10
+            "
+          >
+            <LogOut className="h-4 w-4" />
+          </div>
 
-                      <span>Profile</span>
-                    </Link>
-
-                    {/* Logout */}
-
-                    <button
-                      type="button"
-                      onClick={handleLogout}
-                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10"
-                    >
-                      <LogOut className="h-5 w-5" />
-
-                      <span>Logout</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+  )}
+</div>
           ) : (
             // Not logged in (Desktop)
             <div className="hidden md:flex shrink-0 items-center justify-center rounded-full border border-[#002455] bg-white/30 text-[#002455] backdrop-blur-sm transition-colors hover:text-[#DC0000] dark:border-slate-700 dark:bg-slate-900/30 dark:text-gray-200 dark:hover:bg-slate-800/50 dark:hover:text-white [&_button]:cursor-pointer [&_button]:bg-transparent [&_button]:border-none [&_button]:px-3 [&_button]:py-1.5 sm:[&_button]:px-4 sm:[&_button]:py-2 [&_button]:text-[14px] lg:[&_button]:text-[16px] [&_button]:font-medium [&_button]:text-inherit [&_button]:shadow-none">
