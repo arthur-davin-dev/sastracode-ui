@@ -31,7 +31,7 @@ export default function HeroVisual() {
                 alt={`${logo.name} logo`}
                 fill
                 className="object-contain"
-                unoptimized 
+                unoptimized
               />
             </div>
           </div>
@@ -51,7 +51,7 @@ export default function HeroVisual() {
                 alt={`${logo.name} logo`}
                 fill
                 className="object-contain"
-                unoptimized 
+                unoptimized
               />
             </div>
           </div>
