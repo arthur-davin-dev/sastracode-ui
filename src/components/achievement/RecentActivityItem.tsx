@@ -18,10 +18,10 @@ export function RecentActivityItem({ activity }: { activity: Activity }) {
 
           {/* Activity Title & Subtitle */}
           <div className="space-y-1">
-            <h4 className="font-bold text-2xl text-primary-color dark:text-white transition-colors duration-300 leading-snug">
+            <h4 className="font-normal text-2xl text-primary-color dark:text-white transition-colors duration-300 leading-snug">
               {activity.title}
             </h4>
-            <p className="text-lg text-slate-600 dark:text-slate-300 font-medium transition-colors duration-300">
+            <p className="text-lg text-slate-600 dark:text-slate-300 font-normal transition-colors duration-300">
               {activity.subtitle}
             </p>
           </div>
@@ -31,7 +31,7 @@ export function RecentActivityItem({ activity }: { activity: Activity }) {
         <div className="flex items-center self-start sm:self-center shrink-0">
           <Badge 
             variant="secondary" 
-            className="gap-2 px-4 py-2 text-lg font-bold bg-yellow-400/20 text-primary-color dark:text-yellow-300 border border-yellow-400/40 rounded-xl shadow-xs group-hover:bg-yellow-400 group-hover:text-slate-950 transition-all duration-300"
+            className="gap-2 px-4 py-2 text-lg font-medium bg-yellow-400/20 text-primary-color dark:text-yellow-300 border border-yellow-400/40 rounded-xl shadow-xs group-hover:bg-yellow-400 group-hover:text-slate-950 transition-all duration-300"
           >
             <Zap className="h-5 w-5 text-red-600 fill-red-600" />
             <span>+{activity.xp} XP</span>

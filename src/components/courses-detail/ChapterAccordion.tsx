@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { signIn, useSession } from "next-auth/react";
 import { Play, Lock, ChevronDown, ChevronUp } from "lucide-react";
 import { Chapter } from "@/lib/course/courses";
 
@@ -17,6 +18,19 @@ export function ChapterAccordion({
   courseId,
 }: ChapterAccordionProps) {
   const [open, setOpen] = useState(!!defaultOpen);
+  const { status } = useSession();
+
+  async function handleLessonClick(
+    event: React.MouseEvent<HTMLAnchorElement>,
+    lessonId: string,
+  ) {
+    if (status === "authenticated") return;
+
+    event.preventDefault();
+    await signIn("keycloak", {
+      redirectTo: `/courses/${courseId}/learn/${lessonId}`,
+    });
+  }
 
   return (
     <div className="overflow-hidden rounded-xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 transition-colors duration-300">
@@ -69,6 +83,7 @@ export function ChapterAccordion({
               <Link
                 key={lesson.id}
                 href={`/courses/${courseId}/learn/${lesson.id}`}
+                onClick={(event) => handleLessonClick(event, lesson.id)}
                 className="flex items-center justify-between px-4 py-3 pl-14 transition-colors hover:bg-indigo-50/70 dark:hover:bg-indigo-950/40"
               >
                 <div className="flex items-center gap-2.5">

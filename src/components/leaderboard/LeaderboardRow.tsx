@@ -49,7 +49,7 @@ export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
               </span>
             )}
           </p>
-          <p className="truncate text-sm font-medium text-primary-color opacity-70 sm:text-base">
+          <p className="truncate text-lg font-medium text-primary-color opacity-70">
             {entry.level ? `កម្រិត ${entry.level}` : "Leaderboard member"}
           </p>
         </div>

@@ -158,7 +158,7 @@ export function PurchaseCard({
 
   const priceLabel =
     course.accessType === "FREE"
-      ? "ឥតគិតថ្លៃ (Free)"
+      ? "ឥតគិតថ្លៃ"
       : course.accessType ===
           "PRIVATE"
         ? "Private access"

@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Code2, LayoutTemplate, Sigma, Database, ArrowRight, Clock, Users } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
@@ -9,7 +10,7 @@ const content = {
     sectionTitle: "គម្រោងថ្មីៗ",
     viewAll: "មើលទាំងអស់",
     community:
-      "ចូលរួមជាមួយពួកយើង ដែលមានអ្នកអភិវឌ្ឍន៍ខ្មែរជាង 10,000 នាក់ ដែលកំពុងកសាងអនាគតនៃប្រព័ន្ធបច្ចេកវិទ្យាក្នុងស្រុក។",
+      "ចូលរួមជាមួយពួកយើង ដែលមានអ្នកអភិវឌ្ឍន៍ខ្មែរជាង {count} នាក់ ដែលកំពុងកសាងអនាគតនៃប្រព័ន្ធបច្ចេកវិទ្យាក្នុងស្រុក។",
     projects: [
       {
         title: "Sorting Algorithm Demo",
@@ -49,7 +50,7 @@ const content = {
     sectionTitle: "Recent Projects",
     viewAll: "View All",
     community:
-      "Join a community of 10,000+ Khmer developers building the future of the local tech ecosystem.",
+      "Join a community of {count} Khmer developers building the future of the local tech ecosystem.",
     projects: [
       {
         title: "Sorting Algorithm Demo",
@@ -87,9 +88,80 @@ const content = {
   },
 };
 
+type CommunityMember = {
+  userId: string;
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+  avatarFileId?: string;
+};
+
+type CommunityData = {
+  totalUsers: number | null;
+  members: CommunityMember[];
+};
+
+const fallbackCommunity: CommunityData = {
+  totalUsers: null,
+  members: [],
+};
+
+function formatMemberCount(count: number | null) {
+  if (count === null) return "10,000+";
+  return new Intl.NumberFormat("en-US", {
+    notation: count >= 10_000 ? "compact" : "standard",
+    maximumFractionDigits: 1,
+  }).format(count);
+}
+
+function memberName(member: CommunityMember) {
+  return [member.firstName, member.lastName].filter(Boolean).join(" ") || member.username || "Member";
+}
+
 export default function ProjectsSection() {
   const { lang } = useLanguage();
   const t = content[lang] || content.en;
+  const [community, setCommunity] = useState<CommunityData>(fallbackCommunity);
+
+  useEffect(() => {
+    let active = true;
+
+    async function loadCommunity() {
+      try {
+        const [overviewResponse, usersResponse] = await Promise.all([
+          fetch("/api/backend/v1/admin/dashboard/overview", { cache: "no-store" }),
+          fetch("/api/backend/v1/admin/users?page=0&size=3", { cache: "no-store" }),
+        ]);
+
+        if (!overviewResponse.ok || !usersResponse.ok) return;
+
+        const [overview, users] = await Promise.all([
+          overviewResponse.json(),
+          usersResponse.json(),
+        ]);
+
+        const totalUsers = Number(overview?.data?.users?.total);
+        const members = Array.isArray(users?.data?.content) ? users.data.content : [];
+
+        if (active) {
+          setCommunity({
+            totalUsers: Number.isFinite(totalUsers) ? totalUsers : null,
+            members,
+          });
+        }
+      } catch {
+        // The public Playground remains usable when the community data is unavailable.
+      }
+    }
+
+    void loadCommunity();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  const memberCount = formatMemberCount(community.totalUsers);
+  const communityText = t.community.replace("{count}", memberCount);
 
   return (
     <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 transition-colors duration-300">
@@ -154,17 +226,40 @@ export default function ProjectsSection() {
             <Users className="h-5 w-5" />
           </div>
           <p className="text-[18px] text-slate-700 dark:text-slate-200 font-medium max-w-xl leading-relaxed transition-colors duration-300">
-            {t.community}
+            {communityText}
           </p>
         </div>
 
         {/* Avatar Stack */}
         <div className="flex items-center -space-x-3 shrink-0 self-end md:self-center">
-          <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-amber-400 to-orange-400 border-2 border-white dark:border-slate-900 shadow-sm" />
-          <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-blue-400 to-cyan-400 border-2 border-white dark:border-slate-900 shadow-sm" />
-          <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-400 border-2 border-white dark:border-slate-900 shadow-sm" />
+          {community.members.map((member) => (
+            <div
+              key={member.userId}
+              title={memberName(member)}
+              className="h-10 w-10 overflow-hidden rounded-full border-2 border-white bg-slate-200 shadow-sm dark:border-slate-900 dark:bg-slate-700"
+            >
+              {member.avatarFileId ? (
+                <img
+                  src={`/api/files/${encodeURIComponent(member.avatarFileId)}/content`}
+                  alt={memberName(member)}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <span className="flex h-full w-full items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-200">
+                  {memberName(member).charAt(0).toUpperCase()}
+                </span>
+              )}
+            </div>
+          ))}
+          {community.members.length === 0 && (
+            <>
+              <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-amber-400 to-orange-400 border-2 border-white dark:border-slate-900 shadow-sm" />
+              <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-blue-400 to-cyan-400 border-2 border-white dark:border-slate-900 shadow-sm" />
+              <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-400 border-2 border-white dark:border-slate-900 shadow-sm" />
+            </>
+          )}
           <div className="h-10 w-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white border-2 border-white dark:border-slate-900 flex items-center justify-center text-xs font-bold shadow-sm">
-            +10k
+            +{memberCount}
           </div>
         </div>
       </div>

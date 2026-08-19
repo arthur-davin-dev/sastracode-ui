@@ -53,6 +53,20 @@ export interface LeaderboardPageResponse {
   empty: boolean;
 }
 
+export interface LeaderboardUserProfile {
+  userId: string;
+  username?: string;
+  firstName?: string;
+  lastName?: string;
+  avatarFileId?: string;
+}
+
+export interface LeaderboardUserProfilePage {
+  content: LeaderboardUserProfile[];
+  totalElements: number;
+  totalPages: number;
+}
+
 export interface LeaderboardApiResponse<T> {
   success: boolean;
   message?: string;

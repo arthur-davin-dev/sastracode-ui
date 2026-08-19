@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Rocket, Sparkles, Terminal, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { useLanguage } from "@/lib/language-context";
 
 const content = {
@@ -25,6 +26,42 @@ const content = {
 export default function Hero() {
   const { lang } = useLanguage();
   const t = content[lang] || content.en;
+  const [visibleTitle, setVisibleTitle] = useState("");
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      const titleTimer = window.setTimeout(() => setVisibleTitle(t.title), 0);
+      return () => window.clearTimeout(titleTimer);
+    }
+
+    const characters = Array.from(t.title);
+    let index = 0;
+    let deleting = false;
+    let timer: number | undefined;
+
+    const type = () => {
+      index += deleting ? -1 : 1;
+      setVisibleTitle(characters.slice(0, index).join(""));
+
+      if (!deleting && index === characters.length) {
+        deleting = true;
+        timer = window.setTimeout(type, 2800);
+        return;
+      }
+
+      if (deleting && index === 0) {
+        deleting = false;
+        timer = window.setTimeout(type, 650);
+        return;
+      }
+
+      timer = window.setTimeout(type, deleting ? 30 : 60);
+    };
+
+    timer = window.setTimeout(type, 300);
+    return () => window.clearTimeout(timer);
+  }, [t.title]);
 
   return (
     <section className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-12 overflow-hidden">
@@ -52,7 +89,8 @@ export default function Hero() {
             {/* Title */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
               <span className="bg-gradient-to-r from-slate-900 via-indigo-950 to-indigo-700 dark:from-white dark:via-slate-100 dark:to-indigo-300 bg-clip-text text-transparent">
-                {t.title}
+                {visibleTitle}
+                <span aria-hidden="true" className="ml-1 inline-block h-[0.9em] w-[3px] animate-pulse bg-current align-[-0.06em]" />
               </span>
             </h1>
 

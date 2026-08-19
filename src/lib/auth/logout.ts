@@ -20,24 +20,41 @@
 
 import { signOut } from "next-auth/react";
 
+interface LogoutResponse {
+  success: boolean;
+  keycloakLogoutUrl?: string | null;
+}
+
 export async function logoutUser(redirectTo = "/") {
+  let keycloakLogoutUrl: string | null = null;
+
   try {
     const response = await fetch("/api/session/logout", {
       method: "POST",
       headers: {
         Accept: "application/json",
       },
+      cache: "no-store",
     });
 
-    if (!response.ok) {
-      const data = await response.json().catch(() => null);
-      console.error("Remote logout failed:", data);
+    if (response.ok) {
+      const data = (await response.json()) as LogoutResponse;
+
+      keycloakLogoutUrl = data.keycloakLogoutUrl ?? null;
     }
   } catch (error) {
-    console.error("Backend logout request failed:", error);
-  } finally {
-    await signOut({
-      redirectTo,
-    });
+    console.error("Logout request failed:", error);
   }
+
+  await signOut({
+    redirect: false,
+  });
+
+  if (keycloakLogoutUrl) {
+    window.location.href = keycloakLogoutUrl;
+
+    return;
+  }
+
+  window.location.href = redirectTo;
 }

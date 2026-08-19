@@ -13,6 +13,7 @@ import { useGetMyProfileQuery } from "@/redux/service/profile-api";
 import {
   useGetMyXpQuery,
   useGetMyXpTransactionsQuery,
+  useGetMyBadgesQuery,
 } from "@/redux/service/achievementApi";
 
 const fallbackUserData: UserSummary = {
@@ -27,13 +28,6 @@ const fallbackUserData: UserSummary = {
   certificates: 12,
 };
 
-const badges: AchievementBadge[] = [
-  { id: "1", name: "ដំបូងបំផុត", iconUrl: "/images/Margin3.png", points: 250, progressPercent: 100, remaining: 0, locked: false },
-  { id: "2", name: "អ្នកឈ្នះ", iconUrl: "/images/Margin2.png", points: 500, progressPercent: 100, remaining: 0, locked: false },
-  { id: "3", name: "ជើងឯក", iconUrl: "/images/Margin3.png", points: 1000, progressPercent: 200, remaining: 0, locked: false },
-  { id: "4", name: "Locked Badge", iconUrl: "", points: 0, progressPercent: 20, remaining: 8, locked: true },
-];
-
 const activities: Activity[] = [
   { id: "1", icon: "📺", title: "បញ្ចប់មូលដ្ឋានគ្រឹះ JavaScript", subtitle: "រៀនមេរៀនមូលដ្ឋានទាំងអស់នៃ JS", xp: 500 },
   { id: "2", icon: "🔧", title: "បន្ថែមកម្មវិធីដំបូងរបស់អ្នក", subtitle: "បង្កើត និងដាក់ឲ្យប្រើប្រាស់កម្មវិធី", xp: 800 },
@@ -46,6 +40,17 @@ const paths: LearningPath[] = [
   { id: "3", name: "React Dev", status: "កំពុងរៀន", progressPercent: 60 },
 ];
 
+function activityTitle(sourceType?: string) {
+  if (!sourceType) return "XP activity";
+
+  return sourceType
+    .toLowerCase()
+    .split("_")
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export default function Achievement() {
   const { status } = useSession();
   const authenticated = status === "authenticated";
@@ -54,6 +59,19 @@ export default function Achievement() {
   const transactionsQuery = useGetMyXpTransactionsQuery(undefined, {
     skip: !authenticated,
   });
+  const badgesQuery = useGetMyBadgesQuery(undefined, { skip: !authenticated });
+  const badges: AchievementBadge[] =
+    badgesQuery.data?.map(({ badge, earned, currentValue, targetValue, progressPercentage }) => ({
+      id: badge.id,
+      name: badge.name,
+      iconUrl: badge.iconFileId
+        ? `/api/v1/files/${encodeURIComponent(badge.iconFileId)}`
+        : "",
+      points: badge.xpReward,
+      progressPercent: Math.min(100, Math.max(0, Math.round(progressPercentage))),
+      remaining: Math.max(0, targetValue - currentValue),
+      locked: !earned,
+    })) ?? [];
 
   const totalXp = xpQuery.data?.totalXp ?? 0;
   const currentLevel = Math.floor(totalXp / 1000) + 1;
@@ -84,8 +102,8 @@ export default function Achievement() {
     transactionsQuery.data?.content.map((transaction) => ({
       id: String(transaction.id),
       icon: "⚡",
-      title:
-        transaction.description || transaction.sourceType.replaceAll("_", " "),
+      // Descriptions can include source UUIDs. Keep internal IDs out of the learner UI.
+      title: activityTitle(transaction.sourceType),
       subtitle: transaction.createdAt
         ? new Intl.DateTimeFormat(undefined, {
             dateStyle: "medium",
@@ -129,6 +147,11 @@ export default function Achievement() {
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {!badgesQuery.isLoading && badges.length === 0 && (
+              <p className="col-span-full rounded-xl border border-dashed border-slate-300 p-6 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400">
+                No badges earned yet. Complete lessons and quizzes to earn badges.
+              </p>
+            )}
             {badges.map((b, i) => (
               <motion.div
                 key={b.id}

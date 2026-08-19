@@ -50,7 +50,7 @@ export function YourStatsCard({ stats }: { stats: UserStat[] }) {
                 <p className="text-lg font-black text-slate-900 dark:text-white leading-tight">
                   {stat.value}
                 </p>
-                <p className="text-xs font-bold text-slate-500 dark:text-slate-400 truncate">
+                <p className="text-lg font-bold text-slate-500 dark:text-slate-400 truncate">
                   {stat.label}
                 </p>
               </div>
