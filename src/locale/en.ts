@@ -10,6 +10,7 @@ export const en = {
       "Learn programming and develop new skills with AI Assistant, Coding Exercises, Interactive Lessons, and an Online Compiler.",
     start: "Start Learning",
     explore: "Explore Code",
+    freeLearning: "100% Free Learning",
   },
   popularDoc: {
     badge: "Popular Documentation",
@@ -163,6 +164,36 @@ export const en = {
     title1: "Technology Stack",
     description:
       "Modern technologies powering a next-generation learning experience.",
+  },
+
+  homeCourses: {
+    new: "New Courses",
+    recommended: "Recommended Courses",
+    loading: "Loading homepage courses",
+  },
+  homeDocumentation: {
+    title: "Popular Lessons",
+    seeAll: "See All",
+    loading: "Loading popular lessons",
+    error: "We couldn't load the popular lessons.",
+    retry: "Try again",
+    empty: "There are no popular lessons yet.",
+  },
+  reviews: {
+    badge: "Student Testimonials",
+    title: "What Our Students",
+    titleAccent: "Say",
+    description: "Real feedback from students who transformed their careers.",
+    previous: "Previous review",
+    next: "Next review",
+    items: [
+      { name: "John Doe", role: "Software Engineer at Google", text: "This platform completely transformed my coding journey. The courses are well structured, the instructors are excellent, and within six months I landed my dream job." },
+      { name: "Sarah Mitchell", role: "Full Stack Developer", text: "The hands-on projects and practical examples made learning different. Concepts that had confused me for years finally became clear." },
+      { name: "Alex Kumar", role: "Data Scientist at Amazon", text: "I was hesitant at first, but the community support and expert guidance made this the best investment in my career." },
+      { name: "Maria Rodriguez", role: "Senior Developer at Microsoft", text: "The DSA course completely changed how I prepared for interviews. Complex topics were broken into simple, understandable lessons." },
+      { name: "Tom Lee", role: "Backend Engineer at Stripe", text: "I love the practice-focused teaching. Career guidance and code reviews helped me earn interviews at leading technology companies." },
+      { name: "Emily Wang", role: "Product Manager at Meta", text: "The community is the best part. Discussions and feedback from fellow learners build understanding and confidence." },
+    ],
   },
 
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.

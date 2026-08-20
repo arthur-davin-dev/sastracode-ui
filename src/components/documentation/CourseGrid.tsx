@@ -7,9 +7,10 @@ interface CourseGridProps {
   courses: Course[];
   seeAllHref?: string;
   columns?: 2 | 3;
+  seeAllLabel?: string;
 }
 
-export default function CourseGrid({ title, courses, seeAllHref, columns = 3 }: CourseGridProps) {
+export default function CourseGrid({ title, courses, seeAllHref, seeAllLabel = "មើលទាំងអស់", columns = 3 }: CourseGridProps) {
   return (
     <section className="space-y-6">
       {/* Header Row */}
@@ -26,7 +27,7 @@ export default function CourseGrid({ title, courses, seeAllHref, columns = 3 }: 
             href={seeAllHref}
             className="font-khmer text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-primary-color dark:hover:text-blue-300 transition-colors flex items-center gap-1"
           >
-            <span>មើលទាំងអស់</span>
+            <span>{seeAllLabel}</span>
             <span aria-hidden="true">&rsaquo;</span>
           </Link>
         )}
