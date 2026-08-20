@@ -63,16 +63,16 @@ export default function HeroCharacter() {
   };
 
   return (
-    <section className="relative flex min-h-screen w-full items-center bg-white dark:bg-gray-900 transition-colors duration-300 py-20 pt-28">
+    <section className="relative flex min-h-fit lg:min-h-screen w-full items-center bg-white dark:bg-gray-900 transition-colors duration-300 py-6 sm:py-10 lg:py-12 pt-8 sm:pt-12 lg:pt-16">
       <div className="relative mx-auto w-full max-w-7xl px-6">
         
         {/* Corner decorations */}
-        <div className="pointer-events-none absolute left-0 top-0 h-21.75 w-21.75 rounded-tl-2xl border-l-14 border-t-14 border-[#ff383c] dark:border-red-500"></div>
-        <div className="pointer-events-none absolute bottom-0 right-0 h-21.75 w-21.75 rotate-180 rounded-tl-2xl border-l-14 border-t-14 border-[#ff383c] dark:border-red-500"></div>
+        <div className="pointer-events-none absolute left-0 top-0 h-12 w-12 sm:h-16 sm:w-16 md:h-21.75 md:w-21.75 rounded-tl-xl sm:rounded-tl-2xl border-l-8 border-t-8 sm:border-l-10 sm:border-t-10 md:border-l-14 md:border-t-14 border-[#ff383c] dark:border-red-500 z-10"></div>
+        <div className="pointer-events-none absolute bottom-0 right-0 h-12 w-12 sm:h-16 sm:w-16 md:h-21.75 md:w-21.75 rotate-180 rounded-tl-xl sm:rounded-tl-2xl border-l-8 border-t-8 sm:border-l-10 sm:border-t-10 md:border-l-14 md:border-t-14 border-[#ff383c] dark:border-red-500 z-10"></div>
 
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+        <div className="grid items-center gap-6 sm:gap-8 lg:gap-12 lg:grid-cols-2 pt-6 sm:pt-10 lg:pt-14">
           {/* Left Column: Text & Content */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div className="badge-gradient inline-flex items-center gap-2 rounded-[13px] border border-navy-muted dark:border-gray-700 px-4 py-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-colors duration-300">
               <span className="size-1 rounded-full bg-navy dark:bg-blue-400"></span>
               <span className="font-khmer text-lg text-primary-color dark:text-blue-400 transition-colors duration-300">

@@ -32,7 +32,7 @@ const NodeIcon = ({ src, label }: { src?: string; label: string }) => {
 
   if (hasError || !src) {
     return (
-      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">
+      <span className="text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">
         {label.slice(0, 3)}
       </span>
     );
@@ -43,7 +43,7 @@ const NodeIcon = ({ src, label }: { src?: string; label: string }) => {
       src={src}
       alt=""
       onError={() => setHasError(true)}
-      className="h-full w-full object-contain p-1"
+      className="h-full w-full object-contain p-0.5 sm:p-1"
     />
   );
 };
@@ -54,14 +54,14 @@ const defaultNodes: StackNode[] = [
     fallbackText: "HTML",
     radius: 180,
     startAngle: 0,
-    ring: "#e14e2c", // Swapped to match HTML orange logo
+    ring: "#e14e2c",
   },
   {
     iconSrc: "/home/technology-stack/css3-svgrepo-com.svg",
     fallbackText: "CSS",
     radius: 180,
     startAngle: 51.4,
-    ring: "#2f6fed", // Swapped to match CSS blue logo
+    ring: "#2f6fed",
   },
   {
     iconSrc: "/home/technology-stack/javascript.png",
@@ -127,6 +127,8 @@ const OrbitingNode = ({
   const yPct = useTransform(y, (val) => pct(val, CANVAS_H));
   const lineRotation = useTransform(angle, (a) => (a * 180) / Math.PI);
 
+  const spokeWidthPct = `${(node.radius / CANVAS_W) * 100}%`;
+
   return (
     <>
       {/* Connecting Spoke Line */}
@@ -135,7 +137,7 @@ const OrbitingNode = ({
         style={{
           left: pct(CENTER.x, CANVAS_W),
           top: pct(CENTER.y, CANVAS_H),
-          width: `${node.radius}px`,
+          width: spokeWidthPct,
           height: "1.5px",
           borderRadius: 999,
           background: lineColor,
@@ -146,12 +148,12 @@ const OrbitingNode = ({
       />
 
       {/* Orbiting Node Icon */}
+      {/* Scaled desktop icon size up to lg:w-[10%] */}
       <motion.div
-        className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 bg-white shadow-md dark:bg-slate-800 dark:shadow-xl transition-colors duration-300"
+        className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 bg-white shadow-md dark:bg-slate-800 dark:shadow-xl transition-colors duration-300 w-[11%] sm:w-[12%] lg:w-[10%]"
         style={{
           left: xPct,
           top: yPct,
-          width: "8%",
           aspectRatio: "1 / 1",
           borderColor: node.ring ?? "#2f4fd6",
           zIndex: 10,
@@ -187,22 +189,40 @@ export default function TechStackSection({
   const pct = (v: number, total: number) => `${(v / total) * 100}%`;
   const currentT = useTranslation();
 
+  // Helper to render label lines cleanly
+  const renderCenterLabel = (label: string) => {
+    if (label === "SastraCode") {
+      return (
+        <span className="flex flex-col items-center leading-none text-[8px] sm:text-[10px] md:text-xs font-bold text-[#0c1c4a] dark:text-white">
+          <span>Sastra</span>
+          <span>Code</span>
+        </span>
+      );
+    }
+    return (
+      <span className="text-[8px] sm:text-[10px] md:text-xs font-bold leading-tight text-[#0c1c4a] dark:text-white text-center">
+        {label}
+      </span>
+    );
+  };
+
   return (
-    <section className="flex w-full overflow-hidden bg-white px-4 py-14 sm:px-8 dark:bg-gray-900 transition-colors duration-300 items-center justify-between">
+    <section className="flex flex-col lg:flex-row w-full overflow-hidden bg-white px-4 py-4 sm:py-14 sm:px-8 dark:bg-gray-900 transition-colors duration-300 items-center justify-between gap-6 sm:gap-8 lg:gap-12">
       <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
-        <span className="mb-4 rounded-full border border-[#c9d3f5] dark:border-blue-700 bg-[#eef1fd] dark:bg-blue-950 px-4 py-1 text-[11px] font-semibold tracking-wide text-[#3a52c9] dark:text-blue-300">
+        <span className="mb-3 sm:mb-4 rounded-full border border-[#c9d3f5] dark:border-blue-700 bg-[#eef1fd] dark:bg-blue-950 px-3.5 py-1 text-[11px] font-semibold tracking-wide text-[#3a52c9] dark:text-blue-300">
           {currentT.technologyStack.badge}
         </span>
-        <h2 className="text-3xl font-extrabold text-[#0c1c4a] dark:text-white sm:text-4xl">
+        <h2 className="text-2xl font-extrabold text-[#0c1c4a] dark:text-white sm:text-4xl">
           {currentT.technologyStack.title1}
         </h2>
-        <p className="mt-3 text-sm text-[#4a5578] dark:text-gray-300 sm:text-base">
+        <p className="mt-2 sm:mt-3 text-xs sm:text-base text-[#4a5578] dark:text-gray-300">
           {currentT.technologyStack.description}
         </p>
       </div>
 
+      {/* Tightened max-width on desktop to lg:max-w-150 to pull the layout inward */}
       <div
-        className="relative mx-auto w-full max-w-225"
+        className="relative mx-auto w-full max-w-full sm:max-w-2xl lg:max-w-150"
         style={{ aspectRatio: `${CANVAS_W} / ${CANVAS_H}` }}
       >
         {/* Orbit Path Guide Line */}
@@ -211,29 +231,27 @@ export default function TechStackSection({
           style={{
             left: pct(CENTER.x, CANVAS_W),
             top: pct(CENTER.y, CANVAS_H),
-            width: `${180 * 2}px`,
-            height: `${180 * 2}px`,
+            width: `${((180 * 2) / CANVAS_W) * 100}%`,
+            height: `${((180 * 2) / CANVAS_H) * 100}%`,
             opacity: 0.5,
           }}
         />
 
         {/* Center Hub */}
+        {/* Increased center hub size on desktop to lg:w-[15%] to narrow the gap to orbiting nodes */}
         <div
-          className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-2 bg-white shadow-lg dark:bg-slate-900 dark:border-blue-500"
+          className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center rounded-full border-2 bg-white shadow-lg dark:bg-slate-900 dark:border-blue-500 w-[14%] sm:w-[14%] lg:w-[15%]"
           style={{
             left: pct(CENTER.x, CANVAS_W),
             top: pct(CENTER.y, CANVAS_H),
-            width: "12%",
             aspectRatio: "1 / 1",
             borderColor: "#2f4fd6",
             zIndex: 30,
           }}
         >
-          <div className="flex flex-col items-center justify-center gap-0.5 px-1 text-center w-full h-full rounded-full">
+          <div className="flex flex-col items-center justify-center gap-0.5 p-1 text-center w-full h-full rounded-full">
             {centerIcon}
-            <span className="text-[10px] font-bold leading-tight text-[#0c1c4a] dark:text-white sm:text-xs">
-              {centerLabel}
-            </span>
+            {renderCenterLabel(centerLabel)}
           </div>
         </div>
 

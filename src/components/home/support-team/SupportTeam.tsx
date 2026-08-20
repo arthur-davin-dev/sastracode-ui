@@ -57,7 +57,7 @@ export default function SupportTeam() {
             <img src="/home/wavyLine.svg" alt="Wavy line" />
           </div>
 
-          <div className="relative grid grid-cols-2 gap-y-10 md:grid-cols-5 md:gap-y-0">
+          <div className="relative grid grid-cols-1 gap-y-12 md:grid-cols-5 md:gap-y-0">
             {team.map((member) => {
               // Dynamically pull the localized name using the member key
               const name =
@@ -66,27 +66,27 @@ export default function SupportTeam() {
               return (
                 <div
                   key={member.id}
-                  className={`flex flex-col items-center gap-15 ${
+                  className={`flex flex-col items-center gap-2 md:gap-15 ${
                     member.offset === "up"
                       ? "md:-translate-y-5"
                       : "md:translate-y-12"
                   }`}
                 >
-                  {/* Name & email for members positioned up */}
+                  {/* Name & email for members positioned up on desktop */}
                   {member.offset === "up" && (
-                    <div className="text-center order-1">
+                    <div className="text-center order-2 md:order-1">
                       <p className="text-[18px] font-semibold text-primary-color">
                         {name}
                       </p>
                       <p className="mt-0.5 flex items-center justify-center gap-1 text-[15px] text-slate-400 dark:text-gray-400">
-                        <Mail className="h-3 w-3" /> {member.email}
+                        <Mail className="h-3.5 w-3.5" /> {member.email}
                       </p>
                     </div>
                   )}
 
                   {/* Profile image */}
                   <div
-                    className="h-16 w-16 md:h-30 md:w-30 rounded-full ring-4 ring-white dark:ring-gray-800 shadow-lg flex items-center justify-center text-white font-semibold order-2"
+                    className="h-24 w-24 md:h-30 md:w-30 rounded-full ring-4 ring-white dark:ring-gray-800 shadow-lg flex items-center justify-center text-white font-semibold order-1 md:order-2 shrink-0"
                     title={name}
                   >
                     <img
@@ -96,14 +96,14 @@ export default function SupportTeam() {
                     />
                   </div>
 
-                  {/* Name & email for members positioned down */}
+                  {/* Name & email for members positioned down on desktop */}
                   {member.offset === "down" && (
-                    <div className="text-center order-3">
+                    <div className="text-center order-2 md:order-3">
                       <p className="text-[18px] font-semibold text-primary-color">
                         {name}
                       </p>
                       <p className="mt-0.5 flex items-center justify-center gap-1 text-[15px] text-slate-400 dark:text-gray-400">
-                        <Mail className="h-3 w-3" /> {member.email}
+                        <Mail className="h-3.5 w-3.5" /> {member.email}
                       </p>
                     </div>
                   )}
