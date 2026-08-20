@@ -75,13 +75,13 @@ function TypingTitle({ title1, title2, title3, title4 }: BannerTitle) {
         {firstLine}<span className="block">{secondLine}</span>
       </span>
       <span aria-hidden="true" className="absolute inset-0">
-        <span className="text-[#0B2B66] dark:text-blue-400">
+        <span className="text-[#0B2B66] dark:text-white">
           {visibleFirstLine.slice(0, title1Length)}
           {visibleFirstLine.slice(title1Length)}
         </span>
         {!isOnSecondLine && <span className="ml-1 inline-block h-[0.9em] w-[3px] animate-pulse bg-[#0B2B66] align-[-0.06em] dark:bg-blue-400" />}
         <span className="block">
-          <span className="text-[#0B2B66] dark:text-blue-400">{visibleSecondLine.slice(0, title3Length)}</span>
+          <span className="text-[#0B2B66] dark:text-white">{visibleSecondLine.slice(0, title3Length)}</span>
           <span className="text-red-600 dark:text-red-400">{visibleSecondLine.slice(title3Length)}</span>
           {isOnSecondLine && <span className="ml-1 inline-block h-[0.9em] w-[3px] animate-pulse bg-red-600 align-[-0.06em] dark:bg-red-400" />}
         </span>
@@ -130,14 +130,14 @@ export default function Banner() {
                 {currentT.banner.start}
               </Link>
 
+              <Stats />
+
               {/* <button
                 className="min-w-[8rem] lg:min-w-[10rem] rounded-[16px] border border-gray-300 dark:border-gray-600 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-center"
               >
                 {"</>"} {currentT.banner.explore}
               </button> */}
             </div>
-
-            <Stats />
 
           </div>
 

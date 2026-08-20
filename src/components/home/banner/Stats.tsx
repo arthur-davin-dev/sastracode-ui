@@ -6,10 +6,12 @@ export default function Stats() {
   const t = useTranslation();
 
   return (
-    <div className="mt-10 flex flex-wrap justify-center gap-8 sm:mt-12 sm:gap-12 lg:mt-16 lg:justify-start lg:gap-16">
-      <h3 className="text-2xl font-bold text-primary-color sm:text-3xl">
-        {t.banner.freeLearning}
-      </h3>
+    <div
+      className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-500 shadow-sm transition-colors dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 sm:px-6 sm:text-base"
+      aria-label={t.banner.freeLearning}
+    >
+      <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-purple-500" aria-hidden="true" />
+      <span>{t.banner.freeLearning}</span>
     </div>
   );
 }
