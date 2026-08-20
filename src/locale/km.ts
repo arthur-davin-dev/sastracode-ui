@@ -84,6 +84,11 @@ export const km = {
         description:
           "អនុវត្តតាមផែនទីដំណើរសិក្សាដែលបានរៀបចំយ៉ាងប្រុងប្រយ័ត្ន ដើម្បីណែនាំអ្នកសិក្សាពីកម្រិតចាប់ផ្តើមរហូតដល់កម្រិតជំនាញ។",
       },
+      {
+        title: "ក្រុមការងារគាំទ្រដែលមានបទពិសោធន៍",
+        description:
+          "ទទួលបានការគាំទ្រផ្ទាល់ពីអ្នកសម្របសម្រួលដែលមានបទពិសោធន៍ ដើម្បីណែនាំអ្នកក្នុងដំណើរសិក្សា។",
+      },
     ],
   },
 
@@ -156,8 +161,32 @@ export const km = {
   technologyStack: {
     badge: "បច្ចេកវិទ្យាដែលត្រូវសិក្សា",
 
-    title1: "Technology Stack",
+    title1: "កន្លែងសរសេរ និងសាកល្បងកូដ",
     description: "បច្ចេកវិទ្យាទំនើបៗជំរុញបទពិសោធន៍សិក្សាជំនាន់ក្រោយ។",
+  },
+
+  supportTeam: {
+    title: "ក្រុមការងារគាំទ្រដែលមានបទពិសោធន៍",
+    members: {
+      soeurtBomnorng: "សឿត បំណង",
+      chhayKongkea: "ឆាយ គង្គា",
+      lotLos: "លត់ ឡោះ",
+      velSoThoun: "វ៉ិល សុធន",
+      benThona: "បិន ថុនា",
+    },
+  },
+
+  interactiveGrid: {
+    card1Title: "ចាប់ផ្តើមអាជីវកម្មអនឡាញ",
+    card1Subtitle: "ករណីសិក្សានៅមហាវិទ្យាល័យ",
+    card2Title: "រៀនគ្រប់ទីកន្លែង",
+    card2Subtitle: "បានគ្រប់ពេល",
+    card2Tag: "Live Coding",
+    card3Progress: "២៨ / ៣៥",
+    card3Label: "វឌ្ឍនភាព",
+    card4Title: "AI ជំនួយ",
+    card4Subtitle: "AI បានជំនួយជួយដល់ការសិក្សារបស់យើងរហូតទៅដល់",
+    card4Tag: "24 ម៉ោង",
   },
 
   // ដាក់​ transaltion ឲនៅពីលើ footer។។។​ សូមអរគុណ

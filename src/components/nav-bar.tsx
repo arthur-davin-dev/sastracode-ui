@@ -8,6 +8,7 @@ import {
   User,
   LogOut,
   ChevronDown,
+  LayoutDashboard,
 } from "lucide-react";
 
 import { useEffect, useState } from "react";
@@ -263,75 +264,107 @@ export default function Navbar() {
           ) : status === "authenticated" && session?.user ? (
             // Logged in
             <div className="relative hidden md:block">
+              {/* Profile Trigger */}
               <button
                 type="button"
                 onClick={() => setProfileOpen((prev) => !prev)}
-                className="flex items-center gap-2 rounded-full border border-[#002455]/20 bg-white/40 p-1.5 pr-3 transition-colors hover:bg-white/70 dark:border-slate-700 dark:bg-slate-900/40 dark:hover:bg-slate-800"
+                aria-expanded={profileOpen}
+                aria-haspopup="menu"
+                className={`
+    group flex items-center rounded-full
+    p-1.5 transition-all duration-200
+    ${
+      profileOpen
+        ? "bg-[#002455]/5 ring-2 ring-[#002455]/10"
+        : "hover:bg-[#002455]/5"
+    }
+    dark:hover:bg-slate-800
+  `}
               >
-                {/* Avatar */}
-
-                {userImage ? (
-                  <img
-                    src={userImage}
-                    alt={userName}
-                    className="h-9 w-9 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#002455] text-sm font-bold text-white">
-                    {userInitial}
-                  </div>
-                )}
-
-                {/* Name */}
-
-                {/* <div className="hidden min-w-0 text-left lg:block">
-                  <p className="max-w-32 truncate text-sm font-semibold text-[#002455] dark:text-white">
-                    {userName}
-                  </p>
-
-                  {userEmail && (
-                    <p className="max-w-32 truncate text-xs text-gray-500 dark:text-gray-400">
-                      {userEmail}
-                    </p>
+                <div className="relative">
+                  {userImage ? (
+                    <img
+                      src={userImage}
+                      alt={userName}
+                      className="
+        h-11 w-11
+        rounded-full
+        border-2 border-yellow-400
+        object-cover
+        shadow-sm
+      "
+                    />
+                  ) : (
+                    <div
+                      className="
+        flex h-11 w-11
+        items-center justify-center
+        rounded-full
+        border-2 border-yellow-400
+        bg-[#002455]
+        text-sm font-semibold text-white
+        shadow-sm
+      "
+                    >
+                      {userInitial}
+                    </div>
                   )}
-                </div> */}
 
-                <ChevronDown
-                  className={`h-4 w-4 text-gray-500 transition-transform ${
-                    profileOpen ? "rotate-180" : ""
-                  }`}
-                />
+                  <span
+                    className="
+      absolute bottom-0 right-0
+      h-3 w-3
+      rounded-full
+      border-2 border-white
+      bg-emerald-500
+      dark:border-slate-900
+    "
+                  />
+                </div>
               </button>
 
-              {/* -------------------------------- */}
               {/* Profile Dropdown */}
-              {/* -------------------------------- */}
-
               {profileOpen && (
-                <div className="absolute right-0 top-full z-50 mt-3 w-72 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
-                  {/* User information */}
-
-                  <div className="border-b border-gray-100 p-4 dark:border-slate-800">
+                <div
+                  role="menu"
+                  className="
+        absolute right-0 top-full z-50 mt-3 w-72
+        origin-top-right overflow-hidden
+        rounded-2xl border border-gray-200/80
+        bg-white
+        shadow-[0_20px_60px_-15px_rgba(0,36,85,0.25)]
+        dark:border-slate-700
+        dark:bg-slate-900
+      "
+                >
+                  {/* User Header */}
+                  <div className="bg-gradient-to-br from-[#002455]/5 to-transparent p-4 dark:from-white/5">
                     <div className="flex items-center gap-3">
-                      {userImage ? (
-                        <img
-                          src={userImage}
-                          alt={userName}
-                          className="h-12 w-12 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#002455] text-lg font-bold text-white">
-                          {userInitial}
-                        </div>
-                      )}
+                      {/* Avatar */}
+                      <div className="relative shrink-0">
+                        {userImage ? (
+                          <img
+                            src={userImage}
+                            alt={userName}
+                            className="h-12 w-12 rounded-full object-cover ring-2 ring-white shadow-sm dark:ring-slate-800"
+                          />
+                        ) : (
+                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#002455] text-lg font-semibold text-white shadow-sm">
+                            {userInitial}
+                          </div>
+                        )}
 
-                      <div className="min-w-0">
-                        <p className="truncate font-semibold text-[#002455] dark:text-white">
+                        <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 dark:border-slate-900" />
+                      </div>
+
+                      {/* User info */}
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-semibold text-[#002455] dark:text-white">
                           {userName}
                         </p>
 
                         {userEmail && (
-                          <p className="truncate text-sm text-gray-500 dark:text-gray-400">
+                          <p className="mt-0.5 truncate text-xs text-gray-500 dark:text-gray-400">
                             {userEmail}
                           </p>
                         )}
@@ -339,27 +372,100 @@ export default function Navbar() {
                     </div>
                   </div>
 
-                  {/* Profile link */}
+                  <div className="h-px bg-gray-100 dark:bg-slate-800" />
 
+                  {/* Menu */}
                   <div className="p-2">
+                    {/* Dashboard */}
+                    <Link
+                      href="/achivement"
+                      onClick={() => setProfileOpen(false)}
+                      role="menuitem"
+                      className="
+            group flex items-center gap-3 rounded-xl
+            px-3 py-2.5
+            text-sm font-medium text-gray-700
+            transition-all duration-150
+            hover:bg-[#002455]/5 hover:text-[#002455]
+            dark:text-gray-200
+            dark:hover:bg-slate-800
+            dark:hover:text-white
+          "
+                    >
+                      <div
+                        className="
+              flex h-8 w-8 items-center justify-center
+              rounded-lg bg-gray-100
+              transition-colors
+              group-hover:bg-[#002455]/10
+              dark:bg-slate-800
+            "
+                      >
+                        <LayoutDashboard className="h-4 w-4" />
+                      </div>
+
+                      <span>Dashboard</span>
+                    </Link>
+
+                    {/* Profile */}
                     <Link
                       href="/profile"
                       onClick={() => setProfileOpen(false)}
-                      className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-800"
+                      role="menuitem"
+                      className="
+            group mt-1 flex items-center gap-3 rounded-xl
+            px-3 py-2.5
+            text-sm font-medium text-gray-700
+            transition-all duration-150
+            hover:bg-[#002455]/5 hover:text-[#002455]
+            dark:text-gray-200
+            dark:hover:bg-slate-800
+            dark:hover:text-white
+          "
                     >
-                      <User className="h-5 w-5" />
+                      <div
+                        className="
+              flex h-8 w-8 items-center justify-center
+              rounded-lg bg-gray-100
+              transition-colors
+              group-hover:bg-[#002455]/10
+              dark:bg-slate-800
+            "
+                      >
+                        <User className="h-4 w-4" />
+                      </div>
 
                       <span>Profile</span>
                     </Link>
 
-                    {/* Logout */}
+                    {/* Divider */}
+                    <div className="my-2 h-px bg-gray-100 dark:bg-slate-800" />
 
+                    {/* Logout */}
                     <button
                       type="button"
                       onClick={handleLogout}
-                      className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10"
+                      role="menuitem"
+                      className="
+            group flex w-full items-center gap-3
+            rounded-xl px-3 py-2.5
+            text-sm font-medium text-red-500
+            transition-all duration-150
+            hover:bg-red-50
+            dark:hover:bg-red-500/10
+          "
                     >
-                      <LogOut className="h-5 w-5" />
+                      <div
+                        className="
+              flex h-8 w-8 items-center justify-center
+              rounded-lg bg-red-50
+              transition-colors
+              group-hover:bg-red-100
+              dark:bg-red-500/10
+            "
+                      >
+                        <LogOut className="h-4 w-4" />
+                      </div>
 
                       <span>Logout</span>
                     </button>
@@ -468,38 +574,106 @@ export default function Navbar() {
             {/* Mobile authenticated profile */}
             {/* -------------------------------- */}
 
+            {/* -------------------------------- */}
+            {/* Mobile authenticated profile */}
+            {/* -------------------------------- */}
+
             {status === "authenticated" && session?.user && (
               <div className="mt-2 border-t border-gray-200 pt-4 dark:border-slate-800">
-                <div className="mb-3 flex items-center gap-3">
+                {/* User */}
+                <div className="mb-4 flex items-center gap-3 px-2">
                   {userImage ? (
                     <img
                       src={userImage}
                       alt={userName}
-                      className="h-11 w-11 rounded-full object-cover"
+                      className="h-11 w-11 shrink-0 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#002455] font-bold text-white">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#002455] font-bold text-white">
                       {userInitial}
                     </div>
                   )}
+
+                  <div className="min-w-0">
+                    <p className="truncate font-semibold text-[#002455] dark:text-white">
+                      {userName}
+                    </p>
+
+                    {userEmail && (
+                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">
+                        {userEmail}
+                      </p>
+                    )}
+                  </div>
                 </div>
 
+                {/* Dashboard */}
+                <Link
+                  href="/achivement"
+                  onClick={() => setIsOpen(false)}
+                  className="
+        group flex items-center gap-3
+        rounded-xl px-3 py-2.5
+        font-medium text-gray-700
+        transition-colors
+        hover:bg-[#002455]/5
+        hover:text-[#002455]
+        dark:text-gray-200
+        dark:hover:bg-slate-800
+        dark:hover:text-white
+      "
+                >
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-[#002455]/10 dark:bg-slate-800">
+                    <LayoutDashboard className="h-4 w-4" />
+                  </div>
+
+                  <span>Dashboard</span>
+                </Link>
+
+                {/* Profile */}
                 <Link
                   href="/profile"
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 rounded-lg px-2 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-slate-800"
+                  className="
+        group mt-1 flex items-center gap-3
+        rounded-xl px-3 py-2.5
+        font-medium text-gray-700
+        transition-colors
+        hover:bg-[#002455]/5
+        hover:text-[#002455]
+        dark:text-gray-200
+        dark:hover:bg-slate-800
+        dark:hover:text-white
+      "
                 >
-                  <User className="h-5 w-5" />
-                  Profile
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 group-hover:bg-[#002455]/10 dark:bg-slate-800">
+                    <User className="h-4 w-4" />
+                  </div>
+
+                  <span>Profile</span>
                 </Link>
 
+                {/* Divider */}
+                <div className="my-2 h-px bg-gray-100 dark:bg-slate-800" />
+
+                {/* Logout */}
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="mt-1 flex w-full items-center gap-3 rounded-lg px-2 py-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10"
+                  className="
+        group flex w-full items-center gap-3
+        rounded-xl px-3 py-2.5
+        font-medium text-red-500
+        transition-colors
+        hover:bg-red-50
+        dark:hover:bg-red-500/10
+      "
                 >
-                  <LogOut className="h-5 w-5" />
-                  Logout
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-50 group-hover:bg-red-100 dark:bg-red-500/10">
+                    <LogOut className="h-4 w-4" />
+                  </div>
+
+                  <span>Logout</span>
                 </button>
               </div>
             )}

@@ -60,6 +60,8 @@
 //   );
 // }
 
+
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
@@ -70,7 +72,7 @@ import StoreProvider from "./StoreProvider";
 import AuthProvider from "@/components/AuthProvider";
 import PrelineClient from "./components/PrelineClient";
 import { Toaster } from "@/components/ui/sonner";
-import KhmerNumerals from "@/components/KhmerNumerals";
+// import KhmerNumerals from "@/components/KhmerNumerals";
 
 const googleSans = localFont({
   src: [
@@ -110,7 +112,7 @@ export default function RootLayout({
             <LanguageProvider>
               {children}
 
-              <KhmerNumerals />
+              {/* <KhmerNumerals /> */}
               <PrelineClient />
               <Toaster position="top-right" richColors />
             </LanguageProvider>

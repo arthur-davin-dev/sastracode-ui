@@ -154,7 +154,19 @@ html {
   --font-size-sub-title: 24px;
   --font-size-content: 18px;
 }
+@theme {
+  --font-sans:
+    var(--font-google-sans),
+    "Noto Sans Khmer",
+    sans-serif;
 
+  --font-mono:
+    "Cascadia Mono",
+    Consolas,
+    "Courier New",
+    "Noto Sans Khmer",
+    monospace;
+}
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;

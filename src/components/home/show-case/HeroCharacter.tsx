@@ -44,11 +44,26 @@ export default function HeroCharacter() {
     return () => window.clearTimeout(timer);
   }, [title]);
 
+  // Matches complete or partial typing of "SastraCode" as it generates character-by-character
+  const renderFormattedTitle = (text: string) => {
+    const regex = /(S(?:a(?:s(?:t(?:r(?:a(?:C(?:o(?:d(?:e)?)?)?)?)?)?)?)?)?)/g;
+    const parts = text.split(regex);
+
+    return parts.map((part, i) =>
+      part && "SastraCode".startsWith(part) ? (
+        <span key={i} className="text-secondary-color dark:text-blue-400">
+          {part}
+        </span>
+      ) : (
+        <span key={i} className="text-gray-900 dark:text-white">
+          {part}
+        </span>
+      )
+    );
+  };
+
   return (
-    /* Full-width outer section for page-wide background color */
     <section className="relative flex min-h-screen w-full items-center bg-white dark:bg-gray-900 transition-colors duration-300 py-20 pt-28">
-      
-      {/* Centered inner container for grid content and bounds */}
       <div className="relative mx-auto w-full max-w-7xl px-6">
         
         {/* Corner decorations */}
@@ -65,9 +80,9 @@ export default function HeroCharacter() {
               </span>
             </div>
 
-            <h2 aria-label={title} className="font-khmer text-4xl font-medium leading-tight text-primary-color transition-colors duration-300 dark:text-blue-400 sm:text-5xl">
-              <span aria-hidden="true">{visibleTitle}</span>
-              <span aria-hidden="true" className="ml-1 inline-block h-[0.9em] w-[3px] animate-pulse bg-current align-[-0.06em]" />
+            <h2 aria-label={title} className="font-khmer text-4xl font-medium leading-tight transition-colors duration-300 sm:text-5xl">
+              <span aria-hidden="true">{renderFormattedTitle(visibleTitle)}</span>
+              <span aria-hidden="true" className="ml-1 inline-block h-[0.9em] w-0.75 animate-pulse bg-current align-[-0.06em]" />
             </h2>
 
             <p className="max-w-md font-khmer text-lg leading-8 text-black/80 dark:text-gray-300 transition-colors duration-300">

@@ -57,6 +57,11 @@ export const en = {
         description:
           "Follow carefully structured learning roadmaps that guide you from beginner to expert level.",
       },
+      {
+        title: "Experienced Support Team",
+        description:
+          "Get dedicated support from experienced mentors to guide you through your learning journey.",
+      },
     ],
   },
   popularCourse: {
@@ -160,9 +165,33 @@ export const en = {
   technologyStack: {
     badge: "UNDER THE HOOD",
 
-    title1: "Technology Stack",
+    title1: "Online Code Playground",
     description:
       "Modern technologies powering a next-generation learning experience.",
+  },
+
+  supportTeam: {
+    title: "Experienced Support Team",
+    members: {
+      soeurtBomnorng: "Soeurt Bomnorng",
+      chhayKongkea: "Chhay Kongkea",
+      lotLos: "Lot Los",
+      velSoThoun: "Vel SoThoun",
+      benThona: "Ben Thona",
+    },
+  },
+
+  interactiveGrid: {
+    card1Title: "Start Online Business",
+    card1Subtitle: "College Case Studies",
+    card2Title: "Learn Anywhere",
+    card2Subtitle: "Anytime, Anyplace",
+    card2Tag: "Live Coding",
+    card3Progress: "28 / 35",
+    card3Label: "Progress",
+    card4Title: "AI Assistance",
+    card4Subtitle: "AI helps support learning up to",
+    card4Tag: "24 hours",
   },
 
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.
