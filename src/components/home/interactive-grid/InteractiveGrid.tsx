@@ -27,15 +27,19 @@ const TECH_DATA = [
     { icon: 'JS', name: 'JavaScript' },
 ];
 
+const FLASH_TIMINGS = [
+    { duration: 7.2, delay: 0.8 },
+    { duration: 8.6, delay: 3.1 },
+    { duration: 9.4, delay: 5.7 },
+];
+
 export default function InteractiveGrid() {
-    const { theme, setTheme, resolvedTheme } = useTheme();
+    const { theme, resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
     const [deviceType, setDeviceType] = useState('desktop');
 
     // 1. Detect Screen Width
     useEffect(() => {
-        setMounted(true);
-
         const handleResize = () => {
             const width = window.innerWidth;
             if (width < 768) {
@@ -47,9 +51,15 @@ export default function InteractiveGrid() {
             }
         };
 
-        handleResize(); // Run on mount
+        const mountTimer = window.setTimeout(() => {
+            setMounted(true);
+            handleResize();
+        }, 0);
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        return () => {
+            window.clearTimeout(mountTimer);
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     if (!mounted) return null;
@@ -73,8 +83,8 @@ export default function InteractiveGrid() {
                         key={index}
                         className="relative w-full h-24 flex items-center justify-center"
                         style={{
-                            animation: `flashSlide ${Math.random() * 4 + 6}s linear infinite`,
-                            animationDelay: `${Math.random() * 8}s`
+                            animation: `flashSlide ${FLASH_TIMINGS[index].duration}s linear infinite`,
+                            animationDelay: `${FLASH_TIMINGS[index].delay}s`
                         }}
                     >
                         <svg

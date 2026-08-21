@@ -44,7 +44,7 @@ export function WeeklyGoalCard({
           </div>
           <div className="w-full bg-slate-100 dark:bg-slate-800 h-2.5 rounded-full overflow-hidden">
             <div
-              className="bg-amber-400 h-full rounded-full transition-all duration-500"
+              className="bg-primary-color h-full rounded-full transition-all duration-500"
               style={{ width: `${progressPercentage}%` }}
             />
           </div>
@@ -61,7 +61,7 @@ export function WeeklyGoalCard({
                 <div
                   className={`h-9 w-9 rounded-xl flex items-center justify-center text-sm font-bold transition-all duration-200 ${
                     isCompleted
-                      ? "bg-amber-400 text-slate-950 font-black scale-105"
+                      ? "bg-primary-color text-slate-950 font-black scale-105"
                       : isToday
                       ? "bg-red-600 text-white ring-2 ring-red-300 dark:ring-red-900 scale-105"
                       : "bg-slate-100 dark:bg-slate-800 text-slate-400 border border-slate-200/60 dark:border-slate-700/60"

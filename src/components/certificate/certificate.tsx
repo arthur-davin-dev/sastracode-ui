@@ -48,7 +48,7 @@ export default function Certificate() {
         description="មើល និងគ្រប់គ្រងវិញ្ញាបនបត្រនិងវឌ្ឍនភាពសិក្សារបស់អ្នក"
       /> */}
       <h1 className="text-2xl font-bold text-primary-color">វិញ្ញាបនបត្រ</h1>
-      <p className="text-lg text-primary-color opacity-80">
+      <p className="text-lg text-primary-color dark:text-white opacity-80">
         មើល និងគ្រប់គ្រងវិញ្ញាបនបត្រនិងវឌ្ឍនភាពសិក្សារបស់អ្នក
       </p>
 
@@ -65,7 +65,7 @@ export default function Certificate() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl font-semibold flex items-center gap-2 text-primary-color">
+          <CardTitle className="text-2xl font-semibold flex items-center gap-2 text-primary-color dark:text-white">
             <span className="h-6 w-6 rounded-full bg-primary-color/20 flex items-center justify-center">
               <Lock className="h-3.5 w-3.5 text-primary-color" />
             </span>

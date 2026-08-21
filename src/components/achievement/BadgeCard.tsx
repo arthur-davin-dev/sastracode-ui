@@ -231,11 +231,7 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
                     dark:bg-slate-800
                   `
                   : `
-                    border-yellow-200
-                    bg-gradient-to-br
-                    from-yellow-50
-                    via-amber-50
-                    to-yellow-100
+                    border-slate-200
                     shadow-sm
                     group-hover:scale-105
                   `
@@ -333,17 +329,16 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
               className="
                 h-11 w-full
                 rounded-xl
-                bg-yellow-400
+                bg-primary-color
+                text-white
+                text-lg
                 font-bold
-                text-primary-color
-                shadow-sm
                 transition-all duration-300
-
                 hover:scale-[1.02]
-                hover:bg-yellow-300
+                hover:bg-primary-color/50
               "
             >
-              <Sparkles className="mr-2 h-4 w-4" />
+              {/* <Sparkles className="mr-2 h-4 w-4" /> */}
               ទទួលបានមេដាយ
             </Button>
           ) : (

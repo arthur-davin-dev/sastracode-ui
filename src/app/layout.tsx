@@ -72,6 +72,7 @@ import StoreProvider from "./StoreProvider";
 import AuthProvider from "@/components/AuthProvider";
 import PrelineClient from "./components/PrelineClient";
 import { Toaster } from "@/components/ui/sonner";
+import InteractiveBackground from "@/components/InteractiveBackground";
 // import KhmerNumerals from "@/components/KhmerNumerals";
 
 const googleSans = localFont({
@@ -107,17 +108,21 @@ export default function RootLayout({
       className={googleSans.variable}
     >
       <body>
-        <AuthProvider>
-          <StoreProvider>
-            <LanguageProvider>
-              {children}
+        <InteractiveBackground speed={1.0} density={100} enableMouseGlow={true} />
 
-              {/* <KhmerNumerals /> */}
-              <PrelineClient />
-              <Toaster position="top-right" richColors />
-            </LanguageProvider>
-          </StoreProvider>
-        </AuthProvider>
+        <div className="relative z-10">
+          <AuthProvider>
+            <StoreProvider>
+              <LanguageProvider>
+                {children}
+
+                {/* <KhmerNumerals /> */}
+                <PrelineClient />
+                <Toaster position="top-right" richColors />
+              </LanguageProvider>
+            </StoreProvider>
+          </AuthProvider>
+        </div>
       </body>
     </html>
   );

@@ -1,28 +1,17 @@
-// Stats.tsx
-const setValue ={
-  price: "សិក្សាឥតគិតថ្លៃ ១០០%",
-}
+"use client";
+
+import { useTranslation } from "@/hooks/useTranslations";
 
 export default function Stats() {
+  const t = useTranslation();
+
   return (
-    <div className="mt-10
-      sm:mt-12
-      lg:mt-16
-      flex
-      flex-wrap
-      justify-center
-      lg:justify-start
-      gap-8
-      sm:gap-12
-      lg:gap-16"
+    <div
+      className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-slate-200 bg-white px-5 py-3 text-sm font-medium text-slate-500 shadow-sm transition-colors dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 sm:px-6 sm:text-base"
+      aria-label={t.banner.badge}
     >
-
-      <div>
-        <h3 className="text-2xl sm:text-3xl font-bold text-primary-color ">
-          {setValue.price}
-        </h3>
-      </div>
-
+      <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-purple-500" aria-hidden="true" />
+      <span>{t.banner.badge}</span>
     </div>
   );
 }
