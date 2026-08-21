@@ -21,7 +21,8 @@ export function LessonHeader({
   const [isComplete, setIsComplete] = useState(false);
 
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between ">
+    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      {/* Title & Meta Info */}
       <div>
         <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">
           {title}

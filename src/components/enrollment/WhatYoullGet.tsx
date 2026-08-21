@@ -19,10 +19,8 @@ const benefits = [
 
 export function WhatYoullGet() {
   return (
-    <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 font-khmer transition-colors duration-300">
-      
-      {/* Title Header */}
-      <h2 className="mb-5 text-lg font-bold text-slate-900 dark:text-slate-100">
+    <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+      <h2 className="mb-5 text-lg font-bold text-gray-900 font-sans">
         អ្វីដែលអ្នកទទួលបាន
       </h2>
 
@@ -38,11 +36,11 @@ export function WhatYoullGet() {
               <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 mt-0.5">
                 <Icon className="h-4 w-4" />
               </span>
-              <div className="space-y-0.5">
-                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 leading-snug">
+              <div>
+                <p className="text-sm font-medium text-gray-900 font-sans">
                   {benefit.title}
                 </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="text-xs text-gray-400 font-sans">
                   {benefit.description}
                 </p>
               </div>

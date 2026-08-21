@@ -25,7 +25,7 @@ export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
             {entry.rank}
           </span>
         ) : (
-          <span className="text-lg font-bold text-primary-color opacity-70 w-8 text-center">
+          <span className="text-lg font-bold text-primary-color dark:text-white opacity-70 w-8 text-center">
             #{entry.rank}
           </span>
         )}
@@ -41,7 +41,7 @@ export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
         </Avatar>
 
         <div className="flex flex-col min-w-0">
-          <p className="truncate text-base font-bold leading-tight text-primary-color sm:text-lg">
+          <p className="truncate text-base font-bold leading-tight text-primary-color dark:text-white sm:text-lg">
             {entry.name}
             {entry.isCurrentUser && (
               <span className="ml-2 inline-block rounded-full bg-red-100 px-2 py-1 text-xs font-extrabold text-secondary-color dark:bg-red-950/50 sm:px-3 sm:text-sm">
@@ -49,7 +49,7 @@ export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
               </span>
             )}
           </p>
-          <p className="truncate text-lg font-medium text-primary-color opacity-70">
+          <p className="truncate text-lg font-medium text-primary-color dark:text-white opacity-70">
             {entry.level ? `កម្រិត ${entry.level}` : "Leaderboard member"}
           </p>
         </div>
@@ -57,7 +57,7 @@ export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
 
       {/* XP Score */}
       <div className="col-start-2 text-left sm:col-start-auto sm:text-right">
-        <span className="inline-block rounded-xl border border-slate-200/50 bg-slate-100 px-3 py-1 text-sm font-extrabold text-primary-color dark:border-slate-700/50 dark:bg-slate-800 sm:px-3.5 sm:py-1.5 sm:text-lg">
+        <span className="inline-block rounded-xl border border-slate-200/50 bg-slate-100 px-3 py-1 text-sm font-extrabold text-primary-color dark:text-white dark:border-slate-700/50 dark:bg-slate-800 sm:px-3.5 sm:py-1.5 sm:text-lg">
           {entry.xp.toLocaleString()} <span className="text-red-600 text-base font-bold">XP</span>
         </span>
       </div>

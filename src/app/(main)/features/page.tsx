@@ -5,9 +5,9 @@ import HeroCharacter from "@/components/home/show-case/HeroCharacter";
 import Showcase from "@/components/home/show-case/Showcase";
 import SupportTeam from "@/components/home/support-team/SupportTeam";
 
-export default function FunctionPage(){
+export default function Features(){
     return (
-       <section className="dark:bg-gray-900">
+       <section>
             <HeroCharacter />
             <InteractiveGrid />
             <InteractiveDoc />

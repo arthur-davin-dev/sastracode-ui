@@ -64,6 +64,7 @@ export default function Leaderboard() {
       (data?.content ?? []).map((entry) => {
         const profile = profilesByUserId.get(entry.userId);
         return {
+        id: entry.id || entry.userId,
         rank: entry.rank,
         name: learnerName(entry, profile),
         avatarUrl: learnerAvatar(entry, profile),
@@ -75,6 +76,7 @@ export default function Leaderboard() {
 
   const currentUser: LeaderboardEntry | undefined = myRank
     ? {
+        id: myRank.id || myRank.userId,
         rank: myRank.rank,
         name:
           [myProfile?.firstName, myProfile?.lastName].filter(Boolean).join(" ") ||
@@ -113,7 +115,7 @@ export default function Leaderboard() {
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-lg font-bold uppercase tracking-wider text-primary-color">
+            <p className="text-lg font-bold uppercase tracking-wider text-primary-color dark:text-white">
               Community ranking
             </p>
             <h1 className="mt-1 text-2xl font-extrabold text-indigo-950 transition-colors duration-300 dark:text-white sm:text-3xl">

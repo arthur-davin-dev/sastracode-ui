@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
-import { useTranslation } from '@/hooks/useTranslations';
+import { useEffect, useState } from 'react';
 
 // 1. The Reusable Tech Card Component
 const TechCard = ({ icon, name }: { icon: string; name: string }) => (
@@ -17,7 +17,7 @@ const TechCard = ({ icon, name }: { icon: string; name: string }) => (
     </div>
 );
 
-// 2. The Data Array
+// 2. The Data Array (Add/Remove items here easily!)
 const TECH_DATA = [
     { icon: 'Py', name: 'Python' },
     { icon: 'SQL', name: 'SQL' },
@@ -27,18 +27,27 @@ const TECH_DATA = [
     { icon: 'JS', name: 'JavaScript' },
 ];
 
+const FLASH_TIMINGS = [
+    { duration: 7.2, delay: 0.8 },
+    { duration: 8.6, delay: 3.1 },
+    { duration: 9.4, delay: 5.7 },
+];
+
 export default function InteractiveGrid() {
     const { theme, resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
     const [deviceType, setDeviceType] = useState('desktop');
 
-    // Translation Hook
-    const t = useTranslation();
+    // Randomize each flash's animation timing once, not on every render
+    const [flashTimings] = useState(() =>
+        [0, 1, 2].map(() => ({
+            duration: Math.random() * 4 + 6,
+            delay: Math.random() * 8,
+        })),
+    );
 
-    // Detect Screen Width
+    // 1. Detect Screen Width
     useEffect(() => {
-        setMounted(true);
-
         const handleResize = () => {
             const width = window.innerWidth;
             if (width < 768) {
@@ -50,44 +59,40 @@ export default function InteractiveGrid() {
             }
         };
 
-        handleResize();
+        const mountTimer = window.setTimeout(() => {
+            setMounted(true);
+            handleResize();
+        }, 0);
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        return () => {
+            window.clearTimeout(mountTimer);
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     if (!mounted) return null;
 
+    // Determine current active theme state
     const currentTheme = theme === 'system' ? resolvedTheme : theme;
 
-    const bottomY = 500;
-    const bottomY2 = bottomY - 56;
-
-    // Translation dictionary fallback for missing keys
-    const content = {
-        card1Title: t?.interactiveGrid?.card1Title ?? 'Start Online Business',
-        card1Subtitle: t?.interactiveGrid?.card1Subtitle ?? 'College Case Studies',
-        card2Title: t?.interactiveGrid?.card2Title ?? 'រៀនគ្រប់ទីកន្លែង',
-        card2Subtitle: t?.interactiveGrid?.card2Subtitle ?? 'បានគ្រប់ពេល',
-        card2Tag: t?.interactiveGrid?.card2Tag ?? 'Live Coding',
-        card3Progress: t?.interactiveGrid?.card3Progress ?? '២៨ / ៣៥',
-        card3Label: t?.interactiveGrid?.card3Label ?? 'Progress',
-        card4Title: t?.interactiveGrid?.card4Title ?? 'AI ជំនួយ',
-        card4Subtitle: t?.interactiveGrid?.card4Subtitle ?? 'AI បានជំនួយជួយដល់ការសិក្សា',
-        card4Tag: t?.interactiveGrid?.card4Tag ?? '24 hours',
-    };
+    // for the path light
+    const bottomY = 500; // Adjust this value to control the gap
+    const bottomY2 = bottomY - 56; // Maintain the 56px difference
 
     return (
-        <div className="relative w-full min-h-screen overflow-hidden flex items-center justify-center bg-white dark:bg-gray-900 transition-colors duration-500">
+        <div className="relative w-full overflow-hidden flex items-center justify-center transition-colors duration-500 py-16 sm:py-20 lg:min-h-screen lg:py-0">
 
-            {/* 3 VERTICAL FLASHES */}
+            {/* ========================================== */}
+            {/* 3 VERTICAL FLASHES (Background) */}
+            {/* ========================================== */}
             <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex flex-col items-center justify-evenly py-5">
                 {[0, 1, 2].map((index) => (
                     <div
                         key={index}
                         className="relative w-full h-24 flex items-center justify-center"
                         style={{
-                            animation: `flashSlide ${Math.random() * 4 + 6}s linear infinite`,
-                            animationDelay: `${Math.random() * 8}s`
+                            animation: `flashSlide ${FLASH_TIMINGS[index].duration}s linear infinite`,
+                            animationDelay: `${FLASH_TIMINGS[index].delay}s`
                         }}
                     >
                         <svg
@@ -123,13 +128,15 @@ export default function InteractiveGrid() {
                 }
             `}</style>
 
-            {/* BACKGROUND SVG */}
+            {/* ========================================== */}
+            {/* YOUR EXACT ORIGINAL SVG (Static Background) */}
+            {/* ========================================== */}
             <div className="absolute inset-0 pointer-events-none z-10 w-full h-full">
                 <svg
                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                     width="30%"
                     height="30%"
-                    viewBox={`0 0 279 ${bottomY + 27}`}
+                    viewBox={`0 0 279 ${bottomY + 27}`} // Adjust viewBox height dynamically
                     preserveAspectRatio="none"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -143,6 +150,7 @@ export default function InteractiveGrid() {
                             <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.01;0.99;1" dur="3s" begin="-3s" repeatCount="indefinite" />
                             <animate attributeName="stroke-dashoffset" from="400" to="-210" dur="3s" begin="-3s" repeatCount="indefinite" />
                         </path>
+                        {/* Bottom paths with adjustable y values */}
                         <path d={`M278 ${bottomY}C199.6 ${bottomY} 199.6 ${bottomY2} 143.6 ${bottomY2}`} strokeWidth="2" strokeLinecap="round" fill="none" filter="url(#glow)" strokeDasharray="210 400">
                             <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.01;0.99;1" dur="3s" begin="-3s" repeatCount="indefinite" />
                             <animate attributeName="stroke-dashoffset" from="210" to="-400" dur="3s" begin="-3s" repeatCount="indefinite" />
@@ -165,12 +173,15 @@ export default function InteractiveGrid() {
                 </svg>
             </div>
 
-            {/* TECH CARDS GRID */}
+            {/* ========================================== */}
+            {/* THE TECH CARDS GRID (Conditional Rendering) */}
+            {/* ========================================== */}
             <div className="relative z-20 w-full max-w-7xl px-6 lg:px-10">
 
-                {/* MOBILE LAYOUT */}
+                {/* --- MOBILE LAYOUT (Default - Single Column) --- */}
                 {deviceType === 'mobile' && (
                     <div className="grid grid-cols-1 gap-y-10 place-items-center w-full">
+                        {/* Left Cards */}
                         <div className="col-span-1 flex flex-col gap-6 w-full max-w-md">
                             <div className="relative group bg-white dark:bg-[#121826] border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-4 shadow-xl dark:shadow-2xl w-full flex flex-col items-start gap-2 transition-all hover:scale-105">
                                 <div className="flex items-center gap-3">
@@ -178,22 +189,23 @@ export default function InteractiveGrid() {
                                     <span className="text-xs text-gray-500 dark:text-gray-400">M.Hossain</span>
                                 </div>
                                 <div className="flex items-center gap-2 flex-wrap">
-                                    <h3 className="font-bold text-xl text-gray-900 dark:text-white">{content.card1Title}</h3>
-                                    <span className="mt-1 bg-gray-100 dark:bg-white/10 backdrop-blur-md px-4 py-1 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300 border border-transparent dark:border-white/5">{content.card1Subtitle}</span>
+                                    <h3 className="font-bold text-xl text-gray-900 dark:text-white">Start Online Business</h3>
+                                    <span className="mt-1 bg-gray-100 dark:bg-white/10 backdrop-blur-md px-4 py-1 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300 border border-transparent dark:border-white/5">College Case Studies</span>
                                 </div>
                             </div>
                             <div className="bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-6 shadow-xl dark:shadow-2xl w-full flex flex-row items-center justify-between gap-4 transition-all hover:scale-105">
                                 <div className="flex items-center gap-3">
                                     <div className="bg-gray-100 dark:bg-blue-500/20 p-3 rounded-full text-xl">🎓</div>
                                     <div>
-                                        <div className="font-bold text-lg text-gray-900 dark:text-white">{content.card2Title}</div>
-                                        <span className="text-sm text-gray-500 dark:text-gray-400">{content.card2Subtitle}</span>
+                                        <div className="font-bold text-lg text-gray-900 dark:text-white">រៀនគ្រប់ទីកន្លែង</div>
+                                        <span className="text-sm text-gray-500 dark:text-gray-400">បានគ្រប់ពេល</span>
                                     </div>
                                 </div>
-                                <span className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg">{content.card2Tag}</span>
+                                <span className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg">Live Coding</span>
                             </div>
                         </div>
 
+                        {/* Middle Tech Grid */}
                         <motion.div className="col-span-1 flex justify-center w-full" animate={{ y: [0, -15, 0, 15, 0] }} transition={{ y: { duration: 6, repeat: Infinity, ease: "easeInOut" } }}>
                             <div className="grid grid-cols-2 gap-3 w-full max-w-125">
                                 {TECH_DATA.map((tech, index) => (
@@ -201,7 +213,7 @@ export default function InteractiveGrid() {
                                 ))}
                             </div>
                         </motion.div>
-
+                        {/* Right Cards */}
                         <div className="col-span-1 flex flex-col gap-6 w-full max-w-md">
                             <div className="bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-6 shadow-xl dark:shadow-2xl w-full transition-all hover:scale-105">
                                 <div className="h-14 w-full relative">
@@ -212,45 +224,47 @@ export default function InteractiveGrid() {
                                     <span className="absolute -top-1 right-0 bg-green-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-md">+6.3%</span>
                                 </div>
                                 <div className="flex justify-between items-center mt-2 text-gray-600 dark:text-gray-300 text-base">
-                                    <span>{content.card3Progress}</span>
-                                    <span className="text-xs text-gray-400 dark:text-gray-500">{content.card3Label}</span>
+                                    <span>២៨ / ៣៥</span>
+                                    <span className="text-xs text-gray-400 dark:text-gray-500">Progress</span>
                                 </div>
                             </div>
                             <div className="relative group bg-white dark:bg-linear-to-br dark:from-[#1e293b] dark:to-[#0f172a] border border-gray-200 dark:border-purple-500/30 rounded-2xl py-4 px-6 shadow-xl dark:shadow-2xl w-full flex flex-col items-start gap-2 transition-all hover:scale-105">
-                                <div className="font-bold text-xl text-gray-900 dark:text-white">{content.card4Title}</div>
-                                <div className="text-sm text-gray-500 dark:text-gray-400">{content.card4Subtitle}</div>
+                                <div className="font-bold text-xl text-gray-900 dark:text-white">AI ជំនួយ</div>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">AI បានជំនួយជួយដល់ការសិក្សា</div>
                                 <div className="w-full flex justify-end mt-1">
-                                    <span className="bg-gray-900 dark:bg-white text-white dark:text-black px-5 py-1.5 rounded-full text-sm font-bold">{content.card4Tag}</span>
+                                    <span className="bg-gray-900 dark:bg-white text-white dark:text-black px-5 py-1.5 rounded-full text-sm font-bold">24 hours</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 )}
 
-                {/* TABLET LAYOUT */}
+                {/* --- TABLET LAYOUT (Top Row = Left, Bottom Row = Right) --- */}
                 {deviceType === 'tablet' && (
                     <div className="flex flex-col gap-y-12 w-full max-w-3xl mx-auto">
+                        {/* ROW 1: Left Side (2 Cards Side-by-Side) */}
                         <div className="flex flex-row gap-6 w-full justify-between">
                             <div className="w-[48%] relative group bg-white dark:bg-[#121826] border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-4 shadow-xl dark:shadow-2xl flex flex-col items-start gap-2 transition-all hover:scale-105">
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center text-xs font-bold text-blue-600 dark:text-blue-300">MH</div>
                                     <span className="text-xs text-gray-500 dark:text-gray-400">M.Hossain</span>
                                 </div>
-                                <h3 className="font-bold text-xl text-gray-900 dark:text-white">{content.card1Title}</h3>
-                                <span className="mt-1 bg-gray-100 dark:bg-white/10 backdrop-blur-md px-4 py-1 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300">{content.card1Subtitle}</span>
+                                <h3 className="font-bold text-xl text-gray-900 dark:text-white">Start Online Business</h3>
+                                <span className="mt-1 bg-gray-100 dark:bg-white/10 backdrop-blur-md px-4 py-1 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300">College Case Studies</span>
                             </div>
                             <div className="w-[48%] bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-6 shadow-xl dark:shadow-2xl flex flex-row items-center justify-between gap-4 transition-all hover:scale-105">
                                 <div className="flex items-center gap-3">
                                     <div className="bg-gray-100 dark:bg-blue-500/20 p-3 rounded-full text-xl">🎓</div>
                                     <div>
-                                        <div className="font-bold text-lg text-gray-900 dark:text-white">{content.card2Title}</div>
-                                        <span className="text-sm text-gray-500 dark:text-gray-400">{content.card2Subtitle}</span>
+                                        <div className="font-bold text-lg text-gray-900 dark:text-white">រៀនគ្រប់ទីកន្លែង</div>
+                                        <span className="text-sm text-gray-500 dark:text-gray-400">បានគ្រប់ពេល</span>
                                     </div>
                                 </div>
-                                <span className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg">{content.card2Tag}</span>
+                                <span className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg">Live Coding</span>
                             </div>
                         </div>
 
+                        {/* ROW 2: Middle Tech Grid (Floating) */}
                         <motion.div className="flex justify-center w-full" animate={{ y: [0, -15, 0, 15, 0] }} transition={{ y: { duration: 6, repeat: Infinity, ease: "easeInOut" } }}>
                             <div className="grid grid-cols-2 gap-4 w-full max-w-125">
                                 {TECH_DATA.map((tech, index) => (
@@ -259,6 +273,7 @@ export default function InteractiveGrid() {
                             </div>
                         </motion.div>
 
+                        {/* ROW 3: Right Side (2 Cards Side-by-Side) */}
                         <div className="flex flex-row gap-6 w-full justify-between">
                             <div className="w-[48%] bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-6 shadow-xl dark:shadow-2xl transition-all hover:scale-105">
                                 <div className="h-14 w-full relative">
@@ -269,24 +284,25 @@ export default function InteractiveGrid() {
                                     <span className="absolute -top-1 right-0 bg-green-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-md">+6.3%</span>
                                 </div>
                                 <div className="flex justify-between items-center mt-2 text-gray-600 dark:text-gray-300 text-base">
-                                    <span>{content.card3Progress}</span>
-                                    <span className="text-xs text-gray-400 dark:text-gray-500">{content.card3Label}</span>
+                                    <span>២៨ / ៣៥</span>
+                                    <span className="text-xs text-gray-400 dark:text-gray-500">Progress</span>
                                 </div>
                             </div>
                             <div className="w-[48%] relative group bg-white dark:bg-linear-to-br dark:from-[#1e293b] dark:to-[#0f172a] border border-gray-200 dark:border-purple-500/30 rounded-2xl py-4 px-6 shadow-xl dark:shadow-2xl flex flex-col items-start gap-2 transition-all hover:scale-105">
-                                <div className="font-bold text-xl text-gray-900 dark:text-white">{content.card4Title}</div>
-                                <div className="text-sm text-gray-500 dark:text-gray-400">{content.card4Subtitle}</div>
+                                <div className="font-bold text-xl text-gray-900 dark:text-white">AI ជំនួយ</div>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">AI បានជំនួយជួយដល់ការសិក្សា</div>
                                 <div className="w-full flex justify-end mt-1">
-                                    <span className="bg-gray-900 dark:bg-white text-white dark:text-black px-5 py-1.5 rounded-full text-sm font-bold">{content.card4Tag}</span>
+                                    <span className="bg-gray-900 dark:bg-white text-white dark:text-black px-5 py-1.5 rounded-full text-sm font-bold">24 hours</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 )}
 
-                {/* DESKTOP LAYOUT */}
+                {/* --- DESKTOP LAYOUT (Your Original Grid-Cols-12) --- */}
                 {deviceType === 'desktop' && (
                     <div className="grid grid-cols-12 gap-y-16 place-items-start w-full">
+                        {/* LEFT SIDE (3 cols) */}
                         <div className="col-span-3 flex flex-col gap-6 w-full">
                             <div className="relative group bg-white dark:bg-linear-to-br dark:from-[#1e293b] dark:to-[#0f172a] border border-gray-200 dark:border-purple-500/30 rounded-2xl py-6 px-4 shadow-xl dark:shadow-2xl w-full flex flex-col items-start gap-2 transition-all hover:scale-105 min-h-45">
                                 <div className="flex items-center gap-3">
@@ -294,23 +310,24 @@ export default function InteractiveGrid() {
                                     <span className="text-xs text-gray-500 dark:text-gray-400">M.Hossain</span>
                                 </div>
                                 <div className="flex items-center gap-2 flex-wrap">
-                                    <h3 className="font-bold text-xl text-gray-900 dark:text-white">{content.card1Title}</h3>
-                                    <span className="mt-1 bg-gray-100 dark:bg-white/10 backdrop-blur-md px-4 py-1 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300 border border-transparent dark:border-white/5">{content.card1Subtitle}</span>
+                                    <h3 className="font-bold text-xl text-gray-900 dark:text-white">Start Online Business</h3>
+                                    <span className="mt-1 bg-gray-100 dark:bg-white/10 backdrop-blur-md px-4 py-1 rounded-full text-xs font-semibold text-gray-600 dark:text-gray-300 border border-transparent dark:border-white/5">College Case Studies</span>
                                 </div>
                             </div>
 
                             <div className="relative group bg-white dark:bg-linear-to-br dark:from-[#1e293b] dark:to-[#0f172a] border border-gray-200 dark:border-purple-500/30 rounded-2xl py-6 px-6 shadow-xl dark:shadow-2xl w-full flex flex-col items-start gap-2 transition-all hover:scale-105 min-h-45">
                                 <div className="flex items-center gap-6 font-bold text-xl text-gray-900 dark:text-white">
                                     <span className="bg-gray-100 dark:bg-blue-500/20 p-3 rounded-full text-xl">🎓</span>
-                                    <span className="font-bold text-lg text-gray-900 dark:text-white">{content.card2Title}</span>
+                                    <span className="font-bold text-lg text-gray-900 dark:text-white">រៀនគ្រប់ទីកន្លែង</span>
                                 </div>
-                                <div className="text-sm text-gray-500 dark:text-gray-400">{content.card2Subtitle}</div>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">រៀនបានគ្រប់ពេល</div>
                                 <div className="bg-blue-600 text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg self-end">
-                                    {content.card2Tag}
+                                    Live Coding
                                 </div>
                             </div>
                         </div>
 
+                        {/* MIDDLE (6 cols) - unchanged */}
                         <motion.div className="col-span-6 flex lg:pt-33 justify-center w-full" animate={{ y: [0, -15, 0, 15, 0] }} transition={{ y: { duration: 6, repeat: Infinity, ease: "easeInOut" } }}>
                             <div className="grid grid-cols-3 gap-5 w-full max-w-125">
                                 {TECH_DATA.map((tech, index) => (
@@ -319,6 +336,7 @@ export default function InteractiveGrid() {
                             </div>
                         </motion.div>
 
+                        {/* RIGHT SIDE (3 cols) */}
                         <div className="col-span-3 flex flex-col gap-6 w-full">
                             <div className="bg-white dark:bg-linear-to-br dark:from-[#1e293b] dark:to-[#0f172a] border border-gray-200 dark:border-purple-500/30 rounded-2xl py-4 px-6 shadow-xl dark:shadow-2xl w-full transition-all hover:scale-105 min-h-45">
                                 <div className="h-14 w-full relative">
@@ -330,16 +348,16 @@ export default function InteractiveGrid() {
                                     <span className="absolute -top-1 right-0 bg-green-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-md">+6.3%</span>
                                 </div>
                                 <div className="flex justify-between items-center mt-2 text-gray-600 dark:text-gray-300 text-base">
-                                    <span>{content.card3Progress}</span>
-                                    <span className="text-xs text-gray-400 dark:text-gray-500">{content.card3Label}</span>
+                                    <span>២៨ / ៣៥</span>
+                                    <span className="text-xs text-gray-400 dark:text-gray-500">Progress</span>
                                 </div>
                             </div>
 
                             <div className="relative group bg-white dark:bg-linear-to-br dark:from-[#1e293b] dark:to-[#0f172a] border border-gray-200 dark:border-purple-500/30 rounded-2xl py-6 px-6 shadow-xl dark:shadow-2xl w-full flex flex-col items-start gap-2 transition-all hover:scale-105 min-h-45">
-                                <div className="font-bold text-xl text-gray-900 dark:text-white">{content.card4Title}</div>
-                                <div className="text-sm text-gray-500 dark:text-gray-400">{content.card4Subtitle}</div>
+                                <div className="font-bold text-xl text-gray-900 dark:text-white">AI ជំនួយ</div>
+                                <div className="text-sm text-gray-500 dark:text-gray-400">AI បានជំនួយជួយដល់ការសិក្សារបស់យើងរហូតទៅដល់</div>
                                 <div className="w-full flex justify-end mt-auto">
-                                    <span className="bg-gray-900 dark:bg-white text-white dark:text-black px-5 py-1.5 rounded-full text-sm font-bold">{content.card4Tag}</span>
+                                    <span className="bg-gray-900 dark:bg-white text-white dark:text-black px-5 py-1.5 rounded-full text-sm font-bold">24 hours</span>
                                 </div>
                             </div>
                         </div>

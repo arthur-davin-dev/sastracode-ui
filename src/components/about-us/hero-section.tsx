@@ -56,7 +56,7 @@ function TypingSlogan({ title }: { title: string }) {
 
   return (
     <div aria-label={title}>
-      <h1 className="mb-3 font-khmer text-5xl font-extrabold leading-tight text-secondary-color dark:text-white sm:text-6xl">
+      <h1 className="mb-3 font-khmer text-[48px] font-extrabold leading-tight text-secondary-color dark:text-white">
         <span aria-hidden="true">{mainTitle}</span>
         {!subtitle && (
           <span
@@ -89,7 +89,7 @@ export default function AboutUs() {
   }));
 
   return (
-    <section className="relative overflow-hidden bg-[#F4F5F9] dark:bg-[#070c18] py-20 px-6 sm:px-10 lg:px-16 transition-colors duration-500 selection:bg-primary-color selection:text-white">
+    <section className="relative overflow-hidden py-20 px-6 sm:px-10 lg:px-16 transition-colors duration-500 selection:bg-primary-color selection:text-white">
       {/* Background dot grids */}
       <DotGrid
         rows={4}
@@ -225,7 +225,7 @@ export default function AboutUs() {
           <div className="relative rounded-[28px] bg-white dark:bg-slate-900 p-3 shadow-xl dark:shadow-2xl border border-slate-200/60 dark:border-slate-800">
             <div className="relative aspect-4/3 overflow-hidden rounded-[20px]">
               <Image
-                src="/team.jpg"
+                src="/images/IMG_5281.jpg"
                 alt="Our team"
                 fill
                 className="object-cover"

@@ -63,14 +63,16 @@ export default function HeroCharacter() {
   };
 
   return (
-    <section className="relative flex min-h-fit lg:min-h-screen w-full items-center bg-white dark:bg-gray-900 transition-colors duration-300 py-6 sm:py-10 lg:py-12 pt-8 sm:pt-12 lg:pt-16">
-      <div className="relative mx-auto w-full max-w-7xl px-6">
-        
-        {/* Corner decorations */}
-        <div className="pointer-events-none absolute left-0 top-0 h-12 w-12 sm:h-16 sm:w-16 md:h-21.75 md:w-21.75 rounded-tl-xl sm:rounded-tl-2xl border-l-8 border-t-8 sm:border-l-10 sm:border-t-10 md:border-l-14 md:border-t-14 border-[#ff383c] dark:border-red-500 z-10"></div>
-        <div className="pointer-events-none absolute bottom-0 right-0 h-12 w-12 sm:h-16 sm:w-16 md:h-21.75 md:w-21.75 rotate-180 rounded-tl-xl sm:rounded-tl-2xl border-l-8 border-t-8 sm:border-l-10 sm:border-t-10 md:border-l-14 md:border-t-14 border-[#ff383c] dark:border-red-500 z-10"></div>
+    /* Full-width outer section for page-wide background color */
+    <section className="relative flex w-full items-center transition-colors duration-300 py-12 pt-16 sm:py-16 sm:pt-20 lg:py-20 lg:pt-12">
 
-        <div className="grid items-center gap-6 sm:gap-8 lg:gap-12 lg:grid-cols-2 pt-6 sm:pt-10 lg:pt-14">
+      {/* Centered inner container for grid content and bounds */}
+      <div className="relative mx-auto w-full max-w-7xl px-6">
+
+        {/* Corner decorations - hidden on mobile so they don't overlap the badge/heading */}
+        <div className="pointer-events-none absolute left-0 top-0 h-10 w-10 rounded-tl-2xl border-l-[6px] border-t-[6px] border-[#ff383c] dark:border-red-500 sm:h-14 sm:w-14 sm:border-l-[8px] sm:border-t-[8px] lg:h-21.75 lg:w-21.75 lg:border-l-14 lg:border-t-14"></div>
+        <div className="pointer-events-none absolute bottom-0 right-0 h-10 w-10 rotate-180 rounded-tl-2xl border-l-[6px] border-t-[6px] border-[#ff383c] dark:border-red-500 sm:h-14 sm:w-14 sm:border-l-[8px] sm:border-t-[8px] lg:h-21.75 lg:w-21.75 lg:border-l-14 lg:border-t-14"></div>
+        <div className="grid items-center gap-12 pt-12 sm:pt-14 lg:grid-cols-2 lg:pt-0">
           {/* Left Column: Text & Content */}
           <div className="space-y-4 sm:space-y-6">
             <div className="badge-gradient inline-flex items-center gap-2 rounded-[13px] border border-navy-muted dark:border-gray-700 px-4 py-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-colors duration-300">

@@ -28,7 +28,7 @@ export function LeaderboardTabs({ activeTab, onTabChange }: LeaderboardTabsProps
               relative px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-colors duration-200 select-none flex-1 sm:flex-none text-center
               ${
                 isActive
-                  ? "text-slate-950 dark:text-slate-950"
+                  ? "text-white dark:text-slate-950"
                   : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
               }
             `}
@@ -37,7 +37,7 @@ export function LeaderboardTabs({ activeTab, onTabChange }: LeaderboardTabsProps
             {isActive && (
               <motion.div
                 layoutId="activeTabBadge"
-                className="absolute inset-0 bg-amber-400 rounded-xl shadow-xs"
+                className="absolute inset-0 bg-primary-color rounded-xl shadow-xs"
                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
               />
             )}

@@ -27,7 +27,7 @@ const technologies = [
 
   },
   {
-    icon: <img src="/home/technology-stack/mysql-logo-svgrepo-com.svg" alt="mySql" className="w-7 h-7 object-contain" />,
+    icon: <img src="/home/technology-stack/mysql-logo-svgrepo-com.svg" alt="mySql" className="w-9 h-9 object-contain" />,
     name: "MySql",
   },
   {
@@ -96,8 +96,8 @@ export function LeftWavyStack() {
       </motion.div>
 
       {/* Fade Edges (Optional: Gives a smooth fade-out effect on the sides) */}
-      <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent pointer-events-none z-10" />
-      <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent pointer-events-none z-10" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-linear-to-r from-white to-transparent dark:from-slate-950" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-linear-to-l from-white to-transparent dark:from-slate-950" />
     </div>
   );
 }
@@ -144,8 +144,8 @@ export function RightWavyStack() {
       </motion.div>
 
       {/* Fade Edges (Optional: Gives a smooth fade-out effect on the sides) */}
-      <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent pointer-events-none z-10" />
-      <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent pointer-events-none z-10" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-linear-to-r from-white to-transparent dark:from-slate-950" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-linear-to-l from-white to-transparent dark:from-slate-950" />
     </div>
   );
 }

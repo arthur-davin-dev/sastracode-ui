@@ -273,6 +273,11 @@ export function BadgeDetailHero({
                   "/images/Margin3.png"
                 }
                 alt={badge.name}
+                onError={(e) => {
+                  const img = e.currentTarget;
+                  if (img.src.endsWith("/images/Margin3.png")) return;
+                  img.src = "/images/Margin3.png";
+                }}
                 className={`
                   h-24
                   w-24

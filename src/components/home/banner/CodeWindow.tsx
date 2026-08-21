@@ -1,9 +1,12 @@
 // CodeWindow.tsx
 import Image from "next/image";
+import TiltedCard from "@/components/ui/TiltedCard";
 
 export default function CodeWindow() {
   return (
-    <div className="relative mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
+      <TiltedCard rotateAmplitude={14} scaleOnHover={1.03}>
+      <div className="relative mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
+        <div className="relative mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
       <div className="relative rounded-2xl border border-gray-700/10 dark:border-gray-700/50 bg-white/70 dark:bg-gray-800/70 p-px backdrop-blur-sm transition-colors duration-300 shadow-xl">
         {/* <!-- Window chrome --> */}
         <div className="flex items-center justify-between border-b border-gray-700/10 dark:border-gray-700/30 px-3 sm:px-4 py-2 sm:py-3">
@@ -20,7 +23,7 @@ export default function CodeWindow() {
         </div>
 
         {/* <!-- Code --> */}
-        <div className="space-y-0 p-4 sm:p-6 lg:p-8 font-mono text-[10px] sm:text-[11px] lg:text-[13px] leading-[18px] sm:leading-[21px] overflow-x-auto ">
+        <div className="space-y-0 p-4 sm:p-6 lg:p-8 font-mono text-[10px] sm:text-[11px] lg:text-[13px] leading-4.5 sm:leading-5.25 overflow-x-auto ">
           <p className="whitespace-nowrap">
             <span className="text-orange-500">document</span>
             <span className="text-gray-700 dark:text-gray-300">.</span>
@@ -112,7 +115,7 @@ export default function CodeWindow() {
 
       {/* <!-- Floating CSS card --> */}
       <div className="absolute -bottom-2 -right-1 sm:-bottom-4 sm:-right-2 w-36 sm:w-44 lg:w-72 rounded-xl border border-white/80 dark:border-gray-700/80 bg-white/70 dark:bg-gray-800/70 p-2 sm:p-3 lg:p-6 shadow-lg backdrop-blur-sm transition-colors duration-300">
-        <pre className="font-mono text-[7px] sm:text-[9px] lg:text-xs leading-snug whitespace-pre-wrap break-words overflow-x-auto">
+        <pre className="font-mono text-[7px] sm:text-[9px] lg:text-xs leading-snug whitespace-pre-wrap wrap-break-words overflow-x-auto">
           <span className="font-bold text-[#6a1b9e] dark:text-purple-400">
             .course-title {"{"}
           </span>
@@ -159,5 +162,10 @@ export default function CodeWindow() {
         />
       </div>
     </div>
+        {/* ...everything you already have stays exactly the same... */}
+      </div>
+    </TiltedCard>
+    
   );
 }
+

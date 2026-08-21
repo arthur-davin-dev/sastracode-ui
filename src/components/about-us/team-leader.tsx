@@ -6,7 +6,7 @@ import { Send } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
 import { useTranslation } from '@/hooks/useTranslations';
 
-export default function TeamLeader() {
+export default function dTeamLeader() {
   const { teamMembers } = useTranslation();
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -41,7 +41,7 @@ export default function TeamLeader() {
   }, []);
 
   return (
-    <section className="w-full py-4 px-4 sm:px-8 md:px-12 flex flex-col items-center bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <section className="w-full py-4 px-4 sm:px-8 md:px-12 flex flex-col items-center text-slate-900 dark:text-slate-100 transition-colors duration-300">
       
       {/* Top Divider Line */}
       <div className="w-64 sm:w-96 h-0.5 bg-amber-400 mb-8 rounded-full" />

@@ -11,27 +11,7 @@ import {
 } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
-
-const TITLE_FIRST_LINE = "រៀនសរសេរកូដជាភាសាខ្មែរ";
-const TITLE_SECOND_LINE = "ពីមូលដ្ឋានរហូតដល់គម្រោងពិត";
-const WELCOME_TEXT = "សូមស្វាគមន៍មកកាន់ Sastra Code";
-
-const FULL_TITLE = `${TITLE_FIRST_LINE}\n${TITLE_SECOND_LINE}`;
-
-const FEATURES = [
-  {
-    label: "វីដេអូមេរៀន",
-    icon: PlayCircle,
-  },
-  {
-    label: "ឯកសារសិក្សា",
-    icon: BookOpen,
-  },
-  {
-    label: "លំហាត់ និងគម្រោង",
-    icon: Code2,
-  },
-];
+import { useTranslation } from "@/hooks/useTranslations";
 
 function TypingCursor() {
   return (
@@ -42,17 +22,18 @@ function TypingCursor() {
   );
 }
 
-function TypingWelcome() {
+function TypingWelcome({ text }: { text: string }) {
   const [visibleText, setVisibleText] = useState("");
 
   useEffect(() => {
+    setVisibleText("");
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduceMotion) {
-      const welcomeTimer = window.setTimeout(() => setVisibleText(WELCOME_TEXT), 0);
+      const welcomeTimer = window.setTimeout(() => setVisibleText(text), 0);
       return () => window.clearTimeout(welcomeTimer);
     }
 
-    const characters = Array.from(WELCOME_TEXT);
+    const characters = Array.from(text);
     let index = 0;
     let deleting = false;
     let timer: number | undefined;
@@ -77,34 +58,41 @@ function TypingWelcome() {
 
     timer = window.setTimeout(type, 250);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [text]);
 
   return (
-    <span aria-label={WELCOME_TEXT} className="inline-flex items-center">
+    <span aria-label={text} className="inline-flex items-center">
       <span aria-hidden="true">{visibleText}</span>
       <TypingCursor />
     </span>
   );
 }
 
-function TypingTitle() {
+function TypingTitle({
+  firstLine,
+  secondLine,
+}: {
+  firstLine: string;
+  secondLine: string;
+}) {
+  const fullTitle = `${firstLine}\n${secondLine}`;
   const [visibleTitle, setVisibleTitle] = useState("");
 
   useEffect(() => {
-    // Respect reduced-motion accessibility setting
+    setVisibleTitle("");
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
     if (reduceMotion) {
       const showTitleTimer = window.setTimeout(
-        () => setVisibleTitle(FULL_TITLE),
+        () => setVisibleTitle(fullTitle),
         0,
       );
       return () => window.clearTimeout(showTitleTimer);
     }
 
-    const characters = Array.from(FULL_TITLE);
+    const characters = Array.from(fullTitle);
 
     let index = 0;
     let deleting = false;
@@ -115,18 +103,14 @@ function TypingTitle() {
 
       setVisibleTitle(characters.slice(0, index).join(""));
 
-      // Finished typing
       if (!deleting && index === characters.length) {
         deleting = true;
-
         timer = window.setTimeout(type, 3000);
         return;
       }
 
-      // Finished deleting
       if (deleting && index === 0) {
         deleting = false;
-
         timer = window.setTimeout(type, 700);
         return;
       }
@@ -141,15 +125,14 @@ function TypingTitle() {
         window.clearTimeout(timer);
       }
     };
-  }, []);
+  }, [fullTitle]);
 
   const hasSecondLine = visibleTitle.includes("\n");
-
-  const [firstLine = "", secondLine = ""] = visibleTitle.split("\n");
+  const [firstVisible = "", secondVisible = ""] = visibleTitle.split("\n");
 
   return (
     <h1
-      aria-label={`${TITLE_FIRST_LINE} ${TITLE_SECOND_LINE}`}
+      aria-label={`${firstLine} ${secondLine}`}
       className="
         relative
         max-w-3xl
@@ -166,21 +149,21 @@ function TypingTitle() {
     >
       {/* Invisible full title keeps heading height stable */}
       <span aria-hidden="true" className="invisible">
-        {TITLE_FIRST_LINE}
+        {firstLine}
 
-        <span className="block">{TITLE_SECOND_LINE}</span>
+        <span className="block">{secondLine}</span>
       </span>
 
       {/* Animated text */}
       <span aria-hidden="true" className="absolute inset-0">
         <span>
-          {firstLine}
+          {firstVisible}
 
           {!hasSecondLine && <TypingCursor />}
         </span>
 
         <span className="block text-[#F51518]">
-          {secondLine}
+          {secondVisible}
 
           {hasSecondLine && <TypingCursor />}
         </span>
@@ -190,6 +173,15 @@ function TypingTitle() {
 }
 
 export default function CourseBanner() {
+  const t = useTranslation();
+  const banner = t.courses.banner;
+
+  const FEATURES = [
+    { label: banner.features[0], icon: PlayCircle },
+    { label: banner.features[1], icon: BookOpen },
+    { label: banner.features[2], icon: Code2 },
+  ];
+
   return (
     <section
       className="
@@ -265,11 +257,14 @@ export default function CourseBanner() {
             >
               <Sparkles className="h-5 w-5 shrink-0" />
 
-              <TypingWelcome />
+              <TypingWelcome text={banner.welcomeText} />
             </div>
 
             {/* Heading */}
-            <TypingTitle />
+            <TypingTitle
+              firstLine={banner.titleFirstLine}
+              secondLine={banner.titleSecondLine}
+            />
 
             {/* Description */}
             <p
@@ -284,9 +279,7 @@ export default function CourseBanner() {
                 lg:leading-9
               "
             >
-              SastraCode ជួយអ្នកអភិវឌ្ឍជំនាញសរសេរកូដជាជំហានៗ តាមរយៈវីដេអូមេរៀន
-              ឯកសារសិក្សា លំហាត់អនុវត្ត និងគម្រោងពិត ដែលងាយស្រួលរៀន
-              និងយល់សម្រាប់អ្នកសិក្សាកម្ពុជា។
+              {banner.description}
             </p>
 
             {/* Features */}
@@ -339,7 +332,7 @@ export default function CourseBanner() {
                   group
                   h-14
                   rounded-xl
-                  bg-[#002455]
+                  bg-primary-color
                   px-8
                   text-lg
                   font-semibold
@@ -352,7 +345,7 @@ export default function CourseBanner() {
                   active:scale-[0.98]
                 `}
               >
-                <span className="whitespace-nowrap">ចាប់ផ្តើមសិក្សា</span>
+                <span className="whitespace-nowrap">{banner.cta}</span>
 
                 <ArrowRight
                   className="

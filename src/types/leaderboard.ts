@@ -1,4 +1,5 @@
 export interface LeaderboardEntry {
+  id: string;
   rank: number;
   name: string;
   avatarUrl: string;

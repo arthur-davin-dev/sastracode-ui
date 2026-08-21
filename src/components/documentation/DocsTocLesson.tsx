@@ -16,7 +16,7 @@ export default function DocsToc({
 }: DocsTocProps) {
   
   return (
-    <aside className="sticky top-0 h-screen w-64 shrink-0 overflow-y-auto p-4 hidden lg:block border-l border-slate-200/80 dark:border-slate-800 bg-[#eff4ff] dark:bg-slate-900 font-khmer space-y-6 transition-colors duration-300">
+    <aside className="w-full space-y-6 bg-[#eff4ff] p-4 font-khmer transition-colors duration-300 dark:bg-slate-900">
       
       {/* 1. TOP SECTION: PROGRESS CARD */}
       <div className="bg-[#EDF3FC] dark:bg-slate-800/80 rounded-2xl p-4 border border-[#D9E6F7] dark:border-slate-700/60 transition-colors">

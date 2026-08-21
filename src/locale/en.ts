@@ -1,24 +1,48 @@
 export const en = {
   banner: {
     badge: "LEARN. CODE. BUILD THE FUTURE.",
-    title1: "Start Learning",
+    title1: "Start Learning ",
     title2: "Coding",
-    title3: "New Skills",
+    title3: "New Skills ",
     title4: "for",
     title5: "Code",
     description:
       "Learn programming and develop new skills with AI Assistant, Coding Exercises, Interactive Lessons, and an Online Compiler.",
     start: "Start Learning",
     explore: "Explore Code",
+    freeLearning: "100% Free Learning",
   },
   popularDoc: {
     badge: "Popular Documentation",
     title: "Explore Popular Documentation",
     description:
-      "Learn programming concepts through clear and practical documentation.",
+      "Learn programming concepts through clear, easy-to-follow documentation.",
     viewAll: "View All Documentation",
     startLearning: "Start Learning",
   },
+
+  hero: {
+    titleFirstLine: "IT Lessons",
+    titleSecondLine: "in the Khmer Language",
+    description:
+      "Learn the fundamentals of coding, web design and development, problem solving, database basics, AI, cybersecurity, data science, and many other IT topics — all the way to becoming a skilled professional.",
+  },
+
+  tutorials: {
+    loadingLabel: "Loading lessons",
+    errorMessage: "Unable to load lessons. Please try again.",
+    retry: "Try Again",
+    empty: "No lessons have been published yet.",
+    ctaLabel: "Learn Now",
+    seeAll: "See All",
+    categories: {
+      all: "All Lessons",
+      latest: "Latest Lessons",
+      recommended: "Recommended Lessons",
+      popular: "Popular Lessons",
+    },
+  },
+
   coreFeature: {
     badge: "What We Offer",
     headingPrefix: "Core ",
@@ -37,11 +61,11 @@ export const en = {
         description:
           "Write and run code directly in your browser with instant results — no installation required.",
       },
-      {
-        title: "AI Code Coach",
-        description:
-          "Get smart guidance, explanations tailored to you, and real-time debugging help.",
-      },
+      // {
+      //     title: "AI Code Coach",
+      //     description:
+      //         "Get smart guidance, explanations tailored to you, and real-time debugging help.",
+      // },
       {
         title: "Quiz & Assessment",
         description:
@@ -77,6 +101,12 @@ export const en = {
     description:
       "Explore structured lessons with Live Code Examples, Syntax Highlighting, Embedded Exercises, and Quizzes that transform knowledge into practical skills.",
 
+    title1: " HTML Elements",
+
+    description1:
+      "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag.",
+
+
     link: "View Documentation",
     aiChat: "Explanations and help in studying errors in the code.",
   },
@@ -107,6 +137,13 @@ export const en = {
     ctaLabel: "Start Learning",
   },
   resultAndRewards: {
+    featureSection: {
+      features: [
+        { lines: ["Learn through clearly explained lessons", "and practical examples"] },
+        { lines: ["Write, test, and run code", "directly inside your browser"] },
+        { lines: ["Receive helpful hints and code explanations", "to improve your programming skills"] },
+      ],
+    },
     rewards: {
       headingMain: "Achievements &",
       headingAccent: "Rewards",
@@ -168,6 +205,43 @@ export const en = {
     title1: "Online Code Playground",
     description:
       "Modern technologies powering a next-generation learning experience.",
+  },
+
+  courses: {
+    banner: {
+      welcomeText: "Welcome to Sastra Code",
+      titleFirstLine: "Learn to Code",
+      titleSecondLine: "From Basics to Real Projects",
+      description:
+        "SastraCode helps you build coding skills step by step through video lessons, documentation, hands-on exercises, and real projects designed for Cambodian learners.",
+      features: ["Video Lessons", "Documentation", "Exercises & Projects"],
+      cta: "Start Learning",
+    },
+    search: {
+      placeholder: "Search courses, languages, or skills...",
+    },
+    categories: {
+      all: "All",
+      free: "Free Course",
+      premium: "Premium",
+    },
+    sections: {
+      latest: "Latest Courses",
+      recommended: "Recommended Courses",
+      popular: "Popular Courses",
+      searchResults: "Search Results",
+      allCourses: "All Courses",
+    },
+    card: {
+      viewCourse: "View Course",
+      privateCourse: "Private Course",
+    },
+    states: {
+      loading: "Loading courses",
+      error: "Unable to load courses",
+      retry: "Try Again",
+      empty: "No courses match your search",
+    },
   },
 
   supportTeam: {
@@ -428,6 +502,39 @@ export const en = {
         githubUrl: "https://github.com/arthur-davin-dev",
         telegramUrl: "https://t.me/ArthurDavinDev",
       },
+    ],
+  },
+
+  homeCourses: {
+    new: "New Courses",
+    recommended: "Recommended Courses",
+    loading: "Loading courses",
+  },
+
+  homeDocumentation: {
+    title: "Popular Lessons",
+    seeAll: "See All",
+    loading: "Loading popular lessons",
+    error: "Unable to load popular lessons.",
+    retry: "Try Again",
+    empty: "No popular lessons yet.",
+  },
+
+  reviews: {
+    badge: "Student Feedback",
+    title: "What Our Students",
+    titleAccent: "Are Saying",
+    description:
+      "Real feedback from students who transformed their careers.",
+    previous: "Previous review",
+    next: "Next review",
+    items: [
+      { name: "John Doe", role: "Software Engineer at Google", text: "This platform completely changed my coding journey. The courses were well-structured, the instructors were skilled, and within six months I landed my dream job." },
+      { name: "Sarah Michelle", role: "Full Stack Developer", text: "The hands-on projects and real-world examples made learning different. I finally understood concepts that had confused me for years." },
+      { name: "Alex Kumar", role: "Data Scientist at Amazon", text: "I was hesitant at first, but the community support and expert guidance made it the best career investment I've made." },
+      { name: "Maria Rodriguez", role: "Senior Developer at Microsoft", text: "The DSA course changed how I prepared for interviews. Complex topics were broken down into simple, understandable lessons." },
+      { name: "Tom Lee", role: "Backend Engineer at Stripe", text: "I loved the practice-focused teaching. Career guidance and code reviews helped me land interview opportunities." },
+      { name: "Emily Wang", role: "Product Manager at Meta", text: "The best part is the community. Discussions and feedback from fellow learners strengthened my understanding and confidence." },
     ],
   },
 

@@ -73,7 +73,7 @@ export default function Timeline() {
   const { timeline } = useTranslation();
 
   return (
-    <section className="w-full overflow-hidden bg-white px-4 py-12 font-sans text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100 sm:px-6 sm:py-16 lg:px-8">
+    <section className="w-full overflow-hidden px-4 py-12 font-sans text-slate-900 transition-colors duration-300 dark:text-slate-100 sm:px-6 sm:py-16 lg:px-8">
       <div className="mx-auto max-w-7xl">
         {/* Heading */}
         <motion.div

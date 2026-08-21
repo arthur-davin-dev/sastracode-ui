@@ -11,7 +11,7 @@ export default function VideoCard({ instructor }: InstructorProps) {
       {/* Top Section: Video Thumbnail */}
       <div className="relative w-full aspect-[16/7] md:aspect-[16/6] bg-indigo-50 dark:bg-slate-800 overflow-hidden cursor-pointer">
         <Image
-          src="/images/video-thumbnail.png" 
+          src="/images/video-thumbnail.png"
           alt={instructor.videoTitle}
           fill
           sizes="(max-width: 1200px) 100vw, 1200px"
@@ -29,7 +29,6 @@ export default function VideoCard({ instructor }: InstructorProps) {
 
       {/* Bottom Section: Content Area */}
       <div className="p-5 flex flex-col flex-1 justify-between gap-5">
-        
         {/* Titles */}
         <div className="space-y-2">
           <h3 className="font-bold text-lg text-[#002455] dark:text-slate-100 line-clamp-2 leading-snug group-hover:text-[#5b4eff] dark:group-hover:text-indigo-400 transition-colors duration-200">
@@ -56,32 +55,28 @@ export default function VideoCard({ instructor }: InstructorProps) {
                 />
               </div>
               <div className="flex flex-col min-w-0">
-                <span className="font-semibold text-sm text-[#002455] dark:text-slate-200 truncate">
-                  Chhay Davin
+                <span className="truncate text-sm font-semibold text-[#002455] dark:text-slate-100">
+                  Vibol Meas
                 </span>
-                <span className="text-xs text-slate-400 dark:text-slate-500">
+                <span className="text-xs text-slate-400 dark:text-slate-400">
                   គ្រូបង្រៀន
                 </span>
               </div>
             </div>
 
             {/* Views Counter */}
-            <div className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500 text-sm font-medium">
-              <Eye size={16} className="stroke-[2]" />
+            <div className="flex items-center gap-1.5 text-[14px] font-medium text-slate-400 dark:text-slate-300">
+              <Eye size={16} className="stroke-2" />
               <span>{instructor.studentsLabel || "999 អ្នកមើល"}</span>
             </div>
           </div>
 
           {/* Action Button */}
-          <button 
-            type="button"
-            className="w-full bg-[#002455] dark:bg-blue-600 hover:bg-[#5b4eff] dark:hover:bg-blue-700 text-white font-medium text-sm py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all duration-200 active:scale-[0.98]"
-          >
-            <Play className="text-white fill-white stroke-[3]" size={12} />
-            <span>ចាប់ផ្តើមសិក្សា</span>
+          <button className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#002455] px-4 py-3 text-sm font-medium text-white shadow-sm shadow-slate-200 transition-all duration-200 hover:bg-[#5b4eff] hover:shadow-indigo-100 active:scale-[0.98] dark:shadow-slate-950/40">
+            <Play className="fill-white stroke-3 text-white" size={12} />
+            ចាប់ផ្តើមសិក្សា
           </button>
         </div>
-
       </div>
     </div>
   );

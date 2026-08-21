@@ -76,7 +76,7 @@ export default function CourseCard({ course }: CourseCardProps) {
         <h3 className="text-[22px] font-bold text-slate-800 dark:text-slate-100 transition-colors duration-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 line-clamp-1 mb-2">
           {course.title}
         </h3>
-        
+
         {/* Description */}
         <p className="mb-5 line-clamp-2 min-h-[3.65rem] flex-1 overflow-hidden text-ellipsis text-lg leading-relaxed text-slate-500 dark:text-slate-400">
           {course.description}

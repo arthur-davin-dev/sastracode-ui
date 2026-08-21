@@ -15,7 +15,7 @@ import {
   Quote,
   TriangleAlert,
 } from "lucide-react";
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import type { TutorialBlock } from "@/types/tutorial-reader";
 import {
@@ -24,6 +24,11 @@ import {
   useStartQuizAttemptMutation,
   useSubmitQuizAttemptMutation,
 } from "@/redux/api/quiz-attempt-api";
+import {
+  detectLanguageFromCode,
+  isPlaygroundLanguageSupported,
+} from "@/lib/playground/languages";
+import { highlightCode } from "@/utils/highlight-code";
 
 interface LessonBlockRendererProps {
   block: TutorialBlock;
@@ -41,12 +46,21 @@ function displayAnswer(value: unknown): string {
   if (value === null || value === undefined) return "—";
   if (typeof value === "object") {
     const record = value as Record<string, unknown>;
-    return String(record.text ?? record.label ?? record.value ?? record.id ?? JSON.stringify(value));
+    return String(
+      record.text ??
+        record.label ??
+        record.value ??
+        record.id ??
+        JSON.stringify(value),
+    );
   }
   return String(value);
 }
 
-function displayQuizAnswer(value: unknown, questionData?: Record<string, unknown>): string {
+function displayQuizAnswer(
+  value: unknown,
+  questionData?: Record<string, unknown>,
+): string {
   const options = questionData ? quizOptionsValue(questionData) : [];
   const answerIndex =
     typeof value === "number"
@@ -106,11 +120,17 @@ export function QuizResultsProvider({
   const [startAttempt] = useStartQuizAttemptMutation();
   const [submitAttempt] = useSubmitQuizAttemptMutation();
   const answered = Object.keys(results).length;
-  const correct = Object.values(results).filter((result) => result.correct).length;
+  const correct = Object.values(results).filter(
+    (result) => result.correct,
+  ).length;
   const complete = total > 0 && answered === total;
   const percent = total > 0 ? Math.round((correct / total) * 100) : 0;
 
-  async function submitAnswer(id: string, answer: number, localCorrect = false) {
+  async function submitAnswer(
+    id: string,
+    answer: number,
+    localCorrect = false,
+  ) {
     const nextAnswers = { ...answers, [id]: answer };
     setAnswers(nextAnswers);
 
@@ -124,9 +144,7 @@ export function QuizResultsProvider({
       try {
         const activeAttemptId =
           attemptId ??
-          (
-            await startAttempt({ tutorialId, scope, scopeId }).unwrap()
-          ).data.id;
+          (await startAttempt({ tutorialId, scope, scopeId }).unwrap()).data.id;
         if (!attemptId) setAttemptId(activeAttemptId);
 
         const response = await submitAttempt({
@@ -140,7 +158,10 @@ export function QuizResultsProvider({
           })),
         }).unwrap();
         const backendResults = Object.fromEntries(
-          (response.data.answers ?? []).map((item) => [item.blockId, { correct: item.correct }]),
+          (response.data.answers ?? []).map((item) => [
+            item.blockId,
+            { correct: item.correct },
+          ]),
         );
         setResults(backendResults);
         setSummary(response.data);
@@ -185,43 +206,87 @@ export function QuizResultsProvider({
     >
       {complete ? (
         <section className="mt-10 rounded-2xl border border-emerald-200 bg-white p-6 text-center shadow-sm dark:border-emerald-900 dark:bg-slate-900">
-          <h2 className="font-khmer text-4xl font-bold text-[#002455] dark:text-white">លទ្ធផល</h2>
+          <h2 className="font-khmer text-4xl font-bold text-[#002455] dark:text-white">
+            លទ្ធផល
+          </h2>
           <p className="mt-4 font-khmer text-xl text-slate-700 dark:text-slate-200">
             ឆ្លើយត្រូវ {correct} ក្នុងចំណោម {total} សំណួរ
           </p>
-          <p className="mt-2 text-3xl font-black text-emerald-600">{percent}%</p>
+          <p className="mt-2 text-3xl font-black text-emerald-600">
+            {percent}%
+          </p>
           {summary?.xpEarned !== undefined && (
             <p className="mt-3 font-khmer text-xl font-bold text-amber-600">
               +{summary.xpEarned} XP
             </p>
           )}
           <p className="mt-2 font-khmer text-lg text-slate-600 dark:text-slate-300">
-            {percent >= 80 ? "ល្អណាស់!" : percent >= 50 ? "ធ្វើបានល្អ សូមបន្តអនុវត្ត។" : "សូមរៀនបន្ថែម ហើយសាកល្បងម្ដងទៀត។"}
+            {percent >= 80
+              ? "ល្អណាស់!"
+              : percent >= 50
+                ? "ធ្វើបានល្អ សូមបន្តអនុវត្ត។"
+                : "សូមរៀនបន្ថែម ហើយសាកល្បងម្ដងទៀត។"}
           </p>
           <div className="mt-5 flex flex-wrap justify-center gap-3">
-            <button type="button" onClick={() => setShowReview((value) => !value)} className="rounded-xl bg-emerald-600 px-5 py-3 font-khmer text-lg font-bold text-white hover:bg-emerald-700">
+            <button
+              type="button"
+              onClick={() => setShowReview((value) => !value)}
+              className="rounded-xl bg-emerald-600 px-5 py-3 font-khmer text-lg font-bold text-white hover:bg-emerald-700"
+            >
               {showReview ? "លាក់ចម្លើយ" : "ពិនិត្យចម្លើយ"}
             </button>
-            <button type="button" onClick={reset} className="rounded-xl bg-blue-600 px-5 py-3 font-khmer text-lg font-bold text-white hover:bg-blue-700">
+            <button
+              type="button"
+              onClick={reset}
+              className="rounded-xl bg-blue-600 px-5 py-3 font-khmer text-lg font-bold text-white hover:bg-blue-700"
+            >
               សាកល្បងម្ដងទៀត
             </button>
           </div>
 
           {showReview && summary?.answers && summary.answers.length > 0 && (
             <div className="mt-8 space-y-3 text-left">
-              <h3 className="font-khmer text-2xl font-bold text-[#002455] dark:text-white">ប្រវត្តិចម្លើយ</h3>
+              <h3 className="font-khmer text-2xl font-bold text-[#002455] dark:text-white">
+                ប្រវត្តិចម្លើយ
+              </h3>
               {summary.answers.map((answer, index) => (
-                <div key={answer.blockId} className={`rounded-xl border p-4 ${answer.correct ? "border-emerald-200 bg-emerald-50/70 dark:border-emerald-900 dark:bg-emerald-950/20" : "border-red-200 bg-red-50/70 dark:border-red-900 dark:bg-red-950/20"}`}>
-                  <p className="font-khmer text-lg font-bold">សំណួរ {index + 1} — {answer.correct ? "ត្រឹមត្រូវ" : "មិនត្រឹមត្រូវ"}</p>
-                  <p className="mt-1 font-khmer text-base">ចម្លើយរបស់អ្នក៖ {displayQuizAnswer(answer.submittedAnswer, answer.questionData)}</p>
-                  {!answer.correct && <p className="mt-1 font-khmer text-base">ចម្លើយត្រឹមត្រូវ៖ {displayQuizAnswer(answer.correctAnswer, answer.questionData)}</p>}
-                  {answer.explanation && <p className="mt-1 font-khmer text-base text-slate-600 dark:text-slate-300">{answer.explanation}</p>}
+                <div
+                  key={answer.blockId}
+                  className={`rounded-xl border p-4 ${answer.correct ? "border-emerald-200 bg-emerald-50/70 dark:border-emerald-900 dark:bg-emerald-950/20" : "border-red-200 bg-red-50/70 dark:border-red-900 dark:bg-red-950/20"}`}
+                >
+                  <p className="font-khmer text-lg font-bold">
+                    សំណួរ {index + 1} —{" "}
+                    {answer.correct ? "ត្រឹមត្រូវ" : "មិនត្រឹមត្រូវ"}
+                  </p>
+                  <p className="mt-1 font-khmer text-base">
+                    ចម្លើយរបស់អ្នក៖{" "}
+                    {displayQuizAnswer(
+                      answer.submittedAnswer,
+                      answer.questionData,
+                    )}
+                  </p>
+                  {!answer.correct && (
+                    <p className="mt-1 font-khmer text-base">
+                      ចម្លើយត្រឹមត្រូវ៖{" "}
+                      {displayQuizAnswer(
+                        answer.correctAnswer,
+                        answer.questionData,
+                      )}
+                    </p>
+                  )}
+                  {answer.explanation && (
+                    <p className="mt-1 font-khmer text-base text-slate-600 dark:text-slate-300">
+                      {answer.explanation}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
           )}
         </section>
-      ) : children}
+      ) : (
+        children
+      )}
     </QuizContext.Provider>
   );
 }
@@ -258,11 +323,18 @@ function numberValue(data: BlockData, ...keys: string[]): number | undefined {
 function answerTokenValue(data: BlockData, ...keys: string[]): string {
   for (const key of keys) {
     const value = data[key];
-    if (typeof value === "string" || typeof value === "number") return String(value);
+    if (typeof value === "string" || typeof value === "number")
+      return String(value);
     if (value && typeof value === "object") {
       const record = value as Record<string, unknown>;
-      const token = record.id ?? record.optionId ?? record.value ?? record.text ?? record.label;
-      if (typeof token === "string" || typeof token === "number") return String(token);
+      const token =
+        record.id ??
+        record.optionId ??
+        record.value ??
+        record.text ??
+        record.label;
+      if (typeof token === "string" || typeof token === "number")
+        return String(token);
     }
   }
   return "";
@@ -301,7 +373,8 @@ function quizOptionsValue(data: BlockData): QuizOption[] {
             correct:
               record.correct === true ||
               record.isCorrect === true ||
-              String(record.correct ?? record.isCorrect ?? "").toLowerCase() === "true",
+              String(record.correct ?? record.isCorrect ?? "").toLowerCase() ===
+                "true",
           },
         ];
       }
@@ -376,71 +449,13 @@ function ParagraphBlock({ data }: { data: BlockData }) {
   );
 }
 
-type CodeTokenTone = "comment" | "string" | "keyword" | "number" | "tag" | "plain";
-
-const CODE_TOKEN_CLASS: Record<CodeTokenTone, string> = {
-  comment: "text-slate-500 italic dark:text-slate-400",
-  string: "text-emerald-700 dark:text-emerald-300",
-  keyword: "text-violet-700 dark:text-violet-300",
-  number: "text-amber-700 dark:text-amber-300",
-  tag: "text-sky-700 dark:text-sky-300",
-  plain: "text-slate-800 dark:text-slate-200",
-};
-
-const CODE_TOKEN_PATTERN = /(\/\*[\s\S]*?\*\/|\/\/[^\n]*|<!--[\s\S]*?-->|(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|<\/?[A-Za-z][^>]*>|\b(?:abstract|as|async|await|break|case|catch|class|const|continue|def|default|delete|do|else|enum|export|extends|false|finally|for|from|function|if|import|in|interface|let|new|null|private|protected|public|return|static|switch|this|throw|true|try|type|undefined|var|void|while|with|yield)\b|\b\d+(?:\.\d+)?\b)/g;
-
-const PLAYGROUND_LANGUAGES = new Set([
-  "html",
-  "html5",
-  "css",
-  "javascript",
-  "js",
-  "node",
-  "nodejs",
-  "node.js",
-  "java",
-  "python",
-  "py",
-  "tailwind",
-  "tailwind css",
-  "tailwindcss",
-]);
-
-function codeTokenTone(token: string): CodeTokenTone {
-  if (token.startsWith("//") || token.startsWith("/*") || token.startsWith("<!--")) return "comment";
-  if (token.startsWith('"') || token.startsWith("'") || token.startsWith("`")) return "string";
-  if (token.startsWith("<")) return "tag";
-  if (/^\d/.test(token)) return "number";
-  return "keyword";
-}
-
-function highlightCode(code: string): ReactNode[] {
-  const tokens: ReactNode[] = [];
-  let lastIndex = 0;
-
-  for (const match of code.matchAll(CODE_TOKEN_PATTERN)) {
-    const token = match[0];
-    const index = match.index ?? 0;
-    if (index > lastIndex) tokens.push(code.slice(lastIndex, index));
-    const tone = codeTokenTone(token);
-    tokens.push(
-      <span key={`${index}-${token}`} className={CODE_TOKEN_CLASS[tone]}>
-        {token}
-      </span>,
-    );
-    lastIndex = index + token.length;
-  }
-
-  if (lastIndex < code.length) tokens.push(code.slice(lastIndex));
-  return tokens.length ? tokens : [code];
-}
-
 function CodeBlock({ data }: { data: BlockData }) {
   const [copied, setCopied] = useState(false);
   const code = stringValue(data, "code", "text", "content");
-  const language = stringValue(data, "language", "lang") || "code";
+  const declaredLanguage = stringValue(data, "language", "lang") || "code";
+  const language = detectLanguageFromCode(code, declaredLanguage);
   const fileName = stringValue(data, "fileName", "filename", "title");
-  const canTryInPlayground = PLAYGROUND_LANGUAGES.has(language.trim().toLowerCase());
+  const canTryInPlayground = isPlaygroundLanguageSupported(language);
 
   async function copyCode() {
     if (!code) return;
@@ -657,19 +672,53 @@ function CalloutBlock({
 
 function ImageBlock({ data }: { data: BlockData }) {
   const imageAsset = [data.image, data.file, data.media, data.asset].find(
-    (value): value is Record<string, unknown> => Boolean(value) && typeof value === "object",
+    (value): value is Record<string, unknown> =>
+      Boolean(value) && typeof value === "object",
   );
   const directSource =
-    stringValue(data, "url", "src", "imageUrl", "fileUrl", "contentUrl", "path") ||
+    stringValue(
+      data,
+      "url",
+      "src",
+      "imageUrl",
+      "fileUrl",
+      "contentUrl",
+      "path",
+    ) ||
     (imageAsset
-      ? stringValue(imageAsset, "url", "src", "imageUrl", "fileUrl", "contentUrl", "path")
+      ? stringValue(
+          imageAsset,
+          "url",
+          "src",
+          "imageUrl",
+          "fileUrl",
+          "contentUrl",
+          "path",
+        )
       : "");
   const fileId =
-    stringValue(data, "imageFileId", "fileId", "imageId", "mediaId", "assetId") ||
+    stringValue(
+      data,
+      "imageFileId",
+      "fileId",
+      "imageId",
+      "mediaId",
+      "assetId",
+    ) ||
     (imageAsset
-      ? stringValue(imageAsset, "imageFileId", "fileId", "id", "imageId", "mediaId", "assetId")
+      ? stringValue(
+          imageAsset,
+          "imageFileId",
+          "fileId",
+          "id",
+          "imageId",
+          "mediaId",
+          "assetId",
+        )
       : "");
-  const src = directSource || (fileId ? `/api/v1/files/${encodeURIComponent(fileId)}` : "");
+  const src =
+    directSource ||
+    (fileId ? `/api/v1/files/${encodeURIComponent(fileId)}` : "");
   const alt = stringValue(data, "alt", "caption", "title") || "Lesson image";
   const caption = stringValue(data, "caption");
 
@@ -741,10 +790,10 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
     options.find((option) => option.correct) ??
     letterCorrectOption ??
     (correctIndex !== undefined
-      ? options[correctIndex] ?? options[correctIndex - 1]
+      ? (options[correctIndex] ?? options[correctIndex - 1])
       : undefined) ??
     (correctAnswerNumber !== undefined
-      ? options[correctAnswerNumber] ?? options[correctAnswerNumber - 1]
+      ? (options[correctAnswerNumber] ?? options[correctAnswerNumber - 1])
       : undefined) ??
     options.find(
       (option) =>
@@ -759,13 +808,15 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
     : -1;
   const isCorrectSelection = Boolean(
     selectedOption &&
-      correctOption &&
-      (selectedOption.id === correctOption.id ||
-        selectedOption.text.trim().toLocaleLowerCase() ===
-          correctOption.text.trim().toLocaleLowerCase() ||
-        selectedOptionIndex === options.findIndex((option) => option.id === correctOption.id) ||
-        (correctIndex !== undefined && selectedOptionIndex === correctIndex) ||
-        (correctAnswerNumber !== undefined && selectedOptionIndex === correctAnswerNumber)),
+    correctOption &&
+    (selectedOption.id === correctOption.id ||
+      selectedOption.text.trim().toLocaleLowerCase() ===
+        correctOption.text.trim().toLocaleLowerCase() ||
+      selectedOptionIndex ===
+        options.findIndex((option) => option.id === correctOption.id) ||
+      (correctIndex !== undefined && selectedOptionIndex === correctIndex) ||
+      (correctAnswerNumber !== undefined &&
+        selectedOptionIndex === correctAnswerNumber)),
   );
 
   useEffect(() => {
@@ -790,7 +841,8 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
   }
 
   if (!question) return null;
-  if (quizContext?.activeQuizId && quizContext.activeQuizId !== blockId) return null;
+  if (quizContext?.activeQuizId && quizContext.activeQuizId !== blockId)
+    return null;
 
   return (
     <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/70">
@@ -803,7 +855,8 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
             សំណួរសាកល្បង
           </p>
           <p className="font-khmer mt-1 text-sm font-semibold text-blue-600 dark:text-blue-400">
-            សំណួរ {quizContext?.position(blockId) ?? 1} ក្នុងចំណោម {quizContext?.total ?? 1}
+            សំណួរ {quizContext?.position(blockId) ?? 1} ក្នុងចំណោម{" "}
+            {quizContext?.total ?? 1}
           </p>
           <p className="font-khmer mt-0.5 text-base font-bold text-slate-900 dark:text-slate-100">
             {question}
@@ -821,24 +874,37 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
               className={`font-khmer flex w-full items-start gap-3 rounded-xl border px-4 py-3 text-left text-lg leading-7 transition ${
                 backendResult?.correct && option.id === resolvedCorrectAnswer
                   ? "border-emerald-500 bg-emerald-50 text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-300"
-                  : backendResult && !backendResult.correct && option.id === selected
+                  : backendResult &&
+                      !backendResult.correct &&
+                      option.id === selected
                     ? "border-red-500 bg-red-50 text-red-800 dark:bg-red-950/30 dark:text-red-300"
                     : selected === option.id
                       ? "border-blue-600 bg-blue-50 text-blue-800 dark:bg-blue-950/30 dark:text-blue-300"
                       : "border-slate-200 bg-slate-100 text-slate-700 hover:border-blue-400 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-300"
               }`}
             >
-              <span className={`mt-1 h-5 w-5 shrink-0 rounded-full border-2 ${selected === option.id ? "border-blue-600 bg-blue-600 ring-4 ring-blue-100" : "border-slate-300 bg-white"}`} />
+              <span
+                className={`mt-1 h-5 w-5 shrink-0 rounded-full border-2 ${selected === option.id ? "border-blue-600 bg-blue-600 ring-4 ring-blue-100" : "border-slate-300 bg-white"}`}
+              />
               <span>{option.text}</span>
             </button>
           ))}
           {!submitted ? (
-            <button type="button" onClick={submitAnswer} disabled={!selected} className="mt-2 w-fit rounded-xl bg-emerald-600 px-5 py-3 font-khmer text-lg font-bold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50">
+            <button
+              type="button"
+              onClick={submitAnswer}
+              disabled={!selected}
+              className="mt-2 w-fit rounded-xl bg-emerald-600 px-5 py-3 font-khmer text-lg font-bold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+            >
               {quizContext?.isLast(blockId) ? "ដាក់ស្នើ" : "បន្ទាប់"}
             </button>
           ) : backendResult ? (
-            <p className={`font-khmer text-lg font-bold ${backendResult.correct ? "text-emerald-600" : "text-red-600"}`}>
-              {backendResult.correct ? "ចម្លើយត្រឹមត្រូវ!" : "ចម្លើយមិនត្រឹមត្រូវទេ។ សូមពិនិត្យលទ្ធផលសរុប។"}
+            <p
+              className={`font-khmer text-lg font-bold ${backendResult.correct ? "text-emerald-600" : "text-red-600"}`}
+            >
+              {backendResult.correct
+                ? "ចម្លើយត្រឹមត្រូវ!"
+                : "ចម្លើយមិនត្រឹមត្រូវទេ។ សូមពិនិត្យលទ្ធផលសរុប។"}
             </p>
           ) : null}
         </div>

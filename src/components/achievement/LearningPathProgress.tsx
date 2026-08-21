@@ -48,7 +48,7 @@ export function LearningPathProgress({ paths, completedCount, totalCount }: Lear
                   {/* Status Pill (Yellow Accent for completed / Red Secondary for in progress) */}
                   <div className="shrink-0">
                     {isCompleted ? (
-                      <span className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-yellow-400/20 text-primary-color dark:text-yellow-300 text-lg font-bold border border-yellow-400/40">
+                      <span className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-primary-color/20 text-primary-color dark:text-white text-lg font-bold border border-primary-color/40">
                         <CheckCircle2 className="h-5 w-5 text-primary-color" />
                         {path.status}
                       </span>
@@ -65,8 +65,8 @@ export function LearningPathProgress({ paths, completedCount, totalCount }: Lear
                   <div
                     className={`h-full rounded-full transition-all duration-500 shadow-xs ${
                       isCompleted 
-                        ? "bg-gradient-to-r from-init-color to-amber-500" 
-                        : "bg-gradient-to-r from-primary-color to-blue-500"
+                        ? "bg-gradient-to-r from-primary-color to-blue-900" 
+                        : "bg-gradient-to-r from-primary-color to-blue-700"
                     }`}
                     style={{ width: `${Math.min(path.progressPercent, 100)}%` }}
                   />
@@ -82,7 +82,7 @@ export function LearningPathProgress({ paths, completedCount, totalCount }: Lear
       <div className="flex justify-end pt-2">
         <a 
           href="/documentation" 
-          className="group inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary-color hover:bg-blue-300
+          className="group inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary-color hover:bg-primary-color/70
            text-white text-lg font-bold shadow-md hover:shadow-lg transition-all duration-300"
         >
           <span>បន្តការសិក្សា</span>

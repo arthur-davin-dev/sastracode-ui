@@ -16,11 +16,7 @@ export type ChallengeType =
 export type Difficulty = "EASY" | "MEDIUM" | "HARD";
 
 export type CodingTaskStatus =
-  | "DRAFT"
-  | "IN_REVIEW"
-  | "PUBLISHED"
-  | "REJECTED"
-  | "ARCHIVED";
+  "DRAFT" | "IN_REVIEW" | "PUBLISHED" | "REJECTED" | "ARCHIVED";
 
 export interface CodingTaskTestCase {
   id?: string;
@@ -159,74 +155,63 @@ function unwrap<T>(response: ApiResponse<T>): T {
 }
 
 /* =========================
-   PARAMS
-========================= */
-
-export interface GetLessonCodingTasksArgs {
-  tutorialId: string;
-
-  sectionId?: string;
-  subsectionId?: string;
-
-  page?: number;
-  size?: number;
-}
-
-/* =========================
    API
 ========================= */
+
+const codingTaskListTags = (result: CodingTaskSummary[] | undefined) => [
+  { type: "CodingTask" as const, id: "LESSON" },
+  ...(result ?? []).map((task) => ({ type: "CodingTask" as const, id: task.id })),
+];
 
 export const codingTaskPlayerApi = sastraApi.injectEndpoints({
   endpoints: (builder) => ({
     /* =========================
-         GET TASKS FOR LESSON
+         GET TASKS FOR A SECTION
       ========================= */
 
-    getLessonCodingTasks: builder.query<
-      CodingTaskPage,
-      GetLessonCodingTasksArgs
+    getSectionCodingTasks: builder.query<
+      CodingTaskSummary[],
+      { tutorialId: string; sectionId: string }
     >({
-      query: ({
-        tutorialId,
-        sectionId,
-        subsectionId,
-        page = 0,
-        size = 50,
-      }) => ({
-        url: "v1/coding-tasks",
-
-        params: {
-          tutorialId,
-
-          sectionId: sectionId || undefined,
-
-          subsectionId: subsectionId || undefined,
-
-          status: "PUBLISHED",
-
-          page,
-
-          size,
-
-          sort: "orderIndex,asc",
-        },
+      query: ({ tutorialId, sectionId }) => ({
+        url: `v1/tutorials/${encodeURIComponent(tutorialId)}/sections/${encodeURIComponent(sectionId)}/coding-tasks`,
       }),
-
-      transformResponse: (response: ApiResponse<CodingTaskPage>) =>
+      transformResponse: (response: ApiResponse<CodingTaskSummary[]>) =>
         unwrap(response),
+      providesTags: codingTaskListTags,
+    }),
 
-      providesTags: (result) => [
-        {
-          type: "CodingTask",
-          id: "LESSON",
-        },
+    /* =========================
+         GET TASKS FOR A SUBSECTION
+      ========================= */
 
-        ...(result?.content ?? []).map((task) => ({
-          type: "CodingTask" as const,
+    getSubsectionCodingTasks: builder.query<
+      CodingTaskSummary[],
+      { tutorialId: string; subsectionId: string }
+    >({
+      query: ({ tutorialId, subsectionId }) => ({
+        url: `v1/tutorials/${encodeURIComponent(tutorialId)}/subsections/${encodeURIComponent(subsectionId)}/coding-tasks`,
+      }),
+      transformResponse: (response: ApiResponse<CodingTaskSummary[]>) =>
+        unwrap(response),
+      providesTags: codingTaskListTags,
+    }),
 
-          id: task.id,
-        })),
-      ],
+    /* =========================
+         GET ALL TASKS FOR A TUTORIAL
+      ========================= */
+
+    // Named distinctly from tutorial-api.ts's getTutorialCodingTasks (same
+    // URL, but that one returns the raw un-unwrapped response and a
+    // narrower CodingTaskSummary type without sectionId/subsectionId,
+    // which the fallback logic below needs).
+    getAllTutorialCodingTasks: builder.query<CodingTaskSummary[], string>({
+      query: (tutorialId) => ({
+        url: `v1/tutorials/${encodeURIComponent(tutorialId)}/coding-tasks`,
+      }),
+      transformResponse: (response: ApiResponse<CodingTaskSummary[]>) =>
+        unwrap(response),
+      providesTags: codingTaskListTags,
     }),
 
     /* =========================
@@ -338,7 +323,9 @@ export const codingTaskPlayerApi = sastraApi.injectEndpoints({
 });
 
 export const {
-  useGetLessonCodingTasksQuery,
+  useGetSectionCodingTasksQuery,
+  useGetSubsectionCodingTasksQuery,
+  useGetAllTutorialCodingTasksQuery,
   useGetCodingTaskBySlugQuery,
   useRunCodingTaskMutation,
   useSubmitCodingTaskMutation,
