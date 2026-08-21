@@ -189,6 +189,245 @@ export const km = {
     card4Tag: "24 ម៉ោង",
   },
 
+  aboutUs: {
+    eyebrow: "អំពីយើង",
+    title: "សាស្រ្តាកូដ\nកសាងអនាគតយុវជនឌីជីថលរបស់កម្ពុជា",
+    description:
+      "សាស្រ្តាកូដ គឺជាវេទិកាសិក្សាកម្មវិធីដែលបង្កើតឡើងដើម្បីជួយអ្នកសិក្សាកូដតាមរបៀបងាយយល់អនុវត្តជាក់ស្តែង និងបង្កើតគម្រោងពិត ដើម្បីត្រៀមខ្លួនសម្រាប់អនាគតឌីជីថល។",
+    features: [
+      { line1: "ចេះសិក្សា", line2: "មិនអស់" },
+      { line1: "អភិវឌ្ឍន៍ជំនាញ", line2: "ជាបន្តបន្ទាប់" },
+      { line1: "ត្រៀមខ្លួន", line2: "បង្កើតអនាគត" },
+      { line1: "គុណភាព", line2: "និងទំនួលខុសត្រូវ" },
+    ],
+    code: "រួមគ្នាសរសេរកូដ",
+    build: "កសាងនៅថ្ងៃស្អែក"
+  },
+
+  "mission": {
+    "section": {
+      "badge": "គុណតម្លៃស្នូល",
+      "title": "បេសកកម្ម និង ចក្ខុវិស័យ",
+      "description": "គោលការណ៍ស្នូលដែលណែនាំការសម្រេចចិត្តរបស់វេទិកា កម្មវិធីសិក្សា និងសហគមន៍របស់យើង។"
+    },
+    "content": {
+      "title": "បេសកកម្មរបស់យើង",
+      "description": "ដើម្បីធ្វើឱ្យការរៀនសរសេរកូដ (Programming) កាន់តែងាយស្រួល មានអន្តរកម្ម និងឥតគិតថ្លៃសម្រាប់អ្នករៀនគ្រប់កម្រិត—ដោយបំបាត់ឧបសគ្គដែលរាំងស្ទះមនុស្សឃ្លានចង់បានពិភពបច្ចេកវិទ្យា។",
+      "tags": [
+        "ងាយស្រួលប្រើប្រាស់",
+        "មានអន្តរកម្ម",
+        "ឥតគិតថ្លៃ"
+      ],
+      "code": {
+        "mission": "ការអប់រំដែលអាចចូលប្រើបាន",
+        "function": "រៀនសរសេរកូដ",
+        "return": "ការចូលប្រើដោយសេរី និងការអនុវត្តជាក់ស្តែង"
+      },
+      "highlight": "ការរៀនដែលមានឥទ្ធិពលខ្ពស់",
+      "free": "ឥតគិតថ្លៃ 100%"
+    },
+    "vision": {
+      "title": "ចក្ខុវិស័យរបស់យើង",
+      "description": "ដើម្បីក្លាយជាដៃគូដែលគួរឱ្យទុកចិត្តមួយ ដែលជួយសិស្សបង្កើតជំនាញ និងរៀបចំខ្លួនសម្រាប់អាជីពបច្ចេកវិទ្យា។",
+      "tags": [
+        "គួរឱ្យទុកចិត្ត",
+        "ផ្តោតលើជោគជ័យ"
+      ],
+      "metrics": {
+        "title": "ការត្រៀមខ្លួនសម្រាប់អាជីពរបស់សិស្ស",
+        "year": "សូចនាករ ឆ្នាំ 2026",
+        "practicalSkillBuilding": {
+          "label": "ការកសាងជំនាញជាក់ស្តែង",
+          "percentage": 95
+        },
+        "techCareerPlacement": {
+          "label": "ការចូលទៅកាន់អាជីពបច្ចេកវិទ្យា",
+          "percentage": 88
+        },
+        "footer": "ផ្លូវសិក្សាដែលមានរចនាសម្ព័ន្ធ ចាប់ពីអ្នកចាប់ផ្តើមរហូតដល់ត្រៀមខ្លួនសម្រាប់វិស័យការងារ"
+      }
+    }
+  },
+
+  timeline: {
+    badge: "របៀបដែលយើងមកដល់ទីនេះ",
+    heading: {
+      prefix: "ដំណើរនៃការបង្កើត",
+      highlight: "SastraCode",
+    },
+    steps: [
+      {
+        number: "01",
+        title: "គំនិតផ្ដើមដំបូង",
+        description:
+          "ជួយឱ្យការរៀន Programming កាន់តែងាយស្រួល មានអន្តរកម្ម និងអាចអនុវត្តបាន។",
+      },
+      {
+        number: "02",
+        title: "ការរៀបចំផែនការ",
+        description:
+          "បង្កើត Platform ដែលរួមបញ្ចូល Documentation, Coding Practice, Quiz និង Learning Roadmap។",
+      },
+      {
+        number: "03",
+        title: "ការអភិវឌ្ឍ Platform",
+        description:
+          "រៀបចំ Platform ដើម្បីផ្តល់បទពិសោធន៍សិក្សាដែល Interactive និងអនុវត្តជាក់ស្ដែង។",
+      },
+      {
+        number: "04",
+        title: "ការសាកល្បង និងកែលម្អ",
+        description:
+          "សាកល្បង ប្រមូលមតិ និងកែលម្អ Interface, Performance និងបទពិសោធន៍សិក្សា។",
+      },
+      {
+        number: "05",
+        title: "ចក្ខុវិស័យនាពេលអនាគត",
+        description:
+          "ពង្រីកមាតិកា Programming បន្ថែមភាសាច្រើន និងអភិវឌ្ឍ Platform ឱ្យកាន់តែធំ។",
+      },
+    ],
+  },
+
+  mentor: {
+    title: {
+      prefix: "អ្នក",
+      highlight: "ដឹកនាំ",
+      suffix: "របស់យើង",
+    },
+    description:
+      "ដឹកនាំដោយអ្នកជំនាញក្នុងវិស័យបច្ចេកវិទ្យា ដែលផ្តល់នូវការណែនាំនិងជម្រុញការច្នៃប្រឌិត ដើម្បីភាពជោគជ័យរបស់អ្នកសិក្សា។",
+  },
+
+  mentors: {
+    title: {
+      prefix: "អ្នក",
+      highlight: "ដឹកនាំ",
+      suffix: "របស់យើង",
+    },
+    description:
+      "ដឹកនាំដោយអ្នកជំនាញក្នុងវិស័យបច្ចេកវិទ្យា ដែលផ្តល់នូវការណែនាំនិងជម្រុញការច្នៃប្រឌិត ដើម្បីភាពជោគជ័យរបស់អ្នកសិក្សា។",
+    items: [
+      {
+        id: "1",
+        name: "ចាន់ ឆៃយ៉ា",
+        role: "អ្នកណែនាំ",
+        image: "/images/chan_chhaya.jpg",
+        githubUrl: "https://github.com",
+        telegramUrl: "https://t.me",
+      },
+      {
+        id: "2",
+        name: "ស្រេង ជីប៉",
+        role: "អ្នកណែនាំ",
+        image: "/images/sreng_chipor.jpg",
+        githubUrl: "https://github.com",
+        telegramUrl: "https://t.me",
+      },
+    ],
+  },
+
+  teamMembers: {
+    title: {
+      prefix: "សមាជិក",
+      highlight: "ក្រុម",
+      suffix: "របស់យើង",
+    },
+    description: "ក្រុមការងារប្រកបដោយការប្ដេជ្ញាចិត្តខ្ពស់ ក្នុងការជំរុញសាស្ត្រាកូដ ឱ្យដើរទៅមុខ។",
+    members: [
+      {
+        id: "1",
+        name: "បិន​ ថុនា",
+        position: "អ្នកអភិវឌ្ឍន៍ Full-Stack",
+        bio: "ខ្ញុំចេះតែ ហេឡូវើលទេ <3",
+        image: "/images/ben_thona.jpg",
+        githubUrl: "https://github.com/ThonaDev",
+        telegramUrl: "https://t.me/thona_ben",
+      },
+      {
+        id: "2",
+        name: "សឿត បំណង",
+        position: "អ្នកអភិវឌ្ឍន៍ Full-Stack",
+        bio: "អ្នកជំនាញ Backend ផ្តោតលើស្ថាបត្យកម្ម Cloud និងប្រសិទ្ធភាពទិន្នន័យ។",
+        image: "/images/soeurt_bomnorng.png",
+        githubUrl: "https://github.com/Bomnorng2025",
+        telegramUrl: "https://t.me/SoeurtBomnorng",
+      },
+      {
+        id: "3",
+        name: "វ៉ិល សុធន",
+        position: "អ្នកអភិវឌ្ឍន៍ Full-Stack",
+        bio: "អ្នកជំនាញ Backend ផ្តោតលើស្ថាបត្យកម្ម Cloud និងប្រសិទ្ធភាពទិន្នន័យ។",
+        image: "/images/vel_sothoun.png",
+        githubUrl: "https://github.com/velsothoun",
+        telegramUrl: "https://t.me/Thunnnnnnn",
+      },
+      {
+        id: "4",
+        name: "លត់ ឡោះ",
+        position: "អ្នកអភិវឌ្ឍន៍ Full-Stack",
+        bio: "អ្នកជំនាញ Backend ផ្តោតលើស្ថាបត្យកម្ម Cloud និងប្រសិទ្ធភាពទិន្នន័យ។",
+        image: "/images/lot_los.png",
+        githubUrl: "https://github.com/loslot",
+        telegramUrl: "https://t.me/Lot_Los",
+      },
+      {
+        id: "5",
+        name: "ម៉ុន ណារា",
+        position: "អ្នកអភិវឌ្ឍន៍ Full-Stack",
+        bio: "ខ្ញុំចេះតែ ហេឡូវើលទេ <3",
+        image: "/images/mon_narea.png",
+        githubUrl: "https://github.com/monnarea",
+        telegramUrl: "https://t.me/monnarea",
+      },
+      {
+        id: "6",
+        name: "ម៉េង គីមលាភ",
+        position: "អ្នកអភិវឌ្ឍន៍ Full-Stack",
+        bio: "គ្មាននរណាម្នាក់ល្អឥតខ្ចោះនោះទេ",
+        image: "/images/meng_kimleap.png",
+        githubUrl: "https://github.com/Kimleapp",
+        telegramUrl: "https://t.me/kimleap_meng",
+      },
+      {
+        id: "7",
+        name: "ឆាត​ សុវណ្ណី",
+        position: "អ្នកអភិវឌ្ឍន៍ Full-Stack",
+        bio: "អ្វីគ្រប់យ៉ាងអាចទៅរួច បើអ្នកជឿជាក់លើខ្លួនឯង",
+        image: "/images/chhat_sovanney.png",
+        githubUrl: "https://github.com/chhatsovanney8-sys",
+        telegramUrl: "https://t.me/Vaneii",
+      },
+      {
+        id: "8",
+        name: "វុធ វឌ្ឍនា",
+        position: "អ្នកអភិវឌ្ឍន៍ Full-Stack",
+        bio: "អ្នកជំនាញ Backend ផ្តោតលើស្ថាបត្យកម្ម Cloud និងប្រសិទ្ធភាពទិន្នន័យ។",
+        image: "/images/vuth_vatana.png",
+        githubUrl: "https://github.com/vuthvatana",
+        telegramUrl: "https://t.me/vuth_vatana",
+      },
+      {
+        id: "9",
+        name: "ឆាយ​ គង្គា",
+        position: "អ្នកអភិវឌ្ឍន៍ Full-Stack",
+        bio: "អ្នកជំនាញ Backend ផ្តោតលើស្ថាបត្យកម្ម Cloud និងប្រសិទ្ធភាពទិន្នន័យ។",
+        image: "/images/chhay_kongkea.png",
+        githubUrl: "https://github.com/Chhay-Kongkea",
+        telegramUrl: "https://t.me/Chhay_Kongkea",
+      },
+      {
+        id: "10",
+        name: "ឆាយ​ ដាវីន",
+        position: "អ្នកអភិវឌ្ឍន៍ Full-Stack",
+        bio: "អ្នកជំនាញ Backend ផ្តោតលើស្ថាបត្យកម្ម Cloud និងប្រសិទ្ធភាពទិន្នន័យ។",
+        image: "/images/chhay_davin.png",
+        githubUrl: "https://github.com/arthur-davin-dev",
+        telegramUrl: "https://t.me/ArthurDavinDev",
+      },
+    ],
+  },
+
   // ដាក់​ transaltion ឲនៅពីលើ footer។។។​ សូមអរគុណ
   footer: {
     description:

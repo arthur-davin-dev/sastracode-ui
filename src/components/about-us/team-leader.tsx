@@ -1,40 +1,43 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Image from 'next/image';
 import { Send } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
-import { mockTeamMembers, TeamMemberType } from '@/lib/mock-data/about-us/team-member';
-
-// Simulated API Service function
-async function fetchAllTeamMembers(): Promise<TeamMemberType[]> {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  return mockTeamMembers;
-}
+import { useTranslation } from '@/hooks/useTranslations';
 
 export default function TeamLeader() {
-  const [leaders, setLeaders] = useState<TeamMemberType[]>([]);
+  const { teamMembers } = useTranslation();
   const [loading, setLoading] = useState<boolean>(true);
 
+  // Extract members list safely from the teamMembers translation object
+  const membersList = useMemo(() => {
+    if (Array.isArray(teamMembers)) return teamMembers;
+    return teamMembers?.members || [];
+  }, [teamMembers]);
+
+  // Extract title and description directly from teamMembers
+  const title = teamMembers?.title;
+  const description = teamMembers?.description;
+
+  // Filter for Leader (ID '9') and Sub-Leader (ID '10') explicitly
+  const leaders = useMemo(() => {
+    if (!membersList.length) return [];
+    const leaderObj = membersList.find((member: { id: string }) => member.id === '9');
+    const subLeaderObj = membersList.find((member: { id: string }) => member.id === '10');
+
+    return [leaderObj, subLeaderObj].filter(
+      (member): member is NonNullable<typeof member> => member !== undefined
+    );
+  }, [membersList]);
+
+  // Simulate loading state during client hydration
   useEffect(() => {
-    fetchAllTeamMembers()
-      .then((data) => {
-        // Find Leader (ID '9') and Sub-Leader (ID '10') explicitly to guarantee correct order
-        const leaderObj = data.find((member) => member.id === '9');
-        const subLeaderObj = data.find((member) => member.id === '10');
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500);
 
-        // Combine into array while filtering out any undefined items
-        const selectedLeaders = [leaderObj, subLeaderObj].filter(
-          (member): member is TeamMemberType => member !== undefined
-        );
-
-        setLeaders(selectedLeaders);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch team members:", err);
-        setLoading(false);
-      });
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -46,11 +49,17 @@ export default function TeamLeader() {
       {/* Section Header */}
       <div className="text-center max-w-2xl mx-auto mb-6 font-khmer">
         <h2 className="text-3xl sm:text-4xl font-bold text-[#002455] dark:text-slate-100 mb-3">
-          សមាជិក<span className="text-red-600 dark:text-red-500">ក្រុម</span>របស់យើង
+          {title?.prefix || " Our "}
+          <span className="text-red-600 dark:text-red-500">
+            {title?.highlight || "Team"}
+          </span>
+          {title?.suffix || " Members"}
         </h2>
-        <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-khmer text-[22px]">
-          ក្រុមការងារប្រកបដោយការប្ដេជ្ញាចិត្តខ្ពស់ ក្នុងការជំរុញសាស្ត្រាកូដ ឱ្យដើរទៅមុខ។
-        </p>
+        {description && (
+          <p className="text-slate-600 dark:text-slate-300 leading-relaxed font-khmer text-[22px]">
+            {description}
+          </p>
+        )}
       </div>
 
       {/* Skeleton Loading State */}
@@ -108,13 +117,13 @@ export default function TeamLeader() {
                   {leader.name}
                 </h3>
 
-                {/* Leader / Sub-Leader Role Tag */}
-                <span className="text-[22px] font-semibold text-[#002455] dark:text-slate-400 mb-3">
-                  {leader.id === '9' ? '(Leader)' : '(Sub-Leader)'}
+                {/* Role / Position */}
+                <span className="text-[22px] font-semibold text-[#002455] dark:text-slate-400 mb-3 font-khmer">
+                  {leader.position}
                 </span>
 
                 {/* Description / Bio */}
-                <p className="text-[16px] text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                <p className="text-[16px] font-khmer text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
                   {leader.bio}
                 </p>
 

@@ -194,6 +194,243 @@ export const en = {
     card4Tag: "24 hours",
   },
 
+  aboutUs: {
+    eyebrow: "ABOUT US",
+    title: "SastraCode\nBuilding Cambodia's Digital Youth Future",
+    description:
+      "Sastra Code is a programming learning platform created to help learners understand code easily through practical application and real projects to prepare for a digital future.",
+    features: [
+      { line1: "Continuous", line2: "Learning" },
+      { line1: "Skill", line2: "Development" },
+      { line1: "Ready to", line2: "Build Future" },
+      { line1: "Quality &", line2: "Responsibility" },
+    ],
+    code: "Code Together",
+    build: "Build Tomorrow"
+  },
+
+  "mission": {
+    "section": {
+      "badge": "Core Values",
+      "title": "Mission & Vision",
+      "description": "The core principles guiding decisions across our platform, curriculum, and community."
+    },
+    "content": {
+      "title": "Our Mission",
+      "description": "To make learning programming accessible, interactive, and free for learners of all levels—removing barriers for anyone eager to join the tech world.",
+      "tags": [
+        "Accessible",
+        "Interactive",
+        "Free"
+      ],
+      "code": {
+        "mission": "Accessible Education",
+        "function": "Learn to Code",
+        "return": "Free Access & Practical Hands-on Experience"
+      },
+      "highlight": "High-Impact Learning",
+      "free": "100% Free"
+    },
+    "vision": {
+      "title": "Our Vision",
+      "description": "To be a trusted partner in helping students build practical skills and prepare for successful tech careers.",
+      "tags": [
+        "Trusted",
+        "Success-Oriented"
+      ],
+      "metrics": {
+        "title": "Student Career Readiness",
+        "year": "2026 Metrics",
+        "practicalSkillBuilding": {
+          "label": "Practical Skill Building",
+          "percentage": 95
+        },
+        "techCareerPlacement": {
+          "label": "Tech Career Placement",
+          "percentage": 88
+        },
+        "footer": "Structured learning paths from beginner to job-ready"
+      }
+    }
+  },
+
+  timeline: {
+    badge: "How We Got Here",
+    heading: {
+      prefix: "The Journey of Creating",
+      highlight: "SastraCode",
+    },
+    steps: [
+      {
+        number: "01",
+        title: "Initial Idea",
+        description:
+          "Making programming learning easier, interactive, and practical for everyone.",
+      },
+      {
+        number: "02",
+        title: "Planning Phase",
+        description:
+          "Building a platform that combines documentation, coding practice, quizzes, and a learning roadmap.",
+      },
+      {
+        number: "03",
+        title: "Platform Development",
+        description:
+          "Designing the platform to deliver an interactive and hands-on learning experience.",
+      },
+      {
+        number: "04",
+        title: "Testing & Improvement",
+        description:
+          "Testing, gathering feedback, and refining the interface, performance, and user experience.",
+      },
+      {
+        number: "05",
+        title: "Future Vision",
+        description:
+          "Expanding programming content, adding multi-language support, and growing the platform.",
+      },
+    ],
+  },
+
+  mentor: {
+    title: {
+      prefix: "Our",
+      highlight: "Leaders",
+    },
+    description:
+      "Guided by technology experts providing direction and inspiring innovation for student success.",
+  },
+
+  mentors: {
+    title: {
+      prefix: "Our",
+      highlight: "Leaders",
+    },
+    description:
+      "Guided by technology experts providing direction and inspiring innovation for student success.",
+    items: [
+      {
+        id: "1",
+        name: "Chan Chhaya",
+        role: "Mentor",
+        image: "/images/chan_chhaya.jpg",
+        githubUrl: "https://github.com",
+        telegramUrl: "https://t.me",
+      },
+      {
+        id: "2",
+        name: "Sreng Chipor",
+        role: "Mentor",
+        image: "/images/sreng_chipor.jpg",
+        githubUrl: "https://github.com",
+        telegramUrl: "https://t.me",
+      },
+    ],
+  },
+
+  teamMembers: {
+    title: {
+      prefix: "Our ",
+      highlight: "Team",
+      suffix: " Members",
+    },
+    description: "A highly dedicated team committed to driving SastraCode forward.",
+    members: [
+      {
+        id: "1",
+        name: "Ben Thona",
+        position: "Full-Stack Developer",
+        bio: "I only know Hello World <3",
+        image: "/images/ben_thona.jpg",
+        githubUrl: "https://github.com/ThonaDev",
+        telegramUrl: "https://t.me/thona_ben",
+      },
+      {
+        id: "2",
+        name: "Soeurt Bomnorng",
+        position: "Full-Stack Developer",
+        bio: "Backend specialist focused on scalable cloud architecture and database performance.",
+        image: "/images/soeurt_bomnorng.png",
+        githubUrl: "https://github.com/Bomnorng2025",
+        telegramUrl: "https://t.me/SoeurtBomnorng",
+      },
+      {
+        id: "3",
+        name: "Vel Sothoun",
+        position: "Full-Stack Developer",
+        bio: "Backend specialist focused on scalable cloud architecture and database performance.",
+        image: "/images/vel_sothoun.png",
+        githubUrl: "https://github.com/velsothoun",
+        telegramUrl: "https://t.me/Thunnnnnnn",
+      },
+      {
+        id: "4",
+        name: "Lot Los",
+        position: "Full-Stack Developer",
+        bio: "Backend specialist focused on scalable cloud architecture and database performance.",
+        image: "/images/lot_los.png",
+        githubUrl: "https://github.com/loslot",
+        telegramUrl: "https://t.me/Lot_Los",
+      },
+      {
+        id: "5",
+        name: "Mon Narea",
+        position: "Full-Stack Developer",
+        bio: "I only know Hello World <3",
+        image: "/images/mon_narea.png",
+        githubUrl: "https://github.com/monnarea",
+        telegramUrl: "https://t.me/monnarea",
+      },
+      {
+        id: "6",
+        name: "Meng Kimleap",
+        position: "Full-Stack Developer",
+        bio: "Nobody is perfect.",
+        image: "/images/meng_kimleap.png",
+        githubUrl: "https://github.com/Kimleapp",
+        telegramUrl: "https://t.me/kimleap_meng",
+      },
+      {
+        id: "7",
+        name: "Chhat Sovanney",
+        position: "Full-Stack Developer",
+        bio: "Everything is possible if you believe in yourself.",
+        image: "/images/chhat_sovanney.png",
+        githubUrl: "https://github.com/chhatsovanney8-sys",
+        telegramUrl: "https://t.me/Vaneii",
+      },
+      {
+        id: "8",
+        name: "Vuth Vatana",
+        position: "Full-Stack Developer",
+        bio: "Backend specialist focused on scalable cloud architecture and database performance.",
+        image: "/images/vuth_vatana.png",
+        githubUrl: "https://github.com/vuthvatana",
+        telegramUrl: "https://t.me/vuth_vatana",
+      },
+      {
+        id: "9",
+        name: "Chhay Kongkea",
+        position: "Full-Stack Developer",
+        bio: "Backend specialist focused on scalable cloud architecture and database performance.",
+        image: "/images/chhay_kongkea.png",
+        githubUrl: "https://github.com/Chhay-Kongkea",
+        telegramUrl: "https://t.me/Chhay_Kongkea",
+      },
+      {
+        id: "10",
+        name: "Chhay Davin",
+        position: "Full-Stack Developer",
+        bio: "Backend specialist focused on scalable cloud architecture and database performance.",
+        image: "/images/chhay_davin.png",
+        githubUrl: "https://github.com/arthur-davin-dev",
+        telegramUrl: "https://t.me/ArthurDavinDev",
+      },
+    ],
+  },
+  
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.
   footer: {
     description:

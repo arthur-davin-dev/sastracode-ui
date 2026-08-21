@@ -1,38 +1,38 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Image from 'next/image';
 import { Send } from 'lucide-react';
 import { FaGithub } from 'react-icons/fa';
-import { mockTeamMembers, TeamMemberType } from '@/lib/mock-data/about-us/team-member';
-
-// Simulated API Service function
-async function fetchAllTeamMembers(): Promise<TeamMemberType[]> {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  return mockTeamMembers;
-}
+import { useTranslation } from '@/hooks/useTranslations';
 
 export default function TeamMember() {
-  const [members, setMembers] = useState<TeamMemberType[]>([]);
+  const { teamMembers } = useTranslation();
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    fetchAllTeamMembers()
-      .then((data) => {
-        setMembers(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch team members:", err);
-        setLoading(false);
-      });
-  }, []);
+  // Extract members list safely from teamMembers whether it's an object or array
+  const membersList = useMemo(() => {
+    if (Array.isArray(teamMembers)) return teamMembers;
+    return teamMembers?.members || [];
+  }, [teamMembers]);
 
-  // Filter members specifically with id from 1 to 8
-  const filteredMembers = members.filter((member) => {
-    const numericId = Number(member.id);
-    return numericId >= 1 && numericId <= 8;
-  });
+  // Filter members specifically with IDs from 1 to 8
+  const filteredMembers = useMemo(() => {
+    if (!membersList.length) return [];
+    return membersList.filter((member: { id: string | number }) => {
+      const numericId = Number(member.id);
+      return numericId >= 1 && numericId <= 8;
+    });
+  }, [membersList]);
+
+  // Simulate smooth loading transition for client hydration
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Loading State Skeletons (8 cards)
   if (loading) {
@@ -65,7 +65,7 @@ export default function TeamMember() {
       <div className="container mx-auto">
         {/* Responsive Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12 sm:gap-6 justify-items-center">
-          {filteredMembers.map((member) => (
+          {filteredMembers.map((member: any) => (
             <div key={member.id} className="pt-20 pb-4 flex justify-center w-full">
               {/* Card Container */}
               <div className="group relative bg-slate-50 dark:bg-slate-900/90 rounded-xl border border-slate-200/80 dark:border-slate-800 shadow-md dark:shadow-none pt-20 pb-6 px-6 w-full max-w-70 text-center flex flex-col items-center transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-xl dark:hover:border-slate-700">
@@ -105,7 +105,7 @@ export default function TeamMember() {
                 </span>
 
                 {/* Description / Bio */}
-                <p className="text-[18px]​ font-khmer text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                <p className="text-[18px] font-khmer text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
                   {member.bio}
                 </p>
 
