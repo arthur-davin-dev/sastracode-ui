@@ -1,30 +1,29 @@
 "use client";
 
 import Image from "next/image";
-import {
-  ArrowRight,
-  BookOpen,
-  Braces,
-  Code2,
-  Rocket,
-  Trophy,
-} from "lucide-react";
+import { BookOpen, Braces, Code2, Rocket, Trophy } from "lucide-react";
 import { useEffect, useState } from "react";
 import DotGrid from "@/components/about-us/DotGrid";
+import { useTranslation } from "@/hooks/useTranslations";
 
-const ABOUT_TITLE = "សាស្រ្តា កូដ\nកសាងអនាគតយុវជនឌីជីថលរបស់កម្ពុជា";
+// Icons aren't stored in the text files, so we keep them here and
+// pair them with translated lines by index (order must match en.ts/km.ts).
+const FEATURE_ICONS = [BookOpen, Code2, Rocket, Trophy];
 
-function TypingSlogan() {
+function TypingSlogan({ title }: { title: string }) {
   const [visibleTitle, setVisibleTitle] = useState("");
 
   useEffect(() => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
     if (reduceMotion) {
-      const titleTimer = window.setTimeout(() => setVisibleTitle(ABOUT_TITLE), 0);
+      const titleTimer = window.setTimeout(() => setVisibleTitle(title), 0);
       return () => window.clearTimeout(titleTimer);
     }
 
-    const characters = Array.from(ABOUT_TITLE);
+    const characters = Array.from(title);
     let index = 0;
     let deleting = false;
     let timer: number | undefined;
@@ -49,34 +48,48 @@ function TypingSlogan() {
 
     timer = window.setTimeout(type, 350);
     return () => window.clearTimeout(timer);
-  }, []);
+    // Re-run the whole typing animation whenever the title text changes
+    // (i.e. whenever the language is switched).
+  }, [title]);
 
   const [mainTitle = "", subtitle = ""] = visibleTitle.split("\n");
 
   return (
-    <div aria-label={ABOUT_TITLE}>
-      <h1 className="mb-3 font-khmer text-5xl font-extrabold leading-tight text-[#0B2558] dark:text-white sm:text-6xl">
+    <div aria-label={title}>
+      <h1 className="mb-3 font-khmer text-5xl font-extrabold leading-tight text-secondary-color dark:text-white sm:text-6xl">
         <span aria-hidden="true">{mainTitle}</span>
-        {!subtitle && <span aria-hidden="true" className="ml-1 inline-block h-[0.9em] w-[3px] animate-pulse bg-[#B8081C] align-[-0.06em] dark:bg-cyan-400" />}
+        {!subtitle && (
+          <span
+            aria-hidden="true"
+            className="ml-1 inline-block h-[0.9em] w-0.75 animate-pulse bg-secondary-color align-[-0.06em] dark:bg-cyan-400"
+          />
+        )}
       </h1>
-      <h2 className="mb-6 font-khmer text-2xl font-extrabold leading-snug text-[#0B2558] dark:text-slate-200 sm:text-3xl">
+      <h2 className="mb-6 font-khmer text-2xl font-extrabold leading-snug text-primary-color dark:text-slate-200 sm:text-3xl">
         <span aria-hidden="true">{subtitle}</span>
-        {subtitle && <span aria-hidden="true" className="ml-1 inline-block h-[0.9em] w-[3px] animate-pulse bg-[#B8081C] align-[-0.06em] dark:bg-cyan-400" />}
+        {subtitle && (
+          <span
+            aria-hidden="true"
+            className="ml-1 inline-block h-[0.9em] w-0.75 animate-pulse bg-secondary-color align-[-0.06em] dark:bg-cyan-400"
+          />
+        )}
       </h2>
     </div>
   );
 }
 
-const features = [
-  { icon: BookOpen, line1: "ចេះសិក្សា", line2: "មិនអស់" },
-  { icon: Code2, line1: "អភិវឌ្ឍន៍ជំនាញ", line2: "ជាបន្តបន្ទាប់" },
-  { icon: Rocket, line1: "ត្រៀមខ្លួន", line2: "បង្កើតអនាគត" },
-  { icon: Trophy, line1: "គុណភាព", line2: "និងទំនួលខុសត្រូវ" },
-];
-
 export default function AboutUs() {
+  const currentT = useTranslation();
+  const about = currentT.aboutUs;
+
+  const features = about.features.map((f, i) => ({
+    icon: FEATURE_ICONS[i] ?? BookOpen,
+    line1: f.line1,
+    line2: f.line2,
+  }));
+
   return (
-    <section className="relative overflow-hidden bg-[#F4F5F9] dark:bg-[#070c18] py-20 px-6 sm:px-10 lg:px-16 transition-colors duration-500 selection:bg-[#B8081C] selection:text-white">
+    <section className="relative overflow-hidden bg-[#F4F5F9] dark:bg-[#070c18] py-20 px-6 sm:px-10 lg:px-16 transition-colors duration-500 selection:bg-primary-color selection:text-white">
       {/* Background dot grids */}
       <DotGrid
         rows={4}
@@ -99,18 +112,18 @@ export default function AboutUs() {
           {/* Eyebrow */}
           <div className="mb-8 flex items-center gap-3">
             <span
-              className="font-mono text-lg font-semibold text-[#0B2558] dark:text-cyan-400"
+              className="font-mono text-lg font-semibold text-primary-color dark:text-cyan-400"
               aria-hidden="true"
             >
               {"</>"}
             </span>
             <span
-              className="px-5 py-2 text-sm font-bold tracking-wide text-white bg-[#B8081C] dark:bg-[#B8081C]"
+              className="px-5 py-2 text-sm font-bold tracking-wide text-white bg-secondary-color dark:bg-[#B8081C]"
               style={{
                 clipPath: "polygon(0 0, 100% 0, 88% 100%, 0% 100%)",
               }}
             >
-              ABOUT US
+              {about.eyebrow}
             </span>
             <span className="relative h-px flex-1 bg-[#0B2558]/40 dark:bg-slate-700">
               <span className="absolute -right-0.5 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-[#0B2558] dark:bg-cyan-400" />
@@ -127,25 +140,14 @@ export default function AboutUs() {
             <span className="animate-float-fast absolute right-[15%] bottom-[20%] h-4 w-4 rounded-full border border-[#0B2558]/30 dark:border-white/20" />
           </div>
 
-          {/* Heading */}
-          <TypingSlogan />
-          <h1 aria-hidden="true" className="hidden mb-3 font-khmer text-5xl font-extrabold leading-tight text-[#0B2558] dark:text-white sm:text-6xl">
-            សាស្រ្តា{" "}
-            <span className="inline-block rounded-md align-middle text-[#B8081C] dark:text-cyan-400">
-              កូដ
-            </span>
-          </h1>
-          <h2 aria-hidden="true" className="hidden mb-6 font-khmer text-2xl font-extrabold leading-snug text-[#0B2558] dark:text-slate-200 sm:text-3xl">
-            កសាងអនាគតយុវជនឌីជីថលរបស់កម្ពុជា
-          </h2>
+          {/* Heading (typed, animates on language switch too) */}
+          <TypingSlogan title={about.title} />
 
           <div className="mb-6 h-1 w-24 rounded-full bg-[#B8081C]" />
 
           {/* Paragraph */}
-          <p className="mb-10 max-w-xl font-khmer leading-relaxed text-slate-600 dark:text-slate-400">
-            សាស្រ្តាកូដ គឺជាវេទិកាសិក្សាកម្មវិធីដែលបង្កើតឡើង
-            ដើម្បីជួយអ្នកសិក្សាកូដតាមរបៀបងាយយល់អនុវត្តជាក់ស្តែង និង
-            បង្កើតគម្រោងពិត ដើម្បីត្រៀមខ្លួនសម្រាប់អនាគតឌីជីថល។
+          <p className="mb-10 max-w-xl font-khmer leading-relaxed text-primary-color dark:text-slate-400">
+            {about.description}
           </p>
 
           {/* Feature Icons */}
@@ -155,10 +157,10 @@ export default function AboutUs() {
                 key={line1}
                 className="flex flex-col items-center gap-3 text-center"
               >
-                <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-[#0B2558]/20 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 text-[#0B2558] dark:text-cyan-400 backdrop-blur-sm shadow-sm">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-[#0B2558]/20 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 text-primary-color dark:text-cyan-400 backdrop-blur-sm shadow-sm">
                   <Icon className="h-7 w-7" strokeWidth={1.75} />
                 </div>
-                <p className="font-khmer text-sm font-semibold leading-snug text-[#0B2558] dark:text-slate-200">
+                <p className="font-khmer text-sm font-semibold leading-snug text-primary-color dark:text-slate-200">
                   {line1}
                   <br />
                   {line2}
@@ -166,23 +168,6 @@ export default function AboutUs() {
               </div>
             ))}
           </div>
-
-          {/* Buttons */}
-          {/* <div className="mb-10 flex flex-wrap gap-4 font-khmer">
-            <a
-              href="#projects"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#0B2558] dark:bg-linear-to-r dark:from-cyan-500 dark:to-blue-600 px-6 py-4 text-sm font-bold text-white transition-all shadow-md shadow-[#0B2558]/20 dark:shadow-cyan-500/20 hover:opacity-90 hover:shadow-lg"
-            >
-              ស្វែងរកគម្រោងរបស់យើង
-              <ArrowRight className="h-4 w-4" />
-            </a>
-            <a
-              href="#team"
-              className="inline-flex items-center gap-2 rounded-xl border-2 border-[#0B2558]/20 dark:border-slate-700 bg-white dark:bg-slate-900 px-6 py-4 text-sm font-bold text-[#B8081C] dark:text-slate-200 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800"
-            >
-              មើលក្រុមការងារ
-            </a>
-          </div> */}
 
           {/* Bottom Rule */}
           <div className="flex items-center gap-3">
@@ -254,9 +239,9 @@ export default function AboutUs() {
             <span className="mr-1 font-mono text-cyan-400 opacity-90">
               {"</>"}
             </span>
-            Code Together
+            {about.code}
             <br />
-            Build Tomorrow
+            {about.build}
           </div>
 
           {/* Floating "{}" Badge, Top-Right Corner */}
@@ -266,21 +251,8 @@ export default function AboutUs() {
 
           {/* Floating "</>" Badge, Bottom-Right Corner */}
           <div className="absolute -right-3 bottom-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg">
-            <Code2 className="h-6 w-6 text-[#0B2558] dark:text-cyan-400" />
+            <Code2 className="h-6 w-6 text-primary-color dark:text-cyan-400" />
           </div>
-
-          {/* Code Snippet Card, Bottom-Left */}
-          {/* <div className="absolute -bottom-6 left-2 w-64 rounded-xl bg-white dark:bg-[#041B45] border border-slate-200 dark:border-slate-800 p-4 font-mono text-xs leading-relaxed text-slate-700 dark:text-slate-300 shadow-2xl sm:left-6 sm:w-72 backdrop-blur-md">
-            <span className="text-[#ff8a8a]">function</span> team() {"{"}
-            <br />
-            &nbsp;&nbsp;passion: <span className="text-[#7fe0a8]">true</span>,
-            <br />
-            &nbsp;&nbsp;skills: <span className="text-[#7fe0a8]">true</span>,
-            <br />
-            &nbsp;&nbsp;future: <span className="text-[#7fe0a8]">true</span>
-            <br />
-            {"}"}
-          </div> */}
         </div>
       </div>
     </section>

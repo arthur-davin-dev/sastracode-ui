@@ -68,7 +68,8 @@ export default function Review() {
                       <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full ring-2 J dark:ring-slate-700">
                         <Image
                           src={
-                            "image" in review
+                            "image" in review &&
+                            typeof review.image === "string"
                               ? review.image
                               : reviewImages[index % reviewImages.length]
                           }

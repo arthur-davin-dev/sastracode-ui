@@ -12,6 +12,37 @@ export const en = {
     explore: "Explore Code",
     freeLearning: "100% Free Learning",
   },
+  popularDoc: {
+    badge: "Popular Documentation",
+    title: "Explore Popular Documentation",
+    description:
+      "Learn programming concepts through clear, easy-to-follow documentation.",
+    viewAll: "View All Documentation",
+    startLearning: "Start Learning",
+  },
+
+  hero: {
+    titleFirstLine: "IT Lessons",
+    titleSecondLine: "in the Khmer Language",
+    description:
+      "Learn the fundamentals of coding, web design and development, problem solving, database basics, AI, cybersecurity, data science, and many other IT topics — all the way to becoming a skilled professional.",
+  },
+
+  tutorials: {
+    loadingLabel: "Loading lessons",
+    errorMessage: "Unable to load lessons. Please try again.",
+    retry: "Try Again",
+    empty: "No lessons have been published yet.",
+    ctaLabel: "Learn Now",
+    seeAll: "See All",
+    categories: {
+      all: "All Lessons",
+      latest: "Latest Lessons",
+      recommended: "Recommended Lessons",
+      popular: "Popular Lessons",
+    },
+  },
+
   coreFeature: {
     badge: "What We Offer",
     headingPrefix: "Core ",
@@ -45,12 +76,24 @@ export const en = {
         description:
           "Learn through systematically organized video lessons that support every learning plan.",
       },
-      // {
-      //     title: "Learning Roadmaps",
-      //     description:
-      //         "Follow carefully structured learning roadmaps that guide you from beginner to expert level.",
-      // },
+      {
+        title: "Learning Roadmaps",
+        description:
+          "Follow carefully structured learning roadmaps that guide you from beginner to expert level.",
+      },
+      {
+        title: "Experienced Support Team",
+        description:
+          "Get dedicated support from experienced mentors to guide you through your learning journey.",
+      },
     ],
+  },
+  popularCourse: {
+    badge: "Popular Courses",
+    title: "Explore Popular Courses",
+    description: "Choose a course and start learning today.",
+    viewAll: "View All Courses",
+    enrollNow: "Enroll Now",
   },
   interactiveDoc: {
     title: "Interactive Documentation",
@@ -153,47 +196,23 @@ export const en = {
   technologyStack: {
     badge: "UNDER THE HOOD",
 
-    title1: "Technology Stack",
+    title1: "Online Code Playground",
     description:
       "Modern technologies powering a next-generation learning experience.",
   },
-  popularCourse: {
-    title: "Popular Courses",
-    description:
-      "Explore our most popular courses and advance your skills with hands-on projects and real-world applications.",
-  },
-  popularDoc: {
-    title: "Popular Documentation",
-  }, tutorials: {
-    loadingLabel: "Loading lessons...",
-    errorMessage: "Unable to load lessons. Please try again.",
-    retry: "Try again",
-    empty: "No published lessons yet.",
-    ctaLabel: "Learn Now",
-    seeAll: "See all",
-    categories: {
-      all: "All Lessons",
-      latest: "Latest Lessons",
-      recommended: "Recommended Lessons",
-      popular: "Popular Lessons",
-    },
-  }, hero: {
-    titleFirstLine: "IT Lessons",
-    titleSecondLine: "in Khmer",
-    description:
-      "Learn the basics of coding, web design and development, problem solving, databases, AI, cybersecurity, data science, and many more IT skills — until you become a skilled, career-ready professional.",
-  }, courses: {
+
+  courses: {
     banner: {
       welcomeText: "Welcome to Sastra Code",
-      titleFirstLine: "Learn to Code in Khmer",
+      titleFirstLine: "Learn to Code",
       titleSecondLine: "From Basics to Real Projects",
       description:
-        "SastraCode helps you build coding skills step by step through video lessons, learning materials, hands-on exercises, and real projects — easy to learn and understand for Cambodian learners.",
-      features: ["Video Lessons", "Learning Materials", "Exercises & Projects"],
+        "SastraCode helps you build coding skills step by step through video lessons, documentation, hands-on exercises, and real projects designed for Cambodian learners.",
+      features: ["Video Lessons", "Documentation", "Exercises & Projects"],
       cta: "Start Learning",
     },
     search: {
-      placeholder: "Search courses, programming languages, or skills...",
+      placeholder: "Search courses, languages, or skills...",
     },
     categories: {
       all: "All",
@@ -201,83 +220,315 @@ export const en = {
       premium: "Premium",
     },
     sections: {
-      latest: "Newest Courses",
+      latest: "Latest Courses",
       recommended: "Recommended Courses",
       popular: "Popular Courses",
       searchResults: "Search Results",
       allCourses: "All Courses",
-    }, card: {
+    },
+    card: {
       viewCourse: "View Course",
-      privateCourse: "Private course",
+      privateCourse: "Private Course",
     },
     states: {
       loading: "Loading courses",
       error: "Unable to load courses",
-      retry: "Try again",
-      empty: "No courses match your search criteria",
+      retry: "Try Again",
+      empty: "No courses match your search",
     },
   },
 
+  supportTeam: {
+    title: "Experienced Support Team",
+    members: {
+      soeurtBomnorng: "Soeurt Bomnorng",
+      chhayKongkea: "Chhay Kongkea",
+      lotLos: "Lot Los",
+      velSoThoun: "Vel SoThoun",
+      benThona: "Ben Thona",
+    },
+  },
 
+  interactiveGrid: {
+    card1Title: "Start Online Business",
+    card1Subtitle: "College Case Studies",
+    card2Title: "Learn Anywhere",
+    card2Subtitle: "Anytime, Anyplace",
+    card2Tag: "Live Coding",
+    card3Progress: "28 / 35",
+    card3Label: "Progress",
+    card4Title: "AI Assistance",
+    card4Subtitle: "AI helps support learning up to",
+    card4Tag: "24 hours",
+  },
 
+  aboutUs: {
+    eyebrow: "ABOUT US",
+    title: "SastraCode\nBuilding Cambodia's Digital Youth Future",
+    description:
+      "Sastra Code is a programming learning platform created to help learners understand code easily through practical application and real projects to prepare for a digital future.",
+    features: [
+      { line1: "Continuous", line2: "Learning" },
+      { line1: "Skill", line2: "Development" },
+      { line1: "Ready to", line2: "Build Future" },
+      { line1: "Quality &", line2: "Responsibility" },
+    ],
+    code: "Code Together",
+    build: "Build Tomorrow"
+  },
+
+  "mission": {
+    "section": {
+      "badge": "Core Values",
+      "title": "Mission & Vision",
+      "description": "The core principles guiding decisions across our platform, curriculum, and community."
+    },
+    "content": {
+      "title": "Our Mission",
+      "description": "To make learning programming accessible, interactive, and free for learners of all levels—removing barriers for anyone eager to join the tech world.",
+      "tags": [
+        "Accessible",
+        "Interactive",
+        "Free"
+      ],
+      "code": {
+        "mission": "Accessible Education",
+        "function": "Learn to Code",
+        "return": "Free Access & Practical Hands-on Experience"
+      },
+      "highlight": "High-Impact Learning",
+      "free": "100% Free"
+    },
+    "vision": {
+      "title": "Our Vision",
+      "description": "To be a trusted partner in helping students build practical skills and prepare for successful tech careers.",
+      "tags": [
+        "Trusted",
+        "Success-Oriented"
+      ],
+      "metrics": {
+        "title": "Student Career Readiness",
+        "year": "2026 Metrics",
+        "practicalSkillBuilding": {
+          "label": "Practical Skill Building",
+          "percentage": 95
+        },
+        "techCareerPlacement": {
+          "label": "Tech Career Placement",
+          "percentage": 88
+        },
+        "footer": "Structured learning paths from beginner to job-ready"
+      }
+    }
+  },
+
+  timeline: {
+    badge: "How We Got Here",
+    heading: {
+      prefix: "The Journey of Creating",
+      highlight: "SastraCode",
+    },
+    steps: [
+      {
+        number: "01",
+        title: "Initial Idea",
+        description:
+          "Making programming learning easier, interactive, and practical for everyone.",
+      },
+      {
+        number: "02",
+        title: "Planning Phase",
+        description:
+          "Building a platform that combines documentation, coding practice, quizzes, and a learning roadmap.",
+      },
+      {
+        number: "03",
+        title: "Platform Development",
+        description:
+          "Designing the platform to deliver an interactive and hands-on learning experience.",
+      },
+      {
+        number: "04",
+        title: "Testing & Improvement",
+        description:
+          "Testing, gathering feedback, and refining the interface, performance, and user experience.",
+      },
+      {
+        number: "05",
+        title: "Future Vision",
+        description:
+          "Expanding programming content, adding multi-language support, and growing the platform.",
+      },
+    ],
+  },
+
+  mentor: {
+    title: {
+      prefix: "Our",
+      highlight: "Leaders",
+    },
+    description:
+      "Guided by technology experts providing direction and inspiring innovation for student success.",
+  },
+
+  mentors: {
+    title: {
+      prefix: "Our",
+      highlight: "Leaders",
+    },
+    description:
+      "Guided by technology experts providing direction and inspiring innovation for student success.",
+    items: [
+      {
+        id: "1",
+        name: "Chan Chhaya",
+        role: "Mentor",
+        image: "/images/chan_chhaya.jpg",
+        githubUrl: "https://github.com/it-chhaya",
+        telegramUrl: "https://t.me/chhayadevkh",
+      },
+      {
+        id: "2",
+        name: "Sreng Chipor",
+        role: "Mentor",
+        image: "/images/sreng_chipor.jpg",
+        githubUrl: "https://github.com/jiporCK",
+        telegramUrl: "https://t.me/jiporsreng",
+      },
+    ],
+  },
+
+  teamMembers: {
+    title: {
+      prefix: "Our ",
+      highlight: "Team",
+      suffix: " Members",
+    },
+    description: "A highly dedicated team committed to driving SastraCode forward.",
+    members: [
+      {
+        id: "1",
+        name: "Ben Thona",
+        position: "Full-Stack Developer",
+        bio: "No one cares about your story until you succeed.",
+        image: "/images/ben_thona.jpg",
+        githubUrl: "https://github.com/ThonaDev",
+        telegramUrl: "https://t.me/thona_ben",
+      },
+      {
+        id: "2",
+        name: "Soeurt Bomnorng",
+        position: "Full-Stack Developer",
+        bio: "Quote is not available.",
+        image: "/images/soeurt_bomnorng.png",
+        githubUrl: "https://github.com/Bomnorng2025",
+        telegramUrl: "https://t.me/SoeurtBomnorng",
+      },
+      {
+        id: "3",
+        name: "Vel Sothoun",
+        position: "Full-Stack Developer",
+        bio: "Life is short, make it count.",
+        image: "/images/vel_sothoun.png",
+        githubUrl: "https://github.com/velsothoun",
+        telegramUrl: "https://t.me/Thunnnnnnn",
+      },
+      {
+        id: "4",
+        name: "Lot Los",
+        position: "Full-Stack Developer",
+        bio: "Quote is not available.",
+        image: "/images/lot_los.png",
+        githubUrl: "https://github.com/loslot",
+        telegramUrl: "https://t.me/Lot_Los",
+      },
+      {
+        id: "5",
+        name: "Mon Narea",
+        position: "Full-Stack Developer",
+        bio: "Quote is not available.",
+        image: "/images/mon_narea.png",
+        githubUrl: "https://github.com/monnarea",
+        telegramUrl: "https://t.me/monnarea",
+      },
+      {
+        id: "6",
+        name: "Meng Kimleap",
+        position: "Full-Stack Developer",
+        bio: "Nobody is perfect.",
+        image: "/images/meng_kimleap.png",
+        githubUrl: "https://github.com/Kimleapp",
+        telegramUrl: "https://t.me/kimleap_meng",
+      },
+      {
+        id: "7",
+        name: "Chhat Sovanney",
+        position: "Full-Stack Developer",
+        bio: "Everything is possible if you believe in yourself.",
+        image: "/images/chhat_sovanney.png",
+        githubUrl: "https://github.com/chhatsovanney8-sys",
+        telegramUrl: "https://t.me/Vaneii",
+      },
+      {
+        id: "8",
+        name: "Vuth Vatana",
+        position: "Full-Stack Developer",
+        bio: "Quote is not available.",
+        image: "/images/vuth_vatana.png",
+        githubUrl: "https://github.com/vuthvatana",
+        telegramUrl: "https://t.me/vuth_vatana",
+      },
+      {
+        id: "9",
+        name: "Chhay Kongkea",
+        position: "Full-Stack Developer",
+        bio: "Quote is not available.",
+        image: "/images/chhay_kongkea.png",
+        githubUrl: "https://github.com/Chhay-Kongkea",
+        telegramUrl: "https://t.me/Chhay_Kongkea",
+      },
+      {
+        id: "10",
+        name: "Chhay Davin",
+        position: "Full-Stack Developer",
+        bio: "Your future is shaped by what you do today.",
+        image: "/images/chhay_davin.png",
+        githubUrl: "https://github.com/arthur-davin-dev",
+        telegramUrl: "https://t.me/ArthurDavinDev",
+      },
+    ],
+  },
 
   homeCourses: {
     new: "New Courses",
     recommended: "Recommended Courses",
-    loading: "Loading homepage courses",
+    loading: "Loading courses",
   },
+
   homeDocumentation: {
     title: "Popular Lessons",
     seeAll: "See All",
     loading: "Loading popular lessons",
-    error: "We couldn't load the popular lessons.",
-    retry: "Try again",
-    empty: "There are no popular lessons yet.",
+    error: "Unable to load popular lessons.",
+    retry: "Try Again",
+    empty: "No popular lessons yet.",
   },
+
   reviews: {
-    badge: "Student Testimonials",
+    badge: "Student Feedback",
     title: "What Our Students",
-    titleAccent: "Say",
-    description: "Real feedback from students who transformed their careers.",
+    titleAccent: "Are Saying",
+    description:
+      "Real feedback from students who transformed their careers.",
     previous: "Previous review",
     next: "Next review",
     items: [
-      {
-        name: "John Doe",
-        role: "Software Engineer at Google",
-        text: "This platform completely transformed my coding journey. The courses are well structured, the instructors are excellent, and within six months I landed my dream job.,",
-        image: "/images/chhay_davin.jpg",
-      },
-      {
-        name: "Sarah Mitchell",
-        role: "Full Stack Developer",
-        text: "The hands-on projects and practical examples made learning different. Concepts that had confused me for years finally became clear.",
-        image: "/images/chhay_kongkea.jpg",
-      },
-      {
-        name: "Alex Kumar",
-        role: "Data Scientist at Amazon",
-        text: "I was hesitant at first, but the community support and expert guidance made this the best investment in my career.",
-        image: "/images/lot_los.jpg",
-      },
-      {
-        name: "Maria Rodriguez",
-        role: "Senior Developer at Microsoft",
-        text: "The DSA course completely changed how I prepared for interviews. Complex topics were broken into simple, understandable lessons.",
-        image: "/images/chhat_sovanney.jpg",
-      },
-      {
-        name: "Tom Lee",
-        role: "Backend Engineer at Stripe",
-        text: "I love the practice-focused teaching. Career guidance and code reviews helped me earn interviews at leading technology companies.",
-        image: "/images/ben_thona.jpg",
-      },
-      {
-        name: "Emily Wang",
-        role: "Product Manager at Meta",
-        text: "The community is the best part. Discussions and feedback from fellow learners build understanding and confidence.",
-        image: "/images/meng_kimleap.jpg",
-      },
+      { name: "John Doe", role: "Software Engineer at Google", text: "This platform completely changed my coding journey. The courses were well-structured, the instructors were skilled, and within six months I landed my dream job." },
+      { name: "Sarah Michelle", role: "Full Stack Developer", text: "The hands-on projects and real-world examples made learning different. I finally understood concepts that had confused me for years." },
+      { name: "Alex Kumar", role: "Data Scientist at Amazon", text: "I was hesitant at first, but the community support and expert guidance made it the best career investment I've made." },
+      { name: "Maria Rodriguez", role: "Senior Developer at Microsoft", text: "The DSA course changed how I prepared for interviews. Complex topics were broken down into simple, understandable lessons." },
+      { name: "Tom Lee", role: "Backend Engineer at Stripe", text: "I loved the practice-focused teaching. Career guidance and code reviews helped me land interview opportunities." },
+      { name: "Emily Wang", role: "Product Manager at Meta", text: "The best part is the community. Discussions and feedback from fellow learners strengthened my understanding and confidence." },
     ],
   },
 

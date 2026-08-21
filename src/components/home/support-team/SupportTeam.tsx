@@ -1,28 +1,50 @@
-import { Star, Mail } from "lucide-react";
+"use client";
 
+import { Mail, Star } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslations";
+
+// Map each member to the corresponding translation key in supportTeam.members
 const team = [
-  { name: "Soeurt Bomnorng", email: "soeurtbomnorng3@gmail.com", offset: "up", img: "/home/support-team/seourtBomnorng.jpg" },
-  { name: "Chhay Kongkea", email: "chhaykongkea9@gmail.com", offset: "down", img: "/home/support-team/chhayKongkea.jpg" },
-  { name: "Lot Los", email: "loslot100604@gmail.com", offset: "up", img: "/home/support-team/lotLos.jpg" },
-  { name: "Vel SoThoun", email: "velsothoun@gmail.com", offset: "down", img: "/home/support-team/velSoThun.jpg" },
-  { name: "Ben Thona", email: "thonaben08@gmail.com", offset: "up", img: "/home/support-team/benThona.jpg" },
+  {
+    id: "soeurtBomnorng" as const,
+    email: "soeurtbomnorng3@gmail.com",
+    offset: "up",
+    img: "/home/support-team/seourtBomnorng.jpg",
+  },
+  {
+    id: "chhayKongkea" as const,
+    email: "chhaykongkea9@gmail.com",
+    offset: "down",
+    img: "/home/support-team/chhayKongkea.jpg",
+  },
+  {
+    id: "lotLos" as const,
+    email: "loslot100604@gmail.com",
+    offset: "up",
+    img: "/home/support-team/lotLos.jpg",
+  },
+  {
+    id: "velSoThoun" as const,
+    email: "velsothoun@gmail.com",
+    offset: "down",
+    img: "/home/support-team/velSoThun.jpg",
+  },
+  {
+    id: "benThona" as const,
+    email: "thonaben08@gmail.com",
+    offset: "up",
+    img: "/home/support-team/benThona.jpg",
+  },
 ];
 
-function initials(name: string) {
-  return name
-    .split(" ")
-    .map((w) => w[0])
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
-
 export default function SupportTeam() {
+  const currentT = useTranslation();
+
   return (
     <section className="px-6 py-20 bg-white dark:bg-gray-900">
       <div className="max-w-5xl mx-auto text-center">
         <h2 className="text-2xl md:text-3xl font-extrabold text-primary-color">
-          Experienced Support Team
+          {currentT.supportTeam.title}
         </h2>
         <div className="mt-2 flex justify-center gap-1 text-amber-400">
           {Array.from({ length: 5 }).map((_, i) => (
@@ -31,63 +53,66 @@ export default function SupportTeam() {
         </div>
 
         <div className="mt-16 relative">
-          {/* <svg
-            viewBox="0 0 800 60"
-            preserveAspectRatio="none"
-            className="hidden md:block absolute left-0 right-0 top-1/2 -translate-y-1/2 w-full h-16 text-slate-200 dark:text-slate-700"
-          >
-            <path
-              d="M0,10 C 100,60 150,60 250,10 C 350,-40 450,-40 550,10 C 650,60 700,60 800,10"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-          </svg> */}
           <div className="hidden md:block absolute left-0 right-0 -translate-y-10 w-full h-16 text-slate-200 dark:text-slate-700">
-            <img src="/home/wavyLine.svg" alt="wavyLine" />
+            <img src="/home/wavyLine.svg" alt="Wavy line" />
           </div>
 
-          <div className="relative grid grid-cols-2 gap-y-10 md:grid-cols-5 md:gap-y-0">
-            {team.map((member) => (
-              <div
-                key={member.name}
-                className={`flex flex-col items-center gap-15 ${member.offset === "up" ? "md:-translate-y-5" : "md:translate-y-12"
-                  }`}
-              >
-                {member.offset === "up" && (
-                  <div className="text-center order-1">
-                    <p className="text-[18px] font-semibold text-primary-color">{member.name}</p>
-                    <p className="mt-0.5 flex items-center justify-center gap-1 text-[15px] text-slate-400 dark:text-gray-400">
-                      <Mail className="h-3 w-3" /> {member.email}
-                    </p>
-                  </div>
-                )}
+          <div className="relative grid grid-cols-1 gap-y-12 md:grid-cols-5 md:gap-y-0">
+            {team.map((member) => {
+              // Dynamically pull the localized name using the member key
+              const name =
+                currentT.supportTeam.members?.[member.id] || member.id;
+
+              return (
                 <div
-                  className={`h-16 w-16 md:h-30 md:w-30 rounded-full 
-                          ring-4 ring-white dark:ring-gray-800 
-                          shadow-lg flex items-center justify-center 
-                          text-white font-semibold order-2`}
+                  key={member.id}
+                  className={`flex flex-col items-center gap-2 md:gap-15 ${
+                    member.offset === "up"
+                      ? "md:-translate-y-5"
+                      : "md:translate-y-12"
+                  }`}
                 >
-                  <img
-                    src={member.img}
-                    alt="member"
-                    className="h-full w-full object-cover rounded-full"
-                  />
-                </div>
-                {member.offset === "down" && (
-                  <div className="text-center order-3">
-                    <p className="text-[18px] font-semibold text-primary-color">{member.name}</p>
-                    <p className="mt-0.5 flex items-center justify-center gap-1 text-[15px] text-slate-400 dark:text-gray-400">
-                      <Mail className="h-3 w-3" /> {member.email}
-                    </p>
+                  {/* Name & email for members positioned up on desktop */}
+                  {member.offset === "up" && (
+                    <div className="text-center order-2 md:order-1">
+                      <p className="text-[18px] font-semibold text-primary-color">
+                        {name}
+                      </p>
+                      <p className="mt-0.5 flex items-center justify-center gap-1 text-[15px] text-slate-400 dark:text-gray-400">
+                        <Mail className="h-3.5 w-3.5" /> {member.email}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Profile image */}
+                  <div
+                    className="h-24 w-24 md:h-30 md:w-30 rounded-full ring-4 ring-white dark:ring-gray-800 shadow-lg flex items-center justify-center text-white font-semibold order-1 md:order-2 shrink-0"
+                    title={name}
+                  >
+                    <img
+                      src={member.img}
+                      alt={name}
+                      className="h-full w-full object-cover rounded-full"
+                    />
                   </div>
-                )}
-              </div>
-            ))}
+
+                  {/* Name & email for members positioned down on desktop */}
+                  {member.offset === "down" && (
+                    <div className="text-center order-2 md:order-3">
+                      <p className="text-[18px] font-semibold text-primary-color">
+                        {name}
+                      </p>
+                      <p className="mt-0.5 flex items-center justify-center gap-1 text-[15px] text-slate-400 dark:text-gray-400">
+                        <Mail className="h-3.5 w-3.5" /> {member.email}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
     </section>
-
   );
 }

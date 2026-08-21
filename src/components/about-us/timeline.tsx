@@ -2,49 +2,15 @@
 
 import React from "react";
 import { motion, type Variants } from "framer-motion";
-
-const steps = [
-  {
-    number: "01",
-    title: "គំនិតផ្ដើមដំបូង",
-    description:
-      "ជួយឱ្យការរៀន Programming កាន់តែងាយស្រួល មានអន្តរកម្ម និងអាចអនុវត្តបាន។",
-  },
-  {
-    number: "02",
-    title: "ការរៀបចំផែនការ",
-    description:
-      "បង្កើត Platform ដែលរួមបញ្ចូល Documentation, Coding Practice, Quiz និង Learning Roadmap។",
-  },
-  {
-    number: "03",
-    title: "ការអភិវឌ្ឍ Platform",
-    description:
-      "រៀបចំ Platform ដើម្បីផ្តល់បទពិសោធន៍សិក្សាដែល Interactive និងអនុវត្តជាក់ស្ដែង។",
-  },
-  {
-    number: "04",
-    title: "ការសាកល្បង និងកែលម្អ",
-    description:
-      "សាកល្បង ប្រមូលមតិ និងកែលម្អ Interface, Performance និងបទពិសោធន៍សិក្សា។",
-  },
-  {
-    number: "05",
-    title: "ចក្ខុវិស័យនាពេលអនាគត",
-    description:
-      "ពង្រីកមាតិកា Programming បន្ថែមភាសាច្រើន និងអភិវឌ្ឍ Platform ឱ្យកាន់តែធំ។",
-  },
-];
+import { useTranslation } from "@/hooks/useTranslations";
 
 // Container animation
 const containerVariants: Variants = {
   hidden: {
     opacity: 0,
   },
-
   visible: {
     opacity: 1,
-
     transition: {
       staggerChildren: 0.18,
       delayChildren: 0.1,
@@ -59,12 +25,10 @@ const itemVariants: Variants = {
     y: 24,
     scale: 0.95,
   },
-
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-
     transition: {
       type: "spring",
       stiffness: 110,
@@ -79,11 +43,9 @@ const lineVariants: Variants = {
     scaleX: 0,
     opacity: 0,
   },
-
   visible: {
     scaleX: 1,
     opacity: 0.8,
-
     transition: {
       duration: 0.8,
       ease: "easeOut",
@@ -97,11 +59,9 @@ const verticalLineVariants: Variants = {
     scaleY: 0,
     opacity: 0,
   },
-
   visible: {
     scaleY: 1,
     opacity: 0.8,
-
     transition: {
       duration: 0.8,
       ease: "easeOut",
@@ -110,6 +70,8 @@ const verticalLineVariants: Variants = {
 };
 
 export default function Timeline() {
+  const { timeline } = useTranslation();
+
   return (
     <section className="w-full overflow-hidden bg-white px-4 py-12 font-sans text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100 sm:px-6 sm:py-16 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -133,11 +95,11 @@ export default function Timeline() {
           }}
         >
           <span className="mb-3 inline-block rounded-full border border-blue-200 bg-blue-100 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-600 shadow-xs dark:border-blue-800/40 dark:bg-blue-950/60 dark:text-blue-400">
-            How We Got Here
+            {timeline.badge}
           </span>
 
           <h2 className="font-khmer flex flex-wrap items-center justify-center gap-2 text-2xl font-extrabold tracking-tight sm:gap-3 sm:text-3xl lg:text-4xl">
-            <span>ដំណើរនៃការបង្កើត</span>
+            <span>{timeline.heading.prefix}</span>
 
             <motion.span
               className="inline-block font-extrabold text-red-600 dark:text-red-500"
@@ -150,7 +112,7 @@ export default function Timeline() {
                 damping: 20,
               }}
             >
-              SastraCode
+              {timeline.heading.highlight}
             </motion.span>
           </h2>
         </motion.div>
@@ -159,7 +121,7 @@ export default function Timeline() {
         <div className="relative">
           {/* Desktop Horizontal Line */}
           <motion.div
-            className="absolute left-[8%] right-[8%] top-5 z-0 hidden h-0.5 origin-left bg-gradient-to-r from-teal-400 via-blue-500 to-indigo-500 dark:from-teal-500 dark:via-blue-400 dark:to-indigo-400 lg:block"
+            className="absolute left-[8%] right-[8%] top-5 z-0 hidden h-0.5 origin-left bg-linear-to-r from-teal-400 via-blue-500 to-indigo-500 dark:from-teal-500 dark:via-blue-400 dark:to-indigo-400 lg:block"
             initial="hidden"
             whileInView="visible"
             viewport={{
@@ -171,7 +133,7 @@ export default function Timeline() {
 
           {/* Mobile Vertical Line */}
           <motion.div
-            className="absolute bottom-5 left-5 top-5 z-0 w-0.5 origin-top bg-gradient-to-b from-teal-400 via-blue-500 to-indigo-500 dark:from-teal-500 dark:via-blue-400 dark:to-indigo-400 sm:left-6 lg:hidden"
+            className="absolute bottom-5 left-5 top-5 z-0 w-0.5 origin-top bg-linear-to-b from-teal-400 via-blue-500 to-indigo-500 dark:from-teal-500 dark:via-blue-400 dark:to-indigo-400 sm:left-6 lg:hidden"
             initial="hidden"
             whileInView="visible"
             viewport={{
@@ -192,7 +154,7 @@ export default function Timeline() {
             }}
             variants={containerVariants}
           >
-            {steps.map((step) => (
+            {timeline.steps.map((step) => (
               <motion.div
                 key={step.number}
                 className="group flex flex-row items-start gap-4 sm:gap-6 lg:flex-col lg:items-center lg:gap-0"

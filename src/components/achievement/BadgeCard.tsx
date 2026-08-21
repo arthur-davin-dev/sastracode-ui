@@ -242,6 +242,11 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
             <img
               src={badge.iconUrl || "/images/Margin3.png"}
               alt={badge.name}
+              onError={(e) => {
+                const img = e.currentTarget;
+                if (img.src.endsWith("/images/Margin3.png")) return;
+                img.src = "/images/Margin3.png";
+              }}
               className={`
                 h-12 w-12 object-contain
                 transition-all duration-300
