@@ -124,7 +124,7 @@ export default function TeamLeader() {
 
                 {/* Description / Bio */}
                 <p className="text-[16px] font-khmer text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
-                  {leader.bio}
+                  " {leader.bio} "
                 </p>
 
                 {/* Social Icons */}

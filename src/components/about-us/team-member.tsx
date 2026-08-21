@@ -106,7 +106,7 @@ export default function TeamMember() {
 
                 {/* Description / Bio */}
                 <p className="text-[18px] font-khmer text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
-                  {member.bio}
+                  " {member.bio} "
                 </p>
 
                 {/* Social Icons */}
