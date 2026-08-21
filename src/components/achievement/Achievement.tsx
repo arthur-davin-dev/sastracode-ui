@@ -123,7 +123,7 @@ export default function Achievement() {
     : displayedActivities.slice(0, 4);
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 space-y-8 p-6 transition-colors duration-300">
+    <div className="min-h-screen bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 space-y-8 p-4 transition-colors duration-300">
       <div className="max-w-6xl mx-auto space-y-8">
         
         {/* Page Header */}
@@ -151,7 +151,7 @@ export default function Achievement() {
         <Card className="dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
-              🏅 មេដាយដែលទទួលបាន
+              មេដាយដែលទទួលបាន
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -190,7 +190,7 @@ export default function Achievement() {
         <Card className="dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
-              ✅ របស់កម្មដែលបានបញ្ចប់
+               របស់កម្មដែលបានបញ្ចប់
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -229,7 +229,7 @@ export default function Achievement() {
         <Card className="dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
-              🏅 រង្វានភាពវិញ្ញាបនបត្រ
+              រង្វាន់ភាពវិញ្ញាបនបត្រ
             </CardTitle>
           </CardHeader>
           <CardContent className="text-lg text-primary-color">

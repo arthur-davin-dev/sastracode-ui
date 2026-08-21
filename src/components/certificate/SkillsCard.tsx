@@ -29,7 +29,7 @@ export function SkillsCard({
 
       <CardHeader className="pt-8 pb-4">
         {/* Title Section (text-2xl & text-primary-color) */}
-        <CardTitle className="text-2xl font-extrabold text-primary-color flex items-center gap-3">
+        <CardTitle className="text-2xl font-extrabold text-primary-color dark:text-white flex items-center gap-3">
           <div className="p-2.5 rounded-2xl bg-init-color/20 border border-init-color/50 flex items-center justify-center">
             <Sparkles className="h-7 w-7 text-init-color/20 fill-init-color" />
           </div>
@@ -65,7 +65,7 @@ export function SkillsCard({
         <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-4">
           
           {/* Subtitle (text-2xl & text-primary-color) */}
-          <h3 className="text-lg font-bold text-primary-color flex items-center gap-2">
+          <h3 className="text-lg font-bold text-primary-color dark:text-white flex items-center gap-2">
             <Award className="h-6 w-6 text-secondary-color" />
             សមិទ្ធផលសិក្សា
           </h3>
@@ -78,12 +78,12 @@ export function SkillsCard({
                 <Star className="h-6 w-6 fill-init-color" />
               </div>
               <div className="space-y-1">
-                <p className="text-lg font-bold text-primary-color">គ្រោងបញ្ចប់ការសិក្សា</p>
-                <p className="text-lg font-medium text-primary-color opacity-80">
+                <p className="text-lg font-bold text-primary-color dark:text-white">គ្រោងបញ្ចប់ការសិក្សា</p>
+                <p className="text-lg font-medium text-primary-color dark:text-white opacity-80">
                   និទ្ទេស: <span className="font-bold text-red-600">{grade}</span>
                 </p>
                 {quizScore && (
-                  <p className="text-lg font-medium text-primary-color opacity-70">
+                  <p className="text-lg font-medium text-primary-color dark:text-white opacity-70">
                     ពិន្ទុប្រឡង: <span className="font-bold text-primary-color">{quizScore}</span>
                   </p>
                 )}
@@ -96,10 +96,10 @@ export function SkillsCard({
                 <Clock className="h-6 w-6" />
               </div>
               <div className="space-y-1">
-                <p className="text-lg font-bold text-primary-color">
+                <p className="text-lg font-bold text-primary-color dark:text-white">
                   រយៈពេលសិក្សា {studyDuration}
                 </p>
-                <p className="text-lg font-medium text-primary-color opacity-80">
+                <p className="text-lg font-medium text-primary-color dark:text-white opacity-80">
                   បញ្ចប់ក្នុងរយៈពេល <span className="font-bold text-secondary-color">{completionWeeks}</span>
                 </p>
               </div>

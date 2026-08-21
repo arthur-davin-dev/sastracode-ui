@@ -49,12 +49,11 @@ export const leaderboardApi = sastraApi.injectEndpoints({
       providesTags: [{ type: "Leaderboard", id: "PROFILES" }],
     }),
   }),
-  overrideExisting: false,
+  overrideExisting: process.env.NODE_ENV !== "production",
 });
 
 export const {
   useGetLeaderboardQuery,
   useGetMyLeaderboardRankQuery,
   useGetLeaderboardUserProfilesQuery,
-} =
-  leaderboardApi;
+} = leaderboardApi;

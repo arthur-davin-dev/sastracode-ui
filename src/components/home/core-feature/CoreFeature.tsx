@@ -1,4 +1,3 @@
-// CoreFeatures.tsx
 "use client"
 
 import { useTranslation } from "@/hooks/useTranslations";
