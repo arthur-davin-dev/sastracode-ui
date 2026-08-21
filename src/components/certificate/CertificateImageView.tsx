@@ -23,7 +23,7 @@ export function CertificateImageView({
 
       {/* Modern Red Ribbon Tag */}
       <div className="absolute top-0 right-10 w-10 h-16 bg-secondary-color shadow-md flex items-end justify-center pb-2 rounded-b-lg">
-        <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[10px] border-t-secondary-color absolute -bottom-2" />
+        <div className="w-0 h-0 border-l-20 border-l-transparent border-r-20 border-r-transparent border-t-10 border-t-secondary-color absolute -bottom-2" />
       </div>
 
       {/* Animated Award Seal Badge */}

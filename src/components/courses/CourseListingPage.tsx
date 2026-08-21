@@ -11,10 +11,18 @@ import { Skeleton } from "@/components/ui/skeleton";
 import type { Course } from "@/lib/course/courses";
 import { mapApiCourseToCourse } from "@/lib/course/course-adapter";
 import { useGetPublicCoursesQuery } from "@/redux/api/course-api";
+import { useTranslation } from "@/hooks/useTranslations";
 
-const ALL = "ទាំងអស់";
-const FREE = "Free Course";
-const PREMIUM = "Premium";
+const ALL = "ALL";
+const FREE = "FREE";
+const PREMIUM = "PREMIUM";
+
+function courseMatchesCategory(course: Course, categoryId: string) {
+  if (categoryId === ALL) return true;
+  if (categoryId === FREE) return course.accessType === "FREE";
+  if (categoryId === PREMIUM) return course.accessType === "PREMIUM";
+  return (course.category?.toLowerCase() ?? "") === categoryId.toLowerCase();
+}
 
 function CourseCardSkeleton() {
   return (
@@ -57,9 +65,34 @@ function removeDuplicateCourses(courses: Course[]) {
   );
 }
 
+interface CourseSection {
+  id?: string;
+  title: string;
+  seeAllHref: string;
+  courses: Course[];
+}
+
+interface CategoryOption {
+  id: string;
+  label: string;
+}
+
 export default function CourseListingPage() {
+  const t = useTranslation();
   const [search, setSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState(ALL);
+  const [activeCategories, setActiveCategories] = useState<string[]>([ALL]);
+
+  const handleCategoryToggle = (categoryId: string) => {
+    setActiveCategories((prev) => {
+      if (categoryId === ALL) return [ALL];
+      const withoutAll = prev.filter((id) => id !== ALL);
+      if (withoutAll.includes(categoryId)) {
+        const next = withoutAll.filter((id) => id !== categoryId);
+        return next.length === 0 ? [ALL] : next;
+      }
+      return [...withoutAll, categoryId];
+    });
+  };
 
   /*
    * ===============================
@@ -67,17 +100,9 @@ export default function CourseListingPage() {
    * ===============================
    */
 
-  const latestQuery = useGetPublicCoursesQuery({
-    sort: "NEWEST",
-  });
-
-  const recommendedQuery = useGetPublicCoursesQuery({
-    sort: "RECOMMEND",
-  });
-
-  const popularQuery = useGetPublicCoursesQuery({
-    sort: "POPULAR",
-  });
+  const latestQuery = useGetPublicCoursesQuery({ sort: "NEWEST" });
+  const recommendedQuery = useGetPublicCoursesQuery({ sort: "RECOMMEND" });
+  const popularQuery = useGetPublicCoursesQuery({ sort: "POPULAR" });
 
   /*
    * ===============================
@@ -99,11 +124,8 @@ export default function CourseListingPage() {
 
   /*
    * Combine all public courses.
-   *
-   * PRIVATE courses are already excluded
-   * by useGetPublicCoursesQuery.
+   * PRIVATE courses are already excluded by useGetPublicCoursesQuery.
    */
-
   const allCourses = useMemo(() => {
     return removeDuplicateCourses([
       ...latestCourses,
@@ -114,11 +136,37 @@ export default function CourseListingPage() {
 
   /*
    * ===============================
+   * DEFAULT SECTIONS (no search/filter)
+   * ===============================
+   */
+  const sections: CourseSection[] = useMemo(
+    () => [
+      {
+        id: "latest-courses",
+        title: t.courses.sections.latest,
+        seeAllHref: "/courses?sort=NEWEST",
+        courses: latestCourses.slice(0, 6),
+      },
+      {
+        title: t.courses.sections.recommended,
+        seeAllHref: "/courses?sort=RECOMMEND",
+        courses: recommendedCourses.slice(0, 6),
+      },
+      {
+        title: t.courses.sections.popular,
+        seeAllHref: "/courses?sort=POPULAR",
+        courses: popularCourses.slice(0, 6),
+      },
+    ],
+    [latestCourses, recommendedCourses, popularCourses, t],
+  );
+
+  /*
+   * ===============================
    * CATEGORY FILTER
    * ===============================
    */
-
-  const categories = useMemo(() => {
+  const categories: CategoryOption[] = useMemo(() => {
     const apiCategories = Array.from(
       new Set(
         allCourses
@@ -127,26 +175,36 @@ export default function CourseListingPage() {
       ),
     );
 
-    return [ALL, FREE, PREMIUM, ...apiCategories];
-  }, [allCourses]);
+    return [
+      { id: ALL, label: t.courses.categories.all },
+      { id: FREE, label: t.courses.categories.free },
+      { id: PREMIUM, label: t.courses.categories.premium },
+      ...apiCategories.map((category) => ({ id: category, label: category })),
+    ];
+  }, [allCourses, t]);
+
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    categories.forEach(({ id }) => {
+      counts[id] = allCourses.filter((course) =>
+        courseMatchesCategory(course, id),
+      ).length;
+    });
+    return counts;
+  }, [allCourses, categories]);
 
   /*
    * ===============================
    * SEARCH + FILTER
    * ===============================
    */
-
   const filteredCourses = useMemo(() => {
     const query = search.trim().toLowerCase();
 
     return allCourses.filter((course) => {
-      const category = course.category?.toLowerCase() ?? "";
-
-      const matchesCategory =
-        activeCategory === ALL ||
-        (activeCategory === FREE && course.accessType === "FREE") ||
-        (activeCategory === PREMIUM && course.accessType === "PREMIUM") ||
-        category === activeCategory.toLowerCase();
+      const matchesCategory = activeCategories.some((id) =>
+        courseMatchesCategory(course, id),
+      );
 
       const matchesSearch =
         query.length === 0 ||
@@ -156,36 +214,34 @@ export default function CourseListingPage() {
 
       return matchesCategory && matchesSearch;
     });
-  }, [allCourses, search, activeCategory]);
+  }, [allCourses, search, activeCategories]);
 
   /*
    * ===============================
    * LOADING
    * ===============================
    */
-
   const isLoading =
-    latestQuery.isLoading ||
-    recommendedQuery.isLoading ||
-    popularQuery.isLoading;
+    latestQuery.isLoading || recommendedQuery.isLoading || popularQuery.isLoading;
 
   /*
-   * Only show main error if all
-   * course requests failed.
+   * Only show main error if all course requests failed.
    */
   const hasError =
     Boolean(latestQuery.error) &&
     Boolean(recommendedQuery.error) &&
     Boolean(popularQuery.error);
 
-  const isFiltering = search.trim().length > 0 || activeCategory !== ALL;
+  const isFiltering =
+    search.trim().length > 0 ||
+    activeCategories.length !== 1 ||
+    activeCategories[0] !== ALL;
 
   /*
    * ===============================
    * RETRY
    * ===============================
    */
-
   const handleRetry = () => {
     void latestQuery.refetch();
     void recommendedQuery.refetch();
@@ -194,95 +250,69 @@ export default function CourseListingPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
-      {/* =========================
-          COURSE BANNER
-      ========================== */}
-
       <CourseBanner />
 
-      {/* =========================
-          MAIN
-      ========================== */}
-
       <main className="mx-auto max-w-7xl px-6 pb-16 pt-10">
-        {/* Search + Category */}
-        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <SearchBar value={search} onChange={setSearch} />
-
+        <div className="mb-10 flex items-center gap-3">
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+            placeholder={t.courses.search.placeholder}
+          />
           <CategoryFilter
             categories={categories}
-            active={activeCategory}
-            onChange={setActiveCategory}
+            active={activeCategories}
+            counts={categoryCounts}
+            onToggle={handleCategoryToggle}
           />
         </div>
-
-        {/* =========================
-            LOADING
-        ========================== */}
 
         {isLoading && allCourses.length === 0 ? (
           <div
             className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3"
             role="status"
-            aria-label="កំពុងទាញយកវគ្គសិក្សា"
+            aria-label={t.courses.states.loading}
           >
             {Array.from({ length: 6 }).map((_, index) => (
               <CourseCardSkeleton key={index} />
             ))}
-            <span className="sr-only">Loading courses...</span>
+            <span className="sr-only">{t.courses.states.loading}</span>
           </div>
         ) : hasError ? (
-          /* =========================
-              ERROR
-          ========================== */
-
           <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-900 dark:bg-red-950/20">
             <p className="text-sm font-medium text-red-700 dark:text-red-300">
-              មិនអាចទាញយកវគ្គសិក្សាបានទេ
+              {t.courses.states.error}
             </p>
-
             <button
               type="button"
               onClick={handleRetry}
               className="mt-4 rounded-xl bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
             >
-              ព្យាយាមម្ដងទៀត
+              {t.courses.states.retry}
             </button>
           </div>
         ) : isFiltering ? (
-          /* =========================
-              SEARCH RESULT
-          ========================== */
-
-          <CourseGrid title="លទ្ធផលស្វែងរក" courses={filteredCourses} />
+          <CourseGrid
+            title={t.courses.sections.searchResults}
+            courses={filteredCourses}
+            emptyMessage={t.courses.states.empty}
+          />
         ) : (
-          /* =========================
-              DEFAULT COURSE SECTIONS
-          ========================== */
-
           <div className="space-y-12">
-            {/* Latest */}
-            <section id="latest-courses" className="scroll-mt-24">
-              <CourseGrid
-                title="វគ្គសិក្សាថ្មីបំផុត"
-                courses={latestCourses.slice(0, 6)}
-                seeAllHref="/courses?sort=NEWEST"
-              />
-            </section>
-
-            {/* Recommended */}
-            <CourseGrid
-              title="វគ្គសិក្សាអនុសាសន៍"
-              courses={recommendedCourses.slice(3, 8)}
-              seeAllHref="/courses?sort=RECOMMEND"
-            />
-
-            {/* Popular */}
-            <CourseGrid
-              title="វគ្គសិក្សាពេញនិយម"
-              courses={popularCourses.slice(5, 1)}
-              seeAllHref="/courses?sort=POPULAR"
-            />
+            {sections.map((section) => (
+              <section
+                key={section.seeAllHref}
+                id={section.id}
+                className={section.id ? "scroll-mt-24" : undefined}
+              >
+                <CourseGrid
+                  title={section.title}
+                  courses={section.courses}
+                  seeAllHref={section.seeAllHref}
+                  emptyMessage={t.courses.states.empty}
+                />
+              </section>
+            ))}
           </div>
         )}
       </main>

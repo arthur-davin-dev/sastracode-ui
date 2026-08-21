@@ -7,7 +7,10 @@ interface DiscussionSectionProps {
   totalCount: number;
 }
 
-export function DiscussionSection({ comments, totalCount }: DiscussionSectionProps) {
+export function DiscussionSection({
+  comments,
+  totalCount,
+}: DiscussionSectionProps) {
   return (
     <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
       {/* Header & Filter */}
@@ -44,7 +47,12 @@ export function DiscussionSection({ comments, totalCount }: DiscussionSectionPro
         {comments.map((comment) => (
           <div key={comment.id} className="flex gap-3">
             <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-              <Image src={comment.authorAvatar} alt={comment.authorName} fill className="object-cover" />
+              <Image
+                src={comment.authorAvatar}
+                alt={comment.authorName}
+                fill
+                className="object-cover"
+              />
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2">
@@ -66,7 +74,10 @@ export function DiscussionSection({ comments, totalCount }: DiscussionSectionPro
                 <button className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400">
                   Reply
                 </button>
-                <button aria-label="More options" className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400">
+                <button
+                  aria-label="More options"
+                  className="transition-colors hover:text-indigo-600 dark:hover:text-indigo-400"
+                >
                   <MoreVertical className="h-3 w-3" />
                 </button>
               </div>

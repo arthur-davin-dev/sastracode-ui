@@ -60,7 +60,6 @@ export interface Course {
   slug?: string;
 
   price?: number;
-
   originalPrice?: number;
 
   discount?: number;

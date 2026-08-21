@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import { trackTocGroups, lessonsById } from "@/lib/data/lessions";
@@ -46,7 +45,7 @@ export default function DocsSidebar({
       </div>
 
       {/* 2. ACCORDION NAVIGATION */}
-      <nav className="flex-1 space-y-5 overflow-y-auto pr-1">
+      <nav className="min-h-0 flex-1 space-y-5 overflow-y-auto pr-1">
         {groups.map((group) => (
           <div key={group.id} className="space-y-3">
             

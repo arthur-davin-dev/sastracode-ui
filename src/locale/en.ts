@@ -1,23 +1,15 @@
 export const en = {
   banner: {
     badge: "LEARN. CODE. BUILD THE FUTURE.",
-    title1: "Start Learning",
+    title1: "Start Learning ",
     title2: "Coding",
-    title3: "New Skills",
+    title3: "New Skills ",
     title4: "for",
     title5: "Code",
     description:
       "Learn programming and develop new skills with AI Assistant, Coding Exercises, Interactive Lessons, and an Online Compiler.",
     start: "Start Learning",
     explore: "Explore Code",
-  },
-  popularDoc: {
-    badge: "Popular Documentation",
-    title: "Explore Popular Documentation",
-    description:
-      "Learn programming concepts through clear and practical documentation.",
-    viewAll: "View All Documentation",
-    startLearning: "Start Learning",
   },
   coreFeature: {
     badge: "What We Offer",
@@ -37,11 +29,11 @@ export const en = {
         description:
           "Write and run code directly in your browser with instant results — no installation required.",
       },
-      {
-        title: "AI Code Coach",
-        description:
-          "Get smart guidance, explanations tailored to you, and real-time debugging help.",
-      },
+      // {
+      //     title: "AI Code Coach",
+      //     description:
+      //         "Get smart guidance, explanations tailored to you, and real-time debugging help.",
+      // },
       {
         title: "Quiz & Assessment",
         description:
@@ -52,19 +44,12 @@ export const en = {
         description:
           "Learn through systematically organized video lessons that support every learning plan.",
       },
-      {
-        title: "Learning Roadmaps",
-        description:
-          "Follow carefully structured learning roadmaps that guide you from beginner to expert level.",
-      },
+      // {
+      //     title: "Learning Roadmaps",
+      //     description:
+      //         "Follow carefully structured learning roadmaps that guide you from beginner to expert level.",
+      // },
     ],
-  },
-  popularCourse: {
-    badge: "Popular Courses",
-    title: "Explore Popular Courses",
-    description: "Choose a course and start learning today.",
-    viewAll: "View All Courses",
-    enrollNow: "Enroll Now",
   },
   interactiveDoc: {
     title: "Interactive Documentation",
@@ -102,6 +87,13 @@ export const en = {
     ctaLabel: "Start Learning",
   },
   resultAndRewards: {
+    featureSection: {
+      features: [
+        { lines: ["Learn through clearly explained lessons", "and practical examples"] },
+        { lines: ["Write, test, and run code", "directly inside your browser"] },
+        { lines: ["Receive helpful hints and code explanations", "to improve your programming skills"] },
+      ],
+    },
     rewards: {
       headingMain: "Achievements &",
       headingAccent: "Rewards",
@@ -164,6 +156,69 @@ export const en = {
     description:
       "Modern technologies powering a next-generation learning experience.",
   },
+  popularCourse: {
+    title: "Popular Courses",
+    description:
+      "Explore our most popular courses and advance your skills with hands-on projects and real-world applications.",
+  },
+  popularDoc: {
+    title: "Popular Documentation",
+  }, tutorials: {
+    loadingLabel: "Loading lessons...",
+    errorMessage: "Unable to load lessons. Please try again.",
+    retry: "Try again",
+    empty: "No published lessons yet.",
+    ctaLabel: "Learn Now",
+    seeAll: "See all",
+    categories: {
+      all: "All Lessons",
+      latest: "Latest Lessons",
+      recommended: "Recommended Lessons",
+      popular: "Popular Lessons",
+    },
+  }, hero: {
+    titleFirstLine: "IT Lessons",
+    titleSecondLine: "in Khmer",
+    description:
+      "Learn the basics of coding, web design and development, problem solving, databases, AI, cybersecurity, data science, and many more IT skills — until you become a skilled, career-ready professional.",
+  }, courses: {
+    banner: {
+      welcomeText: "Welcome to Sastra Code",
+      titleFirstLine: "Learn to Code in Khmer",
+      titleSecondLine: "From Basics to Real Projects",
+      description:
+        "SastraCode helps you build coding skills step by step through video lessons, learning materials, hands-on exercises, and real projects — easy to learn and understand for Cambodian learners.",
+      features: ["Video Lessons", "Learning Materials", "Exercises & Projects"],
+      cta: "Start Learning",
+    },
+    search: {
+      placeholder: "Search courses, programming languages, or skills...",
+    },
+    categories: {
+      all: "All",
+      free: "Free Course",
+      premium: "Premium",
+    },
+    sections: {
+      latest: "Newest Courses",
+      recommended: "Recommended Courses",
+      popular: "Popular Courses",
+      searchResults: "Search Results",
+      allCourses: "All Courses",
+    }, card: {
+      viewCourse: "View Course",
+      privateCourse: "Private course",
+    },
+    states: {
+      loading: "Loading courses",
+      error: "Unable to load courses",
+      retry: "Try again",
+      empty: "No courses match your search criteria",
+    },
+  },
+
+
+
 
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.
   footer: {

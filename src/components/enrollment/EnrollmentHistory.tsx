@@ -10,11 +10,9 @@ export function EnrollmentHistory({ items }: EnrollmentHistoryProps) {
   if (!items || items.length === 0) return null;
 
   return (
-    <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 font-khmer transition-colors duration-300">
-      
-      {/* Header Row */}
-      <div className="mb-5 flex items-center justify-between">
-        <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+    <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-bold text-gray-900 font-sans">
           ប្រវត្តិចុះឈ្មោះរបស់អ្នក
         </h2>
         <Link 
@@ -37,7 +35,7 @@ export function EnrollmentHistory({ items }: EnrollmentHistoryProps) {
                 className="object-cover transition group-hover:scale-105"
               />
             </div>
-            <p className="text-sm font-medium text-gray-900 font-(family-name:--font-sans)">
+            <p className="text-sm font-medium text-gray-900 font-sans">
               {item.title}
             </p>
             <div className="mt-1.5 flex items-center gap-2">

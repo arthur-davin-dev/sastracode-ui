@@ -6,14 +6,20 @@ interface CourseGridProps {
   courses: Course[];
   title?: string;
   seeAllHref?: string;
+  emptyMessage?: string;
 }
 
-export function CourseGrid({ courses, title, seeAllHref }: CourseGridProps) {
+export function CourseGrid({
+  courses,
+  title,
+  seeAllHref,
+  emptyMessage = "No courses match your search criteria",
+}: CourseGridProps) {
   if (courses.length === 0) {
     return (
       <div className="my-12 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 bg-white/40 dark:bg-slate-900/40 p-12 text-center transition-colors duration-300">
         <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
-          មិនមានវគ្គសិក្សាដែលត្រូវនឹងលក្ខខណ្ឌស្វែងរកទេ
+          {emptyMessage}
         </p>
       </div>
     );

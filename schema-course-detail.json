@@ -1,0 +1,99 @@
+﻿{
+    "type":  "object",
+    "properties":  {
+                       "id":  {
+                                  "type":  "string",
+                                  "format":  "uuid"
+                              },
+                       "title":  {
+                                     "type":  "string"
+                                 },
+                       "slug":  {
+                                    "type":  "string"
+                                },
+                       "description":  {
+                                           "type":  "string"
+                                       },
+                       "level":  {
+                                     "type":  "string",
+                                     "enum":  [
+                                                  "BEGINNER",
+                                                  "INTERMEDIATE",
+                                                  "ADVANCED"
+                                              ]
+                                 },
+                       "accessType":  {
+                                          "type":  "string",
+                                          "enum":  [
+                                                       "FREE",
+                                                       "PREMIUM",
+                                                       "PRIVATE"
+                                                   ]
+                                      },
+                       "price":  {
+                                     "type":  "number"
+                                 },
+                       "discount":  {
+                                        "type":  "number"
+                                    },
+                       "currency":  {
+                                        "type":  "string"
+                                    },
+                       "thumbnailFileId":  {
+                                               "$ref":  "#/components/schemas/FileSummaryResponse"
+                                           },
+                       "instructorId":  {
+                                            "$ref":  "#/components/schemas/InstructorSummaryResponse"
+                                        },
+                       "status":  {
+                                      "type":  "string",
+                                      "enum":  [
+                                                   "DRAFT",
+                                                   "IN_REVIEW",
+                                                   "PUBLISHED",
+                                                   "REJECTED",
+                                                   "ARCHIVED"
+                                               ]
+                                  },
+                       "publishedAt":  {
+                                           "type":  "string",
+                                           "format":  "date-time"
+                                       },
+                       "enrollmentCount":  {
+                                               "type":  "integer",
+                                               "format":  "int64"
+                                           },
+                       "hasFullAccess":  {
+                                             "type":  "boolean"
+                                         },
+                       "isDeleted":  {
+                                         "type":  "boolean"
+                                     },
+                       "categories":  {
+                                          "type":  "array",
+                                          "items":  {
+                                                        "$ref":  "#/components/schemas/CategorySummaryResponse"
+                                                    }
+                                      },
+                       "tags":  {
+                                    "type":  "array",
+                                    "items":  {
+                                                  "$ref":  "#/components/schemas/TagSummaryResponse"
+                                              }
+                                },
+                       "sections":  {
+                                        "type":  "array",
+                                        "items":  {
+                                                      "$ref":  "#/components/schemas/CourseSectionResponse"
+                                                  }
+                                    },
+                       "createdAt":  {
+                                         "type":  "string",
+                                         "format":  "date-time"
+                                     },
+                       "updatedAt":  {
+                                         "type":  "string",
+                                         "format":  "date-time"
+                                     }
+                   }
+}

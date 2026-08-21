@@ -51,7 +51,6 @@ export const mockTeamMembers: TeamMemberType[] = [
     position: "Full-Stack",
     bio: "ខ្ញុំចេះតែ ហេឡូវើលទេ <3",
     image: "/images/mon_narea.png",
-
     githubUrl: "https://github.com/monnarea",
     telegramUrl: "https://t.me/monnarea",
   },
@@ -61,7 +60,7 @@ export const mockTeamMembers: TeamMemberType[] = [
     position: "Full-Stack",
     bio: "គ្មាននរណាម្នាក់ល្អឥតខ្ចោះនោះទេ",
     image: "/images/meng_kimleap.png",
-    githubUrl: "https://github.com/Kimleapp",
+    githubUrl: "https://github.com/MengKimleap",
     telegramUrl: "https://t.me/kimleap_meng",
   },
   {

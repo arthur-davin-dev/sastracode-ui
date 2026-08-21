@@ -27,7 +27,7 @@ const technologies = [
 
   },
   {
-    icon: <img src="/home/technology-stack/mysql-logo-svgrepo-com.svg" alt="mySql" className="w-7 h-7 object-contain" />,
+    icon: <img src="/home/technology-stack/mysql-logo-svgrepo-com.svg" alt="mySql" className="w-9 h-9 object-contain" />,
     name: "MySql",
   },
   {

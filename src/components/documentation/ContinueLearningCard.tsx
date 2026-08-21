@@ -10,7 +10,7 @@ export default function ContinueLearningCard({ card }: { card: ContinueLearningC
       href={card.href}
       className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card "
     >
-      <div className="relative flex h-28 w-full items-center justify-center bg-gradient-to-br from-accent to-primary/10">
+      <div className="relative flex h-28 w-full items-center justify-center bg-linear-to-br from-accent to-primary/10">
         <BookOpen className="h-8 w-8 text-primary/70" />
       </div>
 
