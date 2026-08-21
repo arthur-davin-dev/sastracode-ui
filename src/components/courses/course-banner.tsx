@@ -1,5 +1,6 @@
 "use client";
 
+import { PlatformShowcase } from "@/components/home/PlatformShowcase";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
@@ -199,41 +200,11 @@ export default function CourseBanner() {
         lg:py-20
       "
     >
-      {/* Background decoration */}
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          -left-24
-          -top-24
-          h-64
-          w-64
-          rounded-full
-          bg-[#002455]/5
-          dark:bg-[#002455]/20
-        "
-      />
-
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          -bottom-28
-          -right-20
-          h-72
-          w-72
-          rounded-full
-          bg-[#F51518]/5
-          dark:bg-[#F51518]/10
-        "
-      />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           {/* ================= LEFT ================= */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-6">
             {/* Badge */}
             <div
               className="
@@ -326,9 +297,9 @@ export default function CourseBanner() {
                 href="#latest-courses"
                 className={`
                   ${buttonVariants({
-                    variant: "default",
-                    size: "lg",
-                  })}
+                  variant: "default",
+                  size: "lg",
+                })}
                   group
                   h-14
                   rounded-xl
@@ -362,22 +333,9 @@ export default function CourseBanner() {
           </div>
 
           {/* ================= RIGHT ================= */}
-          <div className="relative lg:col-span-5">
-            <div className="group relative mx-auto aspect-[3/2] w-full max-w-md overflow-hidden rounded-3xl bg-slate-100 lg:max-w-none">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                className="absolute inset-0 h-full w-full object-cover"
-              >
-                <source src="/student.gif.mp4" type="video/mp4" />
-              </video>
-
-              {/* Very light overlay only */}
-              <div className="pointer-events-none absolute inset-0 bg-black/[0.02]" />
-            </div>
+          {/* after */}
+          <div className="relative lg:col-span-6">
+            <PlatformShowcase />
           </div>
         </div>
       </div>

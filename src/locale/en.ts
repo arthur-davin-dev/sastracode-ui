@@ -29,11 +29,6 @@ export const en = {
         description:
           "Write and run code directly in your browser with instant results — no installation required.",
       },
-      // {
-      //     title: "AI Code Coach",
-      //     description:
-      //         "Get smart guidance, explanations tailored to you, and real-time debugging help.",
-      // },
       {
         title: "Quiz & Assessment",
         description:
@@ -44,11 +39,6 @@ export const en = {
         description:
           "Learn through systematically organized video lessons that support every learning plan.",
       },
-      // {
-      //     title: "Learning Roadmaps",
-      //     description:
-      //         "Follow carefully structured learning roadmaps that guide you from beginner to expert level.",
-      // },
     ],
   },
   interactiveDoc: {
@@ -217,8 +207,30 @@ export const en = {
     },
   },
 
-
-
+  platformShowcase: {
+    features: [
+      {
+        title: "Learn with Interactive Docs",
+        description:
+          "Browse structured documentation with examples, explanations, and code snippets for every programming language.",
+      },
+      {
+        title: "Get AI-Powered Help",
+        description:
+          "Ask questions, get code explanations, and receive smart suggestions whenever you're stuck.",
+      },
+      {
+        title: "Practice & Test Your Skills",
+        description:
+          "Solve coding tasks, take quizzes, and challenge yourself with real-world problems.",
+      },
+      {
+        title: "Track Progress & Earn Rewards",
+        description:
+          "Earn XP, unlock badges, climb the leaderboard, and stay motivated as you grow every day.",
+      },
+    ],
+  },
 
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.
   footer: {
