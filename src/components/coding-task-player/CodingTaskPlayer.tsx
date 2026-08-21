@@ -2,17 +2,39 @@
 
 import Editor from "@monaco-editor/react";
 import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  KeyboardSensor,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import {
   ArrowDown,
   ArrowUp,
   CheckCircle2,
-  Code2,
+  ChevronDown,
+  GripVertical,
   Loader2,
   Play,
   RotateCcw,
   Send,
+  Sparkles,
   XCircle,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 
 import {
@@ -25,7 +47,9 @@ import {
 } from "@/redux/service/coding-task-player-api";
 
 import CodeCoach from "@/components/playground/CodeCoach";
+import { useIsDarkMode } from "@/hooks/use-dark-mode";
 import { getChallengeUIConfig } from "@/utils/coding-task-ui";
+import { highlightCode } from "@/utils/highlight-code";
 
 interface Props {
   slug: string;
@@ -35,6 +59,14 @@ interface Props {
   hasNext: boolean;
   onPrevious: () => void;
   onNext: () => void;
+  /**
+   * Fired with every submit result (pass or fail). The parent lesson
+   * section tracks these across all its exercises — this player instance
+   * remounts (and loses its own local result state) whenever the active
+   * exercise changes, so the parent is the only place that can build an
+   * end-of-set summary.
+   */
+  onResult?: (result: CodeSubmitResult) => void;
 }
 
 function errorMessage(error: unknown): string {
@@ -54,14 +86,55 @@ function errorMessage(error: unknown): string {
 }
 
 function editorLanguage(language: unknown): string {
-  const value = typeof language === "string" ? language.toLowerCase() : "";
-  if (value.includes("typescript")) return "typescript";
-  if (value.includes("javascript") || value === "js") return "javascript";
-  if (value.includes("python")) return "python";
+  const value = typeof language === "string" ? language.trim().toLowerCase() : "";
+  if (value.includes("typescript") || value === "ts" || value === "tsx") return "typescript";
+  if (value.includes("javascript") || value === "js" || value === "jsx") return "javascript";
+  if (value.includes("python") || value === "py") return "python";
   if (value.includes("java")) return "java";
   if (value.includes("html")) return "html";
-  if (value.includes("css")) return "css";
+  if (value.includes("css") || value === "scss" || value === "sass" || value === "less")
+    return "css";
+  if (value.includes("c++") || value.includes("cpp")) return "cpp";
+  if (value.includes("c#") || value.includes("csharp")) return "csharp";
+  if (value.includes("objective-c") || value === "objc") return "objective-c";
+  if (value === "c") return "c";
+  if (value.includes("php")) return "php";
+  if (value.includes("sql")) return "sql";
+  if (value === "go" || value === "golang") return "go";
+  if (value.includes("rust") || value === "rs") return "rust";
+  if (value.includes("ruby") || value === "rb") return "ruby";
+  if (value.includes("swift")) return "swift";
+  if (value.includes("kotlin") || value === "kt") return "kotlin";
+  if (value.includes("dart")) return "dart";
+  if (value.includes("scala")) return "scala";
+  if (value.includes("perl")) return "perl";
+  if (value.includes("lua")) return "lua";
+  if (value.includes("shell") || value.includes("bash") || value === "sh") return "shell";
+  if (value.includes("powershell")) return "powershell";
+  if (value.includes("yaml") || value === "yml") return "yaml";
+  if (value.includes("json")) return "json";
+  if (value.includes("xml")) return "xml";
+  if (value.includes("markdown") || value === "md") return "markdown";
   return "plaintext";
+}
+
+/**
+ * Some challenge sources store code with literal "\n" / "\t" escape
+ * sequences instead of real control characters (e.g. double-escaped
+ * JSON). Detect that and turn them back into real whitespace so the
+ * code renders as properly indented, multi-line source instead of one
+ * long line with visible backslash-n text.
+ */
+function normalizeCode(raw: string): string {
+  if (!raw) return raw;
+  const looksDoubleEscaped = raw.includes("\\n") && !raw.includes("\n");
+  if (!looksDoubleEscaped) return raw;
+  return raw
+    .replace(/\\r\\n/g, "\n")
+    .replace(/\\n/g, "\n")
+    .replace(/\\t/g, "\t")
+    .replace(/\\"/g, '"')
+    .replace(/\\\\/g, "\\");
 }
 
 export function CodingTaskPlayer({
@@ -72,6 +145,7 @@ export function CodingTaskPlayer({
   hasNext,
   onPrevious,
   onNext,
+  onResult,
 }: Props) {
   const {
     data: task,
@@ -89,12 +163,14 @@ export function CodingTaskPlayer({
   const [submitResult, setSubmitResult] = useState<CodeSubmitResult | null>(
     null,
   );
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     if (!task) return;
-    setCode(task.starterCode);
+    setCode(normalizeCode(task.starterCode));
     setRunResult(null);
     setSubmitResult(null);
+    setAttempt(0);
   }, [task]);
 
   async function run(codeToRun = code) {
@@ -106,6 +182,7 @@ export function CodingTaskPlayer({
       }).unwrap();
       setRunResult(result);
       setSubmitResult(null);
+      setAttempt((value) => value + 1);
     } catch (error) {
       toast.error(errorMessage(error));
     }
@@ -121,15 +198,8 @@ export function CodingTaskPlayer({
 
       setSubmitResult(result);
       setRunResult(null);
-
-      if (result.passed) {
-        toast.success("Correct answer!", {
-          description:
-            result.xpEarned && result.xpEarned > 0
-              ? `You earned ${result.xpEarned} XP.`
-              : "Challenge completed successfully.",
-        });
-      }
+      setAttempt((value) => value + 1);
+      onResult?.(result);
     } catch (error) {
       toast.error(errorMessage(error));
     }
@@ -143,7 +213,7 @@ export function CodingTaskPlayer({
     );
   }
 
-    if (error || !task) {
+  if (error || !task) {
     return (
       <div className="px-5 py-12 text-center sm:px-7">
         <XCircle className="mx-auto h-8 w-8 text-rose-500 dark:text-rose-400" />
@@ -158,19 +228,6 @@ export function CodingTaskPlayer({
           Try again
         </button>
       </div>
-    );
-  }
-
-  if (submitResult?.passed) {
-    return (
-      <Success
-        task={task}
-        result={submitResult}
-        index={index}
-        total={total}
-        hasNext={hasNext}
-        onNext={onNext}
-      />
     );
   }
 
@@ -191,11 +248,15 @@ export function CodingTaskPlayer({
 
   const uiConfig = getChallengeUIConfig(task.challengeType);
 
+  const inlineResult = submitResult ?? runResult;
+
   return (
     <div className="mx-auto max-w-6xl px-5 py-7 sm:px-7 sm:py-8">
       <header className="mb-6 text-center">
         <div className="flex flex-wrap items-center justify-center gap-2">
-          <span className={`rounded-full px-3 py-1 text-xs font-semibold ${uiConfig.tagColorClass}`}>
+          <span
+            className={`rounded-full px-3 py-1 text-xs font-semibold ${uiConfig.tagColorClass}`}
+          >
             {task.challengeType.replaceAll("_", " ")}
           </span>
           <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-white/10 dark:text-slate-300">
@@ -216,35 +277,44 @@ export function CodingTaskPlayer({
         <BlankPlayer
           task={task}
           token={token}
-          result={submitResult}
+          result={inlineResult as CodeSubmitResult | null}
+          attempt={attempt}
           isSubmitting={isSubmitting}
           onSubmit={submit}
+          hasNext={hasNext}
+          onNext={onNext}
         />
       ) : task.challengeType === "ARRANGE_BLOCKS" ? (
         <ArrangePlayer
           task={task}
-          result={submitResult ?? runResult}
+          result={inlineResult}
+          attempt={attempt}
           isRunning={isRunning}
           isSubmitting={isSubmitting}
           onRun={run}
           onSubmit={submit}
+          hasNext={hasNext}
+          onNext={onNext}
         />
       ) : (
         <EditorPlayer
           task={task}
           code={code}
           onChange={setCode}
-          result={submitResult ?? runResult}
+          result={inlineResult}
+          attempt={attempt}
           webMode={webMode}
           isRunning={isRunning}
           isSubmitting={isSubmitting}
           onRun={() => void run()}
           onSubmit={() => void submit()}
           onReset={() => {
-            setCode(task.starterCode);
+            setCode(normalizeCode(task.starterCode));
             setRunResult(null);
             setSubmitResult(null);
           }}
+          hasNext={hasNext}
+          onNext={onNext}
         />
       )}
 
@@ -269,23 +339,31 @@ function BlankPlayer({
   task,
   token,
   result,
+  attempt,
   isSubmitting,
   onSubmit,
+  hasNext,
+  onNext,
 }: {
   task: CodingTaskDetail;
   token: string;
   result: CodeSubmitResult | null;
+  attempt: number;
   isSubmitting: boolean;
   onSubmit: (code: string) => Promise<void>;
+  hasNext: boolean;
+  onNext: () => void;
 }) {
   const parts = useMemo(
-    () => task.starterCode.split(token),
+    () => normalizeCode(task.starterCode).split(token),
     [task.starterCode, token],
   );
   const count = Math.max(0, parts.length - 1);
   const [answers, setAnswers] = useState<string[]>(
     Array.from({ length: count }, () => ""),
   );
+
+  const failed = !!result && !result.passed;
 
   function completedCode() {
     let value = parts[0] ?? "";
@@ -299,14 +377,23 @@ function BlankPlayer({
   return (
     <div className="mx-auto max-w-4xl">
       <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7 dark:border-slate-800 dark:bg-[#1a1d27]">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+        <p className="mb-4 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+          <span className="flex h-5 w-5 items-center justify-center rounded-md bg-pink-100 text-pink-600 dark:bg-pink-500/10 dark:text-pink-400">
+            <Send className="h-3 w-3" />
+          </span>
           Complete the missing code
         </p>
 
-        <div className="overflow-x-auto rounded-xl border border-slate-200 bg-[#f8fafc] p-4 font-mono text-sm leading-8 text-slate-800 dark:border-slate-700/50 dark:bg-[#0f111a] dark:text-slate-200">
+        <div
+          className={`overflow-x-auto rounded-xl border p-4 font-mono text-sm leading-8 text-slate-800 transition-colors dark:text-slate-200 ${
+            failed
+              ? "border-rose-300 bg-rose-50/60 dark:border-rose-500/40 dark:bg-rose-500/5"
+              : "border-slate-200 bg-[#f8fafc] dark:border-slate-700/50 dark:bg-[#0f111a]"
+          }`}
+        >
           {parts.map((part, index) => (
             <span key={index}>
-              <span className="whitespace-pre-wrap">{part}</span>
+              <span className="whitespace-pre-wrap">{highlightCode(part)}</span>
               {index < count && (
                 <input
                   value={answers[index] ?? ""}
@@ -316,14 +403,24 @@ function BlankPlayer({
                     setAnswers(next);
                   }}
                   aria-label={`Blank ${index + 1}`}
-                  className="mx-1 inline-block h-8 min-w-28 rounded-md border border-slate-300 bg-white px-2 font-mono text-sm text-slate-900 outline-none focus:border-[#04AA6D] focus:ring-2 focus:ring-[#04AA6D]/20 dark:border-slate-600 dark:bg-[#1e1e1e] dark:text-white dark:focus:border-[#04AA6D]"
+                  className={`mx-1 inline-block h-8 min-w-28 rounded-md border bg-white px-2 font-mono text-sm text-slate-900 outline-none transition-colors focus:border-[#04AA6D] focus:ring-2 focus:ring-[#04AA6D]/20 dark:bg-[#1e1e1e] dark:text-white dark:focus:border-[#04AA6D] ${
+                    failed
+                      ? "border-rose-300 dark:border-rose-500/50"
+                      : "border-slate-300 dark:border-slate-600"
+                  }`}
                 />
               )}
             </span>
           ))}
         </div>
 
-        <Result result={result} />
+        <Result
+          key={attempt}
+          result={result}
+          task={task}
+          hasNext={hasNext}
+          onNext={onNext}
+        />
       </div>
 
       <div className="mt-4 flex justify-center">
@@ -331,7 +428,7 @@ function BlankPlayer({
           type="button"
           disabled={isSubmitting || answers.some((answer) => !answer.trim())}
           onClick={() => void onSubmit(completedCode())}
-          className="inline-flex h-11 items-center gap-2 rounded-xl bg-[#04AA6D] px-6 text-sm font-bold text-white hover:bg-[#059862] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-emerald-600 dark:hover:bg-emerald-500"
+          className="inline-flex h-11 items-center gap-2 rounded-xl bg-[#04AA6D] px-6 text-sm font-bold text-white shadow-sm shadow-emerald-600/20 transition hover:-translate-y-0.5 hover:bg-[#059862] hover:shadow-md disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-50 disabled:shadow-none dark:bg-emerald-600 dark:hover:bg-emerald-500"
         >
           {isSubmitting ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -345,23 +442,49 @@ function BlankPlayer({
   );
 }
 
+interface ArrangeBlock {
+  id: string;
+  code: string;
+}
+
 function ArrangePlayer({
   task,
   result,
+  attempt,
   isRunning,
   isSubmitting,
   onRun,
   onSubmit,
+  hasNext,
+  onNext,
 }: {
   task: CodingTaskDetail;
   result: CodeRunResult | CodeSubmitResult | null;
+  attempt: number;
   isRunning: boolean;
   isSubmitting: boolean;
   onRun: (code: string) => Promise<void>;
   onSubmit: (code: string) => Promise<void>;
+  hasNext: boolean;
+  onNext: () => void;
 }) {
-  const [blocks, setBlocks] = useState(
-    task.starterCode.split("\n").filter((line) => line.trim()),
+  const instanceId = useId();
+  const [blocks, setBlocks] = useState<ArrangeBlock[]>(() =>
+    normalizeCode(task.starterCode)
+      .split("\n")
+      .filter((line) => line.trim())
+      .map((code, index) => ({ id: `${instanceId}-${index}`, code })),
+  );
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 150, tolerance: 6 },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
   );
 
   function move(index: number, direction: -1 | 1) {
@@ -372,43 +495,75 @@ function ArrangePlayer({
     setBlocks(next);
   }
 
-  const value = blocks.join("\n");
+  function handleDragEnd(event: DragEndEvent) {
+    setActiveId(null);
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    setBlocks((items) => {
+      const oldIndex = items.findIndex((item) => item.id === active.id);
+      const newIndex = items.findIndex((item) => item.id === over.id);
+      if (oldIndex === -1 || newIndex === -1) return items;
+      return arrayMove(items, oldIndex, newIndex);
+    });
+  }
+
+  const value = blocks.map((block) => block.code).join("\n");
+  const failed = !!result && !result.passed;
+  const activeBlock = blocks.find((block) => block.id === activeId);
 
   return (
     <div className="mx-auto max-w-4xl">
-      <div className="space-y-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 dark:border-slate-800 dark:bg-[#1a1d27]">
-        {blocks.map((block, index) => (
-          <div
-            key={`${index}-${block}`}
-            className="flex items-center gap-3 rounded-xl border border-slate-200 bg-[#f8fafc] px-4 py-3 dark:border-slate-700/50 dark:bg-[#0f111a]"
+      <p className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+        <span className="flex h-5 w-5 items-center justify-center rounded-md bg-purple-100 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400">
+          <GripVertical className="h-3 w-3" />
+        </span>
+        Drag to arrange in the correct order
+      </p>
+
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        modifiers={[restrictToVerticalAxis]}
+        onDragStart={(event) => setActiveId(String(event.active.id))}
+        onDragEnd={handleDragEnd}
+        onDragCancel={() => setActiveId(null)}
+      >
+        <div
+          className={`space-y-2 rounded-2xl border p-4 shadow-sm transition-colors sm:p-6 ${
+            failed
+              ? "border-rose-300 bg-rose-50/40 dark:border-rose-500/40 dark:bg-rose-500/5"
+              : "border-slate-200 bg-white dark:border-slate-800 dark:bg-[#1a1d27]"
+          }`}
+        >
+          <SortableContext
+            items={blocks.map((block) => block.id)}
+            strategy={verticalListSortingStrategy}
           >
-            <span className="w-7 text-center text-xs font-bold text-[#04AA6D] dark:text-emerald-400">
-              {index + 1}
-            </span>
-            <code className="min-w-0 flex-1 overflow-x-auto whitespace-pre text-sm text-slate-800 dark:text-slate-200">
-              {block}
-            </code>
-            <div className="flex gap-1">
-              <button
-                type="button"
-                disabled={index === 0}
-                onClick={() => move(index, -1)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-200 text-slate-600 transition hover:bg-slate-300 disabled:opacity-30 dark:bg-white/10 dark:text-slate-300 dark:hover:bg-white/20"
-              >
-                <ArrowUp className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                disabled={index === blocks.length - 1}
-                onClick={() => move(index, 1)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-200 text-slate-600 transition hover:bg-slate-300 disabled:opacity-30 dark:bg-white/10 dark:text-slate-300 dark:hover:bg-white/20"
-              >
-                <ArrowDown className="h-4 w-4" />
-              </button>
+            {blocks.map((block, index) => (
+              <ArrangeBlockRow
+                key={block.id}
+                block={block}
+                index={index}
+                isFirst={index === 0}
+                isLast={index === blocks.length - 1}
+                onMoveUp={() => move(index, -1)}
+                onMoveDown={() => move(index, 1)}
+              />
+            ))}
+          </SortableContext>
+        </div>
+
+        <DragOverlay>
+          {activeBlock ? (
+            <div className="flex items-center gap-2 rounded-xl border border-[#04AA6D] bg-white px-3 py-3 shadow-xl dark:border-emerald-500 dark:bg-[#0f111a]">
+              <GripVertical className="h-4 w-4 shrink-0 text-slate-400" />
+              <code className="whitespace-pre text-sm text-slate-800 dark:text-slate-200">
+                {highlightCode(activeBlock.code)}
+              </code>
             </div>
-          </div>
-        ))}
-      </div>
+          ) : null}
+        </DragOverlay>
+      </DndContext>
 
       <Actions
         isRunning={isRunning}
@@ -416,7 +571,89 @@ function ArrangePlayer({
         onRun={() => void onRun(value)}
         onSubmit={() => void onSubmit(value)}
       />
-      <Result result={result} />
+      <Result
+        key={attempt}
+        result={result}
+        task={task}
+        hasNext={hasNext}
+        onNext={onNext}
+      />
+    </div>
+  );
+}
+
+function ArrangeBlockRow({
+  block,
+  index,
+  isFirst,
+  isLast,
+  onMoveUp,
+  onMoveDown,
+}: {
+  block: ArrangeBlock;
+  index: number;
+  isFirst: boolean;
+  isLast: boolean;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: block.id });
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+      }}
+      data-dragging={isDragging}
+      className="group flex items-center gap-2 rounded-xl border border-slate-200 bg-[#f8fafc] px-3 py-3 shadow-sm transition data-[dragging=true]:z-10 data-[dragging=true]:border-[#04AA6D] data-[dragging=true]:shadow-lg dark:border-slate-700/50 dark:bg-[#0f111a] dark:data-[dragging=true]:border-emerald-500"
+    >
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        aria-label={`Drag block ${index + 1}`}
+        className="flex h-8 w-8 shrink-0 cursor-grab touch-none items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-200 hover:text-slate-700 active:cursor-grabbing dark:text-slate-500 dark:hover:bg-white/10 dark:hover:text-white"
+      >
+        <GripVertical className="h-4 w-4" />
+      </button>
+
+      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-100 text-xs font-bold text-purple-700 dark:bg-purple-500/15 dark:text-purple-300">
+        {index + 1}
+      </span>
+
+      <code className="min-w-0 flex-1 overflow-x-auto whitespace-pre text-sm text-slate-800 dark:text-slate-200">
+        {highlightCode(block.code)}
+      </code>
+
+      <div className="flex shrink-0 gap-1 opacity-60 transition group-hover:opacity-100">
+        <button
+          type="button"
+          disabled={isFirst}
+          onClick={onMoveUp}
+          aria-label={`Move block ${index + 1} up`}
+          className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-200 text-slate-600 transition hover:bg-slate-300 disabled:opacity-30 dark:bg-white/10 dark:text-slate-300 dark:hover:bg-white/20"
+        >
+          <ArrowUp className="h-3.5 w-3.5" />
+        </button>
+        <button
+          type="button"
+          disabled={isLast}
+          onClick={onMoveDown}
+          aria-label={`Move block ${index + 1} down`}
+          className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-200 text-slate-600 transition hover:bg-slate-300 disabled:opacity-30 dark:bg-white/10 dark:text-slate-300 dark:hover:bg-white/20"
+        >
+          <ArrowDown className="h-3.5 w-3.5" />
+        </button>
+      </div>
     </div>
   );
 }
@@ -426,25 +663,33 @@ function EditorPlayer({
   code,
   onChange,
   result,
+  attempt,
   webMode,
   isRunning,
   isSubmitting,
   onRun,
   onSubmit,
   onReset,
+  hasNext,
+  onNext,
 }: {
   task: CodingTaskDetail;
   code: string;
   onChange: (value: string) => void;
   result: CodeRunResult | CodeSubmitResult | null;
+  attempt: number;
   webMode: boolean;
   isRunning: boolean;
   isSubmitting: boolean;
   onRun: () => void;
   onSubmit: () => void;
   onReset: () => void;
+  hasNext: boolean;
+  onNext: () => void;
 }) {
   const language = editorLanguage(task.taskConfig?.language);
+  const isDark = useIsDarkMode();
+  const monacoTheme = isDark ? "vs-dark" : "light";
 
   const coachLanguage =
     typeof task.taskConfig?.language === "string" &&
@@ -455,16 +700,25 @@ function EditorPlayer({
   const preview = useMemo(() => buildPreview(task, code), [task, code]);
   const uiConfig = getChallengeUIConfig(task.challengeType);
   const Icon = uiConfig.icon;
+  const failed = !!result && !result.passed;
 
   return (
     <div className="flex flex-col gap-4">
       {webMode ? (
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg dark:border-slate-700/50 dark:bg-[#0f111a]">
+        <div
+          className={`overflow-hidden rounded-2xl border shadow-lg transition-colors dark:bg-[#0f111a] ${
+            failed
+              ? "border-rose-300 dark:border-rose-500/40"
+              : "border-slate-200 dark:border-slate-700/50"
+          }`}
+        >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700/50 dark:bg-[#1a1d27]">
             <div className="flex items-center gap-2">
               <Icon className={`h-5 w-5 ${uiConfig.headerColorClass}`} />
-              <span className="font-semibold text-slate-700 dark:text-white">{uiConfig.title}</span>
+              <span className="font-semibold text-slate-700 dark:text-white">
+                {uiConfig.title}
+              </span>
             </div>
             <div className="flex flex-wrap items-center gap-3">
               <button
@@ -495,9 +749,9 @@ function EditorPlayer({
                 {isSubmitting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
-                  <CheckCircle2 className="h-4 w-4" />
+                  <Send className="h-4 w-4" />
                 )}
-                Check Code
+                Submit
               </button>
             </div>
           </div>
@@ -505,16 +759,22 @@ function EditorPlayer({
           {/* Split Pane */}
           <div className="grid divide-y divide-slate-200 dark:divide-slate-700/50 lg:grid-cols-2 lg:divide-x lg:divide-y-0">
             {/* Code */}
-            <div className="flex flex-col bg-[#1e1e1e]">
-              <div className="flex h-10 items-center bg-[#2d2d2d] px-4 text-xs font-medium uppercase text-slate-300">
-                {language === "html" ? "index.html" : language === "css" ? "style.css" : language === "javascript" ? "script.js" : language}
+            <div className="flex flex-col bg-white dark:bg-[#1e1e1e]">
+              <div className="flex h-10 items-center bg-slate-100 px-4 text-xs font-medium uppercase text-slate-600 dark:bg-[#2d2d2d] dark:text-slate-300">
+                {language === "html"
+                  ? "index.html"
+                  : language === "css"
+                    ? "style.css"
+                    : language === "javascript"
+                      ? "script.js"
+                      : language}
               </div>
               <Editor
                 height="400px"
                 language={language}
                 value={code}
                 onChange={(value) => onChange(value ?? "")}
-                theme="vs-dark"
+                theme={monacoTheme}
                 options={{
                   minimap: { enabled: false },
                   fontSize: 14,
@@ -542,17 +802,23 @@ function EditorPlayer({
         </div>
       ) : (
         <>
-          <div className="grid overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-[#0f111a]">
-            <div className="min-w-0 bg-[#1e1e1e]">
-              <div className="flex h-12 items-center justify-between border-b border-slate-700/50 bg-[#2d2d2d] px-4">
-                <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
+          <div
+            className={`grid overflow-hidden rounded-2xl border bg-white shadow-sm transition-colors dark:bg-[#0f111a] ${
+              failed
+                ? "border-rose-300 dark:border-rose-500/40"
+                : "border-slate-200 dark:border-slate-800"
+            }`}
+          >
+            <div className="min-w-0 bg-white dark:bg-[#1e1e1e]">
+              <div className="flex h-12 items-center justify-between border-b border-slate-200 bg-slate-100 px-4 dark:border-slate-700/50 dark:bg-[#2d2d2d]">
+                <div className="flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-300">
                   <Icon className={`h-4 w-4 ${uiConfig.headerColorClass}`} />
                   {uiConfig.title}
                 </div>
                 <button
                   type="button"
                   onClick={onReset}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white"
                 >
                   <RotateCcw className="h-3.5 w-3.5" />
                   Reset
@@ -564,7 +830,7 @@ function EditorPlayer({
                 language={language}
                 value={code}
                 onChange={(value) => onChange(value ?? "")}
-                theme="vs-dark"
+                theme={monacoTheme}
                 options={{
                   minimap: { enabled: false },
                   fontSize: 14,
@@ -586,6 +852,14 @@ function EditorPlayer({
         </>
       )}
 
+      <Result
+        key={attempt}
+        result={result}
+        task={task}
+        hasNext={hasNext}
+        onNext={onNext}
+      />
+
       <div className="mt-4">
         <CodeCoach
           code={code}
@@ -597,8 +871,6 @@ function EditorPlayer({
           }}
         />
       </div>
-
-      <Result result={result} />
     </div>
   );
 }
@@ -639,9 +911,9 @@ function Actions({
         {isSubmitting ? (
           <Loader2 className="h-4 w-4 animate-spin" />
         ) : (
-          <CheckCircle2 className="h-4 w-4" />
+          <Send className="h-4 w-4" />
         )}
-        Check Code
+        Submit
       </button>
     </div>
   );
@@ -649,111 +921,193 @@ function Actions({
 
 function Result({
   result,
-}: {
-  result: CodeRunResult | CodeSubmitResult | null;
-}) {
-  if (!result) return null;
-
-  return (
-    <div
-      className={`mt-4 rounded-xl border px-4 py-3 text-sm ${
-        result.passed
-          ? "border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-400/30 dark:bg-emerald-400/10 dark:text-emerald-100"
-          : "border-rose-200 bg-rose-50 text-rose-900 dark:border-rose-400/30 dark:bg-rose-400/10 dark:text-rose-100"
-      }`}
-    >
-      <div className="flex items-start gap-3">
-        {result.passed ? (
-          <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
-        ) : (
-          <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-rose-400" />
-        )}
-        <div>
-          <p className="font-semibold">
-            {result.passed
-              ? "All checks passed."
-              : "Not correct yet. Try again."}
-          </p>
-          <p className="mt-1 text-xs opacity-80">
-            Tests: {result.testsPassed ?? 0}/{result.testsTotal ?? 0}
-          </p>
-          {result.output && (
-            <pre className="mt-3 max-h-40 overflow-auto whitespace-pre-wrap rounded-lg bg-white/60 p-3 font-mono text-xs dark:bg-black/20">
-              {result.output}
-            </pre>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Success({
   task,
-  result,
-  index,
-  total,
   hasNext,
   onNext,
 }: {
+  result: CodeRunResult | CodeSubmitResult | null;
   task: CodingTaskDetail;
-  result: CodeSubmitResult;
-  index: number;
-  total: number;
   hasNext: boolean;
   onNext: () => void;
 }) {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, []);
+
+  if (!result) return null;
+
+  const { passed } = result;
+  const total = result.testsTotal ?? 0;
+  const passedCount = Math.min(
+    result.testsPassed ?? 0,
+    total || (result.testsPassed ?? 0),
+  );
+  const showPills = total > 0 && total <= 12;
+  const xpEarned = "xpEarned" in result ? result.xpEarned : undefined;
+
+  const headline = passed ? "Correct answer!" : "Not correct yet";
+
+  const subcopy = passed
+    ? `${task.title} — nice work, that one was spot on.`
+    : total > 0
+      ? `${passedCount} of ${total} checks passed. Review the details below and try again.`
+      : "That answer doesn't match yet. Take another look and try again.";
+
   return (
-    <div className="mx-auto max-w-5xl px-5 py-8 sm:px-7 sm:py-10">
-      <p className="text-center text-lg font-semibold text-slate-900 dark:text-white">
-        {task.title}
-      </p>
+    <section
+      ref={sectionRef}
+      role="status"
+      className={`mt-5 scroll-mt-24 rounded-2xl border p-4 sm:p-5 ${
+        passed
+          ? "border-emerald-200 bg-emerald-50/70 dark:border-emerald-900/60 dark:bg-emerald-950/25"
+          : "border-rose-200 bg-rose-50/70 dark:border-rose-900/60 dark:bg-rose-950/25"
+      }`}
+    >
+      <div className="flex items-start gap-3.5">
+        <span
+          className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
+            passed
+              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300"
+              : "bg-rose-100 text-rose-700 dark:bg-rose-900/60 dark:text-rose-300"
+          }`}
+        >
+          {passed ? (
+            <CheckCircle2 className="h-4.5 w-4.5" />
+          ) : (
+            <XCircle className="h-4.5 w-4.5" />
+          )}
+        </span>
 
-      <div className="relative mt-6 overflow-hidden rounded-2xl bg-[#04AA6D] px-6 py-14 text-center dark:bg-emerald-500">
-        <span className="absolute left-[8%] top-[18%] h-3 w-3 rounded-full bg-amber-300" />
-        <span className="absolute left-[22%] top-[68%] h-2.5 w-2.5 rounded-full bg-cyan-300" />
-        <span className="absolute right-[20%] top-[16%] h-3 w-3 rounded-full bg-violet-300" />
-        <span className="absolute right-[8%] top-[30%] h-3 w-3 rounded-full bg-yellow-300" />
-
-        <CheckCircle2 className="mx-auto h-12 w-12 text-white" />
-        <h3 className="mt-4 text-2xl font-bold text-white">Correct Answer!</h3>
-        <p className="mt-2 text-sm font-semibold text-emerald-50">
-          Nice work. That one was spot on.
-        </p>
-
-        <div className="mt-5 flex justify-center gap-3 text-xs font-semibold text-white/90">
-          <span>
-            Tests {result.testsPassed}/{result.testsTotal}
-          </span>
-          {!!result.xpEarned && <span>+{result.xpEarned} XP</span>}
-        </div>
-
-        {hasNext ? (
-          <button
-            type="button"
-            onClick={onNext}
-            className="mt-8 rounded-lg bg-white px-5 py-3 text-sm font-bold text-[#04AA6D] shadow-sm hover:bg-emerald-50 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-900"
-          >
-            Next Question »
-          </button>
-        ) : (
-          <div className="mt-8 inline-block rounded-lg bg-white/20 px-5 py-3 text-sm font-bold text-white backdrop-blur-sm dark:bg-slate-800/90">
-            All coding challenges completed
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p
+              className={`font-bold ${
+                passed
+                  ? "text-emerald-900 dark:text-emerald-200"
+                  : "text-rose-900 dark:text-rose-200"
+              }`}
+            >
+              {headline}
+            </p>
+            <div className="flex items-center gap-2">
+              {total > 0 && (
+                <span
+                  className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${
+                    passed
+                      ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
+                      : "bg-rose-500/15 text-rose-700 dark:text-rose-300"
+                  }`}
+                >
+                  {passedCount}/{total} checks
+                </span>
+              )}
+              {passed && !!xpEarned && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-2.5 py-0.5 text-xs font-bold text-amber-700 dark:text-amber-300">
+                  <Sparkles className="h-3 w-3" />+{xpEarned} XP
+                </span>
+              )}
+            </div>
           </div>
-        )}
-      </div>
 
-      <p className="mt-4 text-center text-xs text-slate-500 dark:text-slate-300">
-        Exercise {index + 1} of {total}
-      </p>
-    </div>
+          <p
+            className={`mt-1 text-sm ${
+              passed
+                ? "text-emerald-800/80 dark:text-emerald-100/70"
+                : "text-rose-900/80 dark:text-rose-100/70"
+            }`}
+          >
+            {subcopy}
+          </p>
+
+          {total > 0 && (
+            <div className="mt-3 flex items-center gap-1.5">
+              {showPills ? (
+                Array.from({ length: total }).map((_, pillIndex) => (
+                  <span
+                    key={pillIndex}
+                    className={`h-1.5 flex-1 rounded-full transition-colors ${
+                      pillIndex < passedCount
+                        ? "bg-emerald-500"
+                        : passed
+                          ? "bg-emerald-500/30"
+                          : "bg-rose-300 dark:bg-rose-500/30"
+                    }`}
+                  />
+                ))
+              ) : (
+                <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-200 dark:bg-white/10">
+                  <div
+                    className={`h-full rounded-full transition-[width] duration-500 ${
+                      passed ? "bg-emerald-500" : "bg-rose-400"
+                    }`}
+                    style={{
+                      width: `${Math.round((total > 0 ? passedCount / total : passed ? 1 : 0) * 100)}%`,
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          {result.output && (
+            <details className="group mt-3">
+              <summary className="flex cursor-pointer list-none items-center gap-1 text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">
+                <ChevronDown className="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
+                View output details
+              </summary>
+              <pre className="mt-2 max-h-40 overflow-auto whitespace-pre-wrap rounded-lg bg-white/70 p-3 font-mono text-xs text-slate-700 dark:bg-black/25 dark:text-slate-200">
+                {result.output}
+              </pre>
+            </details>
+          )}
+
+          {passed ? (
+            <div className="mt-4">
+              {hasNext ? (
+                <button
+                  type="button"
+                  onClick={onNext}
+                  className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-emerald-700"
+                >
+                  Next Question »
+                </button>
+              ) : (
+                <span className="inline-block rounded-lg bg-emerald-600/10 px-4 py-2 text-sm font-bold text-emerald-800 dark:text-emerald-200">
+                  All coding challenges completed
+                </span>
+              )}
+            </div>
+          ) : (
+            <div className="mt-4">
+              <button
+                type="button"
+                onClick={() => {
+                  const rect = sectionRef.current?.getBoundingClientRect();
+                  if (!rect) return;
+                  window.scrollBy({
+                    top: rect.top - 220,
+                    behavior: "smooth",
+                  });
+                }}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-rose-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-rose-700"
+              >
+                <RotateCcw className="h-3.5 w-3.5" />
+                Try Again
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }
 
 function buildPreview(task: CodingTaskDetail, code: string): string {
   const base =
     typeof task.taskConfig?.previewHtml === "string"
-      ? task.taskConfig.previewHtml
+      ? normalizeCode(task.taskConfig.previewHtml)
       : `<main><h1>Hello World</h1><p>Live preview</p><button id="demo-button">Click me</button></main>`;
 
   const head = `

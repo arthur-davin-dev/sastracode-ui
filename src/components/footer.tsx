@@ -51,30 +51,30 @@ export default function Footer() {
 
             <ul className="space-y-2.5 text-xs text-primary-color dark:text-slate-300">
               <li>
-                <a
+                <Link
                   href="/about-us"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
                   {currentT.footer.quickLinks.about}
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   href="/courses"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
                   {currentT.footer.quickLinks.course}
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   href="/about-us"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
                   {currentT.footer.quickLinks.contact}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -87,30 +87,30 @@ export default function Footer() {
 
             <ul className="space-y-2.5 text-xs text-primary-color dark:text-slate-300">
               <li>
-                <a
+                <Link
                   href="/documentation"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
                 >
                   {currentT.footer.study.lesson}
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   href="/playground"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
                 >
                   {currentT.footer.study.playground}
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   href="/function"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
                 >
                   {currentT.footer.study.feature}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

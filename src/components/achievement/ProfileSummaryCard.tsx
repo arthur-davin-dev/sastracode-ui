@@ -37,13 +37,16 @@ export function ProfileSummaryCard({ user }: { user: UserSummary }) {
           </div>
 
           {/* Name & Sub-details */}
-          <div className="space-y-3">
-            <h2 className="font-bold text-2xl text-primary-color dark:text-white leading-tight">
+          <div className="min-w-0 space-y-3">
+            <h2 className="font-bold text-2xl text-primary-color dark:text-white leading-tight break-words">
               {user.name}
             </h2>
-            <p className="text-lg text-slate-600 dark:text-slate-300 font-medium">
-              Bonus Booster • <span className="text-primary-color dark:text-white font-semibold">
-                កម្រិតទី {user.nextLevel - 1}</span>
+            <p className="flex flex-wrap items-center justify-center gap-x-2 sm:justify-start text-lg text-slate-600 dark:text-slate-300 font-medium">
+              <span>Bonus Booster</span>
+              <span className="text-slate-400 dark:text-slate-500">•</span>
+              <span className="text-primary-color dark:text-white font-semibold">
+                កម្រិតទី {user.nextLevel - 1}
+              </span>
             </p>
           </div>
         </div>

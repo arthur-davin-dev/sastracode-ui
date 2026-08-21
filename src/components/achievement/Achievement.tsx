@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ProfileSummaryCard } from "@/components/achievement/ProfileSummaryCard";
 import { BadgeCard } from "@/components/achievement/BadgeCard";
@@ -112,7 +113,14 @@ export default function Achievement() {
         : "XP activity",
       xp: transaction.xpAmount,
     })) ?? [];
-  const displayedActivities = apiActivities;
+  const displayedActivities = [...apiActivities].sort((a, b) => b.xp - a.xp);
+
+  const [showAllBadges, setShowAllBadges] = useState(false);
+  const [showAllActivities, setShowAllActivities] = useState(false);
+  const visibleBadges = showAllBadges ? badges : badges.slice(0, 4);
+  const visibleActivities = showAllActivities
+    ? displayedActivities
+    : displayedActivities.slice(0, 4);
 
   return (
     <div className="min-h-screen bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 space-y-8 p-6 transition-colors duration-300">
@@ -133,7 +141,7 @@ export default function Achievement() {
 
         {/* XP Progress Card */}
         <XpLevelCard
-          level={userData.nextLevel}
+          level={currentLevel}
           currentXp={userData.currentXp}
           nextLevelXp={userData.nextLevelXp}
           progressPercent={userData.levelProgressPercent}
@@ -146,22 +154,35 @@ export default function Achievement() {
               🏅 មេដាយដែលទទួលបាន
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {!badgesQuery.isLoading && badges.length === 0 && (
-              <p className="col-span-full rounded-xl border border-dashed border-slate-300 p-6 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400">
-                No badges earned yet. Complete lessons and quizzes to earn badges.
-              </p>
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              {!badgesQuery.isLoading && badges.length === 0 && (
+                <p className="col-span-full rounded-xl border border-dashed border-slate-300 p-6 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400">
+                  No badges earned yet. Complete lessons and quizzes to earn badges.
+                </p>
+              )}
+              {visibleBadges.map((b, i) => (
+                <motion.div
+                  key={b.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                >
+                  <BadgeCard badge={b} />
+                </motion.div>
+              ))}
+            </div>
+            {badges.length > 4 && (
+              <div className="mt-6 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setShowAllBadges((value) => !value)}
+                  className="rounded-xl bg-primary-color px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+                >
+                  {showAllBadges ? "មើលតិចជាងនេះ" : "មើលទាំងអស់"}
+                </button>
+              </div>
             )}
-            {badges.map((b, i) => (
-              <motion.div
-                key={b.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.4 }}
-              >
-                <BadgeCard badge={b} />
-              </motion.div>
-            ))}
           </CardContent>
         </Card>
 
@@ -172,22 +193,35 @@ export default function Achievement() {
               ✅ របស់កម្មដែលបានបញ្ចប់
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            {!transactionsQuery.isLoading && displayedActivities.length === 0 && (
-              <p className="rounded-xl border border-dashed border-slate-300 p-6 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400">
-                No XP activity yet. Complete a lesson or quiz to earn XP.
-              </p>
+          <CardContent>
+            <div className="space-y-4">
+              {!transactionsQuery.isLoading && displayedActivities.length === 0 && (
+                <p className="rounded-xl border border-dashed border-slate-300 p-6 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400">
+                  No XP activity yet. Complete a lesson or quiz to earn XP.
+                </p>
+              )}
+              {visibleActivities.map((a, i) => (
+                <motion.div
+                  key={a.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                >
+                  <RecentActivityItem activity={a} />
+                </motion.div>
+              ))}
+            </div>
+            {displayedActivities.length > 4 && (
+              <div className="mt-6 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setShowAllActivities((value) => !value)}
+                  className="rounded-xl bg-primary-color px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+                >
+                  {showAllActivities ? "មើលតិចជាងនេះ" : "មើលទាំងអស់"}
+                </button>
+              </div>
             )}
-            {displayedActivities.map((a, i) => (
-              <motion.div
-                key={a.id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.4 }}
-              >
-                <RecentActivityItem activity={a} />
-              </motion.div>
-            ))}
           </CardContent>
         </Card>
 

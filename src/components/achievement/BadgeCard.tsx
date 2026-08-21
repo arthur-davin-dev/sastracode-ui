@@ -333,14 +333,14 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
               className="
                 h-11 w-full
                 rounded-xl
-                bg-yellow-400
+                bg-primary-color
                 font-bold
-                text-primary-color
+                text-white
                 shadow-sm
                 transition-all duration-300
 
                 hover:scale-[1.02]
-                hover:bg-yellow-300
+                hover:opacity-90
               "
             >
               <Sparkles className="mr-2 h-4 w-4" />

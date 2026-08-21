@@ -32,6 +32,14 @@ export default function InteractiveGrid() {
     const [mounted, setMounted] = useState(false);
     const [deviceType, setDeviceType] = useState('desktop');
 
+    // Randomize each flash's animation timing once, not on every render
+    const [flashTimings] = useState(() =>
+        [0, 1, 2].map(() => ({
+            duration: Math.random() * 4 + 6,
+            delay: Math.random() * 8,
+        })),
+    );
+
     // 1. Detect Screen Width
     useEffect(() => {
         setMounted(true);
@@ -73,8 +81,8 @@ export default function InteractiveGrid() {
                         key={index}
                         className="relative w-full h-24 flex items-center justify-center"
                         style={{
-                            animation: `flashSlide ${Math.random() * 4 + 6}s linear infinite`,
-                            animationDelay: `${Math.random() * 8}s`
+                            animation: `flashSlide ${flashTimings[index].duration}s linear infinite`,
+                            animationDelay: `${flashTimings[index].delay}s`
                         }}
                     >
                         <svg

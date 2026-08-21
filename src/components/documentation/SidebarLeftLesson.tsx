@@ -8,14 +8,14 @@ import type { TutorialSection } from "@/types/tutorial-reader";
 interface SidebarLeftLessonProps {
   sections: TutorialSection[];
   activeLessonId: string;
-  completedSectionIds: Set<string>;
+  completedLessonIds: Set<string>;
   onSelectLesson: (lessonId: string) => void;
 }
 
 export default function SidebarLeftLesson({
   sections,
   activeLessonId,
-  completedSectionIds,
+  completedLessonIds,
   onSelectLesson,
 }: SidebarLeftLessonProps) {
   const [openSections, setOpenSections] = useState<Set<string>>(new Set());
@@ -81,7 +81,10 @@ export default function SidebarLeftLesson({
             const isDirect =
               section.contentMode === "DIRECT" || !hasSubsections;
             const sectionActive = activeLessonId === section.id;
-            const sectionCompleted = completedSectionIds.has(section.id);
+            // Progress is tracked per section only — a subsection has no
+            // completion state of its own, so a completed section means
+            // every subsection under it is done too.
+            const sectionCompleted = completedLessonIds.has(section.id);
             const containsActiveLesson =
               sectionActive ||
               subsections.some(
@@ -146,6 +149,7 @@ export default function SidebarLeftLesson({
                     <div className="space-y-1 py-1">
                       {subsections.map((subsection) => {
                         const active = activeLessonId === subsection.id;
+                        const subsectionCompleted = sectionCompleted;
 
                         return (
                           <button
@@ -162,9 +166,13 @@ export default function SidebarLeftLesson({
                               <span className="absolute -left-[18px] top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#002455] ring-4 ring-slate-50 dark:bg-blue-400 dark:ring-slate-950" />
                             )}
 
-                            <span className="min-w-0 whitespace-normal break-words">
+                            <span className="min-w-0 flex-1 whitespace-normal break-words">
                               {subsection.title}
                             </span>
+
+                            {subsectionCompleted && (
+                              <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-500" />
+                            )}
                           </button>
                         );
                       })}
