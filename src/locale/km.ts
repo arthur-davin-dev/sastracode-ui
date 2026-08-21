@@ -366,7 +366,7 @@ export const km = {
         id: "4",
         name: "លត់ ឡោះ",
         position: "អ្នកអភិវឌ្ឍន៍ Full-Stack",
-        bio: "មិនមានសម្រង់សម្តីទេ",
+        bio: "វាមិនសំខាន់ថាតើអ្នកចូលចិត្តវាឬអត់នោះទេ គ្រាន់តែដាក់បេះដូងហើយធ្វើវាទៅ",
         image: "/images/lot_los.png",
         githubUrl: "https://github.com/loslot",
         telegramUrl: "https://t.me/Lot_Los",

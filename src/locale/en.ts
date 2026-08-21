@@ -369,7 +369,7 @@ export const en = {
         id: "4",
         name: "Lot Los",
         position: "Full-Stack Developer",
-        bio: "Quote is not available.",
+        bio: "It doesn't matter whether you like it or not, just put your heart into it and do it.",
         image: "/images/lot_los.png",
         githubUrl: "https://github.com/loslot",
         telegramUrl: "https://t.me/Lot_Los",
