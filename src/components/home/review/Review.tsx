@@ -1,15 +1,15 @@
 "use client";
-
+import Image from "next/image";
 import { Star } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslations";
 
-const gradients = [
-  "from-blue-500 to-purple-500",
-  "from-green-500 to-teal-500",
-  "from-purple-500 to-pink-500",
-  "from-orange-500 to-red-500",
-  "from-indigo-500 to-blue-500",
-  "from-pink-500 to-rose-500",
+const reviewImages = [
+  "/images/chhay_davin.jpg",
+  "/images/chhay_kongkea.jpg",
+  "/images/lot_los.jpg",
+  "/images/chhat_sovanney.jpg",
+  "/images/ben_thona.jpg",
+  "/images/meng_kimleap.jpg",
 ];
 
 export default function Review() {
@@ -24,7 +24,7 @@ export default function Review() {
         </span>
         <h2 className="font-khmer mt-4 text-4xl font-black tracking-tight text-[#0d1b3e] sm:text-5xl dark:text-white">
           <span className="text-[#0d1b3e] dark:text-white">{t.title} </span>
-          <span className="bg-linear-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent dark:from-purple-400 dark:to-blue-400">
+          <span className="bg-linear-to-r from-primary-color to-secondary-color bg-clip-text text-transparent dark:from-purple-400 dark:to-blue-400">
             {t.titleAccent}
           </span>
         </h2>
@@ -64,21 +64,25 @@ export default function Review() {
                     </p>
 
                     {/* Author Details */}
-                    <div className="mt-4 flex items-center gap-3 border-t border-gray-100 pt-4 dark:border-gray-700">
-                      <div
-                        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-linear-to-r ${gradients[index % gradients.length]} text-lg font-bold text-white`}
-                      >
-                        {review.name
-                          .split(" ")
-                          .map((part) => part[0])
-                          .join("")
-                          .slice(0, 2)}
+                    <div className="flex items-center gap-3 mt-auto  dark:border-gray-700">
+                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full ring-2 J dark:ring-slate-700">
+                        <Image
+                          src={
+                            "image" in review
+                              ? review.image
+                              : reviewImages[index % reviewImages.length]
+                          }
+                          alt={`${review.name}'s profile`}
+                          fill
+                          sizes="48px"
+                          className="object-cover"
+                        />
                       </div>
                       <div>
-                        <p className="text-lg font-bold leading-snug text-gray-900 dark:text-white">
+                        <p className="text-[18px]! font-bold leading-snug text-gray-900 dark:text-white">
                           {review.name}
                         </p>
-                        <p className="mt-1 text-base font-medium text-gray-500 dark:text-gray-400">
+                        <p className="mt-1 text-[16px]! font-medium text-gray-500 dark:text-gray-400">
                           {review.role}
                         </p>
                       </div>

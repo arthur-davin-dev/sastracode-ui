@@ -187,12 +187,42 @@ export const en = {
     previous: "Previous review",
     next: "Next review",
     items: [
-      { name: "John Doe", role: "Software Engineer at Google", text: "This platform completely transformed my coding journey. The courses are well structured, the instructors are excellent, and within six months I landed my dream job." },
-      { name: "Sarah Mitchell", role: "Full Stack Developer", text: "The hands-on projects and practical examples made learning different. Concepts that had confused me for years finally became clear." },
-      { name: "Alex Kumar", role: "Data Scientist at Amazon", text: "I was hesitant at first, but the community support and expert guidance made this the best investment in my career." },
-      { name: "Maria Rodriguez", role: "Senior Developer at Microsoft", text: "The DSA course completely changed how I prepared for interviews. Complex topics were broken into simple, understandable lessons." },
-      { name: "Tom Lee", role: "Backend Engineer at Stripe", text: "I love the practice-focused teaching. Career guidance and code reviews helped me earn interviews at leading technology companies." },
-      { name: "Emily Wang", role: "Product Manager at Meta", text: "The community is the best part. Discussions and feedback from fellow learners build understanding and confidence." },
+      {
+        name: "John Doe",
+        role: "Software Engineer at Google",
+        text: "This platform completely transformed my coding journey. The courses are well structured, the instructors are excellent, and within six months I landed my dream job.,",
+        image: "/images/chhay_davin.jpg",
+      },
+      {
+        name: "Sarah Mitchell",
+        role: "Full Stack Developer",
+        text: "The hands-on projects and practical examples made learning different. Concepts that had confused me for years finally became clear.",
+        image: "/images/chhay_kongkea.jpg",
+      },
+      {
+        name: "Alex Kumar",
+        role: "Data Scientist at Amazon",
+        text: "I was hesitant at first, but the community support and expert guidance made this the best investment in my career.",
+        image: "/images/lot_los.jpg",
+      },
+      {
+        name: "Maria Rodriguez",
+        role: "Senior Developer at Microsoft",
+        text: "The DSA course completely changed how I prepared for interviews. Complex topics were broken into simple, understandable lessons.",
+        image: "/images/chhat_sovanney.jpg",
+      },
+      {
+        name: "Tom Lee",
+        role: "Backend Engineer at Stripe",
+        text: "I love the practice-focused teaching. Career guidance and code reviews helped me earn interviews at leading technology companies.",
+        image: "/images/ben_thona.jpg",
+      },
+      {
+        name: "Emily Wang",
+        role: "Product Manager at Meta",
+        text: "The community is the best part. Discussions and feedback from fellow learners build understanding and confidence.",
+        image: "/images/meng_kimleap.jpg",
+      },
     ],
   },
 

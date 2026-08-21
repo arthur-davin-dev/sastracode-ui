@@ -48,8 +48,8 @@ export default function InteractiveBackground({
       const root = document.documentElement;
       isDark =
         root.classList.contains("dark") && !root.classList.contains("light");
-      //canvas.style.backgroundColor = isDark ? "transparent" : "#ffffff";
-      canvas.style.backgroundColor = "transparent";
+      canvas.style.backgroundColor = isDark ? "transparent" : "#ffffff";
+      //canvas.style.backgroundColor = "transparent";
     };
 
     let isDark = false;
