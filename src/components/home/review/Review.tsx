@@ -24,7 +24,7 @@ export default function Review() {
         </span>
         <h2 className="font-khmer mt-4 text-4xl font-black tracking-tight text-[#0d1b3e] sm:text-5xl dark:text-white">
           <span className="text-[#0d1b3e] dark:text-white">{t.title} </span>
-          <span className="text-[#0d1b3e] dark:bg-gradient-to-r dark:from-purple-400 dark:to-blue-400 dark:bg-clip-text dark:text-transparent">
+          <span className="bg-linear-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent dark:from-purple-400 dark:to-blue-400">
             {t.titleAccent}
           </span>
         </h2>

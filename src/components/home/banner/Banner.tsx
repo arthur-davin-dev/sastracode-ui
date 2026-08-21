@@ -6,6 +6,7 @@ import Stats from './Stats'
 import CodeWindow from './CodeWindow'
 import { useTranslation } from '@/hooks/useTranslations'
 import Link from 'next/link'
+import GlowButton from '@/components/ui/GlowButton'
 // import { LeftWavyStack } from '../technology-stack/WavyStack'
 
 type BannerTitle = {
@@ -103,11 +104,16 @@ export default function Banner() {
           {/* LEFT */}
 
           <div className="text-center lg:text-left">
-
-            <div className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border bg-gradient-to-r from-primary-color/50 to-secondary-color/80 text-white border-blue-600/15 bg-blue-100 px-5 py-3 text-lg  dark:bg-gradient-to-r dark:from-primary-color dark:to-secondary-color dark:bg-clip-text dark:text-transparent font-bold shadow-sm transition-colors dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 sm:px-6 ">
+            <GlowButton onClick={() => {}}>
+              {/* <div className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border bg-gradient-to-r from-primary-color/50 to-secondary-color/80 text-white border-blue-600/15 bg-blue-100 px-5 py-3 text-lg  dark:bg-gradient-to-r dark:from-primary-color dark:to-secondary-color dark:bg-clip-text dark:text-transparent font-bold shadow-sm transition-colors dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 sm:px-6 "> */}
+              {/* <span className="mr-2 h-3 w-3 rounded-full bg-init-color "></span> */}
+              {currentT.banner.freeLearning}
+            {/* </div> */}
+            </GlowButton>
+            {/* <div className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border bg-gradient-to-r from-primary-color/50 to-secondary-color/80 text-white border-blue-600/15 bg-blue-100 px-5 py-3 text-lg  dark:bg-gradient-to-r dark:from-primary-color dark:to-secondary-color dark:bg-clip-text dark:text-transparent font-bold shadow-sm transition-colors dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 sm:px-6 ">
               <span className="mr-2 h-3 w-3 rounded-full bg-init-color "></span>
               {currentT.banner.freeLearning}
-            </div>
+            </div> */}
 
             <TypingTitle
               key={`${currentT.banner.title1}-${currentT.banner.title2}`}
@@ -125,7 +131,7 @@ export default function Banner() {
 
               <Link
                 href="/documentation"
-                className="min-w-[12rem] lg:min-w-[16rem] rounded-full bg-[#0B2B66] dark:bg-gradient-to-r dark:from-primary-color/50 dark:to-secondary-color dark:text-white-800  px-6 sm:px-10 py-3 sm:py-4 text-xs sm:text-base font-semibold text-white hover:bg-blue-900 dark:hover:bg-blue-700 transition-colors text-center"
+                className="min-w-[12rem] lg:min-w-[16rem] rounded-full bg-[#0B2B66]  dark:text-white-800  px-6 sm:px-10 py-3 sm:py-4 text-xs sm:text-base font-semibold text-white hover:bg-blue-900 dark:hover:bg-blue-700 transition-colors text-center"
               >
                 {currentT.banner.start}
               </Link>
