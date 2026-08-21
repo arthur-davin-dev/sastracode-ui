@@ -1276,7 +1276,7 @@ export default function Editor() {
   // Always points to the latest Format Code handler.
   // Monaco keybindings are registered once when the editor mounts, so using
   // a ref prevents the shortcuts from calling an old render's handler.
-  const formatCodeActionRef = useRef<() => void>(() => {});
+  const formatCodeActionRef = useRef<() => void>(() => { });
 
   // ====================================================
   // CURRENT LANGUAGE
@@ -2131,11 +2131,10 @@ export default function Editor() {
         <div
           role="status"
           aria-live="polite"
-          className={`fixed right-5 top-5 z-[100] flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-semibold shadow-xl backdrop-blur-sm transition-all ${
-            copyStatus === "copied"
-              ? "border-emerald-200 bg-white/95 text-emerald-700 dark:border-emerald-700/60 dark:bg-slate-900/95 dark:text-emerald-400"
-              : "border-red-200 bg-white/95 text-red-700 dark:border-red-800 dark:bg-slate-900/95 dark:text-red-400"
-          }`}
+          className={`fixed right-5 top-5 z-[100] flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-semibold shadow-xl backdrop-blur-sm transition-all ${copyStatus === "copied"
+            ? "border-emerald-200 bg-white/95 text-emerald-700 dark:border-emerald-700/60 dark:bg-slate-900/95 dark:text-emerald-400"
+            : "border-red-200 bg-white/95 text-red-700 dark:border-red-800 dark:bg-slate-900/95 dark:text-red-400"
+            }`}
         >
           {copyStatus === "copied" ? (
             <Check className="h-5 w-5" />
@@ -2205,17 +2204,16 @@ export default function Editor() {
                 style={
                   isActive
                     ? {
-                        backgroundColor: item.color,
+                      backgroundColor: item.color,
 
-                        color: itemTextColor,
-                      }
+                      color: itemTextColor,
+                    }
                     : undefined
                 }
-                className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-all ${
-                  isActive
-                    ? ""
-                    : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
-                }`}
+                className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-all ${isActive
+                  ? ""
+                  : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+                  }`}
               >
                 <span
                   className="h-1.5 w-1.5 rounded-full"
@@ -2228,9 +2226,8 @@ export default function Editor() {
 
                 {item.mode === "preview" && (
                   <span
-                    className={`ml-1 text-[9px] font-bold uppercase ${
-                      isActive ? "opacity-70" : "text-emerald-500"
-                    }`}
+                    className={`ml-1 text-[9px] font-bold uppercase ${isActive ? "opacity-70" : "text-emerald-500"
+                      }`}
                   >
                     Live
                   </span>
@@ -2393,11 +2390,10 @@ export default function Editor() {
             <button
               type="button"
               onClick={() => setShowLineNumbers((previous) => !previous)}
-              className={`flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 dark:border-slate-800 dark:text-slate-300 ${
-                showLineNumbers
-                  ? "bg-slate-100 dark:bg-slate-800"
-                  : "text-slate-500"
-              }`}
+              className={`flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 dark:border-slate-800 dark:text-slate-300 ${showLineNumbers
+                ? "bg-slate-100 dark:bg-slate-800"
+                : "text-slate-500"
+                }`}
             >
               <ListOrdered className="h-3.5 w-3.5" />
               Line
@@ -2443,11 +2439,10 @@ export default function Editor() {
             <button
               type="button"
               onClick={() => void toggleWorkspaceFullscreen()}
-              className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-semibold transition ${
-                isWorkspaceFullscreen
-                  ? "border-indigo-500 bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300"
-                  : "border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800"
-              }`}
+              className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-semibold transition ${isWorkspaceFullscreen
+                ? "border-indigo-500 bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300"
+                : "border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800"
+                }`}
               title="Fullscreen code and result together"
             >
               <Columns2 className="h-3.5 w-3.5" />
@@ -2639,17 +2634,6 @@ export default function Editor() {
                 }
               />
             </div>
-          </div>
-        )}
-
-        {!isWorkspaceFullscreen && (
-          <div className="px-4 pt-4">
-            <CodeCoach
-              code={code}
-              language={language}
-              codingTaskId={codingTaskId}
-              onApplyCode={handleApplyCoachCode}
-            />
           </div>
         )}
 
@@ -3040,12 +3024,12 @@ export default function Editor() {
                             line === "Success! Output:"
                               ? "font-semibold text-emerald-600 dark:text-emerald-400"
                               : line === "Error:" ||
-                                  line.startsWith("Execution failed") ||
-                                  line.startsWith("Execution timed out") ||
-                                  line.startsWith("Error:")
+                                line.startsWith("Execution failed") ||
+                                line.startsWith("Execution timed out") ||
+                                line.startsWith("Error:")
                                 ? "font-semibold text-red-600 dark:text-red-400"
                                 : line.startsWith("Process finished") ||
-                                    line.startsWith("Execution time:")
+                                  line.startsWith("Execution time:")
                                   ? "text-slate-500 dark:text-slate-400"
                                   : line.startsWith("Running")
                                     ? "text-blue-600 dark:text-blue-400"
@@ -3062,6 +3046,22 @@ export default function Editor() {
             </>
           )}
         </div>
+
+        {/* ================================================= */}
+        {/* FULLSCREEN FLOATING AI COACH */}
+        {/* ================================================= */}
+
+
+        {!isWorkspaceFullscreen && (
+          <div className="px-4 pt-4">
+            <CodeCoach
+              code={code}
+              language={language}
+              codingTaskId={codingTaskId}
+              onApplyCode={handleApplyCoachCode}
+            />
+          </div>
+        )}
 
         {/* ================================================= */}
         {/* FULLSCREEN FLOATING AI COACH */}
