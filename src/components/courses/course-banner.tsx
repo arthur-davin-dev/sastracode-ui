@@ -332,7 +332,7 @@ export default function CourseBanner() {
                   group
                   h-14
                   rounded-xl
-                  bg-[#002455]
+                  bg-primary-color
                   px-8
                   text-lg
                   font-semibold
