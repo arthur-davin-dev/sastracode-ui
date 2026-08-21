@@ -38,6 +38,17 @@ export function RelatedCourses({ courses }: RelatedCoursesProps) {
 
   const [activeCategory, setActiveCategory] = useState(ALL);
 
+  const counts = useMemo(() => {
+    const map: Record<string, number> = { [ALL]: courses.length };
+    courses.forEach((course) => {
+      const category = course.category?.trim();
+      if (category) {
+        map[category] = (map[category] ?? 0) + 1;
+      }
+    });
+    return map;
+  }, [courses]);
+
   const filteredCourses = useMemo(() => {
     if (activeCategory === ALL) {
       return courses;
@@ -63,8 +74,9 @@ export function RelatedCourses({ courses }: RelatedCoursesProps) {
       <div className="mb-8">
         <CategoryFilter
           categories={categories}
-          active={activeCategory}
-          onChange={setActiveCategory}
+          active={[activeCategory]}
+          counts={counts}
+          onToggle={(categoryId) => setActiveCategory(categoryId)}
         />
       </div>
 

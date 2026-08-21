@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "@/hooks/useTranslations";
 import Link from "next/link";
 import {
   Bookmark,
@@ -79,6 +80,7 @@ function resolveCourseImage(image?: string | null): string {
 
 export function CourseCard({ course }: CourseCardProps) {
   const { status } = useSession();
+  const t = useTranslation();
   const { data: bookmarkData } = useGetMyBookmarksQuery("COURSE", {
     skip: status !== "authenticated",
   });
@@ -154,13 +156,12 @@ export function CourseCard({ course }: CourseCardProps) {
 
           {/* Access Badge */}
           <span
-            className={`absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold shadow-sm backdrop-blur-sm ${
-              isPrivate
-                ? "bg-slate-950/85 text-white"
-                : isPremium
-                  ? "bg-amber-400 text-slate-950"
-                  : "bg-emerald-500 text-white"
-            }`}
+            className={`absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold shadow-sm backdrop-blur-sm ${isPrivate
+              ? "bg-slate-950/85 text-white"
+              : isPremium
+                ? "bg-amber-400 text-slate-950"
+                : "bg-emerald-500 text-white"
+              }`}
           >
             {accessLabel(course)}
           </span>
@@ -217,27 +218,15 @@ export function CourseCard({ course }: CourseCardProps) {
           <Separator className="my-4 bg-slate-200/80 dark:bg-slate-800" />
 
           {/* Footer */}
-          <div className="flex items-center justify-between text-sm font-semibold">
+          <div className="flex items-center justify-end text-sm font-semibold">
             {course.locked ? (
               <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
-                Private course
+                {t.courses.card.privateCourse}
               </span>
             ) : (
-              <>
-                <span
-                  className={
-                    isPremium
-                      ? "text-amber-600 dark:text-amber-400"
-                      : "text-[#002455] dark:text-blue-300"
-                  }
-                >
-                  {accessLabel(course)}
-                </span>
-
-                <span className="text-[#002455] transition-transform group-hover:translate-x-0.5 dark:text-blue-300">
-                  មើលវគ្គសិក្សា →
-                </span>
-              </>
+              <span className="text-[#002455] transition-transform group-hover:translate-x-0.5 dark:text-blue-300">
+                {t.courses.card.viewCourse} →
+              </span>
             )}
           </div>
         </div>

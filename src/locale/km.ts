@@ -200,6 +200,9 @@ export const km = {
       popular: "វគ្គសិក្សាពេញនិយម",
       searchResults: "លទ្ធផលស្វែងរក",
       allCourses: "ថ្នាក់រៀនទាំងអស់",
+    }, card: {
+      viewCourse: "មើលវគ្គសិក្សា",
+      privateCourse: "វគ្គសិក្សាឯកជន",
     },
     states: {
       loading: "កំពុងទាញយកវគ្គសិក្សា",

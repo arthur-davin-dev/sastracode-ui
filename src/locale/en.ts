@@ -205,6 +205,9 @@ export const en = {
       popular: "Popular Courses",
       searchResults: "Search Results",
       allCourses: "All Courses",
+    }, card: {
+      viewCourse: "View Course",
+      privateCourse: "Private course",
     },
     states: {
       loading: "Loading courses",

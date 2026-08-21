@@ -17,6 +17,13 @@ const ALL = "ALL";
 const FREE = "FREE";
 const PREMIUM = "PREMIUM";
 
+function courseMatchesCategory(course: Course, categoryId: string) {
+  if (categoryId === ALL) return true;
+  if (categoryId === FREE) return course.accessType === "FREE";
+  if (categoryId === PREMIUM) return course.accessType === "PREMIUM";
+  return (course.category?.toLowerCase() ?? "") === categoryId.toLowerCase();
+}
+
 function CourseCardSkeleton() {
   return (
     <div
@@ -73,7 +80,19 @@ interface CategoryOption {
 export default function CourseListingPage() {
   const t = useTranslation();
   const [search, setSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState(ALL);
+  const [activeCategories, setActiveCategories] = useState<string[]>([ALL]);
+
+  const handleCategoryToggle = (categoryId: string) => {
+    setActiveCategories((prev) => {
+      if (categoryId === ALL) return [ALL];
+      const withoutAll = prev.filter((id) => id !== ALL);
+      if (withoutAll.includes(categoryId)) {
+        const next = withoutAll.filter((id) => id !== categoryId);
+        return next.length === 0 ? [ALL] : next;
+      }
+      return [...withoutAll, categoryId];
+    });
+  };
 
   /*
    * ===============================
@@ -164,6 +183,16 @@ export default function CourseListingPage() {
     ];
   }, [allCourses, t]);
 
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    categories.forEach(({ id }) => {
+      counts[id] = allCourses.filter((course) =>
+        courseMatchesCategory(course, id),
+      ).length;
+    });
+    return counts;
+  }, [allCourses, categories]);
+
   /*
    * ===============================
    * SEARCH + FILTER
@@ -173,13 +202,9 @@ export default function CourseListingPage() {
     const query = search.trim().toLowerCase();
 
     return allCourses.filter((course) => {
-      const category = course.category?.toLowerCase() ?? "";
-
-      const matchesCategory =
-        activeCategory === ALL ||
-        (activeCategory === FREE && course.accessType === "FREE") ||
-        (activeCategory === PREMIUM && course.accessType === "PREMIUM") ||
-        category === activeCategory.toLowerCase();
+      const matchesCategory = activeCategories.some((id) =>
+        courseMatchesCategory(course, id),
+      );
 
       const matchesSearch =
         query.length === 0 ||
@@ -189,7 +214,7 @@ export default function CourseListingPage() {
 
       return matchesCategory && matchesSearch;
     });
-  }, [allCourses, search, activeCategory]);
+  }, [allCourses, search, activeCategories]);
 
   /*
    * ===============================
@@ -207,7 +232,10 @@ export default function CourseListingPage() {
     Boolean(recommendedQuery.error) &&
     Boolean(popularQuery.error);
 
-  const isFiltering = search.trim().length > 0 || activeCategory !== ALL;
+  const isFiltering =
+    search.trim().length > 0 ||
+    activeCategories.length !== 1 ||
+    activeCategories[0] !== ALL;
 
   /*
    * ===============================
@@ -225,7 +253,7 @@ export default function CourseListingPage() {
       <CourseBanner />
 
       <main className="mx-auto max-w-7xl px-6 pb-16 pt-10">
-        <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-10 flex items-center gap-3">
           <SearchBar
             value={search}
             onChange={setSearch}
@@ -233,8 +261,9 @@ export default function CourseListingPage() {
           />
           <CategoryFilter
             categories={categories}
-            active={activeCategory}
-            onChange={setActiveCategory}
+            active={activeCategories}
+            counts={categoryCounts}
+            onToggle={handleCategoryToggle}
           />
         </div>
 
