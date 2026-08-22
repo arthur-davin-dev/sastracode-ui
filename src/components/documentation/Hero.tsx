@@ -20,8 +20,8 @@ function TypingTitle({
     ).matches;
 
     if (reduceMotion) {
-      setVisibleTitle(FULL_TITLE);
-      return;
+      const titleTimer = window.setTimeout(() => setVisibleTitle(FULL_TITLE), 0);
+      return () => window.clearTimeout(titleTimer);
     }
 
     const characters = Array.from(FULL_TITLE);

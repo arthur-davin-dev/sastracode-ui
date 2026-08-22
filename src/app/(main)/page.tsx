@@ -1,15 +1,13 @@
 import Banner from "@/components/home/banner/Banner";
-import CoreFeatures from "@/components/home/core-feature/CoreFeature";
 import { RightWavyStack } from "@/components/home/technology-stack/WavyStack";
 import Review from "@/components/home/review/Review";
-import Resource from "@/components/home/resource/Resource";
 import LandingCourses from "@/components/home/landing-courses/course";
 import HomePopularDocumentation from "@/components/home/HomePopularDocumentation";
 import ScrollReveal from "@/components/home/ScrollReveal";
 
 export default function Page() {
   return (
-    <div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+    <main className="min-h-screen bg-transparent text-gray-900 transition-colors duration-300 dark:bg-transparent dark:text-gray-100">
       {/* <Hero /> */}
       <Banner />
       <ScrollReveal>
@@ -33,6 +31,6 @@ export default function Page() {
       <ScrollReveal>
         <Review />
       </ScrollReveal>
-    </div>
+    </main>
   );
 }

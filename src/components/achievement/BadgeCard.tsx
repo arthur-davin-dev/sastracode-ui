@@ -231,11 +231,7 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
                     dark:bg-slate-800
                   `
                   : `
-                    border-yellow-200
-                    bg-gradient-to-br
-                    from-yellow-50
-                    via-amber-50
-                    to-yellow-100
+                    border-slate-200
                     shadow-sm
                     group-hover:scale-105
                   `
@@ -246,6 +242,11 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
             <img
               src={badge.iconUrl || "/images/Margin3.png"}
               alt={badge.name}
+              onError={(e) => {
+                const img = e.currentTarget;
+                if (img.src.endsWith("/images/Margin3.png")) return;
+                img.src = "/images/Margin3.png";
+              }}
               className={`
                 h-12 w-12 object-contain
                 transition-all duration-300
@@ -333,17 +334,16 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
               className="
                 h-11 w-full
                 rounded-xl
-                bg-yellow-400
+                bg-primary-color
                 font-bold
-                text-primary-color
+                text-white
                 shadow-sm
                 transition-all duration-300
-
                 hover:scale-[1.02]
-                hover:bg-yellow-300
+                hover:opacity-90
               "
             >
-              <Sparkles className="mr-2 h-4 w-4" />
+              {/* <Sparkles className="mr-2 h-4 w-4" /> */}
               ទទួលបានមេដាយ
             </Button>
           ) : (

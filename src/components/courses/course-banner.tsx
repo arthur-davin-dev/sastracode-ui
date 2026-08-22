@@ -1,6 +1,6 @@
 "use client";
 
-import { PlatformShowcase } from "@/components/home/PlatformShowcase";
+import  PlatformShowcase  from "@/components/home/PlatformShowcase";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
@@ -191,13 +191,13 @@ export default function CourseBanner() {
         border-b
         border-slate-200
         bg-white
-        py-12
+        py-4
         transition-colors
         duration-300
         dark:border-slate-800
         dark:bg-slate-950
-        sm:py-16
-        lg:py-20
+        sm:py-6
+        lg:py-8
       "
     >
 
@@ -254,7 +254,7 @@ export default function CourseBanner() {
             </p>
 
             {/* Features */}
-            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-5">
+            <div className="mt-8 flex flex-wrap xl:flex-nowrap gap-x-4 lg:gap-x-6 gap-y-5">
               {FEATURES.map(({ label, icon: Icon }) => (
                 <div
                   key={label}
@@ -262,7 +262,7 @@ export default function CourseBanner() {
                     flex
                     items-center
                     gap-3
-                    text-lg
+                    text-base xl:text-lg
                     font-medium
                     text-slate-700
                     dark:text-slate-300
@@ -303,7 +303,7 @@ export default function CourseBanner() {
                   group
                   h-14
                   rounded-xl
-                  bg-[#002455]
+                  bg-primary-color
                   px-8
                   text-lg
                   font-semibold

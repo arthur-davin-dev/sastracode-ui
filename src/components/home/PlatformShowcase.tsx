@@ -1,191 +1,199 @@
-"use client";
+import React from "react";
 
-import Image from "next/image";
-import { BookOpen, Gamepad2, Trophy, Sparkles } from "lucide-react";
-import { forwardRef, useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { useTranslation } from "@/hooks/useTranslations";
-
-
-interface FeatureCardProps {
-  icon: ReactNode;
-  title: string;
-}
-
-const FeatureCard = forwardRef<HTMLDivElement, FeatureCardProps>(function FeatureCard(
-  { icon, title },
-  ref,
-) {
+export default function PlatformShowcase() {
   return (
-    <div
-      ref={ref}
-      className="relative z-10 w-[48%] min-w-0 flex-none flex items-center gap-3 rounded-xl border-2 border-blue-500/60 bg-white/[0.03] px-3.5 py-3.5 backdrop-blur-sm shadow-[0_0_16px_rgba(59,130,246,0.25)]"
-    >
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gradient-to-b from-indigo-500 to-indigo-700 text-white shadow-[0_0_0_4px_rgba(99,102,241,0.15)] sm:h-12 sm:w-12">
-        {icon}
-      </div>
-      <h3 className="text-sm font-semibold text-white sm:text-base">{title}</h3>
-    </div>
-  );
-});
+    <>
+      <style>{`
+        .stage-container {
+          container-type: inline-size;
+          aspect-ratio: 1280/720;
+          border-radius: 1.2cqw;
+        }
+        .hero-header { padding: 0 4cqw; }
+        .feature-card {
+          gap: 1.15cqw;
+          padding: 1.55cqw 1.7cqw;
+          border-radius: 1.15cqw;
+          box-shadow: 0 0.6cqw 2cqw rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.03);
+        }
+        .card-icon-circle {
+          width: 6.5cqw;
+          height: 6.5cqw;
+          background: radial-gradient(circle at 32% 28%, #4c86ff, #2a56d6 65%, #1c3fa8);
+          box-shadow: 0 0 0 1px rgba(255,255,255,0.06) inset, 0 0.5cqw 1.4cqw rgba(45,100,240,0.45);
+        }
+        .card-icon-circle svg { width: 3.2cqw; height: 3.2cqw; }
 
-interface LinePaths {
-  topLeft: string;
-  topRight: string;
-  bottomLeft: string;
-  bottomRight: string;
-}
+        .connector-line {
+          fill: none;
+          stroke: rgba(110,163,255,0.55);
+          stroke-width: 2;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+        .connector-glow {
+          fill: none;
+          stroke: rgba(90,140,255,0.9);
+          stroke-width: 5;
+          opacity: 0.18;
+          filter: blur(2px);
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+        .dome-glow-svg {
+          width: 60cqw;
+          height: 22.5cqw;
+        }
+        .center-emblem {
+          width: 10.2cqw;
+          height: 10.2cqw;
+          border-radius: 22%;
+          background: linear-gradient(160deg, #4c82fb 0%, #2f66e6 55%, #1e46b8 100%);
+          box-shadow:
+            0 0 0 1px rgba(255,255,255,0.08) inset,
+            0 0.4cqw 0.6cqw rgba(255,255,255,0.12) inset,
+            0 1.2cqw 3cqw rgba(45,100,240,0.55),
+            0 0 8cqw rgba(63,125,251,0.35);
+        }
+        .center-emblem svg { width: 4.6cqw; height: 4.6cqw; }
+        @media (max-width: 640px) {
+          .stage-container { aspect-ratio: auto; min-height: 1180px; }
+        }
+      `}</style>
 
-const featureIcons = [
-  <BookOpen size={20} key="docs" />,
-  <Sparkles size={20} key="ai" />,
-  <Gamepad2 size={20} key="practice" />,
-  <Trophy size={20} key="progress" />,
-];
+      <div className="bg-transparent scale-100 lg:scale-[1.15] lg:origin-center mt-8 lg:-mt-24">
+        <div className="stage-container relative w-full mx-auto overflow-hidden">
+          <header className="hero-header absolute top-[3.6%] left-0 right-0 text-center">
+          </header>
 
-export function PlatformShowcase() {
-  const currentT = useTranslation();
-
-  const features = currentT.platformShowcase.features.map((f, i) => ({
-    icon: featureIcons[i],
-    title: f.title,
-  }));
-
-  const stackRef = useRef<HTMLDivElement>(null);
-  const topLeftRef = useRef<HTMLDivElement>(null);
-  const topRightRef = useRef<HTMLDivElement>(null);
-  const bottomLeftRef = useRef<HTMLDivElement>(null);
-  const bottomRightRef = useRef<HTMLDivElement>(null);
-  const hubRef = useRef<HTMLDivElement>(null);
-
-  const [paths, setPaths] = useState<LinePaths | null>(null);
-
-  useLayoutEffect(() => {
-    const measure = () => {
-      const stack = stackRef.current;
-      const tl = topLeftRef.current;
-      const tr = topRightRef.current;
-      const bl = bottomLeftRef.current;
-      const br = bottomRightRef.current;
-      const hub = hubRef.current;
-      if (!stack || !tl || !tr || !bl || !br || !hub) return;
-
-      const sRect = stack.getBoundingClientRect();
-      const point = (el: HTMLElement, edge: "bottom" | "top") => {
-        const r = el.getBoundingClientRect();
-        return {
-          x: r.left + r.width / 2 - sRect.left,
-          y: (edge === "bottom" ? r.bottom : r.top) - sRect.top,
-        };
-      };
-
-      const hubP = point(hub, "top");
-
-      const topRowBottom = Math.max(point(tl, "bottom").y, point(tr, "bottom").y);
-      const bottomRowTop = Math.min(point(bl, "top").y, point(br, "top").y);
-      const bottomRowBottom = Math.max(point(bl, "bottom").y, point(br, "bottom").y);
-
-      const r = 10;
-      const s = 5;
-
-      const topGapY = (topRowBottom + bottomRowTop) / 2;
-      const bottomGapY = bottomRowBottom + (hubP.y - bottomRowBottom) * 0.35;
-
-      const linePath = (
-        start: { x: number; y: number },
-        laneY: number,
-        laneX: number,
-      ) => {
-        const goingRight = laneX > start.x;
-        return [
-          `M${start.x} ${start.y}`,
-          `L${start.x} ${laneY - r}`,
-          `Q${start.x} ${laneY}, ${start.x + (goingRight ? r : -r)} ${laneY}`,
-          `L${laneX + (goingRight ? -r : r)} ${laneY}`,
-          `Q${laneX} ${laneY}, ${laneX} ${laneY + r}`,
-          `L${laneX} ${hubP.y}`,
-        ].join(" ");
-      };
-
-      setPaths({
-        topLeft: linePath(point(tl, "bottom"), topGapY - s, hubP.x - 0.5 * s),
-        topRight: linePath(point(tr, "bottom"), topGapY + s, hubP.x + 0.5 * s),
-        bottomLeft: linePath(point(bl, "bottom"), bottomGapY - s, hubP.x - 1.5 * s),
-        bottomRight: linePath(point(br, "bottom"), bottomGapY + s, hubP.x + 1.5 * s),
-      });
-    };
-
-    measure();
-
-    const ro = new ResizeObserver(measure);
-    if (stackRef.current) ro.observe(stackRef.current);
-    window.addEventListener("resize", measure);
-
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", measure);
-    };
-  }, [currentT]);
-
-  return (
-    <div className="relative overflow-hidden rounded-[28px] border border-indigo-900/40 bg-gradient-to-b from-[#0B1020] via-[#0E1530] to-[#0B1020] px-6 py-6 sm:px-8 sm:py-8">
-      <div ref={stackRef} className="relative flex flex-col items-center gap-5">
-        <svg className="pointer-events-none absolute inset-0 z-0 h-full w-full overflow-visible">
-          <defs>
-            <filter id="lineGlow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="1.4" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-          {paths && (
-            <>
-              <path d={paths.topLeft} stroke="#60a5fa" strokeOpacity="0.85" strokeWidth="1.5" fill="none" filter="url(#lineGlow)" />
-              <path d={paths.topRight} stroke="#60a5fa" strokeOpacity="0.85" strokeWidth="1.5" fill="none" filter="url(#lineGlow)" />
-              <path d={paths.bottomLeft} stroke="#60a5fa" strokeOpacity="0.85" strokeWidth="1.5" fill="none" filter="url(#lineGlow)" />
-              <path d={paths.bottomRight} stroke="#60a5fa" strokeOpacity="0.85" strokeWidth="1.5" fill="none" filter="url(#lineGlow)" />
-            </>
-          )}
-        </svg>
-
-        <div className="flex w-full justify-center gap-2 sm:gap-3">
-          <FeatureCard ref={topLeftRef} {...features[0]} />
-          <FeatureCard ref={topRightRef} {...features[1]} />
-        </div>
-
-        <div className="flex w-full justify-center gap-8 sm:gap-16">
-          <FeatureCard ref={bottomLeftRef} {...features[2]} />
-          <FeatureCard ref={bottomRightRef} {...features[3]} />
-        </div>
-
-        // After
-        <div className="relative z-10 mt-4 flex items-center justify-center">
-          <svg
-            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-            width="420"
-            height="180"
-            viewBox="0 0 420 180"
-          >
-            <defs>
-              <filter id="ringGlow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="2.5" />
-              </filter>
-            </defs>
-            <ellipse cx="210" cy="90" rx="200" ry="70" fill="none" stroke="#3b82f6" strokeOpacity="0.18" strokeWidth="2" filter="url(#ringGlow)" />
-            <ellipse cx="210" cy="90" rx="150" ry="52" fill="none" stroke="#3b82f6" strokeOpacity="0.3" strokeWidth="2" filter="url(#ringGlow)" />
-            <ellipse cx="210" cy="90" rx="100" ry="35" fill="none" stroke="#60a5fa" strokeOpacity="0.45" strokeWidth="2" filter="url(#ringGlow)" />
-            <ellipse cx="210" cy="90" rx="55" ry="20" fill="rgba(59,130,246,0.4)" filter="url(#ringGlow)" />
+          {/* Connector lines — each card links to center </> icon */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-[1]" viewBox="0 0 1280 720" preserveAspectRatio="none">
+            <g>
+              {/* Top-left card → straight down to icon */}
+              <path className="connector-glow" d="M485,247 L595,247 Q610,247 610,262 L610,430" />
+              {/* Top-right card → straight down to icon */}
+              <path className="connector-glow" d="M792,247 L685,247 Q670,247 670,262 L670,430" />
+              {/* Bottom-left card → straight down */}
+              <path className="connector-glow" d="M458,417 L558,417 Q570,417 570,432 L570,530" />
+              {/* Bottom-right card → straight down */}
+              <path className="connector-glow" d="M820,417 L722,417 Q710,417 710,432 L710,530" />
+            </g>
+            <g>
+              {/* Top-left card → straight down to icon */}
+              <path className="connector-line" d="M485,247 L595,247 Q610,247 610,262 L610,430" />
+              {/* Top-right card → straight down to icon */}
+              <path className="connector-line" d="M792,247 L685,247 Q670,247 670,262 L670,430" />
+              {/* Bottom-left card → straight down */}
+              <path className="connector-line" d="M458,417 L558,417 Q570,417 570,432 L570,530" />
+              {/* Bottom-right card → straight down */}
+              <path className="connector-line" d="M820,417 L722,417 Q710,417 710,432 L710,530" />
+            </g>
           </svg>
 
-          <div
-            ref={hubRef}
-            className="relative z-10 flex h-16 w-16 items-center justify-center rounded-2xl bg-white sm:h-[72px] sm:w-[72px]"
-          >
-            <Image src="/images/sastraCode.png" alt="SastraCode" width={44} height={44} />
+          {/* Top-left card */}
+          <div className="feature-card absolute left-[5.63%] top-[24.3%] w-[32.3%] h-[20.1%] flex items-center justify-center bg-white/70 border border-slate-200 dark:bg-[rgba(13,19,38,0.55)] dark:border-[rgba(94,148,255,0.20)] backdrop-blur-[6px] z-[2] transition-all duration-250 ease-in-out hover:bg-slate-50 hover:border-slate-300 dark:hover:border-[rgba(110,160,255,0.45)] dark:hover:bg-[rgba(16,23,46,0.75)] hover:-translate-y-0.5">
+            <div className="card-icon-circle shrink-0 rounded-full flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="text-[#eaf1ff]">
+                <circle cx="12" cy="12" r="10" />
+                <polygon points="10 8 16 12 10 16 10 8" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-sm lg:text-base font-normal text-slate-600 dark:text-slate-300 text-balance line-clamp-2">Learn Through Video Lessons</h3>
+            </div>
           </div>
+
+          {/* Top-right card */}
+          <div className="feature-card absolute left-[61.88%] top-[24.3%] w-[32.3%] h-[20.1%] flex items-center justify-center bg-white/70 border border-slate-200 dark:bg-[rgba(13,19,38,0.55)] dark:border-[rgba(94,148,255,0.20)] backdrop-blur-[6px] z-[2] transition-all duration-250 ease-in-out hover:bg-slate-50 hover:border-slate-300 dark:hover:border-[rgba(110,160,255,0.45)] dark:hover:bg-[rgba(16,23,46,0.75)] hover:-translate-y-0.5">
+            <div className="card-icon-circle shrink-0 rounded-full flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="text-[#eaf1ff]">
+                <circle cx="12" cy="8" r="6" />
+                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-sm lg:text-base font-normal text-slate-600 dark:text-slate-300 text-balance line-clamp-2">Earn Skill Badges</h3>
+            </div>
+          </div>
+
+          {/* Bottom-left card */}
+          <div className="feature-card absolute left-[4.45%] top-[47.9%] w-[31.3%] h-[20.1%] flex items-center justify-center bg-white/70 border border-slate-200 dark:bg-[rgba(13,19,38,0.55)] dark:border-[rgba(94,148,255,0.20)] backdrop-blur-[6px] z-[2] transition-all duration-250 ease-in-out hover:bg-slate-50 hover:border-slate-300 dark:hover:border-[rgba(110,160,255,0.45)] dark:hover:bg-[rgba(16,23,46,0.75)] hover:-translate-y-0.5">
+            <div className="card-icon-circle shrink-0 rounded-full flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="text-[#eaf1ff]">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-sm lg:text-base font-normal text-slate-600 dark:text-slate-300 text-balance line-clamp-2">Chat &amp; Connection</h3>
+            </div>
+          </div>
+
+          {/* Bottom-right card */}
+          <div className="feature-card absolute left-[64.06%] top-[47.9%] w-[31.3%] h-[20.1%] flex items-center justify-center bg-white/70 border border-slate-200 dark:bg-[rgba(13,19,38,0.55)] dark:border-[rgba(94,148,255,0.20)] backdrop-blur-[6px] z-[2] transition-all duration-250 ease-in-out hover:bg-slate-50 hover:border-slate-300 dark:hover:border-[rgba(110,160,255,0.45)] dark:hover:bg-[rgba(16,23,46,0.75)] hover:-translate-y-0.5">
+            <div className="card-icon-circle shrink-0 rounded-full flex items-center justify-center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="text-[#eaf1ff]">
+                <path d="M8 21h8" />
+                <path d="M12 17v4" />
+                <path d="M7 4h10v5a5 5 0 0 1-10 0z" />
+                <path d="M17 5h3a2 2 0 0 1 2 2v1a4 4 0 0 1-4 4" />
+                <path d="M7 5H4a2 2 0 0 0-2 2v1a4 4 0 0 0 4 4" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="text-sm lg:text-base font-normal text-slate-600 dark:text-slate-300 text-balance line-clamp-2">Receive Verified Certificate</h3>
+            </div>
+          </div>
+
+          {/* Center emblem glow */}
+          <svg className="dome-glow-svg absolute left-1/2 top-[76.5%] -translate-x-1/2 -translate-y-1/2 z-[1] pointer-events-none overflow-visible" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="b18" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="18" />
+              </filter>
+              <filter id="b9" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="9" />
+              </filter>
+              <filter id="b6" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="6" />
+              </filter>
+              <filter id="b3" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" />
+              </filter>
+            </defs>
+
+            {/* ambient bloom */}
+            <ellipse cx="400" cy="150" rx="390" ry="98" fill="#1e46b0" opacity="0.28" filter="url(#b18)" />
+
+            {/* band 4 (outermost ring) */}
+            <ellipse cx="400" cy="150" rx="335" ry="84" fill="#193c96" opacity="0.55" filter="url(#b9)" />
+            <ellipse cx="400" cy="150" rx="335" ry="84" fill="none" stroke="#4d7cf0" strokeOpacity={0.3} strokeWidth={2.5} filter="url(#b3)" />
+
+            {/* band 3 */}
+            <ellipse cx="400" cy="147" rx="258" ry="64" fill="#2450c6" opacity="0.62" filter="url(#b9)" />
+            <ellipse cx="400" cy="147" rx="258" ry="64" fill="none" stroke="#6b98ff" strokeOpacity={0.42} strokeWidth={2.5} filter="url(#b3)" />
+
+            {/* band 2 */}
+            <ellipse cx="400" cy="144" rx="182" ry="45" fill="#3468e0" opacity="0.72" filter="url(#b6)" />
+            <ellipse cx="400" cy="144" rx="182" ry="45" fill="none" stroke="#9db9ff" strokeOpacity={0.55} strokeWidth={2.5} filter="url(#b3)" />
+
+            {/* band 1 (brightest ring) */}
+            <ellipse cx="400" cy="140" rx="112" ry="28" fill="#5f8bf8" opacity="0.85" filter="url(#b6)" />
+            <ellipse cx="400" cy="140" rx="112" ry="28" fill="none" stroke="#cfe0ff" strokeOpacity={0.6} strokeWidth={2} filter="url(#b3)" />
+
+            {/* hot core */}
+            <ellipse cx="400" cy="132" rx="58" ry="15" fill="#e4edff" opacity="0.9" filter="url(#b6)" />
+          </svg>
+
+          {/* Center icon */}
+          <div className="center-emblem absolute left-1/2 top-[59.7%] -translate-x-1/2 flex items-center justify-center z-[3]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" className="text-[#f4f8ff]">
+              <polyline points="16 18 22 12 16 6" />
+              <polyline points="8 6 2 12 8 18" />
+            </svg>
+          </div>
+
         </div>
       </div>
-    </div>
+    </>
   );
 }

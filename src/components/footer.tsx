@@ -10,7 +10,7 @@ export default function Footer() {
   const currentT = useTranslation();
 
   return (
-    <footer className="w-full bg-white dark:bg-slate-950 text-primary-color dark:text-slate-300 font-sans text-sm pt-6 pb-6 px-6 md:px-16 border-t border-gray-100 dark:border-slate-800/80 transition-colors duration-300">
+    <footer className="relative z-10 w-full bg-white dark:bg-slate-950 text-primary-color dark:text-slate-300 font-sans text-sm pt-6 pb-6 px-6 md:px-16 border-t border-gray-100 dark:border-slate-800/80 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         {/* Upper Footer Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-4 text-center md:text-left">
@@ -51,30 +51,30 @@ export default function Footer() {
 
             <ul className="space-y-2.5 text-xs text-primary-color dark:text-slate-300">
               <li>
-                <a
+                <Link
                   href="/about-us"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
                   {currentT.footer.quickLinks.about}
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   href="/courses"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
                   {currentT.footer.quickLinks.course}
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   href="/about-us"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
                   {currentT.footer.quickLinks.contact}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -87,30 +87,30 @@ export default function Footer() {
 
             <ul className="space-y-2.5 text-xs text-primary-color dark:text-slate-300">
               <li>
-                <a
+                <Link
                   href="/documentation"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
                 >
                   {currentT.footer.study.lesson}
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   href="/playground"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
                 >
                   {currentT.footer.study.playground}
-                </a>
+                </Link>
               </li>
 
               <li>
-                <a
+                <Link
                   href="/function"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
                 >
                   {currentT.footer.study.feature}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

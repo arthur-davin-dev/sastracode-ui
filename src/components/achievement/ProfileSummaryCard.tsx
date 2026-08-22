@@ -8,12 +8,12 @@ import { UserSummary } from "@/types/achievement";
 
 export function ProfileSummaryCard({ user }: { user: UserSummary }) {
   return (
-    <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-md 
-    hover:shadow-xl  transition-all duration-300">
+    <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900
+    hover:border-primary-color/25 hover:-translate-y-1.5 transition-all duration-300">
       
       {/* Background Decorative Ambient Glows */}
       <div className="absolute -top-16 -left-16 h-40 w-40 rounded-full bg-blue-600/10 blur-3xl" />
-      <div className="absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-yellow-400/20 blur-3xl" />
+      <div className="absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-primary-color/10 blur-3xl" />
 
       <CardContent className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 p-8">
         
@@ -22,7 +22,7 @@ export function ProfileSummaryCard({ user }: { user: UserSummary }) {
           
           {/* Avatar with Ring & Level Badge Overlay */}
           <div className="relative shrink-0">
-            <Avatar className="h-24 w-24 ring-4 ring-init-color ring-offset-4 ring-offset-white dark:ring-offset-slate-900 shadow-lg">
+            <Avatar className="h-24 w-24 ring-4 ring-primary-color/20 ring-offset-4 ring-offset-white dark:ring-offset-slate-900 shadow-lg">
               <AvatarImage src={user.avatarUrl} alt={user.name} />
               <AvatarFallback className="bg-primary-color text-white font-bold text-2xl">
                 {user.name[0]}
@@ -37,13 +37,16 @@ export function ProfileSummaryCard({ user }: { user: UserSummary }) {
           </div>
 
           {/* Name & Sub-details */}
-          <div className="space-y-3">
-            <h2 className="font-bold text-2xl text-primary-color dark:text-white leading-tight">
+          <div className="min-w-0 space-y-3">
+            <h2 className="font-bold text-2xl text-primary-color dark:text-white leading-tight break-words">
               {user.name}
             </h2>
-            <p className="text-lg text-slate-600 dark:text-slate-300 font-medium">
-              Bonus Booster • <span className="text-primary-color dark:text-white font-semibold">
-                កម្រិតទី {user.nextLevel - 1}</span>
+            <p className="flex flex-wrap items-center justify-center gap-x-2 sm:justify-start text-lg text-slate-600 dark:text-slate-300 font-medium">
+              <span>Bonus Booster</span>
+              <span className="text-slate-400 dark:text-slate-500">•</span>
+              <span className="text-primary-color dark:text-white font-semibold">
+                កម្រិតទី {user.nextLevel - 1}
+              </span>
             </p>
           </div>
         </div>

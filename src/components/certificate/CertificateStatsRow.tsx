@@ -105,12 +105,12 @@ export function CertificateStatsRow({
               </div>
 
               {/* Value (text-2xl & text-primary-color) */}
-              <div className="text-2xl font-extrabold text-primary-color pt-1">
+              <div className="text-2xl font-extrabold text-primary-color dark:text-white pt-1">
                 {stat.value}
               </div>
 
               {/* Label (text-lg & text-primary-color) */}
-              <div className="text-lg font-medium text-primary-color opacity-80 leading-snug">
+              <div className="text-lg font-medium text-primary-color dark:text-white opacity-80 leading-snug">
                 {stat.label}
               </div>
             </CardContent>

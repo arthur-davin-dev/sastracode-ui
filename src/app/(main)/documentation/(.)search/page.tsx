@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, LoaderCircle, SearchX } from "lucide-react";
 
@@ -8,6 +8,15 @@ import FilterTabs from "@/components/documentation/FilterTabs";
 import SearchResultCard from "@/components/documentation/SearchResultCard";
 import SortDropdown from "@/components/documentation/SortDropdown";
 import { useGlobalSearchQuery } from "@/redux/service/searchApi";
+import {
+  apiSortFor,
+  filterByLevel,
+  LEVEL_FILTER_OPTIONS,
+  SORT_OPTIONS,
+  sortResults,
+  type LevelFilterValue,
+  type SortKey,
+} from "@/utils/search-filters";
 
 function SearchDocsModalContent() {
   const router = useRouter();
@@ -73,11 +82,14 @@ function SearchDocsModalContent() {
 
   const query = inputValue.trim();
 
+  const [level, setLevel] = useState<LevelFilterValue>("ALL");
+  const [sortKey, setSortKey] = useState<SortKey>("relevance");
+
   const { data, isFetching, error } = useGlobalSearchQuery(
     {
       q: query,
       type: "TUTORIAL",
-      sort: "popular",
+      sort: apiSortFor(sortKey),
       page: 0,
       size: 20,
     },
@@ -86,8 +98,12 @@ function SearchDocsModalContent() {
     },
   );
 
-  const filteredResults = data?.data?.items ?? [];
-  const totalResults = data?.data?.total ?? filteredResults.length;
+  const rawResults = useMemo(() => data?.data?.items ?? [], [data]);
+  const filteredResults = useMemo(
+    () => sortResults(filterByLevel(rawResults, level), sortKey),
+    [rawResults, level, sortKey],
+  );
+  const totalResults = data?.data?.total ?? rawResults.length;
 
   return (
     <div
@@ -353,13 +369,11 @@ function SearchDocsModalContent() {
           ) : (
             <div className="space-y-5">
               {/* Filter */}
-              {/* <FilterTabs
-                options={[
-                  "កម្រិតមូលដ្ឋាន",
-                  "កម្រិតមធ្យម",
-                  "កម្រិតខ្ពស់",
-                ]}
-              /> */}
+              <FilterTabs
+                options={LEVEL_FILTER_OPTIONS}
+                value={level}
+                onChange={setLevel}
+              />
 
               {/* Result Header */}
               <div
@@ -394,8 +408,23 @@ function SearchDocsModalContent() {
                       dark:text-white
                     "
                   >
-                    {totalResults}
+                    {filteredResults.length}
                   </span>{" "}
+                  {level !== "ALL" && (
+                    <>
+                      ក្នុងចំណោម{" "}
+                      <span
+                        className="
+                          font-semibold
+                          text-slate-900
+
+                          dark:text-white
+                        "
+                      >
+                        {totalResults}
+                      </span>{" "}
+                    </>
+                  )}
                   សម្រាប់{" "}
                   <span
                     className="
@@ -409,7 +438,11 @@ function SearchDocsModalContent() {
                   </span>
                 </p>
 
-                <SortDropdown />
+                <SortDropdown
+                  options={SORT_OPTIONS}
+                  value={sortKey}
+                  onChange={setSortKey}
+                />
               </div>
 
               {/* ---------------------------------------------------------- */}
@@ -561,7 +594,9 @@ function SearchDocsModalContent() {
                       dark:text-slate-100
                     "
                   >
-                    មិនមានលទ្ធផលស្វែងរកទេ
+                    {rawResults.length > 0
+                      ? "មិនមានលទ្ធផលសម្រាប់តម្រងកម្រិតនេះទេ"
+                      : "មិនមានលទ្ធផលស្វែងរកទេ"}
                   </p>
 
                   <p
@@ -574,9 +609,59 @@ function SearchDocsModalContent() {
                       dark:text-zinc-400
                     "
                   >
-                    សាកល្បងស្វែងរកដោយប្រើពាក្យផ្សេងទៀត។
+                    {rawResults.length > 0
+                      ? "សាកល្បងផ្លាស់ប្តូរតម្រងកម្រិត។"
+                      : "សាកល្បងស្វែងរកដោយប្រើពាក្យផ្សេងទៀត។"}
                   </p>
+
+                  {rawResults.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setLevel("ALL")}
+                      className="
+                        mt-3
+                        font-khmer
+                        text-sm
+                        font-semibold
+                        text-[#534AB7]
+                        underline
+
+                        dark:text-violet-400
+                      "
+                    >
+                      សម្អាតតម្រង
+                    </button>
+                  )}
                 </div>
+              )}
+
+              {filteredResults.length > 0 && (
+                <a
+                  href={`/documentation/search?q=${encodeURIComponent(query)}`}
+                  className="
+                    flex
+                    items-center
+                    justify-center
+                    gap-1.5
+                    rounded-xl
+                    border
+                    border-slate-100
+                    py-2.5
+                    font-khmer
+                    text-sm
+                    font-semibold
+                    text-[#534AB7]
+                    transition
+
+                    hover:bg-slate-50
+
+                    dark:border-zinc-800
+                    dark:text-violet-400
+                    dark:hover:bg-zinc-900
+                  "
+                >
+                  មើលលទ្ធផលទាំងអស់នៅទំព័រពេញ
+                </a>
               )}
             </div>
           )}

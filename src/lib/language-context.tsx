@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode, Dispatch, SetStateAction } from "react";
 
 type Lang = "km" | "en";
 
@@ -14,6 +14,20 @@ const LanguageContext = createContext<LanguageContextType | null>(null);
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<Lang>("km");
+
+  useEffect(() => {
+    const savedLanguage = localStorage.getItem("language");
+    const timeoutId = window.setTimeout(() => {
+      if (savedLanguage === "en" || savedLanguage === "km") setLang(savedLanguage);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+    localStorage.setItem("language", lang);
+  }, [lang]);
 
   const toggleLanguage = () => {
     setLang((prev) => (prev === "km" ? "en" : "km"));

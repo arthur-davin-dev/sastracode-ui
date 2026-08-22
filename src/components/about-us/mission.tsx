@@ -10,8 +10,11 @@ import {
   Code2,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useTranslation } from "@/hooks/useTranslations";
 
 export default function MissionVision() {
+  const { mission } = useTranslation();
+
   return (
     <section className="w-full bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 py-20 px-6 md:px-12 font-sans transition-colors duration-300">
       <div className="max-w-6xl mx-auto space-y-20">
@@ -25,16 +28,13 @@ export default function MissionVision() {
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 text-xs font-mono font-medium mb-4 border border-blue-200 dark:border-blue-900">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>CORE VALUES</span>
+            <span>{mission.section.badge}</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">
-            Mission{" "}
-            <span className="text-blue-600 dark:text-blue-500">&amp;</span>{" "}
-            Vision
+            {mission.section.title}
           </h2>
           <p className="mt-3 text-slate-600 dark:text-slate-400 text-base leading-relaxed">
-            The core principles that guide our platform, curriculum, and
-            community decisions.
+            {mission.section.description}
           </p>
         </motion.div>
 
@@ -53,7 +53,7 @@ export default function MissionVision() {
             whileHover={{ scale: 1.02 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="lg:col-span-6 bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col justify-center relative min-h-[320px]"
+            className="lg:col-span-6 bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col justify-center relative min-h-80"
           >
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-6">
               <div className="flex items-center gap-2">
@@ -78,7 +78,7 @@ export default function MissionVision() {
                   </span>{" "}
                   mission ={" "}
                   <span className="text-emerald-600 dark:text-emerald-400">
-                    &#39;Accessible Education&#39;
+                    &#39;{mission.content.code.mission}&#39;
                   </span>
                   ;
                 </span>
@@ -92,7 +92,7 @@ export default function MissionVision() {
                     function
                   </span>{" "}
                   <span className="text-amber-600 dark:text-amber-400">
-                    learnToCode
+                    {mission.content.code.function}
                   </span>
                   () &#123;
                 </span>
@@ -105,7 +105,7 @@ export default function MissionVision() {
                   <span className="text-cyan-600 dark:text-cyan-400">
                     return
                   </span>{" "}
-                  freeAccess &amp;&amp; handsOnPractice;
+                  {mission.content.code.return};
                 </span>
               </div>
               <div className="flex items-center gap-3 text-slate-400">
@@ -118,10 +118,10 @@ export default function MissionVision() {
 
             <div className="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-mono">
               <span className="flex items-center gap-1.5">
-                <Code2 className="w-4 h-4 text-cyan-500" /> High-impact Learning
+                <Code2 className="w-4 h-4 text-cyan-500" /> {mission.content.highlight}
               </span>
               <span className="text-emerald-600 dark:text-emerald-400 font-medium">
-                100% Free
+                {mission.content.free}
               </span>
             </div>
           </motion.div>
@@ -132,27 +132,24 @@ export default function MissionVision() {
               <div className="w-10 h-10 rounded-xl bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-200 dark:border-cyan-800 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
                 <Target className="w-5 h-5" />
               </div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white font-khmer">
-                បេសកកម្មរបស់យើង
+              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+                {mission.content.title}
               </h3>
             </div>
 
-            <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed font-khmer">
-              ដើម្បីធ្វើឱ្យការរៀនសរសេរកូដ (Programming) កាន់តែងាយស្រួល
-              មានអន្តរកម្ម និងឥតគិតថ្លៃសម្រាប់អ្នករៀនគ្រប់កម្រិត—
-              ដោយបំបាត់ឧបសគ្គដែលរាំងស្ទះមនុស្សឃ្លានចង់បានពិភពបច្ចេកវិទ្យា។
+            <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
+              {mission.content.description}
             </p>
 
-            <div className="flex flex-wrap gap-2 pt-2 font-khmer">
-              <span className="px-3.5 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-sm border border-slate-200 dark:border-slate-800">
-                ងាយស្រួលប្រើប្រាស់
-              </span>
-              <span className="px-3.5 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-sm border border-slate-200 dark:border-slate-800">
-                មានអន្តរកម្ម
-              </span>
-              <span className="px-3.5 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-sm border border-slate-200 dark:border-slate-800">
-                ឥតគិតថ្លៃ
-              </span>
+            <div className="flex flex-wrap gap-2 pt-2">
+              {mission.content.tags.map((tag: string, idx: number) => (
+                <span
+                  key={idx}
+                  className="px-3.5 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-sm border border-slate-200 dark:border-slate-800"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
           </div>
         </motion.div>
@@ -172,22 +169,23 @@ export default function MissionVision() {
                 <Eye className="w-5 h-5" />
               </div>
               <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
-                Our Vision
+                {mission.vision.title}
               </h3>
             </div>
 
-            <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed font-khmer">
-              ដើម្បីក្លាយជាដៃគូសង្គ្រោះជឿជាក់មួយ ដែលជួយសិស្សបង្កើតជំនាញ
-              និងរៀបចំខ្លួនសម្រាប់អាជីពបច្ចេកវិទ្យា។
+            <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
+              {mission.vision.description}
             </p>
 
-            <div className="flex flex-wrap gap-2 pt-2 font-khmer">
-              <span className="px-3.5 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-sm border border-slate-200 dark:border-slate-800">
-                គួរឱ្យទុកចិត្ត
-              </span>
-              <span className="px-3.5 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-sm border border-slate-200 dark:border-slate-800">
-                ផ្តោតលើជោគជ័យ
-              </span>
+            <div className="flex flex-wrap gap-2 pt-2">
+              {mission.vision.tags.map((tag: string, idx: number) => (
+                <span
+                  key={idx}
+                  className="px-3.5 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-sm border border-slate-200 dark:border-slate-800"
+                >
+                  {tag}
+                </span>
+              ))}
             </div>
           </div>
 
@@ -198,15 +196,15 @@ export default function MissionVision() {
             whileHover={{ scale: 1.02 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: "easeOut" }}
-            className="lg:col-span-6 bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col justify-center min-h-[320px] order-1 lg:order-2"
+            className="lg:col-span-6 bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col justify-center min-h-80 order-1 lg:order-2"
           >
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-6">
               <span className="text-xs font-mono text-slate-500 dark:text-slate-400 font-medium flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-amber-500" /> Student Career
-                Readiness
+                <TrendingUp className="w-4 h-4 text-amber-500" />{" "}
+                {mission.vision.metrics.title}
               </span>
               <span className="text-xs font-mono text-slate-400">
-                2026 Metrics
+                {mission.vision.metrics.year}
               </span>
             </div>
 
@@ -214,7 +212,7 @@ export default function MissionVision() {
               <div>
                 <div className="flex justify-between text-xs font-mono mb-1.5">
                   <span className="text-slate-700 dark:text-slate-300">
-                    Practical Skill Building
+                    {mission.vision.metrics.practicalSkillBuilding.label}
                   </span>
                   <motion.span
                     initial={{ opacity: 0, x: -6 }}
@@ -223,14 +221,16 @@ export default function MissionVision() {
                     transition={{ duration: 0.6 }}
                     className="text-amber-600 dark:text-amber-400 font-semibold"
                   >
-                    95%
+                    {mission.vision.metrics.practicalSkillBuilding.percentage}%
                   </motion.span>
                 </div>
                 <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
                   <motion.div
                     className="bg-amber-500 h-full rounded-full"
                     initial={{ width: "0%" }}
-                    whileInView={{ width: "95%" }}
+                    whileInView={{
+                      width: `${mission.vision.metrics.practicalSkillBuilding.percentage}%`,
+                    }}
                     viewport={{ once: true }}
                     transition={{ duration: 1.2, ease: "easeOut" }}
                   />
@@ -240,7 +240,7 @@ export default function MissionVision() {
               <div>
                 <div className="flex justify-between text-xs font-mono mb-1.5">
                   <span className="text-slate-700 dark:text-slate-300">
-                    Tech Career Placement
+                    {mission.vision.metrics.techCareerPlacement.label}
                   </span>
                   <motion.span
                     initial={{ opacity: 0, x: -6 }}
@@ -249,16 +249,22 @@ export default function MissionVision() {
                     transition={{ duration: 0.6, delay: 0.25 }}
                     className="text-blue-600 dark:text-blue-400 font-semibold"
                   >
-                    88%
+                    {mission.vision.metrics.techCareerPlacement.percentage}%
                   </motion.span>
                 </div>
                 <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
                   <motion.div
                     className="bg-blue-500 h-full rounded-full"
                     initial={{ width: "0%" }}
-                    whileInView={{ width: "88%" }}
+                    whileInView={{
+                      width: `${mission.vision.metrics.techCareerPlacement.percentage}%`,
+                    }}
                     viewport={{ once: true }}
-                    transition={{ duration: 1.2, ease: "easeOut", delay: 0.2 }}
+                    transition={{
+                      duration: 1.2,
+                      ease: "easeOut",
+                      delay: 0.2,
+                    }}
                   />
                 </div>
               </div>
@@ -266,7 +272,7 @@ export default function MissionVision() {
 
             <div className="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 font-mono">
               <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-              <span>Structured path from beginner to industry-ready</span>
+              <span>{mission.vision.metrics.footer}</span>
             </div>
           </motion.div>
         </motion.div>

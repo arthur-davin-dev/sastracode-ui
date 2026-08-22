@@ -7,6 +7,7 @@ import type { CourseDetailResponse } from "@/types/api/course";
 import { mapApiCourseToCourse } from "@/lib/course/course-adapter";
 import { Skeleton } from "@/components/ui/skeleton";
 import CardSection from "./card-section";
+import { useTranslation } from "@/hooks/useTranslations";
 
 interface CourseApiResponse {
   content: CourseDetailResponse[];
@@ -43,6 +44,7 @@ function CourseSectionSkeleton() {
 }
 
 export default function LandingCourses() {
+  const currentT = useTranslation();
   const [newCourses, setNewCourses] = useState<Course[]>([]);
   const [recommendedCourses, setRecommendedCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
@@ -107,19 +109,19 @@ export default function LandingCourses() {
 
   if (loading) {
     return (
-      <div role="status" aria-label="Loading homepage courses">
+      <div role="status" aria-label={currentT.homeCourses.loading}>
         <CourseSectionSkeleton />
         <CourseSectionSkeleton />
-        <span className="sr-only">Loading courses...</span>
+        <span className="sr-only">{currentT.homeCourses.loading}</span>
       </div>
     );
   }
 
   return (
     <>
-      <CardSection title="វគ្គសិក្សាថ្មីៗ" courses={newCourses} />
+      <CardSection title={currentT.homeCourses.new} courses={newCourses} />
 
-      <CardSection title="វគ្គសិក្សាអនុសាសន៍" courses={recommendedCourses} />
+      <CardSection title={currentT.homeCourses.recommended} courses={recommendedCourses} />
     </>
   );
 }

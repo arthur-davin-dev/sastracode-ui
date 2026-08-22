@@ -1,9 +1,12 @@
 // CodeWindow.tsx
 import Image from "next/image";
+import TiltedCard from "@/components/ui/TiltedCard";
 
 export default function CodeWindow() {
   return (
-    <div className="relative mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
+      <TiltedCard rotateAmplitude={14} scaleOnHover={1.03}>
+      <div className="relative mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
+        <div className="relative mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
       <div className="relative rounded-2xl border border-gray-700/10 dark:border-gray-700/50 bg-white/70 dark:bg-gray-800/70 p-px backdrop-blur-sm transition-colors duration-300 shadow-xl">
         {/* <!-- Window chrome --> */}
         <div className="flex items-center justify-between border-b border-gray-700/10 dark:border-gray-700/30 px-3 sm:px-4 py-2 sm:py-3">
@@ -159,6 +162,10 @@ export default function CodeWindow() {
         />
       </div>
     </div>
+        {/* ...everything you already have stays exactly the same... */}
+      </div>
+    </TiltedCard>
+    
   );
 }
 

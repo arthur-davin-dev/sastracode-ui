@@ -5,22 +5,22 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Send } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
-import { fetchAllMentors, MentorType } from "@/lib/mock-data/about-us/mentor";
+import { useTranslation } from "@/hooks/useTranslations";
 
 export default function Mentor() {
-  const [mentors, setMentors] = useState<MentorType[]>([]);
+  const { mentors: mentorsLocale } = useTranslation();
   const [loading, setLoading] = useState<boolean>(true);
 
+  // Cast title to include optional suffix to satisfy TS union check
+  const titleObj = mentorsLocale?.title as { prefix?: string; highlight?: string; suffix?: string } | undefined;
+
+  // Simulating loading state while translations hydrate
   useEffect(() => {
-    fetchAllMentors()
-      .then((data) => {
-        setMentors(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch mentors:", err);
-        setLoading(false);
-      });
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -34,13 +34,14 @@ export default function Mentor() {
         className="text-center max-w-2xl mx-auto mb-10"
       >
         <h2 className="text-3xl sm:text-4xl font-bold font-khmer text-primary-color dark:text-slate-100 mb-3">
-          អ្នក<span className="text-red-600 dark:text-red-500">ដឹកនាំ</span>
-          របស់យើង
+          {titleObj?.prefix || ""}{" "}
+          <span className="text-red-600 dark:text-red-500">
+            {titleObj?.highlight || ""}
+          </span>
+          {titleObj?.suffix ? ` ${titleObj.suffix}` : ""}
         </h2>
         <p className="font-khmer text-slate-600 dark:text-slate-300 leading-relaxed text-[22px]">
-          ដឹកនាំដោយអ្នកជំនាញក្នុងវិស័យបច្ចេកវិទ្យា
-          ដែលផ្តល់នូវការណែនាំនិងជម្រុញការច្នៃប្រឌិត
-          ដើម្បីភាពជោគជ័យរបស់អ្នកសិក្សា។
+          {mentorsLocale?.description || ""}
         </p>
       </motion.div>
 
@@ -65,7 +66,7 @@ export default function Mentor() {
       ) : (
         /* Mentors Grid */
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center max-w-150 w-full">
-          {mentors.slice(0, 2).map((mentor, index) => (
+          {mentorsLocale?.items?.slice(0, 2).map((mentor: any, index: number) => (
             <motion.div
               key={mentor.id}
               initial={{ opacity: 0, y: 20 }}
