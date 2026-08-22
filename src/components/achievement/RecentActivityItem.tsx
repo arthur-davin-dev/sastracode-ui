@@ -12,7 +12,7 @@ export function RecentActivityItem({ activity }: { activity: Activity }) {
         <div className="flex items-start sm:items-center gap-4">
           {/* Activity Icon Box */}
           <div className="h-10 w-10 shrink-0 rounded-2xl bg-blue-50 dark:bg-blue-950/50 border border-blue-100 dark:border-blue-900/50 text-primary-color
-           dark:text-blue-600 flex items-center justify-center text-2xl shadow-inner group-hover:scale-105 transition-transform duration-300">
+           dark:text-blue-600 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform duration-300">
             {activity.icon}
           </div>
 

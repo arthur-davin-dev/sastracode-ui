@@ -426,24 +426,18 @@ export default function CodeCoach({
       )}
 
       <div className={`${compact ? "" : "mt-3"} grid grid-cols-2 gap-2`}>
-        <button
-          type="button"
-          onClick={() => askCoach("hint")}
-          disabled={loading || !hasTask || (fixUnlocked && nextHintLevel >= 5)}
-          title={
-            hasTask
-              ? "Get the next progressive hint"
-              : "Open from a coding task to use progressive hints"
-          }
-          className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-2 text-xs font-semibold text-amber-800 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300"
-        >
-          {hasTask ? (
+        {hasTask && (
+          <button
+            type="button"
+            onClick={() => askCoach("hint")}
+            disabled={loading || (fixUnlocked && nextHintLevel >= 5)}
+            title="Get the next progressive hint"
+            className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-2 text-xs font-semibold text-amber-800 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300"
+          >
             <Lightbulb className="h-4 w-4" />
-          ) : (
-            <LockKeyhole className="h-4 w-4" />
-          )}
-          {hasHintProgress ? `Next Hint (${nextHintLevel}/5)` : "Get Hint"}
-        </button>
+            {hasHintProgress ? `Next Hint (${nextHintLevel}/5)` : "Get Hint"}
+          </button>
+        )}
 
         <button
           type="button"
@@ -521,8 +515,8 @@ export default function CodeCoach({
 
       {!hasTask && (
         <p className="mt-3 rounded-lg bg-slate-50 px-3 py-2 text-[11px] leading-4 text-slate-500 dark:bg-white/[0.03] dark:text-slate-400">
-          Explain and Improve work in the Playground. Hint and Fix Code need a
-          codingTaskId from a coding challenge.
+          Explain and Improve work in the Playground. Hint and Fix Code are
+          only available from a coding challenge.
         </p>
       )}
 

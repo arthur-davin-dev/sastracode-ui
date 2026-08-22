@@ -30,6 +30,20 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+
+api-docs-sastra.json
+api-docs.json
+components.json
+courses-response.json
+file-055b.json
+schema-course-detail.json
+schema-course-section.json
+schema-course.json
+schema-file-response.json
+schema-file-summary.json
+tsconfig.tsbuildinfo
+tsconfig.tutorail-check.tsbuildinfo
+
 # env files (can opt-in for committing if needed)
 .env*
 !.env.example

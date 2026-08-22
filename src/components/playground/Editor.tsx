@@ -2060,26 +2060,6 @@ export default function Editor() {
               </Button>
             )} */}
 
-            {/* Run only compiler/backend languages */}
-
-            {!isPreviewMode && (
-              <Button
-                type="button"
-                onClick={handleRun}
-                disabled={isRunning}
-                style={{
-                  backgroundColor: activeColor,
-
-                  color: activeTextColor,
-                }}
-                className="h-10 gap-2 rounded-xl px-5 font-bold shadow-md hover:opacity-90"
-              >
-                <Play className="h-4 w-4" />
-
-                {isRunning ? "Running..." : "Run"}
-              </Button>
-            )}
-
             {/* Format Code */}
 
             <Button
@@ -2230,17 +2210,6 @@ export default function Editor() {
           </div>
         )}
 
-        {!isWorkspaceFullscreen && (
-          <div className="px-4 pt-4">
-            <CodeCoach
-              code={code}
-              language={language}
-              codingTaskId={codingTaskId}
-              onApplyCode={handleApplyCoachCode}
-            />
-          </div>
-        )}
-
         {/* ================================================= */}
         {/* EDITOR + PREVIEW/OUTPUT */}
         {/* ================================================= */}
@@ -2288,6 +2257,23 @@ export default function Editor() {
               </div>
 
               <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
+                {!isPreviewMode && (
+                  <button
+                    type="button"
+                    onClick={handleRun}
+                    disabled={isRunning}
+                    style={{
+                      backgroundColor: activeColor,
+
+                      color: activeTextColor,
+                    }}
+                    className="flex items-center gap-1.5 rounded-lg px-3 py-1 text-xs font-bold shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <Play className="h-3.5 w-3.5" />
+                    {isRunning ? "Running..." : "Run"}
+                  </button>
+                )}
+
                 <button
                   type="button"
                   onClick={handleCopy}
@@ -2650,6 +2636,17 @@ export default function Editor() {
             </>
           )}
         </div>
+
+        {!isWorkspaceFullscreen && (
+          <div className="px-4 pb-4">
+            <CodeCoach
+              code={code}
+              language={language}
+              codingTaskId={codingTaskId}
+              onApplyCode={handleApplyCoachCode}
+            />
+          </div>
+        )}
 
         {/* ================================================= */}
         {/* FULLSCREEN FLOATING AI COACH */}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Tv, Wrench, Target, Zap } from "lucide-react";
 import { ProfileSummaryCard } from "@/components/achievement/ProfileSummaryCard";
 import { BadgeCard } from "@/components/achievement/BadgeCard";
 import { RecentActivityItem } from "@/components/achievement/RecentActivityItem";
@@ -30,9 +31,9 @@ const fallbackUserData: UserSummary = {
 };
 
 const activities: Activity[] = [
-  { id: "1", icon: "📺", title: "បញ្ចប់មូលដ្ឋានគ្រឹះ JavaScript", subtitle: "រៀនមេរៀនមូលដ្ឋានទាំងអស់នៃ JS", xp: 500 },
-  { id: "2", icon: "🔧", title: "បន្ថែមកម្មវិធីដំបូងរបស់អ្នក", subtitle: "បង្កើត និងដាក់ឲ្យប្រើប្រាស់កម្មវិធី", xp: 800 },
-  { id: "3", icon: "🎯", title: "ដោះស្រាយបញ្ហាប្រឈម", subtitle: "ដោះស្រាយ ២៥ លំហាត់កូដ", xp: 600 },
+  { id: "1", icon: <Tv className="h-5 w-5" />, title: "បញ្ចប់មូលដ្ឋានគ្រឹះ JavaScript", subtitle: "រៀនមេរៀនមូលដ្ឋានទាំងអស់នៃ JS", xp: 500 },
+  { id: "2", icon: <Wrench className="h-5 w-5" />, title: "បន្ថែមកម្មវិធីដំបូងរបស់អ្នក", subtitle: "បង្កើត និងដាក់ឲ្យប្រើប្រាស់កម្មវិធី", xp: 800 },
+  { id: "3", icon: <Target className="h-5 w-5" />, title: "ដោះស្រាយបញ្ហាប្រឈម", subtitle: "ដោះស្រាយ ២៥ លំហាត់កូដ", xp: 600 },
 ];
 
 const paths: LearningPath[] = [
@@ -102,7 +103,7 @@ export default function Achievement() {
   const apiActivities: Activity[] =
     transactionsQuery.data?.content.map((transaction) => ({
       id: String(transaction.id),
-      icon: "⚡",
+      icon: <Zap className="h-5 w-5" />,
       // Descriptions can include source UUIDs. Keep internal IDs out of the learner UI.
       title: activityTitle(transaction.sourceType),
       subtitle: transaction.createdAt

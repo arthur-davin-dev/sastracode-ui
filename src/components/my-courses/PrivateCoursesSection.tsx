@@ -4,6 +4,7 @@ import { LockKeyhole } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 import { CourseGrid } from "@/components/courses/CourseGrid";
+import { MyCourseCardSkeleton } from "@/components/my-courses/MyCourseCardSkeleton";
 import { mapApiCourseToCourse } from "@/lib/course/course-adapter";
 import { useGetMyPrivateCoursesQuery } from "@/redux/api/course-api";
 
@@ -26,9 +27,18 @@ export default function PrivateCoursesSection({ pageMode = false }: PrivateCours
 
   if (status === "loading" || isLoading) {
     return (
-      <section className={pageMode ? "p-6" : "mt-10"}>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((item) => <div key={item} className="h-72 animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800" />)}
+      <section className={pageMode ? "space-y-6 p-6" : "space-y-5 mt-10"} aria-busy="true">
+        <div>
+          <div className="flex items-center gap-2">
+            <div className="h-6 w-6 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+            <div className="h-7 w-56 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+          </div>
+          <div className="mt-2 h-4 w-72 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+        </div>
+        <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3].map((item) => (
+            <MyCourseCardSkeleton key={item} />
+          ))}
         </div>
       </section>
     );
