@@ -14,6 +14,7 @@ import {
   useGetLeaderboardUserProfilesQuery,
 } from "@/redux/service/leaderboardApi";
 import { useGetMyProfileQuery } from "@/redux/service/profile-api";
+import { useSession } from "next-auth/react";
 
 type SupportedPeriod = Exclude<LeaderboardPeriod, "COURSE">;
 
@@ -46,10 +47,17 @@ export default function Leaderboard() {
   const [activeTab, setActiveTab] = useState<SupportedPeriod>("GLOBAL");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const { status } = useSession();
+  const isAuthenticated = status === "authenticated";
+
   const { data, isLoading, isFetching, isError, refetch } =
     useGetLeaderboardQuery({ period: activeTab, size: 50 });
-  const { data: myRank } = useGetMyLeaderboardRankQuery(activeTab);
-  const { data: myProfile } = useGetMyProfileQuery();
+  const { data: myRank } = useGetMyLeaderboardRankQuery(activeTab, {
+    skip: !isAuthenticated,
+  });
+  const { data: myProfile } = useGetMyProfileQuery(undefined, {
+    skip: !isAuthenticated,
+  });
   const { data: profiles } = useGetLeaderboardUserProfilesQuery(undefined, {
     skip: !data?.content.length,
   });

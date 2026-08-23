@@ -143,14 +143,18 @@
 
 import { useState } from "react";
 import { Loader2, RefreshCw } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 import { ProfileHeaderCard } from "@/components/profile/ProfileHeaderCard";
 import { ProfileForm } from "@/components/profile/ProfileForm";
 import { ProfileOverviewCards } from "@/components/profile/ProfileOverviewCards";
+import Login from "@/components/auth/Login";
 import { useGetMyProfileQuery } from "@/redux/service/profile-api";
 
 export default function Profile() {
   const [isEditing, setIsEditing] = useState(false);
+
+  const { status } = useSession();
 
   const {
     data: profile,
@@ -159,9 +163,11 @@ export default function Profile() {
     isError,
     error,
     refetch,
-  } = useGetMyProfileQuery();
+  } = useGetMyProfileQuery(undefined, {
+    skip: status !== "authenticated",
+  });
 
-  if (isLoading) {
+  if (status === "loading" || (status === "authenticated" && isLoading)) {
     return (
       <div className="flex min-h-[600px] items-center justify-center">
         <div className="flex flex-col items-center gap-3">
@@ -170,6 +176,26 @@ export default function Profile() {
           <p className="text-sm font-medium text-slate-500">
             កំពុងទាញយកព័ត៌មាន...
           </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (status === "unauthenticated") {
+    return (
+      <div className="flex min-h-[600px] items-center justify-center p-6">
+        <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-950">
+          <h2 className="text-xl font-bold text-primary-color">
+            សូមចូលគណនីជាមុនសិន
+          </h2>
+
+          <p className="mt-2 text-sm text-slate-500">
+            អ្នកត្រូវចូលគណនីដើម្បីមើលព័ត៌មានប្រវត្តិរូប។
+          </p>
+
+          <div className="mt-5 flex justify-center">
+            <Login />
+          </div>
         </div>
       </div>
     );

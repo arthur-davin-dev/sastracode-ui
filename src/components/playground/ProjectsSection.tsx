@@ -128,20 +128,16 @@ export default function ProjectsSection() {
 
     async function loadCommunity() {
       try {
-        const [overviewResponse, usersResponse] = await Promise.all([
-          fetch("/api/backend/v1/admin/dashboard/overview", { cache: "no-store" }),
-          fetch("/api/backend/v1/admin/users?page=0&size=3", { cache: "no-store" }),
-        ]);
+        const response = await fetch("/api/backend/v1/community/overview?size=3", {
+          cache: "no-store",
+        });
 
-        if (!overviewResponse.ok || !usersResponse.ok) return;
+        if (!response.ok) return;
 
-        const [overview, users] = await Promise.all([
-          overviewResponse.json(),
-          usersResponse.json(),
-        ]);
+        const overview = await response.json();
 
-        const totalUsers = Number(overview?.data?.users?.total);
-        const members = Array.isArray(users?.data?.content) ? users.data.content : [];
+        const totalUsers = Number(overview?.data?.totalVerifiedUsers);
+        const members = Array.isArray(overview?.data?.members) ? overview.data.members : [];
 
         if (active) {
           setCommunity({
