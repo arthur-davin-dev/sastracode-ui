@@ -140,7 +140,7 @@ export const km = {
       label: "តារាង (Tables)",
       title: "តារាង HTML (Tables)",
       description: "រៀបចំទិន្នន័យជាជួរដេក និងជួរឈរដោយប្រកបដោយប្រសិទ្ធភាពដោយប្រើ <table>, <tr>, <th>, និង <td>។",
-      linkText: "មើលមគ្គុទ្ទេសក៍តារាង"
+      linkText: "មើលការណែនាំតារាង"
     }
   }
 },
@@ -415,6 +415,7 @@ export const km = {
         name: "ចាន់ ឆៃយ៉ា",
         role: "អ្នកណែនាំ",
         image: "/images/chan_chhaya.jpg",
+        bio: "មិនមានសម្រង់សម្តីទេ",
         githubUrl: "https://github.com/it-chhaya",
         telegramUrl: "https://t.me/chhayadevkh",
       },
@@ -423,6 +424,7 @@ export const km = {
         name: "ស្រេង ជីប៉",
         role: "អ្នកណែនាំ",
         image: "/images/sreng_chipor.jpg",
+        bio: "មិនមានសម្រង់សម្តីទេ",
         githubUrl: "https://github.com/jiporCK",
         telegramUrl: "https://t.me/jiporsreng",
       },
