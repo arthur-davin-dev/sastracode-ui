@@ -28,7 +28,6 @@ export default function MissionVision() {
           className="text-center max-w-2xl mx-auto"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 text-xs font-mono font-medium mb-4 border border-blue-200 dark:border-blue-900">
-            <Sparkles className="w-3.5 h-3.5" />
             <span>{mission.section.badge}</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">

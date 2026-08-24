@@ -1,3 +1,4 @@
+import TechStack from "@/components/function/tech-stack";
 import TechStackSection from "@/components/function/TechStackSection";
 import InteractiveDoc from "@/components/home/interactive-doc/InteractiveDoc";
 import InteractiveGrid from "@/components/home/interactive-grid/InteractiveGrid";
@@ -11,7 +12,8 @@ export default function Features(){
             <HeroCharacter />
             <InteractiveGrid />
             <InteractiveDoc />
-            <TechStackSection />
+            {/* <TechStackSection /> */}
+            <TechStack></TechStack>
             <SupportTeam />
        </section>
     )

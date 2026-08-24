@@ -12,41 +12,43 @@ export default function InteractiveDoc() {
   const currentT = useTranslation();
   const [activeSection, setActiveSection] = useState<SectionKey>("introduction");
 
+  const sections = currentT.interactiveDoc?.sections;
+
   const sectionContent: Record<SectionKey, { title: string; description: string; linkText: string; href: string }> = {
     introduction: {
-      title: currentT.interactiveDoc.title,
-      description: currentT.interactiveDoc.description,
-      linkText: currentT.interactiveDoc.link,
+      title: sections?.introduction?.title || currentT.interactiveDoc?.title || "Introduction",
+      description: sections?.introduction?.description || currentT.interactiveDoc?.description || "Get started with interactive documentation.",
+      linkText: sections?.introduction?.linkText || currentT.interactiveDoc?.link || "Explore Documentation",
       href: "/documentation",
     },
     elements: {
-      title: "HTML Elements",
-      description: "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag.",
-      linkText: "Explore HTML Elements",
+      title: sections?.elements?.title || "HTML Elements",
+      description: sections?.elements?.description || "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag.",
+      linkText: sections?.elements?.linkText || "Explore HTML Elements",
       href: "/documentation/elements",
     },
     attributes: {
-      title: "HTML Attributes",
-      description: "Provide additional information about elements, such as classes, IDs, sources, and alternative text.",
-      linkText: "Learn about Attributes",
+      title: sections?.attributes?.title || "HTML Attributes",
+      description: sections?.attributes?.description || "Provide additional information about elements, such as classes, IDs, sources, and alternative text.",
+      linkText: sections?.attributes?.linkText || "Learn about Attributes",
       href: "/documentation/attributes",
     },
     semantic: {
-      title: "Semantic HTML",
-      description: "Use meaningful tags like <article>, <section>, and <nav> to improve accessibility and SEO.",
-      linkText: "Discover Semantic Tags",
+      title: sections?.semantic?.title || "Semantic HTML",
+      description: sections?.semantic?.description || "Use meaningful tags like <article>, <section>, and <nav> to improve accessibility and SEO.",
+      linkText: sections?.semantic?.linkText || "Discover Semantic Tags",
       href: "/documentation/semantic",
     },
     forms: {
-      title: "HTML Forms",
-      description: "Collect user input with interactive elements like text fields, checkboxes, radios, and submit buttons.",
-      linkText: "Build Forms",
+      title: sections?.forms?.title || "HTML Forms",
+      description: sections?.forms?.description || "Collect user input with interactive elements like text fields, checkboxes, radios, and submit buttons.",
+      linkText: sections?.forms?.linkText || "Build Forms",
       href: "/documentation/forms",
     },
     tables: {
-      title: "HTML Tables",
-      description: "Organize data into rows and columns efficiently using <table>, <tr>, <th>, and <td> tags.",
-      linkText: "View Table Guides",
+      title: sections?.tables?.title || "HTML Tables",
+      description: sections?.tables?.description || "Organize data into rows and columns efficiently using <table>, <tr>, <th>, and <td> tags.",
+      linkText: sections?.tables?.linkText || "View Table Guides",
       href: "/documentation/tables",
     },
   };
@@ -54,16 +56,16 @@ export default function InteractiveDoc() {
   const currentData = sectionContent[activeSection];
 
   const navItems: { key: SectionKey; label: string }[] = [
-    { key: "introduction", label: "Introduction" },
-    { key: "elements", label: "HTML Elements" },
-    { key: "attributes", label: "Attributes" },
-    { key: "semantic", label: "Semantic HTML" },
-    { key: "forms", label: "Forms" },
-    { key: "tables", label: "Tables" },
+    { key: "introduction", label: sections?.introduction?.label || "Introduction" },
+    { key: "elements", label: sections?.elements?.label || "HTML Elements" },
+    { key: "attributes", label: sections?.attributes?.label || "Attributes" },
+    { key: "semantic", label: sections?.semantic?.label || "Semantic HTML" },
+    { key: "forms", label: sections?.forms?.label || "Forms" },
+    { key: "tables", label: sections?.tables?.label || "Tables" },
   ];
 
   return (
-    <section className="py-3 sm:py-6 lg:py-8 transition-colors duration-300">
+    <section className="py-3 sm:py-6 lg:py-8 transition-colors duration-300 font-khmer">
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
         
         {/* Navigation Tabs */}

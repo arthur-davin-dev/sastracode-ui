@@ -95,21 +95,65 @@ export const en = {
     viewAll: "View All Courses",
     enrollNow: "Enroll Now",
   },
+
   interactiveDoc: {
-    title: "Interactive Documentation",
+  title: "Interactive Documentation",
+  description: "Learn web development interactively with examples and previews.",
+  link: "Explore Documentation",
+  
+  sections: {
+    introduction: {
+      label: "Introduction",
+      title: "Interactive Documentation",
+      description: "Learn web development interactively with examples, code previews, and AI assistance.",
+      linkText: "Explore Documentation"
+    },
+    elements: {
+      label: "HTML Elements",
+      title: "HTML Elements",
+      description: "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag.",
+      linkText: "Explore HTML Elements"
+    },
+    attributes: {
+      label: "Attributes",
+      title: "HTML Attributes",
+      description: "Provide additional information about elements, such as classes, IDs, sources, and alternative text.",
+      linkText: "Learn about Attributes"
+    },
+    semantic: {
+      label: "Semantic HTML",
+      title: "Semantic HTML",
+      description: "Use meaningful tags like <article>, <section>, and <nav> to improve accessibility and SEO.",
+      linkText: "Discover Semantic Tags"
+    },
+    forms: {
+      label: "Forms",
+      title: "HTML Forms",
+      description: "Collect user input with interactive elements like text fields, checkboxes, radios, and submit buttons.",
+      linkText: "Build Forms"
+    },
+    tables: {
+      label: "Tables",
+      title: "HTML Tables",
+      description: "Organize data into rows and columns efficiently using <table>, <tr>, <th>, and <td> tags.",
+      linkText: "View Table Guides"
+    }
+  }
+},
 
-    description:
-      "Explore structured lessons with Live Code Examples, Syntax Highlighting, Embedded Exercises, and Quizzes that transform knowledge into practical skills.",
+  "aiChatCard": {
+    "aiChat": "AI Coach helps you analyze code errors and provides hints instantly.",
+    "userRole": "You",
+    "userQuestion": "Why is my button not working?",
+    "aiRole": "AI Coach",
+    "hint1Title": "Hint #1",
+    "hint1Text": "Check if your closing tag is correct.",
+    "hint2Title": "Hint #2",
+    "hint2TextPrefix": "Make sure the button is inside the",
+    "hint2TextSuffix": "tag.",
+    "successText": "Looks good! Try running again."
+  }, 
 
-    title1: " HTML Elements",
-
-    description1:
-      "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag.",
-
-
-    link: "View Documentation",
-    aiChat: "Explanations and help in studying errors in the code.",
-  },
   featureSection: {
     features: [
       {
@@ -538,6 +582,41 @@ export const en = {
     ],
   },
 
+  "tech-stack": {
+    "title": "Supported Playgrounds & Environments",
+    "subtitle": "Write, run, and test your code directly in your browser across popular languages and frameworks"
+  },
+
+  docs: {
+  searchPlaceholder: "Search topics...",
+  sections: {
+    introduction: {
+      title: "Introduction",
+      description: "Get started with the basics of web development and HTML structure."
+    },
+    elements: {
+      title: "HTML Elements",
+      description: "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag."
+    },
+    attributes: {
+      title: "HTML Attributes",
+      description: "Provide additional information about elements, such as classes, IDs, sources, and alternative text."
+    },
+    semantic: {
+      title: "Semantic HTML",
+      description: "Use meaningful tags like <article>, <section>, and <nav> to improve accessibility and SEO."
+    },
+    forms: {
+      title: "Forms",
+      description: "Learn how to collect user input using input fields, buttons, and select dropdowns."
+    },
+    tables: {
+      title: "Tables",
+      description: "Organize data into structured rows and columns using standard table tags."
+    }
+  }
+},
+
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.
   footer: {
     description:
@@ -559,7 +638,7 @@ export const en = {
 
     contact: {
       title: "Contact",
-      address: "Village 13, Street 40, Street 273, Phnom Penh 12151",
+      address: "Village 13, House No. 40, Street 273, Phnom Penh 12151",
     },
 
     email: "sastracode.edu@gmail.com",
