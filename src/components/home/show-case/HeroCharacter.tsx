@@ -46,7 +46,7 @@ export default function HeroCharacter() {
 
   return (
     /* Full-width outer section for page-wide background color */
-    <section className="relative flex min-h-screen w-full items-center bg-white dark:bg-gray-900 transition-colors duration-300 py-20 pt-28">
+    <section className="relative flex min-h-screen w-full items-center transition-colors duration-300 py-20 pt-28">
       
       {/* Centered inner container for grid content and bounds */}
       <div className="relative mx-auto w-full max-w-7xl px-6">

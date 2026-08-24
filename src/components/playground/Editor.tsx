@@ -2126,7 +2126,7 @@ export default function Editor() {
   // ====================================================
 
   return (
-    <div className="min-h-screen bg-[#f4f7fb] px-3 pb-10 pt-5 font-sans text-slate-900 transition-colors duration-300 dark:bg-[#070b14] dark:text-slate-100 sm:px-5 lg:px-7">
+    <div className="min-h-screen  px-3 pb-10 pt-5 font-sans text-slate-900 transition-colors duration-300  dark:text-slate-100 sm:px-5 lg:px-7">
       {copyStatus !== "idle" && (
         <div
           role="status"

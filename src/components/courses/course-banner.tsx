@@ -196,13 +196,12 @@ export default function CourseBanner() {
         relative
         overflow-hidden
         border-b
-        border-slate-200
-        bg-white
+
+       
         py-12
         transition-colors
         duration-300
-        dark:border-slate-800
-        dark:bg-slate-950
+       
         sm:py-16
         lg:py-20
       "

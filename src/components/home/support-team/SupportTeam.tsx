@@ -19,7 +19,7 @@ function initials(name: string) {
 
 export default function SupportTeam() {
   return (
-    <section className="px-6 py-20 bg-white dark:bg-gray-900">
+    <section className="px-6 py-20 ">
       <div className="max-w-5xl mx-auto text-center">
         <h2 className="text-2xl md:text-3xl font-extrabold text-primary-color">
           Experienced Support Team

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Code2, LayoutTemplate, Sigma, Database, ArrowRight, Clock, Users } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
+import TiltedCard from "../ui/TiltedCard";
 
 const content = {
   km: {
@@ -220,49 +221,52 @@ export default function ProjectsSection() {
       </div>
 
       {/* Community Banner */}
-      <div className="relative overflow-hidden rounded-3xl border border-indigo-200/80 dark:border-indigo-900/50 bg-gradient-to-r from-indigo-50/80 via-white to-indigo-50/50 dark:from-indigo-950/40 dark:via-slate-900 dark:to-indigo-950/20 backdrop-blur-md p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm transition-colors duration-300">
-        <div className="flex gap-4 items-start">
-          <div className="h-10 w-10 shrink-0 rounded-2xl bg-indigo-600/10 dark:bg-indigo-400/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-            <Users className="h-5 w-5" />
-          </div>
-          <p className="text-[18px] text-slate-700 dark:text-slate-200 font-medium max-w-xl leading-relaxed transition-colors duration-300">
-            {communityText}
-          </p>
-        </div>
-
-        {/* Avatar Stack */}
-        <div className="flex items-center -space-x-3 shrink-0 self-end md:self-center">
-          {community.members.map((member) => (
-            <div
-              key={member.userId}
-              title={memberName(member)}
-              className="h-10 w-10 overflow-hidden rounded-full border-2 border-white bg-slate-200 shadow-sm dark:border-slate-900 dark:bg-slate-700"
-            >
-              {member.avatarFileId ? (
-                <img
-                  src={`/api/files/${encodeURIComponent(member.avatarFileId)}/content`}
-                  alt={memberName(member)}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <span className="flex h-full w-full items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-200">
-                  {memberName(member).charAt(0).toUpperCase()}
-                </span>
-              )}
+      <TiltedCard rotateAmplitude={2} scaleOnHover={1.03}>
+        <div className="relative overflow-hidden rounded-3xl border border-indigo-200/80 dark:border-indigo-900/50 bg-gradient-to-r from-indigo-50/80 via-white to-indigo-50/50 dark:from-indigo-950/40 dark:via-slate-900 dark:to-indigo-950/20 backdrop-blur-md p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm transition-colors duration-300"
+        >
+          <div className="flex gap-4 items-start">
+            <div className="h-10 w-10 shrink-0 rounded-2xl bg-indigo-600/10 dark:bg-indigo-400/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+              <Users className="h-5 w-5" />
             </div>
-          ))}
-          {community.members.length === 0 && (
-            <>
-              <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-amber-400 to-orange-400 border-2 border-white dark:border-slate-900 shadow-sm" />
-              <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-blue-400 to-cyan-400 border-2 border-white dark:border-slate-900 shadow-sm" />
-              <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-400 border-2 border-white dark:border-slate-900 shadow-sm" />
-            </>
-          )}
-          <div className="h-10 w-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white border-2 border-white dark:border-slate-900 flex items-center justify-center text-xs font-bold shadow-sm">
-            +{memberCount}
+            <p className="text-[18px] text-slate-700 dark:text-slate-200 font-medium max-w-xl leading-relaxed transition-colors duration-300">
+              {communityText}
+            </p>
+          </div>
+
+          {/* Avatar Stack */}
+          <div className="flex items-center -space-x-3 shrink-0 self-end md:self-center">
+            {community.members.map((member) => (
+              <div
+                key={member.userId}
+                title={memberName(member)}
+                className="h-10 w-10 overflow-hidden rounded-full border-2 border-white bg-slate-200 shadow-sm dark:border-slate-900 dark:bg-slate-700"
+              >
+                {member.avatarFileId ? (
+                  <img
+                    src={`/api/files/${encodeURIComponent(member.avatarFileId)}/content`}
+                    alt={memberName(member)}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <span className="flex h-full w-full items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-200">
+                    {memberName(member).charAt(0).toUpperCase()}
+                  </span>
+                )}
+              </div>
+            ))}
+            {community.members.length === 0 && (
+              <>
+                <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-amber-400 to-orange-400 border-2 border-white dark:border-slate-900 shadow-sm" />
+                <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-blue-400 to-cyan-400 border-2 border-white dark:border-slate-900 shadow-sm" />
+                <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-400 border-2 border-white dark:border-slate-900 shadow-sm" />
+              </>
+            )}
+            <div className="h-10 w-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white border-2 border-white dark:border-slate-900 flex items-center justify-center text-xs font-bold shadow-sm">
+              +{memberCount}
+            </div>
           </div>
         </div>
-      </div>
+      </TiltedCard>
     </section>
   );
 }

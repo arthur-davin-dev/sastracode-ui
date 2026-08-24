@@ -6,7 +6,7 @@ import Hero from "./Hero";
 
 export default function Playground() {
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300 relative overflow-hidden selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen text-slate-900 dark:text-slate-100 transition-colors duration-300 relative overflow-hidden selection:bg-indigo-500 selection:text-white">
       {/* Subtle background ambient glow for dark mode depth */}
       <div className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 h-125 w-200 bg-linear-to-b from-indigo-500/10 via-purple-500/5 to-transparent blur-3xl dark:from-indigo-600/15 dark:via-purple-600/10" />
 
