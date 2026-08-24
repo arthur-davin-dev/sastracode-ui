@@ -7,7 +7,7 @@ import SupportTeam from "@/components/home/support-team/SupportTeam";
 
 export default function FunctionPage(){
     return (
-       <section className="dark:bg-gray-900">
+       <section className="">
             <HeroCharacter />
             <InteractiveGrid />
             <InteractiveDoc />
