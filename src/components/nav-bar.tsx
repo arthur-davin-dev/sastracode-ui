@@ -61,7 +61,7 @@ export default function Navbar() {
         { label: "មេរៀន", href: "/documentation" },
         { label: "វគ្គសិក្សា", href: "/courses" },
         { label: "កន្លែងសាកល្បងកូដ", href: "/playground" },
-        { label: "មុខងារ", href: "/function" },
+        { label: "មុខងារ", href: "/features" },
         { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
       ],
 
@@ -77,7 +77,7 @@ export default function Navbar() {
         { label: "Lessons", href: "/documentation" },
         { label: "Courses", href: "/courses" },
         { label: "Playground", href: "/playground" },
-        { label: "Function", href: "/function" },
+        { label: "Features", href: "/features" },
         { label: "About Sastra Code", href: "/about-us" },
       ],
 
@@ -338,7 +338,7 @@ export default function Navbar() {
       "
                 >
                   {/* User Header */}
-                  <div className="bg-gradient-to-br from-[#002455]/5 to-transparent p-4 dark:from-white/5">
+                  <div className="bg-linear-to-br from-[#002455]/5 to-transparent p-4 dark:from-white/5">
                     <div className="flex items-center gap-3">
                       {/* Avatar */}
                       <div className="relative shrink-0">

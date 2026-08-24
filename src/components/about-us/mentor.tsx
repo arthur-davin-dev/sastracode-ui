@@ -24,7 +24,7 @@ export default function Mentor() {
   }, []);
 
   return (
-    <section className="w-full py-10 px-4 sm:px-8 flex flex-col items-center bg-white dark:bg-slate-950 transition-colors duration-300">
+    <section className="w-full py-10 px-4 sm:px-8 flex flex-col items-center transition-colors duration-300">
       {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
