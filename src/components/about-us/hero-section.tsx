@@ -89,7 +89,7 @@ export default function AboutUs() {
   }));
 
   return (
-    <section className="relative overflow-hidden bg-[#F4F5F9] dark:bg-[#070c18] py-20 px-6 sm:px-10 lg:px-16 transition-colors duration-500 selection:bg-primary-color selection:text-white">
+    <section className="relative bg-transparent dark:bg-transparent py-20 px-6 sm:px-10 lg:px-16 transition-colors duration-500 selection:bg-primary-color selection:text-white">
       {/* Background dot grids */}
       <DotGrid
         rows={4}

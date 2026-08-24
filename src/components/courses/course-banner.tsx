@@ -1,6 +1,6 @@
 "use client";
 
-import  PlatformShowcase  from "@/components/home/PlatformShowcase";
+import PlatformShowcase from "@/components/home/PlatformShowcase";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
@@ -190,12 +190,12 @@ export default function CourseBanner() {
         overflow-hidden
         border-b
         border-slate-200
-        bg-white
+        bg-transparent
         py-4
         transition-colors
         duration-300
         dark:border-slate-800
-        dark:bg-slate-950
+        dark:bg-transparent
         sm:py-6
         lg:py-8
       "
