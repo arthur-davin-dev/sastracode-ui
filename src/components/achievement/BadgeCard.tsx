@@ -163,7 +163,7 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
       }}
       className={`
         group relative h-full cursor-pointer overflow-hidden
-        rounded-3xl border
+        rounded-3xl border shadow-none
         transition-all duration-300
 
         focus-visible:outline-none
@@ -178,21 +178,20 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
               bg-white
               hover:-translate-y-1
               hover:border-primary-color/40
-              hover:shadow-lg
 
-              dark:border-slate-800
-              dark:bg-slate-900
+              dark:border-white/10
+              dark:bg-slate-900/25
+              dark:backdrop-blur-sm
             `
             : `
               border-slate-200
               bg-white
-              shadow-sm
               hover:-translate-y-1.5
               hover:border-primary-color
-              hover:shadow-xl
 
-              dark:border-slate-800
-              dark:bg-slate-900
+              dark:border-white/10
+              dark:bg-slate-900/25
+              dark:backdrop-blur-sm
             `
         }
       `}
@@ -303,7 +302,7 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
         <h3
           className="
             line-clamp-1
-            text-xl font-bold
+            text-[18px] font-bold
             text-primary-color
             dark:text-white
           "

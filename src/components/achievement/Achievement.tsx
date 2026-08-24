@@ -16,6 +16,7 @@ import {
   useGetMyXpTransactionsQuery,
   useGetMyBadgesQuery,
 } from "@/redux/service/achievementApi";
+import { Award, BookOpen, CircleCheck, GraduationCap, Trophy, Zap } from "lucide-react";
 
 const fallbackUserData: UserSummary = {
   name: "ឆាយ​ ដាវីន",
@@ -50,6 +51,33 @@ function activityTitle(sourceType?: string) {
     .filter(Boolean)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+}
+
+function activityIcon(sourceType?: string) {
+  const normalizedSourceType = sourceType?.toLowerCase() ?? "";
+  const iconClassName = "h-5 w-5";
+
+  if (normalizedSourceType.includes("lesson")) {
+    return <BookOpen className={iconClassName} aria-hidden="true" />;
+  }
+
+  if (normalizedSourceType.includes("quiz")) {
+    return <CircleCheck className={iconClassName} aria-hidden="true" />;
+  }
+
+  if (normalizedSourceType.includes("course")) {
+    return <GraduationCap className={iconClassName} aria-hidden="true" />;
+  }
+
+  if (normalizedSourceType.includes("badge")) {
+    return <Award className={iconClassName} aria-hidden="true" />;
+  }
+
+  if (normalizedSourceType.includes("achievement")) {
+    return <Trophy className={iconClassName} aria-hidden="true" />;
+  }
+
+  return <Zap className={iconClassName} aria-hidden="true" />;
 }
 
 export default function Achievement() {
@@ -102,7 +130,7 @@ export default function Achievement() {
   const apiActivities: Activity[] =
     transactionsQuery.data?.content.map((transaction) => ({
       id: String(transaction.id),
-      icon: "⚡",
+      icon: activityIcon(transaction.sourceType),
       // Descriptions can include source UUIDs. Keep internal IDs out of the learner UI.
       title: activityTitle(transaction.sourceType),
       subtitle: transaction.createdAt
@@ -148,7 +176,7 @@ export default function Achievement() {
         />
 
         {/* Badges Section */}
-        <Card className="dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
+        <Card className="shadow-none dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
               មេដាយដែលទទួលបាន
@@ -173,7 +201,7 @@ export default function Achievement() {
               ))}
             </div>
             {badges.length > 4 && (
-              <div className="mt-6 flex justify-center">
+              <div className="mt-6 flex justify-end">
                 <button
                   type="button"
                   onClick={() => setShowAllBadges((value) => !value)}
@@ -187,7 +215,7 @@ export default function Achievement() {
         </Card>
 
         {/* Recent Activities Section */}
-        <Card className="dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
+        <Card className="shadow-none dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
                របស់កម្មដែលបានបញ្ចប់
@@ -212,7 +240,7 @@ export default function Achievement() {
               ))}
             </div>
             {displayedActivities.length > 4 && (
-              <div className="mt-6 flex justify-center">
+              <div className="mt-6 flex justify-end">
                 <button
                   type="button"
                   onClick={() => setShowAllActivities((value) => !value)}
@@ -226,7 +254,7 @@ export default function Achievement() {
         </Card>
 
         {/* Learning Paths / Certificates Progress Section */}
-        <Card className="dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
+        <Card className="shadow-none dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
               រង្វាន់ភាពវិញ្ញាបនបត្រ

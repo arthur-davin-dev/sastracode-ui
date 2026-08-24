@@ -1,11 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Zap } from "lucide-react";
+import { CheckCircle2, Plus, Zap } from "lucide-react";
 import { Activity } from "@/types/achievement";
 
 export function RecentActivityItem({ activity }: { activity: Activity }) {
   return (
-    <Card className=" overflow-hidden rounded-2xl border-2 border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900/90 shadow-xs hover:border-primary-color/25 transition-all duration-300 group">
+    <Card className="overflow-hidden rounded-2xl border-2 border-slate-100 shadow-none dark:border-white/10 bg-white dark:bg-slate-900/25 dark:backdrop-blur-sm hover:border-primary-color/25 transition-all duration-300 group">
       <CardContent className="flex flex-col sm:flex-row sm:items-center justify-between p-3">
         
         {/* Left Section: Icon & Text Info */}
@@ -18,7 +18,7 @@ export function RecentActivityItem({ activity }: { activity: Activity }) {
 
           {/* Activity Title & Subtitle */}
           <div className="space-y-1">
-            <h4 className="font-normal text-lg text-primary-color dark:text-white transition-colors duration-300 leading-snug">
+            <h4 className="font-normal text-[18px] text-primary-color dark:text-white transition-colors duration-300 leading-snug">
               {activity.title}
             </h4>
             <p className="text-lg text-slate-600 dark:text-slate-300 font-normal transition-colors duration-300">
@@ -31,10 +31,13 @@ export function RecentActivityItem({ activity }: { activity: Activity }) {
         <div className="flex items-center self-start sm:self-center shrink-0">
           <Badge 
             variant="secondary" 
-            className="gap-2 px-1.5 py-4 text-lg font-medium bg-primary-color text-white dark:text-white border border-primary-color/40 rounded-xl shadow-xs   transition-all duration-300"
+            className="gap-2 px-1.5 py-4 text-[16px] font-medium bg-primary-color text-white dark:text-white border border-primary-color/40 rounded-xl shadow-xs transition-all duration-300"
           >
             <Zap className="h-5 w-5 text-red-600 fill-red-600" />
-            <span>+{activity.xp} XP</span>
+            <span className="inline-flex items-center">
+              <Plus className="h-4 w-4" aria-hidden="true" />
+              {activity.xp} XP
+            </span>
             <CheckCircle2 className="h-5 w-5 text-green-600" />
           </Badge>
         </div>
