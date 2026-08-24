@@ -5,6 +5,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Loader2,
+  PartyPopper,
   RotateCcw,
   Sparkles,
   Trophy,
@@ -19,6 +20,30 @@ import {
   useGetAllTutorialCodingTasksQuery,
 } from "@/redux/service/coding-task-player-api";
 import { getChallengeUIConfig } from "@/utils/coding-task-ui";
+
+function codingTaskErrorMessage(error: unknown): string {
+  if (error && typeof error === "object") {
+    if ("status" in error) {
+      const status = (error as { status?: unknown }).status;
+      if (status === "FETCH_ERROR" || status === "TIMEOUT_ERROR") {
+        return "Could not reach the server. Check your connection and try again.";
+      }
+      if (typeof status === "number") {
+        return `The server responded with an error (status ${status}). Please try again.`;
+      }
+    }
+    const data = (error as { data?: unknown }).data;
+    if (
+      data &&
+      typeof data === "object" &&
+      "message" in data &&
+      typeof (data as { message?: unknown }).message === "string"
+    ) {
+      return (data as { message: string }).message;
+    }
+  }
+  return "Please try again in a moment.";
+}
 
 interface TaskResult {
   passed: boolean;
@@ -155,6 +180,8 @@ export function CodingTaskLessonSection({
   }
 
   if (error) {
+    console.error("Coding challenge could not be loaded:", error);
+
     return (
       <section className="mt-10 overflow-hidden rounded-[24px] border border-rose-200 bg-white p-8 shadow-sm dark:border-rose-900/50 dark:bg-slate-900">
         <div className="flex flex-col items-center justify-center gap-3 text-center">
@@ -162,6 +189,9 @@ export function CodingTaskLessonSection({
           <div>
             <p className="font-semibold text-slate-900 dark:text-white">
               Coding challenge could not be loaded.
+            </p>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              {codingTaskErrorMessage(error)}
             </p>
             <button
               type="button"
@@ -185,12 +215,21 @@ export function CodingTaskLessonSection({
     return (
       <section
         aria-label="Coding challenges summary"
-        className={`mt-10 overflow-hidden rounded-[24px] border p-8 text-center shadow-sm ${
+        className={`relative mt-10 overflow-hidden rounded-[24px] border p-8 text-center shadow-sm ${
           allPassed
             ? "border-emerald-200 bg-emerald-50/70 text-slate-900 dark:border-emerald-900/60 dark:bg-emerald-950/25 dark:text-white"
             : "border-rose-200 bg-rose-50/70 text-slate-900 dark:border-rose-900/60 dark:bg-rose-950/25 dark:text-white"
         }`}
       >
+        {allPassed && (
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+            <PartyPopper className="absolute left-6 top-6 h-7 w-7 -rotate-12 text-emerald-500 animate-bounce" />
+            <Sparkles className="absolute right-8 top-8 h-6 w-6 text-amber-400 animate-ping" />
+            <Sparkles className="absolute right-16 top-20 h-4 w-4 text-emerald-400 animate-pulse" />
+            <Sparkles className="absolute left-12 top-24 h-4 w-4 text-amber-300 animate-pulse" />
+          </div>
+        )}
+
         <span
           className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full ${
             allPassed

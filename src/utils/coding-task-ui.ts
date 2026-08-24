@@ -1,6 +1,7 @@
 import {
   Code2,
   FileCode2,
+  Globe,
   Paintbrush,
   Terminal,
   Puzzle,
@@ -27,6 +28,14 @@ export function getChallengeUIConfig(
         tagColorClass:
           "bg-orange-50 text-orange-700 dark:bg-orange-500/10 dark:text-orange-400",
         headerColorClass: "text-orange-600 dark:text-orange-400",
+      };
+    case "WEB_BUILDER":
+      return {
+        icon: Globe,
+        title: "Web Builder",
+        tagColorClass:
+          "bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400",
+        headerColorClass: "text-indigo-600 dark:text-indigo-400",
       };
     case "CSS_STYLING":
       return {
@@ -64,10 +73,13 @@ export function getChallengeUIConfig(
           "bg-pink-50 text-pink-700 dark:bg-pink-500/10 dark:text-pink-400",
         headerColorClass: "text-pink-600 dark:text-pink-400",
       };
+    case "CODE_CHALLENGE":
+    case "MATCH_CODE":
+    case "STEP_BY_STEP":
     default:
       return {
         icon: Code2,
-        title: "Code Editor",
+        title: "Code Challenge",
         tagColorClass:
           "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400",
         headerColorClass: "text-[#04AA6D] dark:text-emerald-400",

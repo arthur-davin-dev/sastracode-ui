@@ -28,6 +28,7 @@ import {
   ChevronDown,
   GripVertical,
   Loader2,
+  PartyPopper,
   Play,
   RotateCcw,
   Send,
@@ -137,6 +138,63 @@ function normalizeCode(raw: string): string {
     .replace(/\\\\/g, "\\");
 }
 
+/**
+ * Fisher-Yates shuffle. Arrange-block exercises ship their starter code in
+ * the *solved* order (it's the answer key), so the lines must be scrambled
+ * client-side before showing them — otherwise there's nothing to arrange.
+ * Reshuffles once more if it happens to land back in solved order (only
+ * matters for very short snippets, but cheap to guard against).
+ */
+function shuffleLines<T>(items: T[]): T[] {
+  if (items.length < 2) return items;
+  const shuffled = [...items];
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j]!, shuffled[i]!];
+  }
+  const isSameOrder = shuffled.every((item, i) => item === items[i]);
+  return isSameOrder ? shuffleLines(items) : shuffled;
+}
+
+/**
+ * Splits starter code into one draggable block per non-blank line, folding
+ * any surrounding blank lines into the neighboring block instead of
+ * discarding them. Rejoining the blocks with "\n" in their original order
+ * reproduces the starter code byte-for-byte — including blank lines —
+ * which matters because the backend grades an arrange-blocks submission by
+ * comparing the reassembled text against that exact starter code. Simply
+ * dropping blank lines (the previous behavior) permanently lost that
+ * whitespace, so a learner could arrange every visible line correctly and
+ * still get marked wrong because the reconstructed code no longer matched.
+ */
+function splitIntoArrangeBlocks(raw: string): string[] {
+  const lines = raw.split("\n");
+  const groups: string[] = [];
+  let pendingBlanks: string[] = [];
+
+  for (const line of lines) {
+    if (line.trim() === "") {
+      pendingBlanks.push(line);
+      continue;
+    }
+    const prefix = pendingBlanks.length
+      ? `${pendingBlanks.join("\n")}\n`
+      : "";
+    groups.push(prefix + line);
+    pendingBlanks = [];
+  }
+
+  if (pendingBlanks.length) {
+    if (groups.length) {
+      groups[groups.length - 1] += `\n${pendingBlanks.join("\n")}`;
+    } else {
+      groups.push(pendingBlanks.join("\n"));
+    }
+  }
+
+  return groups;
+}
+
 export function CodingTaskPlayer({
   slug,
   index,
@@ -242,9 +300,12 @@ export function CodingTaskPlayer({
       task.challengeType === "MULTIPLE_BLANKS") &&
     task.starterCode.includes(token);
 
-  const webMode = ["HTML_BUILDER", "CSS_STYLING", "JS_DOM"].includes(
-    task.challengeType,
-  );
+  const webMode = [
+    "HTML_BUILDER",
+    "CSS_STYLING",
+    "JS_DOM",
+    "WEB_BUILDER",
+  ].includes(task.challengeType);
 
   const uiConfig = getChallengeUIConfig(task.challengeType);
 
@@ -293,6 +354,10 @@ export function CodingTaskPlayer({
           isSubmitting={isSubmitting}
           onRun={run}
           onSubmit={submit}
+          onReset={() => {
+            setRunResult(null);
+            setSubmitResult(null);
+          }}
           hasNext={hasNext}
           onNext={onNext}
         />
@@ -455,6 +520,7 @@ function ArrangePlayer({
   isSubmitting,
   onRun,
   onSubmit,
+  onReset,
   hasNext,
   onNext,
 }: {
@@ -465,17 +531,38 @@ function ArrangePlayer({
   isSubmitting: boolean;
   onRun: (code: string) => Promise<void>;
   onSubmit: (code: string) => Promise<void>;
+  onReset: () => void;
   hasNext: boolean;
   onNext: () => void;
 }) {
   const instanceId = useId();
-  const [blocks, setBlocks] = useState<ArrangeBlock[]>(() =>
-    normalizeCode(task.starterCode)
-      .split("\n")
-      .filter((line) => line.trim())
-      .map((code, index) => ({ id: `${instanceId}-${index}`, code })),
-  );
+
+  // Preferred: the admin authored explicit, individually-ordered blocks
+  // (taskConfig.blocks). Falling back to slicing up starterCode by line is
+  // only a best-effort guess and breaks the moment starterCode isn't plain,
+  // one-statement-per-line source (e.g. it's unset, or holds something else
+  // entirely) — using the authored blocks whenever they exist avoids that.
+  const configBlocks = task.taskConfig?.blocks;
+  const randomize = task.taskConfig?.randomize !== false;
+
+  const solutionBlocks = useMemo<ArrangeBlock[]>(() => {
+    if (configBlocks && configBlocks.length > 0) {
+      return [...configBlocks]
+        .sort((a, b) => a.correctOrder - b.correctOrder)
+        .map((block) => ({ id: block.id, code: block.code }));
+    }
+    return splitIntoArrangeBlocks(normalizeCode(task.starterCode)).map(
+      (code, index) => ({ id: `${instanceId}-line-${index}`, code }),
+    );
+  }, [configBlocks, task.starterCode, instanceId]);
+
+  function shuffledBlocks(): ArrangeBlock[] {
+    return randomize ? shuffleLines(solutionBlocks) : solutionBlocks;
+  }
+
+  const [blocks, setBlocks] = useState<ArrangeBlock[]>(shuffledBlocks);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [shuffleCount, setShuffleCount] = useState(0);
 
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 4 } }),
@@ -507,70 +594,133 @@ function ArrangePlayer({
     });
   }
 
+  function shuffleAgain() {
+    setBlocks(shuffledBlocks());
+    setActiveId(null);
+    setShuffleCount((value) => value + 1);
+    onReset();
+  }
+
   const value = blocks.map((block) => block.code).join("\n");
+  const passed = !!result && result.passed;
   const failed = !!result && !result.passed;
   const activeBlock = blocks.find((block) => block.id === activeId);
 
   return (
     <div className="mx-auto max-w-4xl">
-      <p className="mb-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-        <span className="flex h-5 w-5 items-center justify-center rounded-md bg-purple-100 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400">
-          <GripVertical className="h-3 w-3" />
-        </span>
-        Drag to arrange in the correct order
-      </p>
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+          <span className="flex h-5 w-5 items-center justify-center rounded-md bg-purple-100 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400">
+            <GripVertical className="h-3 w-3" />
+          </span>
+          Drag to arrange in the correct order
+          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-bold normal-case tracking-normal text-slate-500 dark:bg-white/10 dark:text-slate-400">
+            {blocks.length} steps
+          </span>
+        </p>
 
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        modifiers={[restrictToVerticalAxis]}
-        onDragStart={(event) => setActiveId(String(event.active.id))}
-        onDragEnd={handleDragEnd}
-        onDragCancel={() => setActiveId(null)}
-      >
-        <div
-          className={`space-y-2 rounded-2xl border p-4 shadow-sm transition-colors sm:p-6 ${
-            failed
-              ? "border-rose-300 bg-rose-50/40 dark:border-rose-500/40 dark:bg-rose-500/5"
-              : "border-slate-200 bg-white dark:border-slate-800 dark:bg-[#1a1d27]"
-          }`}
+        <button
+          type="button"
+          onClick={shuffleAgain}
+          className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition hover:text-slate-800 dark:text-slate-400 dark:hover:text-white"
         >
-          <SortableContext
-            items={blocks.map((block) => block.id)}
-            strategy={verticalListSortingStrategy}
+          <RotateCcw className="h-3.5 w-3.5" />
+          Shuffle &amp; reset
+        </button>
+      </div>
+
+      <div className="relative">
+        {passed && (
+          <div
+            key={`celebrate-${attempt}`}
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-2 z-10 overflow-hidden"
           >
-            {blocks.map((block, index) => (
-              <ArrangeBlockRow
-                key={block.id}
-                block={block}
-                index={index}
-                isFirst={index === 0}
-                isLast={index === blocks.length - 1}
-                onMoveUp={() => move(index, -1)}
-                onMoveDown={() => move(index, 1)}
-              />
-            ))}
-          </SortableContext>
-        </div>
+            <PartyPopper className="absolute -left-1 top-2 h-6 w-6 -rotate-12 text-emerald-500 animate-bounce" />
+            <Sparkles className="absolute right-4 top-0 h-5 w-5 text-amber-400 animate-ping" />
+            <Sparkles className="absolute bottom-2 left-1/2 h-4 w-4 text-emerald-400 animate-pulse" />
+          </div>
+        )}
 
-        <DragOverlay>
-          {activeBlock ? (
-            <div className="flex items-center gap-2 rounded-xl border border-[#04AA6D] bg-white px-3 py-3 shadow-xl dark:border-emerald-500 dark:bg-[#0f111a]">
-              <GripVertical className="h-4 w-4 shrink-0 text-slate-400" />
-              <code className="whitespace-pre text-sm text-slate-800 dark:text-slate-200">
-                {highlightCode(activeBlock.code)}
-              </code>
-            </div>
-          ) : null}
-        </DragOverlay>
-      </DndContext>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          modifiers={[restrictToVerticalAxis]}
+          onDragStart={(event) => setActiveId(String(event.active.id))}
+          onDragEnd={handleDragEnd}
+          onDragCancel={() => setActiveId(null)}
+        >
+          <div
+            key={shuffleCount}
+            className={`space-y-2 rounded-2xl border p-4 shadow-sm transition-colors sm:p-6 ${
+              failed
+                ? "border-rose-300 bg-rose-50/40 dark:border-rose-500/40 dark:bg-rose-500/5"
+                : passed
+                  ? "border-emerald-300 bg-emerald-50/40 dark:border-emerald-500/40 dark:bg-emerald-500/5"
+                  : "border-slate-200 bg-white dark:border-slate-800 dark:bg-[#1a1d27]"
+            }`}
+          >
+            <SortableContext
+              items={blocks.map((block) => block.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              {blocks.map((block, index) => (
+                <ArrangeBlockRow
+                  key={block.id}
+                  block={block}
+                  index={index}
+                  isFirst={index === 0}
+                  isLast={index === blocks.length - 1}
+                  onMoveUp={() => move(index, -1)}
+                  onMoveDown={() => move(index, 1)}
+                />
+              ))}
+            </SortableContext>
+          </div>
 
-      <Actions
-        isRunning={isRunning}
-        isSubmitting={isSubmitting}
-        onRun={() => void onRun(value)}
-        onSubmit={() => void onSubmit(value)}
-      />
+          <DragOverlay>
+            {activeBlock ? (
+              <div className="flex items-center gap-2 rounded-xl border-2 border-blue-500 bg-white px-3 py-3 shadow-xl shadow-blue-500/30 dark:bg-[#0f111a]">
+                <GripVertical className="h-4 w-4 shrink-0 text-slate-400" />
+                <code className="whitespace-pre text-sm text-slate-800 dark:text-slate-200">
+                  {highlightCode(activeBlock.code)}
+                </code>
+              </div>
+            ) : null}
+          </DragOverlay>
+        </DndContext>
+      </div>
+
+      <div className="mt-4 flex flex-wrap justify-end gap-2">
+        <button
+          type="button"
+          disabled={isRunning || isSubmitting}
+          onClick={() => void onRun(value)}
+          className="inline-flex h-11 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
+        >
+          {isRunning ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Play className="h-4 w-4" />
+          )}
+          Preview order
+        </button>
+
+        <button
+          type="button"
+          disabled={isRunning || isSubmitting}
+          onClick={() => void onSubmit(value)}
+          className="inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#002455] to-blue-600 px-6 text-sm font-bold text-white shadow-sm shadow-blue-600/20 transition hover:-translate-y-0.5 hover:shadow-md disabled:cursor-not-allowed disabled:translate-y-0 disabled:opacity-50 disabled:shadow-none sm:flex-none sm:min-w-[14rem] dark:from-emerald-600 dark:to-emerald-500"
+        >
+          {isSubmitting ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <CheckCircle2 className="h-4 w-4" />
+          )}
+          Check Solution
+        </button>
+      </div>
+
       <Result
         key={attempt}
         result={result}
@@ -578,6 +728,18 @@ function ArrangePlayer({
         hasNext={hasNext}
         onNext={onNext}
       />
+
+      {failed && (
+        <details className="group mt-3">
+          <summary className="flex cursor-pointer list-none items-center gap-1 text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white">
+            <ChevronDown className="h-3.5 w-3.5 transition-transform group-open:rotate-180" />
+            View what was submitted
+          </summary>
+          <pre className="mt-2 max-h-60 overflow-auto whitespace-pre rounded-lg bg-slate-50 p-3 font-mono text-xs text-slate-700 dark:bg-black/25 dark:text-slate-200">
+            {value}
+          </pre>
+        </details>
+      )}
     </div>
   );
 }
@@ -614,7 +776,7 @@ function ArrangeBlockRow({
         transition,
       }}
       data-dragging={isDragging}
-      className="group flex items-center gap-2 rounded-xl border border-slate-200 bg-[#f8fafc] px-3 py-3 shadow-sm transition data-[dragging=true]:z-10 data-[dragging=true]:border-[#04AA6D] data-[dragging=true]:shadow-lg dark:border-slate-700/50 dark:bg-[#0f111a] dark:data-[dragging=true]:border-emerald-500"
+      className="group flex items-center gap-2 rounded-xl border border-slate-200 bg-[#f8fafc] px-3 py-3 shadow-sm transition focus-within:z-10 focus-within:border-blue-500 focus-within:shadow-lg focus-within:shadow-blue-500/20 focus-within:ring-2 focus-within:ring-blue-500/30 data-[dragging=true]:z-10 data-[dragging=true]:border-blue-500 data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-blue-500/20 data-[dragging=true]:ring-2 data-[dragging=true]:ring-blue-500/30 dark:border-slate-700/50 dark:bg-[#0f111a]"
     >
       <button
         type="button"
@@ -794,7 +956,12 @@ function EditorPlayer({
               <iframe
                 title={`${task.title} preview`}
                 srcDoc={preview}
-                sandbox={task.challengeType === "JS_DOM" ? "allow-scripts" : ""}
+                sandbox={
+                  task.challengeType === "JS_DOM" ||
+                  task.challengeType === "WEB_BUILDER"
+                    ? "allow-scripts"
+                    : ""
+                }
                 className="h-[400px] w-full border-none bg-white"
               />
             </div>
@@ -959,12 +1126,20 @@ function Result({
     <section
       ref={sectionRef}
       role="status"
-      className={`mt-5 scroll-mt-24 rounded-2xl border p-4 sm:p-5 ${
+      className={`relative mt-5 scroll-mt-24 rounded-2xl border p-4 sm:p-5 ${
         passed
           ? "border-emerald-200 bg-emerald-50/70 dark:border-emerald-900/60 dark:bg-emerald-950/25"
           : "border-rose-200 bg-rose-50/70 dark:border-rose-900/60 dark:bg-rose-950/25"
       }`}
     >
+      {passed && (
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <PartyPopper className="absolute left-2 top-2 h-6 w-6 -rotate-12 text-emerald-500 animate-bounce" />
+          <Sparkles className="absolute right-8 top-2 h-5 w-5 text-amber-400 animate-ping" />
+          <Sparkles className="absolute right-3 top-10 h-4 w-4 text-emerald-400 animate-pulse" />
+        </div>
+      )}
+
       <div className="flex items-start gap-3.5">
         <span
           className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
@@ -1120,7 +1295,7 @@ function buildPreview(task: CodingTaskDetail, code: string): string {
     </style>
   `;
 
-  if (task.challengeType === "HTML_BUILDER") {
+  if (task.challengeType === "HTML_BUILDER" || task.challengeType === "WEB_BUILDER") {
     return `<!doctype html><html><head>${head}</head><body>${code}</body></html>`;
   }
 
