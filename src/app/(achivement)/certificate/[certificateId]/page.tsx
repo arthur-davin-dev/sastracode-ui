@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useRef, useState } from "react";
+import { use, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import {
@@ -24,11 +24,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CertificateImageView } from "@/components/certificate/CertificateImageView";
 import { VerificationCard } from "@/components/certificate/VerificationCard";
+import { useGetCertificateByIdQuery } from "@/redux/features/certificate/certificateApi";
 import {
-  useGetCertificateByIdQuery,
-  useLazyGetCertificateDownloadQuery,
-} from "@/redux/features/certificate/certificateApi";
-import { resolveCertificateFileUrl } from "@/lib/certificate/resolve-certificate-file";
+  resolveCertificateFileUrl,
+  resolveCertificateFileContentUrl,
+} from "@/lib/certificate/resolve-certificate-file";
+import {
+  downloadCertificatePdf,
+  downloadCertificatePng,
+} from "@/lib/certificate/download-certificate";
 
 const FALLBACK_QR = "/images/qr-code.png";
 
@@ -50,10 +54,8 @@ export default function CertificateViewPage({
   const certificate = data?.data;
   const isRevoked = certificate?.revoked === true;
   const [copied, setCopied] = useState(false);
+  const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
   const [isGeneratingPng, setIsGeneratingPng] = useState(false);
-  const [triggerDownload, { isFetching: isDownloading }] =
-    useLazyGetCertificateDownloadQuery();
-  const pngCaptureRef = useRef<HTMLDivElement>(null);
 
   const handleShare = () => {
     if (typeof window !== "undefined") {
@@ -64,30 +66,28 @@ export default function CertificateViewPage({
   };
 
   const handleDownloadPdf = async () => {
-    if (isRevoked) return;
+    if (isRevoked || !certificate) return;
     try {
-      const result = await triggerDownload(certificateId).unwrap();
-      if (result.data && typeof window !== "undefined") {
-        window.open(result.data, "_blank", "noopener,noreferrer");
-      }
+      setIsDownloadingPdf(true);
+      await downloadCertificatePdf(
+        certificate.certificateFileId,
+        certificate.certificateNumber,
+      );
     } catch (error) {
-      console.error("Certificate download error:", error);
+      console.error("Certificate PDF download error:", error);
+    } finally {
+      setIsDownloadingPdf(false);
     }
   };
 
   const handleDownloadPng = async () => {
-    if (isRevoked || !pngCaptureRef.current || !certificate) return;
+    if (isRevoked || !certificate) return;
     try {
       setIsGeneratingPng(true);
-      const { default: html2canvas } = await import("html2canvas");
-      const canvas = await html2canvas(pngCaptureRef.current, {
-        backgroundColor: "#ffffff",
-        scale: 2,
-      });
-      const link = document.createElement("a");
-      link.href = canvas.toDataURL("image/png");
-      link.download = `certificate-${certificate.certificateNumber}.png`;
-      link.click();
+      await downloadCertificatePng(
+        certificate.certificateFileId,
+        certificate.certificateNumber,
+      );
     } catch (error) {
       console.error("Certificate PNG export error:", error);
     } finally {
@@ -127,6 +127,10 @@ export default function CertificateViewPage({
     );
   }
 
+  const canDownload =
+    !isRevoked && !!resolveCertificateFileContentUrl(certificate.certificateFileId);
+  const isBusy = isDownloadingPdf || isGeneratingPng;
+
   return (
     <div className="space-y-6 p-6">
       {/* Top Header Controls */}
@@ -148,13 +152,13 @@ export default function CertificateViewPage({
             <DropdownMenuTrigger
               render={
                 <Button
-                  disabled={isDownloading || isGeneratingPng || isRevoked}
+                  disabled={isBusy || !canDownload}
                   title={isRevoked ? "វិញ្ញាបនបត្រនេះត្រូវបានដកហូត" : undefined}
                   className="h-12 px-5 gap-2 bg-primary-color hover:bg-blue-400 hover:text-slate-950 text-white text-lg font-bold shadow-md rounded-2xl transition-all disabled:opacity-60"
                 />
               }
             >
-              {isDownloading || isGeneratingPng ? (
+              {isBusy ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
               ) : (
                 <Download className="h-5 w-5" />
@@ -165,12 +169,14 @@ export default function CertificateViewPage({
             <DropdownMenuContent align="end" className="w-44">
               <DropdownMenuItem
                 onClick={handleDownloadPdf}
+                disabled={isBusy || !canDownload}
                 className="text-base gap-2 py-2"
               >
                 <FileText className="h-4 w-4" /> ទាញយកជា PDF
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={handleDownloadPng}
+                disabled={isBusy || !canDownload}
                 className="text-base gap-2 py-2"
               >
                 <ImageIcon className="h-4 w-4" /> ទាញយកជា PNG
@@ -234,22 +240,6 @@ export default function CertificateViewPage({
           />
         </motion.div>
       </div>
-
-      {/* Off-screen certificate design used only to render the PNG snapshot;
-          html2canvas needs real layout, so it's positioned off-canvas rather
-          than display:none/visibility:hidden. */}
-      {/* <div
-        aria-hidden
-        className="pointer-events-none fixed left-[-9999px] top-0 w-[1000px]"
-      >
-        <div ref={pngCaptureRef}>
-          <CertificateImageView
-            studentName={certificate.studentName}
-            courseDescription={`សម្រាប់ការបញ្ចប់វគ្គសិក្សា "${certificate.courseTitle}" ដោយជោគជ័យ`}
-            qrCodeUrl={FALLBACK_QR}
-          />
-        </div>
-      </div> */}
     </div>
   );
 }

@@ -6,16 +6,29 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import {
   LayoutGrid,
   List,
   CheckCircle2,
   Award,
-  Share2,
+  Download,
+  FileText,
+  Image as ImageIcon,
+  Loader2,
   LockKeyhole,
   AlertTriangle,
 } from "lucide-react";
 import { useGetMyCertificatesQuery } from "@/redux/features/certificate/certificateApi";
 import { resolveCertificateFileUrl } from "@/lib/certificate/resolve-certificate-file";
+import {
+  downloadCertificatePdf,
+  downloadCertificatePng,
+} from "@/lib/certificate/download-certificate";
 import type { Certificate } from "@/types/certificate";
 
 const FALLBACK_THUMBNAIL = "/images/certi.png";
@@ -60,6 +73,63 @@ function CertificateThumbnail({
   );
 }
 
+function CertificateDownloadMenu({
+  cert,
+  busy,
+  onDownloadPdf,
+  onDownloadPng,
+  className,
+}: {
+  cert: Certificate;
+  busy: boolean;
+  onDownloadPdf: (cert: Certificate, e: React.MouseEvent) => void;
+  onDownloadPng: (cert: Certificate, e: React.MouseEvent) => void;
+  className?: string;
+}) {
+  const stopLinkNavigation = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        onClick={stopLinkNavigation}
+        render={
+          <button
+            type="button"
+            aria-label="Download Certificate"
+            disabled={busy}
+            className={`rounded-xl bg-slate-100 dark:bg-slate-800 p-2.5 text-slate-600 dark:text-slate-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors disabled:opacity-60 ${className ?? ""}`}
+          />
+        }
+      >
+        {busy ? (
+          <Loader2 size={16} className="animate-spin" />
+        ) : (
+          <Download size={16} />
+        )}
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-40">
+        <DropdownMenuItem
+          disabled={busy}
+          onClick={(e) => onDownloadPdf(cert, e)}
+          className="text-sm gap-2 py-1.5"
+        >
+          <FileText className="h-4 w-4" /> ទាញយកជា PDF
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          disabled={busy}
+          onClick={(e) => onDownloadPng(cert, e)}
+          className="text-sm gap-2 py-1.5"
+        >
+          <ImageIcon className="h-4 w-4" /> ទាញយកជា PNG
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
 export function EarnedCertificatesSection() {
   const { status } = useSession();
   const isAuthenticated = status === "authenticated";
@@ -72,13 +142,32 @@ export function EarnedCertificatesSection() {
 
   const certificates: Certificate[] = data?.data.content ?? [];
   const isLoading = status === "loading" || (isAuthenticated && isFetching);
+  const [busyCertId, setBusyCertId] = useState<string | null>(null);
 
-  const handleShare = (certId: string, e: React.MouseEvent) => {
+  const handleDownloadPdf = async (cert: Certificate, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    navigator.clipboard.writeText(
-      `${window.location.origin}/certificate/${certId}`,
-    );
+    try {
+      setBusyCertId(cert.id);
+      await downloadCertificatePdf(cert.certificateFileId, cert.certificateNumber);
+    } catch (error) {
+      console.error("Certificate PDF download error:", error);
+    } finally {
+      setBusyCertId(null);
+    }
+  };
+
+  const handleDownloadPng = async (cert: Certificate, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      setBusyCertId(cert.id);
+      await downloadCertificatePng(cert.certificateFileId, cert.certificateNumber);
+    } catch (error) {
+      console.error("Certificate PNG export error:", error);
+    } finally {
+      setBusyCertId(null);
+    }
   };
 
   return (
@@ -190,9 +279,6 @@ export function EarnedCertificatesSection() {
                                 certificateFileId={cert.certificateFileId}
                                 title={cert.courseTitle}
                               />
-                              <span className="absolute top-3 left-3 rounded-lg bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-1.5 text-slate-800 dark:text-slate-200 border border-slate-200/50 dark:border-slate-700/50 shadow-xs">
-                                <Award className="h-4 w-4" />
-                              </span>
                             </div>
 
                             {/* Card Body */}
@@ -223,14 +309,12 @@ export function EarnedCertificatesSection() {
                                   </span>
                                 </div>
 
-                                <button
-                                  type="button"
-                                  aria-label="Share Certificate"
-                                  onClick={(e) => handleShare(cert.id, e)}
-                                  className="rounded-xl bg-slate-100 dark:bg-slate-800 p-2.5 text-slate-600 dark:text-slate-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-                                >
-                                  <Share2 size={16} />
-                                </button>
+                                <CertificateDownloadMenu
+                                  cert={cert}
+                                  busy={busyCertId === cert.id}
+                                  onDownloadPdf={handleDownloadPdf}
+                                  onDownloadPng={handleDownloadPng}
+                                />
                               </div>
                             </div>
                           </div>
@@ -268,14 +352,13 @@ export function EarnedCertificatesSection() {
                               </span>
                             </div>
 
-                            <button
-                              type="button"
-                              aria-label="Share Certificate"
-                              onClick={(e) => handleShare(cert.id, e)}
-                              className="rounded-xl bg-slate-100 dark:bg-slate-800 p-2.5 text-slate-600 dark:text-slate-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors shrink-0"
-                            >
-                              <Share2 size={16} />
-                            </button>
+                            <CertificateDownloadMenu
+                              cert={cert}
+                              busy={busyCertId === cert.id}
+                              onDownloadPdf={handleDownloadPdf}
+                              onDownloadPng={handleDownloadPng}
+                              className="shrink-0"
+                            />
                           </div>
                         )}
                       </Link>

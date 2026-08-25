@@ -167,8 +167,8 @@ export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
               disabled={!allDone}
               className={`w-full h-14 rounded-2xl text-lg font-bold shadow-md transition-all duration-300 gap-2 flex items-center justify-center group ${
                 allDone
-                  ? "bg-init-color hover:bg-yellow-400 hover:text-slate-950 text-white"
-                  : "bg-primary-color dark:bg-slate-800 text-white cursor-not-allowed border  dark:border-slate-700"
+                  ? "bg-primary-color hover:bg-blue-400 hover:text-slate-950 text-white"
+                  : "bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 cursor-not-allowed border border-slate-300 dark:border-slate-700"
               }`}
             >
               <span>

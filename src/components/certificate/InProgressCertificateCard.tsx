@@ -4,14 +4,20 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { PlayCircle, Hourglass, Film } from "lucide-react";
+import { PlayCircle, Hourglass, Film, CheckCircle2 } from "lucide-react";
 import {
   useGetCourseByIdQuery,
   useGetCourseProgressQuery,
 } from "@/redux/api";
 import { mapApiCourseToCourse } from "@/lib/course/course-adapter";
 
-export function InProgressCertificateCard({ courseId }: { courseId: string }) {
+export function InProgressCertificateCard({
+  courseId,
+  completed: completedProp = false,
+}: {
+  courseId: string;
+  completed?: boolean;
+}) {
   const { data: course, isFetching: isFetchingCourse } =
     useGetCourseByIdQuery(courseId);
   const { data: progress, isFetching: isFetchingProgress } =
@@ -41,6 +47,9 @@ export function InProgressCertificateCard({ courseId }: { courseId: string }) {
     progress?.percentage ??
       (totalVideos > 0 ? (completedVideos / totalVideos) * 100 : 0),
   );
+  // A course is completed once its actual watch progress hits 100%,
+  // regardless of what the enrollment status says (it can lag behind).
+  const completed = completedProp || progressPercent >= 100;
 
   return (
     <Card className="relative overflow-hidden rounded-3xl  border-slate-100 dark:border-slate-800  bg-white dark:bg-slate-900 transition-all duration-300  hover:-translate-y-0.5 group">
@@ -67,22 +76,35 @@ export function InProgressCertificateCard({ courseId }: { courseId: string }) {
             </h3>
 
             {/* Status Badge */}
-            <span className="flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-init-color/20 text-primary-color dark:text-yellow-300 border border-yellow-400/50 text-lg font-bold w-fit shrink-0">
-              <Hourglass className="h-4 w-4 text-secondary-color animate-pulse" />
-              កំពុងដំណើរការ
-            </span>
+            {completed ? (
+              <span className="flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-green-50 dark:bg-green-950/30 text-green-600 border border-green-200 dark:border-green-900 text-lg font-bold w-fit shrink-0">
+                <CheckCircle2 className="h-4 w-4" />
+                បានបញ្ចប់
+              </span>
+            ) : (
+              <span className="flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-init-color/20 text-primary-color dark:text-yellow-300 border border-yellow-400/50 text-lg font-bold w-fit shrink-0">
+                <Hourglass className="h-4 w-4 text-secondary-color animate-pulse" />
+                កំពុងដំណើរការ
+              </span>
+            )}
           </div>
 
           {/* Progress Percent Text */}
           <div className="flex items-center justify-between text-lg font-bold text-primary-color dark:text-white">
             <span className="opacity-80">វឌ្ឍនភាពសិក្សា</span>
-            <span className="text-secondary-color">{progressPercent}%</span>
+            <span className={completed ? "text-green-600" : "text-secondary-color"}>
+              {progressPercent}%
+            </span>
           </div>
 
-          {/* Styled Progress Bar (Yellow Progress Bar Fill) */}
+          {/* Styled Progress Bar */}
           <Progress
             value={progressPercent}
-            className="h-2.5 bg-slate-100 dark:bg-slate-800 [&>div]:bg-gradient-to-r [&>div]:from-primary-color [&>div]:to-blue-400 rounded-full"
+            className={`h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full ${
+              completed
+                ? "[&>div]:bg-green-500"
+                : "[&>div]:bg-secondary-color"
+            }`}
           />
 
           {/* Videos Watched Info */}
@@ -98,15 +120,17 @@ export function InProgressCertificateCard({ courseId }: { courseId: string }) {
           </div>
         </div>
 
-        {/* Action Button (Red Secondary with Yellow Hover) */}
-        <Button
-          size="lg"
-          render={<Link href={mapped.href ?? `/courses/${mapped.id}`} />}
-          className="w-full md:w-auto h-14 px-6 rounded-2xl text-lg font-bold text-white bg-primary-color hover:bg-blue-400 hover:text-slate-950  transition-all duration-300 gap-2 shrink-0 flex items-center justify-center group/btn"
-        >
-          <PlayCircle className="h-6 w-6 transition-transform duration-300 group-hover/btn:scale-110" />
-          <span>បន្តការសិក្សា</span>
-        </Button>
+        {/* Action Button (only for courses still in progress) */}
+        {!completed && (
+          <Button
+            size="lg"
+            render={<Link href={mapped.href ?? `/courses/${courseId}`} />}
+            className="w-full md:w-auto h-14 px-6 rounded-2xl text-lg font-bold text-white bg-primary-color hover:bg-blue-400 hover:text-slate-950  transition-all duration-300 gap-2 shrink-0 flex items-center justify-center group/btn"
+          >
+            <PlayCircle className="h-6 w-6 transition-transform duration-300 group-hover/btn:scale-110" />
+            <span>បន្តការសិក្សា</span>
+          </Button>
+        )}
       </CardContent>
     </Card>
   );
