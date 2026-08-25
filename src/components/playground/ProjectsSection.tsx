@@ -108,7 +108,7 @@ const fallbackCommunity: CommunityData = {
 };
 
 function formatMemberCount(count: number | null) {
-  if (count === null) return "10,000+";
+  if (count === null) return "10K";
   return new Intl.NumberFormat("en-US", {
     notation: count >= 10_000 ? "compact" : "standard",
     maximumFractionDigits: 1,
@@ -229,35 +229,32 @@ export default function ProjectsSection() {
             </p>
           </div>
 
+
           {/* Avatar Stack */}
-          <div className="flex items-center -space-x-3 shrink-0 self-end md:self-center">
-            {community.members.map((member) => (
-              <div
-                key={member.userId}
-                title={memberName(member)}
-                className="h-10 w-10 overflow-hidden rounded-full border-2 border-white bg-slate-200 shadow-sm dark:border-slate-900 dark:bg-slate-700"
-              >
-                {member.avatarFileId ? (
-                  <img
-                    src={`/api/files/${encodeURIComponent(member.avatarFileId)}/content`}
-                    alt={memberName(member)}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <span className="flex h-full w-full items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-200">
-                    {memberName(member).charAt(0).toUpperCase()}
-                  </span>
-                )}
-              </div>
-            ))}
-            {community.members.length === 0 && (
-              <>
-                <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-amber-400 to-orange-400 border-2 border-white dark:border-slate-900 shadow-sm" />
-                <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-blue-400 to-cyan-400 border-2 border-white dark:border-slate-900 shadow-sm" />
-                <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-400 border-2 border-white dark:border-slate-900 shadow-sm" />
-              </>
-            )}
-            <div className="h-10 w-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white border-2 border-white dark:border-slate-900 flex items-center justify-center text-xs font-bold shadow-sm">
+          {/* Avatar Stack */}
+          <div className="flex items-center -space-x-2.5 shrink-0 self-end md:self-center">
+            <img
+              src="/images/ben_thona.jpg"
+              alt="Ben Thona"
+              className="inline-block h-10 w-10 rounded-full object-cover border-2 border-white dark:border-slate-900 shadow-sm"
+            />
+            <img
+              src="/images/chhay_davin.jpg"
+              alt="Chhay Davin"
+              className="inline-block h-10 w-10 rounded-full object-cover border-2 border-white dark:border-slate-900 shadow-sm"
+            />
+            <img
+              src="/images/mon_narea.jpg"
+              alt="Mon Narea"
+              className="inline-block h-10 w-10 rounded-full object-cover border-2 border-white dark:border-slate-900 shadow-sm"
+            />
+            <img
+              src="/images/meng_kimleap.jpg"
+              alt="Meng Kimleap"
+              className="inline-block h-10 w-10 rounded-full object-cover border-2 border-white dark:border-slate-900 shadow-sm"
+            />
+
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 dark:bg-indigo-500 text-xs font-bold text-white border-2 border-white dark:border-slate-900 shadow-sm">
               +{memberCount}
             </div>
           </div>
