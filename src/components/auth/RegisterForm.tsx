@@ -536,7 +536,7 @@ export default function RegisterForm() {
 
                   <div className="h-px flex-1 bg-slate-200" />
                 </div>
-
+{/* 
                 <button
                   type="button"
                   onClick={() =>
@@ -547,7 +547,7 @@ export default function RegisterForm() {
                   className="flex h-[50px] w-full items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:border-[#13235B]/30 hover:bg-slate-50"
                 >
                   ចូលតាម Keycloak
-                </button>
+                </button> */}
 
                 <p className="pt-1 text-center text-sm text-slate-400">
                   មានគណនីរួចហើយមែនទេ?{" "}

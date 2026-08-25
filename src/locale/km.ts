@@ -106,15 +106,64 @@ export const km = {
     viewAll: "មើលវគ្គសិក្សាទាំងអស់",
     enrollNow: "ចុះឈ្មោះឥឡូវនេះ",
   },
+
   interactiveDoc: {
-    title: "ឯកសារ Interactive Documentation",
+  title: "ឯកសារបង្រៀនអន្តរកម្ម",
+  description: "រៀនអភិវឌ្ឍន៍វេបសាយតាមបែបអន្តរកម្មជាមួយឧទាហរណ៍ និងការមើលកូដផ្ទាល់។",
+  link: "ស្វែងយល់បន្ថែម",
+  sections: {
+    introduction: {
+      label: "សេចក្តីផ្តើម",
+      title: "ឯកសារបង្រៀនអន្តរកម្ម",
+      description: "រៀនអភិវឌ្ឍន៍វេបសាយតាមបែបអន្តរកម្មជាមួយឧទាហរណ៍ ការមើលកូដផ្ទាល់ និងការជួយពី AI។",
+      linkText: "ស្វែងយល់បន្ថែម"
+    },
+    elements: {
+      label: "ធាតុ HTML",
+      title: "ធាតុ HTML (Elements)",
+      description: "សិក្សាអំពីគ្រឹះនៃទំព័រវេបសាយ។ ធាតុនិមួយៗផ្សំឡើងពី start tag, មាតិកា, និង end tag។",
+      linkText: "ស្វែងយល់អំពីធាតុ HTML"
+    },
+    attributes: {
+      label: "លក្ខណៈ",
+      title: "លក្ខណៈ HTML (Attributes)",
+      description: "ផ្តល់ព័ត៌មានបន្ថែមអំពីធាតុ HTML ដូចជា class, ID, source, និង alt text។",
+      linkText: "រៀនអំពី Attributes"
+    },
+    semantic: {
+      label: "Semantic HTML",
+      title: "Semantic HTML",
+      description: "ប្រើប្រាស់ tag ដែលមានន័យច្បាស់លាស់ដូចជា <article>, <section>, និង <nav> ដើម្បីពង្រឹង Accessibility និង SEO។",
+      linkText: "ស្វែងយល់ពី Semantic Tags"
+    },
+    forms: {
+      label: "ទម្រង់ (Forms)",
+      title: "ទម្រង់ HTML (Forms)",
+      description: "ប្រមូលទិន្នន័យពីអ្នកប្រើប្រាស់ជាមួយធាតុអន្តរកម្មដូចជា text field, checkbox, radio, និងប៊ូតុង submit។",
+      linkText: "បង្កើតទម្រង់"
+    },
+    tables: {
+      label: "តារាង (Tables)",
+      title: "តារាង HTML (Tables)",
+      description: "រៀបចំទិន្នន័យជាជួរដេក និងជួរឈរដោយប្រកបដោយប្រសិទ្ធភាពដោយប្រើ <table>, <tr>, <th>, និង <td>។",
+      linkText: "មើលការណែនាំតារាង"
+    }
+  }
+},
 
-    description:
-      "ស្វែងយល់ពីមេរៀនដែលរៀបចំជាព័ន្ធ ជាមួយ Live Code Examples, Syntax Highlighting, Embedded Exercises និង Quiz ដែលជួយប្លែងចំណេះដឹងស្ទឹះទៅជាការអនុវត្តជាក់ស្តែងៗ",
-
-    link: "មើល Documentation",
-    aiChat: "ការពន្យល់និងជំនួយក្នុងការសិក្សារកកំហុសក្នុងកូដ។",
+"aiChatCard": {
+    "aiChat": "គ្រូបង្វឹក AI ជួយអ្នកវិភាគកំហុសកូដ និងផ្តល់ជាការណែនាំភ្លាមៗ។",
+    "userRole": "អ្នក",
+    "userQuestion": "ហេតុអ្វីបានជាប៊ូតុងរបស់ខ្ញុំមិនដំណើរការ?",
+    "aiRole": "គ្រូបង្វឹក AI",
+    "hint1Title": "ការណែនាំទី ១",
+    "hint1Text": "សូមពិនិត្យមើលថាតើស្លាកបិទ (closing tag) របស់អ្នកត្រឹមត្រូវឬនៅ។",
+    "hint2Title": "ការណែនាំទី ២",
+    "hint2TextPrefix": "ប្រាកដថាប៊ូតុងស្ថិតនៅខាងក្នុងស្លាក",
+    "hint2TextSuffix": "។",
+    "successText": "មើលទៅល្អហើយ! សាកល្បងរ៉ាន់ម្តងទៀត។"
   },
+
   resultAndRewards: {
     featureSection: {
       features: [
@@ -372,6 +421,7 @@ export const km = {
         name: "ចាន់ ឆៃយ៉ា",
         role: "អ្នកណែនាំ",
         image: "/images/chan_chhaya.jpg",
+        bio: "មិនមានសម្រង់សម្តីទេ",
         githubUrl: "https://github.com/it-chhaya",
         telegramUrl: "https://t.me/chhayadevkh",
       },
@@ -380,6 +430,7 @@ export const km = {
         name: "ស្រេង ជីប៉",
         role: "អ្នកណែនាំ",
         image: "/images/sreng_chipor.jpg",
+        bio: "មិនមានសម្រង់សម្តីទេ",
         githubUrl: "https://github.com/jiporCK",
         telegramUrl: "https://t.me/jiporsreng",
       },
@@ -425,7 +476,7 @@ export const km = {
         id: "4",
         name: "លត់ ឡោះ",
         position: "អ្នកអភិវឌ្ឍន៍ Full-Stack",
-        bio: "មិនមានសម្រង់សម្តីទេ",
+        bio: "វាមិនសំខាន់ថាតើអ្នកចូលចិត្តវាឬអត់នោះទេ គ្រាន់តែដាក់បេះដូងហើយធ្វើវាទៅ",
         image: "/images/lot_los.png",
         githubUrl: "https://github.com/loslot",
         telegramUrl: "https://t.me/Lot_Los",
@@ -517,6 +568,41 @@ export const km = {
       { name: "អេមីលី វ៉ាង", role: "អ្នកគ្រប់គ្រងផលិតផលនៅ Meta", text: "ចំណុចល្អបំផុតគឺសហគមន៍។ ការពិភាក្សា និងមតិយោបល់ពីមិត្តរួមសិក្សាជួយពង្រឹងការយល់ដឹង និងទំនុកចិត្ត។" },
     ],
   },
+
+  "tech-stack": {
+  "title": "កន្លែងសម្រាប់អនុវត្តកូដដែលគាំទ្រ",
+  "subtitle": "សរសេរ ប្រតិបត្តិការ និងតេស្តកូដរបស់អ្នកដោយផ្ទាល់នៅលើកម្មវិធីរុករក តាមភាសា និង Framework ល្បីៗ"
+},
+
+docs: {
+  searchPlaceholder: "ស្វែងរកប្រធានបទ...",
+  sections: {
+    introduction: {
+      title: "សេចក្តីផ្តើម",
+      description: "ចាប់ផ្តើមជាមួយមូលដ្ឋានគ្រឹះនៃការអភិវឌ្ឍវេបសាយ និងរចនាសម្ព័ន្ធ HTML។"
+    },
+    elements: {
+      title: "ធាតុ HTML (Elements)",
+      description: "សិក្សាអំពីគ្រឹះនៃទំព័រវេបសាយ។ ធាតុនិមួយៗផ្សំឡើងពី start tag, មាតិកា, និង end tag។"
+    },
+    attributes: {
+      title: "លក្ខណៈ HTML (Attributes)",
+      description: "ផ្តល់ព័ត៌មានបន្ថែមអំពីធាតុ HTML ដូចជា class, ID, source, និង alt text។"
+    },
+    semantic: {
+      title: "Semantic HTML",
+      description: "ប្រើប្រាស់ tag ដែលមានន័យច្បាស់លាស់ដូចជា <article>, <section>, និង <nav> ដើម្បីពង្រឹង Accessibility និង SEO។"
+    },
+    forms: {
+      title: "ទម្រង់ (Forms)",
+      description: "រៀនពីរបៀបទទួលទិន្នន័យពីអ្នកប្រើប្រាស់តាមរយៈ Input, Button, និង Select dropdown។"
+    },
+    tables: {
+      title: "តារាង (Tables)",
+      description: "រៀបចំទិន្នន័យជាជួរដេក និងជួរឈរដោយប្រើប្រាស់ tag តារាងស្តង់ដារ។"
+    }
+  }
+},
 
   footer: {
     description:

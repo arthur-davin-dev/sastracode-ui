@@ -544,34 +544,50 @@ export default function PlatformShowcase() {
 
           <div
             className="
-              feature-card
-              absolute
-              left-[5.63%]
-              top-[24.3%]
-              w-[32.3%]
-              h-[20.1%]
-              flex
-              items-center
-              justify-center
-              bg-white/70
-              border
-              border-slate-200
-              dark:bg-[rgba(13,19,38,0.55)]
-              dark:border-[rgba(94,148,255,0.20)]
-              backdrop-blur-[6px]
-              z-[2]
-              transition-all
-              duration-250
-              ease-in-out
-              hover:bg-slate-50
-              hover:border-slate-300
-              dark:hover:border-[rgba(110,160,255,0.45)]
-              dark:hover:bg-[rgba(16,23,46,0.75)]
-              hover:-translate-y-0.5
-            "
+    feature-card
+    absolute
+    left-[5.63%]
+    top-[24.3%]
+    w-[32.3%]
+    h-[20.1%]
+    flex
+    items-center
+    justify-center
+
+    bg-white/15
+    dark:bg-white/[0.04]
+
+    border
+    border-white/30
+    dark:border-white/10
+
+    backdrop-blur-2xl
+    backdrop-saturate-150
+
+    shadow-[0_8px_32px_rgba(0,0,0,0.08)]
+    dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]
+
+    ring-1
+    ring-inset
+    ring-white/20
+    dark:ring-white/[0.06]
+
+    z-[2]
+    transition-all
+    duration-300
+    ease-in-out
+
+    hover:bg-white/25
+    hover:border-white/50
+    hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)]
+
+    dark:hover:bg-white/[0.08]
+    dark:hover:border-white/20
+
+    hover:-translate-y-0.5
+  "
           >
             <div className="card-icon-circle shrink-0 rounded-full flex items-center justify-center">
-
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -582,10 +598,8 @@ export default function PlatformShowcase() {
                 className="text-[#eaf1ff]"
               >
                 <circle cx="12" cy="12" r="10" />
-
                 <polygon points="10 8 16 12 10 16 10 8" />
               </svg>
-
             </div>
 
             <div>
@@ -611,17 +625,17 @@ export default function PlatformShowcase() {
               flex
               items-center
               justify-center
-              bg-white/70
+              bg-white/40
               border
-              border-slate-200
+              border-white/60
               dark:bg-[rgba(13,19,38,0.55)]
               dark:border-[rgba(94,148,255,0.20)]
-              backdrop-blur-[6px]
+              backdrop-blur-xl
               z-[2]
               transition-all
               duration-250
               ease-in-out
-              hover:bg-slate-50
+              hover:bg-white/55
               hover:border-slate-300
               dark:hover:border-[rgba(110,160,255,0.45)]
               dark:hover:bg-[rgba(16,23,46,0.75)]
@@ -669,17 +683,17 @@ export default function PlatformShowcase() {
               flex
               items-center
               justify-center
-              bg-white/70
+              bg-white/40
               border
-              border-slate-200
+              border-white/60
               dark:bg-[rgba(13,19,38,0.55)]
               dark:border-[rgba(94,148,255,0.20)]
-              backdrop-blur-[6px]
+              backdrop-blur-xl
               z-[2]
               transition-all
               duration-250
               ease-in-out
-              hover:bg-slate-50
+              hover:bg-white/55
               hover:border-slate-300
               dark:hover:border-[rgba(110,160,255,0.45)]
               dark:hover:bg-[rgba(16,23,46,0.75)]
@@ -725,17 +739,17 @@ export default function PlatformShowcase() {
               flex
               items-center
               justify-center
-              bg-white/70
+              bg-white/40
               border
-              border-slate-200
+              border-white/60
               dark:bg-[rgba(13,19,38,0.55)]
               dark:border-[rgba(94,148,255,0.20)]
-              backdrop-blur-[6px]
+              backdrop-blur-xl
               z-[2]
               transition-all
               duration-250
               ease-in-out
-              hover:bg-slate-50
+              hover:bg-white/55
               hover:border-slate-300
               dark:hover:border-[rgba(110,160,255,0.45)]
               dark:hover:bg-[rgba(16,23,46,0.75)]
@@ -1044,12 +1058,12 @@ export default function PlatformShowcase() {
             <div
               className="
                 mobile-feature-card
-                bg-white/85
+                bg-white/40
                 border
-                border-slate-200
+                border-white/60
                 dark:bg-[rgba(13,19,38,0.68)]
                 dark:border-[rgba(94,148,255,0.20)]
-                backdrop-blur-[8px]
+                backdrop-blur-xl
               "
             >
 
@@ -1105,12 +1119,12 @@ export default function PlatformShowcase() {
             <div
               className="
                 mobile-feature-card
-                bg-white/85
+                bg-white/40
                 border
-                border-slate-200
+                border-white/60
                 dark:bg-[rgba(13,19,38,0.68)]
                 dark:border-[rgba(94,148,255,0.20)]
-                backdrop-blur-[8px]
+                backdrop-blur-xl
               "
             >
 
@@ -1166,12 +1180,12 @@ export default function PlatformShowcase() {
             <div
               className="
                 mobile-feature-card
-                bg-white/85
+                bg-white/40
                 border
-                border-slate-200
+                border-white/60
                 dark:bg-[rgba(13,19,38,0.68)]
                 dark:border-[rgba(94,148,255,0.20)]
-                backdrop-blur-[8px]
+                backdrop-blur-xl
               "
             >
 
@@ -1225,12 +1239,12 @@ export default function PlatformShowcase() {
             <div
               className="
                 mobile-feature-card
-                bg-white/85
+                bg-white/40
                 border
-                border-slate-200
+                border-white/60
                 dark:bg-[rgba(13,19,38,0.68)]
                 dark:border-[rgba(94,148,255,0.20)]
-                backdrop-blur-[8px]
+                backdrop-blur-xl
               "
             >
 

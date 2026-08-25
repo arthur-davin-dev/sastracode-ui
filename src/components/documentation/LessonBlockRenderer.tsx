@@ -18,6 +18,7 @@ import {
 import { createContext, useContext, useEffect, useState } from "react";
 
 import type { TutorialBlock } from "@/types/tutorial-reader";
+import { VideoPlayer } from "@/components/video/VideoPlayer";
 import {
   type QuizAttemptDetail,
   type QuizScope,
@@ -89,6 +90,7 @@ interface QuizContextValue {
   activeQuizId: string | null;
   register: (id: string) => void;
   submit: (id: string, answer: number, localCorrect?: boolean) => void;
+  advance: (id: string) => void;
   isLast: (id: string) => boolean;
   position: (id: string) => number;
   reset: () => void;
@@ -134,44 +136,46 @@ export function QuizResultsProvider({
     const nextAnswers = { ...answers, [id]: answer };
     setAnswers(nextAnswers);
 
-    const lastQuestion = quizIds[quizIds.length - 1] === id;
-    if (!lastQuestion) {
-      setActiveQuizId(quizIds[quizIds.indexOf(id) + 1] ?? null);
-      return;
-    }
-
-    if (tutorialId && scope && scopeId) {
-      try {
-        const activeAttemptId =
-          attemptId ??
-          (await startAttempt({ tutorialId, scope, scopeId }).unwrap()).data.id;
-        if (!attemptId) setAttemptId(activeAttemptId);
-
-        const response = await submitAttempt({
-          tutorialId,
-          scope,
-          scopeId,
-          attemptId: activeAttemptId,
-          answers: Object.entries(nextAnswers).map(([blockId, value]) => ({
-            blockId,
-            answer: value,
-          })),
-        }).unwrap();
-        const backendResults = Object.fromEntries(
-          (response.data.answers ?? []).map((item) => [
-            item.blockId,
-            { correct: item.correct },
-          ]),
-        );
-        setResults(backendResults);
-        setSummary(response.data);
-        return;
-      } catch {
-        // Keep local feedback available when the attempt service is unavailable.
-      }
-    }
-
+    // Show this question's correct/incorrect feedback the moment it's
+    // submitted, instead of waiting for the whole set to be graded —
+    // advancing to the next question is a separate, explicit step (see
+    // advanceToNext) so the learner actually gets to see the result first.
     setResults((current) => ({ ...current, [id]: { correct: localCorrect } }));
+
+    const lastQuestion = quizIds[quizIds.length - 1] === id;
+    if (!lastQuestion || !tutorialId || !scope || !scopeId) return;
+
+    try {
+      const activeAttemptId =
+        attemptId ??
+        (await startAttempt({ tutorialId, scope, scopeId }).unwrap()).data.id;
+      if (!attemptId) setAttemptId(activeAttemptId);
+
+      const response = await submitAttempt({
+        tutorialId,
+        scope,
+        scopeId,
+        attemptId: activeAttemptId,
+        answers: Object.entries(nextAnswers).map(([blockId, value]) => ({
+          blockId,
+          answer: value,
+        })),
+      }).unwrap();
+      const backendResults = Object.fromEntries(
+        (response.data.answers ?? []).map((item) => [
+          item.blockId,
+          { correct: item.correct },
+        ]),
+      );
+      setResults(backendResults);
+      setSummary(response.data);
+    } catch {
+      // Keep the local feedback already shown when the attempt service is unavailable.
+    }
+  }
+
+  function advanceToNext(id: string) {
+    setActiveQuizId(quizIds[quizIds.indexOf(id) + 1] ?? null);
   }
 
   function reset() {
@@ -198,6 +202,7 @@ export function QuizResultsProvider({
           });
         },
         submit: submitAnswer,
+        advance: advanceToNext,
         isLast: (id) => quizIds[quizIds.length - 1] === id,
         position: (id) => quizIds.indexOf(id) + 1,
         reset,
@@ -390,9 +395,21 @@ function stringArrayValue(data: BlockData, ...keys: string[]): string[] {
   for (const key of keys) {
     const value = data[key];
 
-    if (Array.isArray(value)) {
-      return value.filter((item): item is string => typeof item === "string");
-    }
+    if (!Array.isArray(value)) continue;
+
+    const items = value.flatMap((item) => {
+      if (typeof item === "string") return item.trim() ? [item] : [];
+
+      if (item && typeof item === "object") {
+        const record = item as Record<string, unknown>;
+        const text = record.text ?? record.label ?? record.value ?? record.content;
+        return typeof text === "string" && text.trim() ? [text.trim()] : [];
+      }
+
+      return [];
+    });
+
+    if (items.length > 0) return items;
   }
 
   return [];
@@ -754,6 +771,21 @@ function ImageBlock({ data }: { data: BlockData }) {
   );
 }
 
+function VideoBlock({ data }: { data: BlockData }) {
+  const url = stringValue(
+    data,
+    "url",
+    "videoUrl",
+    "youtubeUrl",
+    "src",
+    "link",
+    "href",
+  );
+  const title = stringValue(data, "title", "caption") || "មេរៀនវីដេអូ";
+
+  return <VideoPlayer src={url || undefined} title={title} />;
+}
+
 function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
   const quizContext = useContext(QuizContext);
   const [selected, setSelected] = useState<string | null>(null);
@@ -840,6 +872,10 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
     quizContext?.submit(blockId, selectedOptionIndex, isCorrect);
   }
 
+  function goToNextQuestion() {
+    quizContext?.advance(blockId);
+  }
+
   if (!question) return null;
   if (quizContext?.activeQuizId && quizContext.activeQuizId !== blockId)
     return null;
@@ -896,16 +932,41 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
               disabled={!selected}
               className="mt-2 w-fit rounded-xl bg-emerald-600 px-5 py-3 font-khmer text-lg font-bold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {quizContext?.isLast(blockId) ? "ដាក់ស្នើ" : "បន្ទាប់"}
+              ដាក់ស្នើ
             </button>
           ) : backendResult ? (
-            <p
-              className={`font-khmer text-lg font-bold ${backendResult.correct ? "text-emerald-600" : "text-red-600"}`}
+            <div
+              className={`mt-2 flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4 ${
+                backendResult.correct
+                  ? "border-emerald-200 bg-emerald-50/70 dark:border-emerald-900/60 dark:bg-emerald-950/25"
+                  : "border-rose-200 bg-rose-50/70 dark:border-rose-900/60 dark:bg-rose-950/25"
+              }`}
             >
-              {backendResult.correct
-                ? "ចម្លើយត្រឹមត្រូវ!"
-                : "ចម្លើយមិនត្រឹមត្រូវទេ។ សូមពិនិត្យលទ្ធផលសរុប។"}
-            </p>
+              <p
+                className={`font-khmer flex items-center gap-2 text-lg font-bold ${
+                  backendResult.correct
+                    ? "text-emerald-700 dark:text-emerald-300"
+                    : "text-rose-700 dark:text-rose-300"
+                }`}
+              >
+                {backendResult.correct ? (
+                  <CircleCheck className="h-5 w-5 shrink-0" />
+                ) : (
+                  <CircleAlert className="h-5 w-5 shrink-0" />
+                )}
+                {backendResult.correct ? "ចម្លើយត្រឹមត្រូវ!" : "ចម្លើយមិនត្រឹមត្រូវទេ។"}
+              </p>
+
+              {!quizContext?.isLast(blockId) && (
+                <button
+                  type="button"
+                  onClick={goToNextQuestion}
+                  className="font-khmer rounded-lg bg-[#002455] px-4 py-2 text-sm font-bold text-white hover:bg-[#00346f] dark:bg-emerald-600 dark:hover:bg-emerald-500"
+                >
+                  សំណួរបន្ទាប់ »
+                </button>
+              )}
+            </div>
           ) : null}
         </div>
       )}
@@ -994,12 +1055,21 @@ export default function LessonBlockRenderer({
     case "IMAGE":
       return <ImageBlock data={data} />;
 
+    case "VIDEO":
+    case "YOUTUBE":
+    case "YOUTUBE_VIDEO":
+      return <VideoBlock data={data} />;
+
     case "QUIZ":
       return <QuizBlock data={data} blockId={block.id} />;
 
     case "LIST":
     case "BULLET_LIST":
     case "UNORDERED_LIST":
+    case "POINT":
+    case "POINTS":
+    case "BULLET_POINT":
+    case "BULLET_POINTS":
       return <ListBlock data={data} />;
 
     case "ORDERED_LIST":

@@ -2,11 +2,13 @@ import { sastraApi } from "@/redux/api/sastra-code";
 
 export type ChallengeType =
   | "FILL_IN_BLANK"
+  | "CODE_CHALLENGE"
   | "MULTIPLE_BLANKS"
   | "COMPLETE_FUNCTION"
   | "FIX_BUG"
   | "REPLACE_LINE"
   | "ARRANGE_BLOCKS"
+  | "WEB_BUILDER"
   | "MATCH_CODE"
   | "STEP_BY_STEP"
   | "HTML_BUILDER"
@@ -26,6 +28,12 @@ export interface CodingTaskTestCase {
   isHidden?: boolean;
 }
 
+export interface ArrangeBlockConfig {
+  id: string;
+  code: string;
+  correctOrder: number;
+}
+
 export interface CodingTaskConfig {
   language?: string;
   blankToken?: string;
@@ -35,6 +43,10 @@ export interface CodingTaskConfig {
 
   previewHtml?: string;
   instructions?: string[];
+
+  /** ARRANGE_BLOCKS: the pre-authored blocks with their correct order. */
+  blocks?: ArrangeBlockConfig[];
+  randomize?: boolean;
 
   [key: string]: unknown;
 }
