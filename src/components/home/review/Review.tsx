@@ -8,10 +8,14 @@ import { useTranslation } from "@/hooks/useTranslations";
 const reviewImages = [
   "/images/chhay_davin.jpg",
   "/images/chhay_kongkea.jpg",
-  "/images/lot_los.jpg",
-  "/images/chhat_sovanney.jpg",
   "/images/ben_thona.jpg",
   "/images/meng_kimleap.jpg",
+  "/images/vel_sothoun.jpg",
+  "/images/vuth_vatana.jpg",
+  "/images/mon_narea.jpg",
+  "/images/soeurt_bomnorng.jpg",
+  "/images/lot_los.jpg",
+  "/images/chhat_sovanney.jpg",
 ];
 
 export default function Review() {
