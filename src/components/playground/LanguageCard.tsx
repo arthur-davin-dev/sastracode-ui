@@ -2,58 +2,83 @@
 
 import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/lib/language-context";
-import { Code2, Layout, FileCode2, Terminal, Cpu } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Code2,
+  FileCode2,
+  Layout,
+  Terminal,
+  Cpu,
+  CheckCircle2,
+} from "lucide-react";
 
 const languagesData = [
   {
     name: "HTML",
+    number: "01",
     desc: {
-      en: "Structure & Markup",
-      km: "រចនាសម្ព័ន្ធ និង ម៉ាកអាប់",
+      en: "Build the structure and foundation of modern web pages.",
+      km: "បង្កើតរចនាសម្ព័ន្ធ និងមូលដ្ឋានគ្រឹះនៃគេហទំព័រទំនើប។",
     },
     icon: Layout,
-    color: "text-orange-600 dark:text-orange-400",
-    bg: "bg-orange-500/10 dark:bg-orange-500/15 border-orange-200 dark:border-orange-500/30",
+    color: "text-orange-600 dark:text-orange-400 group-hover:text-white",
+    iconBg:
+      "bg-orange-50 border-orange-200/80 dark:bg-orange-500/10 dark:border-orange-500/30",
+    hoverBg: "hover:bg-orange-600 hover:border-orange-600",
+    topics: ["Semantic HTML", "Forms & Inputs", "SEO & Meta", "Accessibility"],
   },
   {
     name: "CSS",
+    number: "02",
     desc: {
-      en: "Styles & Layouts",
-      km: "រចនាប័ទ្ម និង ប្លង់ទំព័រ",
+      en: "Create beautiful layouts, animations, and visual experiences.",
+      km: "បង្កើតប្លង់ Animation និងរចនាបទដ៏ស្រស់ស្អាត។",
     },
     icon: FileCode2,
-    color: "text-blue-600 dark:text-blue-400",
-    bg: "bg-blue-500/10 dark:bg-blue-500/15 border-blue-200 dark:border-blue-500/30",
+    color: "text-blue-600 dark:text-blue-400 group-hover:text-white",
+    iconBg:
+      "bg-blue-50 border-blue-200/80 dark:bg-blue-500/10 dark:border-blue-500/30",
+    hoverBg: "hover:bg-blue-600 hover:border-blue-600",
   },
   {
     name: "JavaScript",
+    number: "03",
     desc: {
-      en: "Logic & Interactivity",
-      km: "លូជិក និង អន្តរកម្ម",
+      en: "Add logic, functionality, and interactivity to your websites.",
+      km: "បន្ថែមលូជិក មុខងារ និងអន្តរកម្មទៅកាន់គេហទំព័រ។",
     },
     icon: Code2,
-    color: "text-amber-600 dark:text-amber-400",
-    bg: "bg-amber-500/10 dark:bg-amber-500/15 border-amber-200 dark:border-amber-500/30",
+    color: "text-amber-600 dark:text-amber-400 group-hover:text-white",
+    iconBg:
+      "bg-amber-50 border-amber-200/80 dark:bg-amber-500/10 dark:border-amber-500/30",
+    hoverBg: "hover:bg-amber-600 hover:border-amber-600",
   },
   {
     name: "Python",
+    number: "04",
     desc: {
-      en: "Data & Automation",
-      km: "ទិន្នន័យ និង អូតូម៉ាតកម្ម",
+      en: "Learn programming through data, automation, and applications.",
+      km: "រៀន Programming តាមរយៈទិន្នន័យ Automation និងកម្មវិធី។",
     },
     icon: Terminal,
-    color: "text-emerald-600 dark:text-emerald-400",
-    bg: "bg-emerald-500/10 dark:bg-emerald-500/15 border-emerald-200 dark:border-emerald-500/30",
+    color: "text-emerald-600 dark:text-emerald-400 group-hover:text-white",
+    iconBg:
+      "bg-emerald-50 border-emerald-200/80 dark:bg-emerald-500/10 dark:border-emerald-500/30",
+    hoverBg: "hover:bg-emerald-600 hover:border-emerald-600",
   },
   {
     name: "Java",
+    number: "05",
     desc: {
-      en: "Enterprise & Backend",
-      km: "ប្រព័ន្ធសហគ្រាស និង Backend",
+      en: "Build powerful backend and enterprise applications.",
+      km: "បង្កើតកម្មវិធី Backend និងប្រព័ន្ធសហគ្រាសដ៏មានឥទ្ធិពល។",
     },
     icon: Cpu,
-    color: "text-rose-600 dark:text-rose-400",
-    bg: "bg-rose-500/10 dark:bg-rose-500/15 border-rose-200 dark:border-rose-500/30",
+    color: "text-rose-600 dark:text-rose-400 group-hover:text-white",
+    iconBg:
+      "bg-rose-50 border-rose-200/80 dark:bg-rose-500/10 dark:border-rose-500/30",
+    hoverBg: "hover:bg-rose-600 hover:border-rose-600",
   },
 ];
 
@@ -61,71 +86,201 @@ export default function LanguageCards() {
   const { lang } = useLanguage();
 
   return (
-    <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 transition-colors duration-300">
-      {/* Section header */}
-      <div className="mb-10 flex items-end justify-between border-b border-slate-200/80 dark:border-slate-800/80 pb-6">
+    <section className="font-sans mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:py-12">
+      {/* Header */}
+      <div className="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
         <div>
-          <span className="text-xs font-semibold tracking-[0.2em] uppercase text-indigo-500 dark:text-indigo-400">
-            {languagesData.length.toString().padStart(2, "0")} Languages
-          </span>
-          <h2 className="mt-2 font-bold text-3xl sm:text-4xl text-slate-900 dark:text-slate-100 tracking-tight">
-            Built for how you write code
+          <div className="mb-1.5 flex items-center gap-2">
+            <span className="h-0.5 w-5 bg-indigo-600 dark:bg-indigo-400" />
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-indigo-700 dark:text-indigo-300">
+              {languagesData.length.toString().padStart(2, "0")} Languages
+            </span>
+          </div>
+
+          <h2 className="max-w-2xl text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
+            Built for how you{" "}
+            <span className="text-indigo-700 dark:text-indigo-400">
+              write code.
+            </span>
           </h2>
+
+          <p className="mt-1.5 max-w-xl text-xs sm:text-sm font-medium leading-relaxed text-slate-600 dark:text-slate-300">
+            Learn the languages that power the modern web, applications,
+            backend systems, and more.
+          </p>
         </div>
+
+        <button
+          type="button"
+          className="group flex w-fit items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-800 transition-colors hover:text-indigo-700 dark:text-white dark:hover:text-indigo-300"
+        >
+          View all languages
+          <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
+        </button>
       </div>
 
-      {/* Layout: featured first tile + staggered rhythm grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5 auto-rows-fr">
-        {languagesData.map((langItem, i) => {
-          const Icon = langItem.icon;
-          const isFeatured = i === 0;
-          // gentle vertical rhythm on desktop so the grid doesn't feel like a flat wall
-          const offset =
-            i > 0 ? (i % 3 === 1 ? "lg:mt-6" : i % 3 === 2 ? "lg:mt-3" : "") : "";
+      {/* Language Grid */}
+      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
+        {languagesData.map((language, index) => {
+          const Icon = language.icon;
+          const isFeatured = index === 0;
 
           return (
             <Card
-              key={langItem.name}
-              className={`group relative flex flex-col justify-between rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-1.5 transition-all duration-300 overflow-hidden ${offset} ${
-                isFeatured
-                  ? "p-7 sm:col-span-2 lg:row-span-2 lg:col-span-2"
-                  : "p-5"
-              }`}
+              key={language.name}
+              className={`
+                group relative flex flex-col justify-between overflow-hidden
+                rounded-2xl border border-indigo-100 dark:border-slate-800
+                bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm
+                p-4 sm:p-5 shadow-xs
+
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-lg
+                ${language.hoverBg}
+
+                ${isFeatured ? "sm:col-span-2 lg:col-span-2 lg:row-span-2 lg:p-6" : ""}
+              `}
             >
-              {/* Gradient border on hover */}
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none [background:linear-gradient(135deg,theme(colors.indigo.400/.5),transparent_40%,transparent_60%,theme(colors.fuchsia.400/.4))] [mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] [mask-composite:exclude] p-px" />
+              <div className="relative flex h-full flex-col">
+                {/* Card Top Header */}
+                <div className="flex items-start justify-between">
+                  <div
+                    className={`
+                      flex items-center justify-center rounded-xl border
+                      transition-all duration-300 group-hover:scale-105
+                      group-hover:bg-white/20 group-hover:border-white/40
+                      ${language.iconBg}
+                      ${isFeatured ? "size-11" : "size-9"}
+                    `}
+                  >
+                    <Icon
+                      className={`
+                        ${language.color}
+                        ${isFeatured ? "size-5" : "size-4"}
+                      `}
+                    />
+                  </div>
 
-              {/* Ambient glow */}
-              <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-indigo-500/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-              <div className="relative">
-                <div
-                  className={`flex items-center justify-center rounded-xl border shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:shadow-md group-hover:-rotate-3 ${
-                    langItem.bg
-                  } ${isFeatured ? "h-16 w-16 mb-6" : "h-12 w-12 mb-4"}`}
-                >
-                  <Icon className={`${langItem.color} ${isFeatured ? "h-8 w-8" : "h-6 w-6"}`} />
+                  <span className="font-mono text-xs font-bold text-slate-400 transition-colors duration-300 group-hover:text-white/90 dark:text-slate-500">
+                    {language.number}
+                  </span>
                 </div>
 
-                <h3
-                  className={`font-bold text-slate-900 dark:text-slate-100 transition-colors duration-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 ${
-                    isFeatured ? "text-2xl sm:text-3xl" : "text-xl"
-                  }`}
-                >
-                  {langItem.name}
-                </h3>
+                {/* FEATURED HTML CARD */}
+                {isFeatured ? (
+                  <div className="flex flex-1 flex-col">
+                    <div className="mt-3">
+                      <div className="mb-1 flex items-center gap-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-orange-600 transition-colors group-hover:text-white dark:text-orange-400">
+                          Start here
+                        </span>
+                        <span className="h-1 w-1 rounded-full bg-slate-300 transition-colors group-hover:bg-white/80 dark:bg-slate-700" />
+                        <span className="text-[11px] font-semibold text-slate-500 transition-colors group-hover:text-white/90 dark:text-slate-400">
+                          Beginner
+                        </span>
+                      </div>
 
-                <p
-                  className={`text-slate-500 dark:text-slate-400 mt-2 leading-relaxed transition-colors duration-300 ${
-                    isFeatured ? "text-base max-w-md" : "text-[15px]"
-                  }`}
-                >
-                  {langItem.desc[lang] || langItem.desc.en}
-                </p>
-              </div>
+                      <h3 className="text-2xl font-extrabold tracking-tight text-slate-900 transition-colors duration-300 group-hover:text-white dark:text-white">
+                        {language.name}
+                      </h3>
 
-              <div className="relative w-full h-0.5 mt-5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                <div className="absolute inset-y-0 left-1/2 w-0 group-hover:w-full group-hover:left-0 bg-gradient-to-r from-indigo-500 to-fuchsia-500 transition-all duration-500 ease-out rounded-full" />
+                      <p className="mt-1 text-xs sm:text-sm font-medium leading-relaxed text-slate-600 transition-colors duration-300 group-hover:text-white/90 dark:text-slate-300">
+                        {language.desc[lang] || language.desc.en}
+                      </p>
+                    </div>
+
+                    {/* Code Editor Box */}
+                    <div className="mt-3 overflow-hidden rounded-xl border border-slate-200 bg-slate-950 dark:border-slate-800 dark:bg-black group-hover:border-white/20">
+                      <div className="flex items-center gap-1.5 border-b border-slate-800/80 px-3 py-1.5">
+                        <span className="size-2 rounded-full bg-red-500/80" />
+                        <span className="size-2 rounded-full bg-amber-500/80" />
+                        <span className="size-2 rounded-full bg-emerald-500/80" />
+                        <span className="ml-auto font-mono text-[10px] font-semibold text-slate-400">
+                          index.html
+                        </span>
+                      </div>
+
+                      <div className="space-y-0.5 px-3 py-2.5 font-mono text-xs font-bold leading-tight">
+                        <div>
+                          <span className="text-purple-400">&lt;</span>
+                          <span className="text-red-400">html</span>
+                          <span className="text-purple-400">&gt;</span>
+                        </div>
+                        <div className="pl-3">
+                          <span className="text-purple-400">&lt;</span>
+                          <span className="text-red-400">h1</span>
+                          <span className="text-purple-400">&gt;</span>
+                          <span className="text-white">Hello World</span>
+                          <span className="text-purple-400">&lt;/h1&gt;</span>
+                        </div>
+                        <div>
+                          <span className="text-purple-400">&lt;/</span>
+                          <span className="text-red-400">html</span>
+                          <span className="text-purple-400">&gt;</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Live Output Preview */}
+                    <div className="mt-2.5 rounded-xl border border-indigo-100/70 bg-white/70 p-2.5 transition-colors group-hover:bg-white/10 group-hover:border-white/30 dark:border-slate-800 dark:bg-slate-950/60">
+                      <div className="mb-1 flex items-center justify-between text-[10px] font-bold text-slate-500 transition-colors group-hover:text-white/90 dark:text-slate-400">
+                        <span>Output Preview</span>
+                        <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold text-emerald-700 transition-colors group-hover:bg-white/20 group-hover:text-white dark:bg-emerald-500/20 dark:text-emerald-400">
+                          Rendered
+                        </span>
+                      </div>
+                      <div className="rounded-lg border border-slate-200/60 bg-white p-2 text-xs font-bold text-slate-900 shadow-2xs group-hover:bg-white group-hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900 dark:text-white">
+                        Hello World
+                      </div>
+                    </div>
+
+                    {/* Topic Badges */}
+                    <div className="mt-3 flex flex-wrap gap-1.5">
+                      {language.topics?.map((topic) => (
+                        <span
+                          key={topic}
+                          className="flex items-center gap-1 rounded-full border border-indigo-100 bg-white/80 px-2.5 py-0.5 text-[10px] font-semibold text-indigo-700 transition-colors group-hover:bg-white/20 group-hover:border-white/30 group-hover:text-white dark:border-indigo-900/40 dark:bg-indigo-950/40 dark:text-indigo-300"
+                        >
+                          <CheckCircle2 className="size-2.5 text-orange-500 group-hover:text-white" />
+                          {topic}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Action Link */}
+                    <div className="mt-auto pt-4">
+                      <div className="flex items-center justify-between border-t border-slate-100 pt-3 transition-colors group-hover:border-white/30 dark:border-slate-800/80">
+                        <span className="text-xs font-bold text-slate-800 transition-colors duration-300 group-hover:text-white dark:text-slate-200">
+                          Explore lessons
+                        </span>
+                        <ArrowUpRight className="size-3.5 text-slate-500 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  /* NORMAL CARDS */
+                  <div className="flex flex-1 flex-col">
+                    <div className="mt-3">
+                      <h3 className="text-lg font-extrabold tracking-tight text-slate-900 transition-colors group-hover:text-white dark:text-white">
+                        {language.name}
+                      </h3>
+
+                      <p className="mt-1 text-xs font-medium leading-relaxed text-slate-600 transition-colors group-hover:text-white/90 dark:text-slate-300">
+                        {language.desc[lang] || language.desc.en}
+                      </p>
+                    </div>
+
+                    <div className="mt-auto pt-4">
+                      <div className="flex items-center justify-between border-t border-slate-100 pt-3 transition-colors group-hover:border-white/30 dark:border-slate-800/80">
+                        <span className="text-xs font-bold text-slate-800 transition-colors group-hover:text-white dark:text-slate-200">
+                          Explore lessons
+                        </span>
+
+                        <ArrowUpRight className="size-3.5 text-slate-500 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </Card>
           );
