@@ -2,6 +2,8 @@
 
 import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/lib/language-context";
+import { en } from "@/locale/en"; 
+import { km } from "@/locale/km"; 
 import {
   ArrowRight,
   ArrowUpRight,
@@ -15,12 +17,9 @@ import {
 
 const languagesData = [
   {
+    id: "html",
     name: "HTML",
     number: "01",
-    desc: {
-      en: "Build the structure and foundation of modern web pages.",
-      km: "បង្កើតរចនាសម្ព័ន្ធ និងមូលដ្ឋានគ្រឹះនៃគេហទំព័រទំនើប។",
-    },
     icon: Layout,
     color: "text-orange-600 dark:text-orange-400 group-hover:text-white",
     iconBg:
@@ -29,12 +28,9 @@ const languagesData = [
     topics: ["Semantic HTML", "Forms & Inputs", "SEO & Meta", "Accessibility"],
   },
   {
+    id: "css",
     name: "CSS",
     number: "02",
-    desc: {
-      en: "Create beautiful layouts, animations, and visual experiences.",
-      km: "បង្កើតប្លង់ Animation និងរចនាបទដ៏ស្រស់ស្អាត។",
-    },
     icon: FileCode2,
     color: "text-blue-600 dark:text-blue-400 group-hover:text-white",
     iconBg:
@@ -42,12 +38,9 @@ const languagesData = [
     hoverBg: "hover:bg-blue-600 hover:border-blue-600",
   },
   {
+    id: "javascript",
     name: "JavaScript",
     number: "03",
-    desc: {
-      en: "Add logic, functionality, and interactivity to your websites.",
-      km: "បន្ថែមលូជិក មុខងារ និងអន្តរកម្មទៅកាន់គេហទំព័រ។",
-    },
     icon: Code2,
     color: "text-amber-600 dark:text-amber-400 group-hover:text-white",
     iconBg:
@@ -55,12 +48,9 @@ const languagesData = [
     hoverBg: "hover:bg-amber-600 hover:border-amber-600",
   },
   {
+    id: "python",
     name: "Python",
     number: "04",
-    desc: {
-      en: "Learn programming through data, automation, and applications.",
-      km: "រៀន Programming តាមរយៈទិន្នន័យ Automation និងកម្មវិធី។",
-    },
     icon: Terminal,
     color: "text-emerald-600 dark:text-emerald-400 group-hover:text-white",
     iconBg:
@@ -68,12 +58,9 @@ const languagesData = [
     hoverBg: "hover:bg-emerald-600 hover:border-emerald-600",
   },
   {
+    id: "java",
     name: "Java",
     number: "05",
-    desc: {
-      en: "Build powerful backend and enterprise applications.",
-      km: "បង្កើតកម្មវិធី Backend និងប្រព័ន្ធសហគ្រាសដ៏មានឥទ្ធិពល។",
-    },
     icon: Cpu,
     color: "text-rose-600 dark:text-rose-400 group-hover:text-white",
     iconBg:
@@ -84,6 +71,7 @@ const languagesData = [
 
 export default function LanguageCards() {
   const { lang } = useLanguage();
+  const t = lang === "km" ? km : en;
 
   return (
     <section className="font-sans mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:py-12">
@@ -93,20 +81,20 @@ export default function LanguageCards() {
           <div className="mb-1.5 flex items-center gap-2">
             <span className="h-0.5 w-5 bg-indigo-600 dark:bg-indigo-400" />
             <span className="text-[11px] font-black uppercase tracking-[0.2em] text-indigo-700 dark:text-indigo-300">
-              {languagesData.length.toString().padStart(2, "0")} Languages
+              {languagesData.length.toString().padStart(2, "0")}{" "}
+              {t.languageCards.badge}
             </span>
           </div>
 
           <h2 className="max-w-2xl text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
-            Built for how you{" "}
+            {t.languageCards.titlePrefix}{" "}
             <span className="text-indigo-700 dark:text-indigo-400">
-              write code.
+              {t.languageCards.titleHighlight}
             </span>
           </h2>
 
           <p className="mt-1.5 max-w-xl text-xs sm:text-sm font-medium leading-relaxed text-slate-600 dark:text-slate-300">
-            Learn the languages that power the modern web, applications,
-            backend systems, and more.
+            {t.languageCards.description}
           </p>
         </div>
 
@@ -114,7 +102,7 @@ export default function LanguageCards() {
           type="button"
           className="group flex w-fit items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-800 transition-colors hover:text-indigo-700 dark:text-white dark:hover:text-indigo-300"
         >
-          View all languages
+          {t.languageCards.viewAll}
           <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
         </button>
       </div>
@@ -124,6 +112,10 @@ export default function LanguageCards() {
         {languagesData.map((language, index) => {
           const Icon = language.icon;
           const isFeatured = index === 0;
+          const description =
+            t.languageCards.items[
+              language.id as keyof typeof t.languageCards.items
+            ];
 
           return (
             <Card
@@ -172,11 +164,11 @@ export default function LanguageCards() {
                     <div className="mt-3">
                       <div className="mb-1 flex items-center gap-2">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-orange-600 transition-colors group-hover:text-white dark:text-orange-400">
-                          Start here
+                          {t.languageCards.startHere}
                         </span>
                         <span className="h-1 w-1 rounded-full bg-slate-300 transition-colors group-hover:bg-white/80 dark:bg-slate-700" />
                         <span className="text-[11px] font-semibold text-slate-500 transition-colors group-hover:text-white/90 dark:text-slate-400">
-                          Beginner
+                          {t.languageCards.beginner}
                         </span>
                       </div>
 
@@ -185,7 +177,7 @@ export default function LanguageCards() {
                       </h3>
 
                       <p className="mt-1 text-xs sm:text-sm font-medium leading-relaxed text-slate-600 transition-colors duration-300 group-hover:text-white/90 dark:text-slate-300">
-                        {language.desc[lang] || language.desc.en}
+                        {description}
                       </p>
                     </div>
 
@@ -224,9 +216,9 @@ export default function LanguageCards() {
                     {/* Live Output Preview */}
                     <div className="mt-2.5 rounded-xl border border-indigo-100/70 bg-white/70 p-2.5 transition-colors group-hover:bg-white/10 group-hover:border-white/30 dark:border-slate-800 dark:bg-slate-950/60">
                       <div className="mb-1 flex items-center justify-between text-[10px] font-bold text-slate-500 transition-colors group-hover:text-white/90 dark:text-slate-400">
-                        <span>Output Preview</span>
+                        <span>{t.languageCards.outputPreview}</span>
                         <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[9px] font-bold text-emerald-700 transition-colors group-hover:bg-white/20 group-hover:text-white dark:bg-emerald-500/20 dark:text-emerald-400">
-                          Rendered
+                          {t.languageCards.rendered}
                         </span>
                       </div>
                       <div className="rounded-lg border border-slate-200/60 bg-white p-2 text-xs font-bold text-slate-900 shadow-2xs group-hover:bg-white group-hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900 dark:text-white">
@@ -251,7 +243,7 @@ export default function LanguageCards() {
                     <div className="mt-auto pt-4">
                       <div className="flex items-center justify-between border-t border-slate-100 pt-3 transition-colors group-hover:border-white/30 dark:border-slate-800/80">
                         <span className="text-xs font-bold text-slate-800 transition-colors duration-300 group-hover:text-white dark:text-slate-200">
-                          Explore lessons
+                          {t.languageCards.exploreLessons}
                         </span>
                         <ArrowUpRight className="size-3.5 text-slate-500 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />
                       </div>
@@ -266,14 +258,14 @@ export default function LanguageCards() {
                       </h3>
 
                       <p className="mt-1 text-xs font-medium leading-relaxed text-slate-600 transition-colors group-hover:text-white/90 dark:text-slate-300">
-                        {language.desc[lang] || language.desc.en}
+                        {description}
                       </p>
                     </div>
 
                     <div className="mt-auto pt-4">
                       <div className="flex items-center justify-between border-t border-slate-100 pt-3 transition-colors group-hover:border-white/30 dark:border-slate-800/80">
                         <span className="text-xs font-bold text-slate-800 transition-colors group-hover:text-white dark:text-slate-200">
-                          Explore lessons
+                          {t.languageCards.exploreLessons}
                         </span>
 
                         <ArrowUpRight className="size-3.5 text-slate-500 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white" />

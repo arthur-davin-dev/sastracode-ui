@@ -108,50 +108,50 @@ export const km = {
   },
 
   interactiveDoc: {
-  title: "ឯកសារបង្រៀនអន្តរកម្ម",
-  description: "រៀនអភិវឌ្ឍន៍វេបសាយតាមបែបអន្តរកម្មជាមួយឧទាហរណ៍ និងការមើលកូដផ្ទាល់។",
-  link: "ស្វែងយល់បន្ថែម",
-  sections: {
-    introduction: {
-      label: "សេចក្តីផ្តើម",
-      title: "ឯកសារបង្រៀនអន្តរកម្ម",
-      description: "រៀនអភិវឌ្ឍន៍វេបសាយតាមបែបអន្តរកម្មជាមួយឧទាហរណ៍ ការមើលកូដផ្ទាល់ និងការជួយពី AI។",
-      linkText: "ស្វែងយល់បន្ថែម"
-    },
-    elements: {
-      label: "ធាតុ HTML",
-      title: "ធាតុ HTML (Elements)",
-      description: "សិក្សាអំពីគ្រឹះនៃទំព័រវេបសាយ។ ធាតុនិមួយៗផ្សំឡើងពី start tag, មាតិកា, និង end tag។",
-      linkText: "ស្វែងយល់អំពីធាតុ HTML"
-    },
-    attributes: {
-      label: "លក្ខណៈ",
-      title: "លក្ខណៈ HTML (Attributes)",
-      description: "ផ្តល់ព័ត៌មានបន្ថែមអំពីធាតុ HTML ដូចជា class, ID, source, និង alt text។",
-      linkText: "រៀនអំពី Attributes"
-    },
-    semantic: {
-      label: "Semantic HTML",
-      title: "Semantic HTML",
-      description: "ប្រើប្រាស់ tag ដែលមានន័យច្បាស់លាស់ដូចជា <article>, <section>, និង <nav> ដើម្បីពង្រឹង Accessibility និង SEO។",
-      linkText: "ស្វែងយល់ពី Semantic Tags"
-    },
-    forms: {
-      label: "ទម្រង់ (Forms)",
-      title: "ទម្រង់ HTML (Forms)",
-      description: "ប្រមូលទិន្នន័យពីអ្នកប្រើប្រាស់ជាមួយធាតុអន្តរកម្មដូចជា text field, checkbox, radio, និងប៊ូតុង submit។",
-      linkText: "បង្កើតទម្រង់"
-    },
-    tables: {
-      label: "តារាង (Tables)",
-      title: "តារាង HTML (Tables)",
-      description: "រៀបចំទិន្នន័យជាជួរដេក និងជួរឈរដោយប្រកបដោយប្រសិទ្ធភាពដោយប្រើ <table>, <tr>, <th>, និង <td>។",
-      linkText: "មើលការណែនាំតារាង"
+    title: "ឯកសារបង្រៀនអន្តរកម្ម",
+    description: "រៀនអភិវឌ្ឍន៍វេបសាយតាមបែបអន្តរកម្មជាមួយឧទាហរណ៍ និងការមើលកូដផ្ទាល់។",
+    link: "ស្វែងយល់បន្ថែម",
+    sections: {
+      introduction: {
+        label: "សេចក្តីផ្តើម",
+        title: "ឯកសារបង្រៀនអន្តរកម្ម",
+        description: "រៀនអភិវឌ្ឍន៍វេបសាយតាមបែបអន្តរកម្មជាមួយឧទាហរណ៍ ការមើលកូដផ្ទាល់ និងការជួយពី AI។",
+        linkText: "ស្វែងយល់បន្ថែម"
+      },
+      elements: {
+        label: "ធាតុ HTML",
+        title: "ធាតុ HTML (Elements)",
+        description: "សិក្សាអំពីគ្រឹះនៃទំព័រវេបសាយ។ ធាតុនិមួយៗផ្សំឡើងពី start tag, មាតិកា, និង end tag។",
+        linkText: "ស្វែងយល់អំពីធាតុ HTML"
+      },
+      attributes: {
+        label: "លក្ខណៈ",
+        title: "លក្ខណៈ HTML (Attributes)",
+        description: "ផ្តល់ព័ត៌មានបន្ថែមអំពីធាតុ HTML ដូចជា class, ID, source, និង alt text។",
+        linkText: "រៀនអំពី Attributes"
+      },
+      semantic: {
+        label: "Semantic HTML",
+        title: "Semantic HTML",
+        description: "ប្រើប្រាស់ tag ដែលមានន័យច្បាស់លាស់ដូចជា <article>, <section>, និង <nav> ដើម្បីពង្រឹង Accessibility និង SEO។",
+        linkText: "ស្វែងយល់ពី Semantic Tags"
+      },
+      forms: {
+        label: "ទម្រង់ (Forms)",
+        title: "ទម្រង់ HTML (Forms)",
+        description: "ប្រមូលទិន្នន័យពីអ្នកប្រើប្រាស់ជាមួយធាតុអន្តរកម្មដូចជា text field, checkbox, radio, និងប៊ូតុង submit។",
+        linkText: "បង្កើតទម្រង់"
+      },
+      tables: {
+        label: "តារាង (Tables)",
+        title: "តារាង HTML (Tables)",
+        description: "រៀបចំទិន្នន័យជាជួរដេក និងជួរឈរដោយប្រកបដោយប្រសិទ្ធភាពដោយប្រើ <table>, <tr>, <th>, និង <td>។",
+        linkText: "មើលការណែនាំតារាង"
+      }
     }
-  }
-},
+  },
 
-"aiChatCard": {
+  "aiChatCard": {
     "aiChat": "គ្រូបង្វឹក AI ជួយអ្នកវិភាគកំហុសកូដ និងផ្តល់ជាការណែនាំភ្លាមៗ។",
     "userRole": "អ្នក",
     "userQuestion": "ហេតុអ្វីបានជាប៊ូតុងរបស់ខ្ញុំមិនដំណើរការ?",
@@ -536,6 +536,24 @@ export const km = {
         telegramUrl: "https://t.me/ArthurDavinDev",
       },
     ],
+  }, languageCards: {
+    badge: "ភាសា",
+    titlePrefix: "បង្កើតឡើងសម្រាប់របៀបដែលអ្នក ",
+    titleHighlight: "សរសេរកូដ។",
+    description: "រៀនភាសាដែលជួយទ្រទ្រង់គេហទំព័រទំនើប កម្មវិធី ប្រព័ន្ធ Backend និងច្រើនទៀត។",
+    viewAll: "មើលភាសាទាំងអស់",
+    startHere: "ចាប់ផ្តើមនៅទីនេះ",
+    beginner: "កម្រិតដំបូង",
+    outputPreview: "មើលលទ្ធផលគំរូ",
+    rendered: "បានបង្ហាញ",
+    exploreLessons: "ស្វែងយល់ពីមេរៀន",
+    items: {
+      html: "បង្កើតរចនាសម្ព័ន្ធ និងមូលដ្ឋានគ្រឹះនៃគេហទំព័រទំនើប។",
+      css: "បង្កើតប្លង់ Animation និងរចនាបទដ៏ស្រស់ស្អាត។",
+      javascript: "បន្ថែមលូជិក មុខងារ និងអន្តរកម្មទៅកាន់គេហទំព័រ។",
+      python: "រៀន Programming តាមរយៈទិន្នន័យ Automation និងកម្មវិធី។",
+      java: "បង្កើតកម្មវិធី Backend និងប្រព័ន្ធសហគ្រាសដ៏មានឥទ្ធិពល។",
+    },
   },
 
   // ដាក់​ transaltion ឲនៅពីលើ footer។។។​ សូមអរគុណ
@@ -570,39 +588,39 @@ export const km = {
   },
 
   "tech-stack": {
-  "title": "កន្លែងសម្រាប់អនុវត្តកូដដែលគាំទ្រ",
-  "subtitle": "សរសេរ ប្រតិបត្តិការ និងតេស្តកូដរបស់អ្នកដោយផ្ទាល់នៅលើកម្មវិធីរុករក តាមភាសា និង Framework ល្បីៗ"
-},
+    "title": "កន្លែងសម្រាប់អនុវត្តកូដដែលគាំទ្រ",
+    "subtitle": "សរសេរ ប្រតិបត្តិការ និងតេស្តកូដរបស់អ្នកដោយផ្ទាល់នៅលើកម្មវិធីរុករក តាមភាសា និង Framework ល្បីៗ"
+  },
 
-docs: {
-  searchPlaceholder: "ស្វែងរកប្រធានបទ...",
-  sections: {
-    introduction: {
-      title: "សេចក្តីផ្តើម",
-      description: "ចាប់ផ្តើមជាមួយមូលដ្ឋានគ្រឹះនៃការអភិវឌ្ឍវេបសាយ និងរចនាសម្ព័ន្ធ HTML។"
-    },
-    elements: {
-      title: "ធាតុ HTML (Elements)",
-      description: "សិក្សាអំពីគ្រឹះនៃទំព័រវេបសាយ។ ធាតុនិមួយៗផ្សំឡើងពី start tag, មាតិកា, និង end tag។"
-    },
-    attributes: {
-      title: "លក្ខណៈ HTML (Attributes)",
-      description: "ផ្តល់ព័ត៌មានបន្ថែមអំពីធាតុ HTML ដូចជា class, ID, source, និង alt text។"
-    },
-    semantic: {
-      title: "Semantic HTML",
-      description: "ប្រើប្រាស់ tag ដែលមានន័យច្បាស់លាស់ដូចជា <article>, <section>, និង <nav> ដើម្បីពង្រឹង Accessibility និង SEO។"
-    },
-    forms: {
-      title: "ទម្រង់ (Forms)",
-      description: "រៀនពីរបៀបទទួលទិន្នន័យពីអ្នកប្រើប្រាស់តាមរយៈ Input, Button, និង Select dropdown។"
-    },
-    tables: {
-      title: "តារាង (Tables)",
-      description: "រៀបចំទិន្នន័យជាជួរដេក និងជួរឈរដោយប្រើប្រាស់ tag តារាងស្តង់ដារ។"
+  docs: {
+    searchPlaceholder: "ស្វែងរកប្រធានបទ...",
+    sections: {
+      introduction: {
+        title: "សេចក្តីផ្តើម",
+        description: "ចាប់ផ្តើមជាមួយមូលដ្ឋានគ្រឹះនៃការអភិវឌ្ឍវេបសាយ និងរចនាសម្ព័ន្ធ HTML។"
+      },
+      elements: {
+        title: "ធាតុ HTML (Elements)",
+        description: "សិក្សាអំពីគ្រឹះនៃទំព័រវេបសាយ។ ធាតុនិមួយៗផ្សំឡើងពី start tag, មាតិកា, និង end tag។"
+      },
+      attributes: {
+        title: "លក្ខណៈ HTML (Attributes)",
+        description: "ផ្តល់ព័ត៌មានបន្ថែមអំពីធាតុ HTML ដូចជា class, ID, source, និង alt text។"
+      },
+      semantic: {
+        title: "Semantic HTML",
+        description: "ប្រើប្រាស់ tag ដែលមានន័យច្បាស់លាស់ដូចជា <article>, <section>, និង <nav> ដើម្បីពង្រឹង Accessibility និង SEO។"
+      },
+      forms: {
+        title: "ទម្រង់ (Forms)",
+        description: "រៀនពីរបៀបទទួលទិន្នន័យពីអ្នកប្រើប្រាស់តាមរយៈ Input, Button, និង Select dropdown។"
+      },
+      tables: {
+        title: "តារាង (Tables)",
+        description: "រៀបចំទិន្នន័យជាជួរដេក និងជួរឈរដោយប្រើប្រាស់ tag តារាងស្តង់ដារ។"
+      }
     }
-  }
-},
+  },
 
   footer: {
     description:
