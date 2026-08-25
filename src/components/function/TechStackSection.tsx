@@ -157,7 +157,7 @@ const OrbitingNode = ({
           aspectRatio: "1 / 1",
           borderColor: node.ring ?? "#2f4fd6",
           zIndex: 10,
-          cursor: "pointer",
+          // cursor: "pointer",
         }}
         whileHover={{
           scale: 1.25,

@@ -864,7 +864,7 @@ export default function Editor() {
   // Always points to the latest Format Code handler.
   // Monaco keybindings are registered once when the editor mounts, so using
   // a ref prevents the shortcuts from calling an old render's handler.
-  const formatCodeActionRef = useRef<() => void>(() => {});
+  const formatCodeActionRef = useRef<() => void>(() => { });
 
   // ====================================================
   // CURRENT LANGUAGE
@@ -1714,16 +1714,15 @@ export default function Editor() {
   // ====================================================
 
   return (
-    <div className="min-h-screen bg-[#f4f7fb] px-3 pb-10 pt-5 font-sans text-slate-900 transition-colors duration-300 dark:bg-[#070b14] dark:text-slate-100 sm:px-5 lg:px-7">
+    <div className="min-h-screen  px-3 pb-10 pt-5 font-sans text-slate-900 transition-colors duration-300  dark:text-slate-100 sm:px-5 lg:px-7">
       {copyStatus !== "idle" && (
         <div
           role="status"
           aria-live="polite"
-          className={`fixed right-5 top-5 z-[100] flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-semibold shadow-xl backdrop-blur-sm transition-all ${
-            copyStatus === "copied"
-              ? "border-emerald-200 bg-white/95 text-emerald-700 dark:border-emerald-700/60 dark:bg-slate-900/95 dark:text-emerald-400"
-              : "border-red-200 bg-white/95 text-red-700 dark:border-red-800 dark:bg-slate-900/95 dark:text-red-400"
-          }`}
+          className={`fixed right-5 top-5 z-[100] flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-semibold shadow-xl backdrop-blur-sm transition-all ${copyStatus === "copied"
+            ? "border-emerald-200 bg-white/95 text-emerald-700 dark:border-emerald-700/60 dark:bg-slate-900/95 dark:text-emerald-400"
+            : "border-red-200 bg-white/95 text-red-700 dark:border-red-800 dark:bg-slate-900/95 dark:text-red-400"
+            }`}
         >
           {copyStatus === "copied" ? (
             <Check className="h-5 w-5" />
@@ -1793,17 +1792,16 @@ export default function Editor() {
                 style={
                   isActive
                     ? {
-                        backgroundColor: item.color,
+                      backgroundColor: item.color,
 
-                        color: itemTextColor,
-                      }
+                      color: itemTextColor,
+                    }
                     : undefined
                 }
-                className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-all ${
-                  isActive
-                    ? ""
-                    : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
-                }`}
+                className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-all ${isActive
+                  ? ""
+                  : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+                  }`}
               >
                 <span
                   className="h-1.5 w-1.5 rounded-full"
@@ -1816,9 +1814,8 @@ export default function Editor() {
 
                 {item.mode === "preview" && (
                   <span
-                    className={`ml-1 text-[9px] font-bold uppercase ${
-                      isActive ? "opacity-70" : "text-emerald-500"
-                    }`}
+                    className={`ml-1 text-[9px] font-bold uppercase ${isActive ? "opacity-70" : "text-emerald-500"
+                      }`}
                   >
                     Live
                   </span>
@@ -1981,11 +1978,10 @@ export default function Editor() {
             <button
               type="button"
               onClick={() => setShowLineNumbers((previous) => !previous)}
-              className={`flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 dark:border-slate-800 dark:text-slate-300 ${
-                showLineNumbers
-                  ? "bg-slate-100 dark:bg-slate-800"
-                  : "text-slate-500"
-              }`}
+              className={`flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 dark:border-slate-800 dark:text-slate-300 ${showLineNumbers
+                ? "bg-slate-100 dark:bg-slate-800"
+                : "text-slate-500"
+                }`}
             >
               <ListOrdered className="h-3.5 w-3.5" />
               Line
@@ -2031,11 +2027,10 @@ export default function Editor() {
             <button
               type="button"
               onClick={() => void toggleWorkspaceFullscreen()}
-              className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-semibold transition ${
-                isWorkspaceFullscreen
-                  ? "border-indigo-500 bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300"
-                  : "border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800"
-              }`}
+              className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-semibold transition ${isWorkspaceFullscreen
+                ? "border-indigo-500 bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300"
+                : "border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800"
+                }`}
               title="Fullscreen code and result together"
             >
               <Columns2 className="h-3.5 w-3.5" />
@@ -2238,17 +2233,17 @@ export default function Editor() {
             {/* Editor Header */}
 
             <div className="flex h-11 shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50 px-4 text-slate-800 dark:border-white/10 dark:bg-[#111827] dark:text-slate-200">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 <Code2 className="h-4 w-4 text-slate-400" />
                 <span className="text-xs font-bold uppercase tracking-[0.14em]">
                   Editor
                 </span>
 
+                {/* Language Badge matched to Run button size */}
                 <span
-                  className="rounded px-2 py-0.5 text-[10px] font-bold"
+                  className="inline-flex h-8 items-center justify-center rounded-lg px-4 text-xs font-bold shadow-sm"
                   style={{
                     backgroundColor: activeColor,
-
                     color: activeTextColor,
                   }}
                 >
@@ -2258,18 +2253,18 @@ export default function Editor() {
 
               <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
                 {!isPreviewMode && (
+                  /* Scaled-up Run Button (h-8 = 32px tall inside 44px header) */
                   <button
                     type="button"
                     onClick={handleRun}
                     disabled={isRunning}
                     style={{
                       backgroundColor: activeColor,
-
                       color: activeTextColor,
                     }}
-                    className="flex items-center gap-1.5 rounded-lg px-3 py-1 text-xs font-bold shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="flex h-8 items-center gap-1.5 rounded-lg px-4 text-xs font-bold shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    <Play className="h-3.5 w-3.5" />
+                    <Play className="h-4 w-4 fill-current" />
                     {isRunning ? "Running..." : "Run"}
                   </button>
                 )}
@@ -2277,7 +2272,7 @@ export default function Editor() {
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="rounded-md p-1 transition hover:bg-slate-200/70 dark:hover:bg-white/10"
+                  className="rounded-md p-1.5 transition hover:bg-slate-200/70 dark:hover:bg-white/10"
                   title={copyStatus === "copied" ? "Copied!" : "Copy code"}
                   aria-label={
                     copyStatus === "copied" ? "Code copied" : "Copy code"
@@ -2614,12 +2609,12 @@ export default function Editor() {
                             line === "Success! Output:"
                               ? "font-semibold text-emerald-600 dark:text-emerald-400"
                               : line === "Error:" ||
-                                  line.startsWith("Execution failed") ||
-                                  line.startsWith("Execution timed out") ||
-                                  line.startsWith("Error:")
+                                line.startsWith("Execution failed") ||
+                                line.startsWith("Execution timed out") ||
+                                line.startsWith("Error:")
                                 ? "font-semibold text-red-600 dark:text-red-400"
                                 : line.startsWith("Process finished") ||
-                                    line.startsWith("Execution time:")
+                                  line.startsWith("Execution time:")
                                   ? "text-slate-500 dark:text-slate-400"
                                   : line.startsWith("Running")
                                     ? "text-blue-600 dark:text-blue-400"
@@ -2639,6 +2634,22 @@ export default function Editor() {
 
         {!isWorkspaceFullscreen && (
           <div className="px-4 pb-4">
+            <CodeCoach
+              code={code}
+              language={language}
+              codingTaskId={codingTaskId}
+              onApplyCode={handleApplyCoachCode}
+            />
+          </div>
+        )}
+
+        {/* ================================================= */}
+        {/* FULLSCREEN FLOATING AI COACH */}
+        {/* ================================================= */}
+
+
+        {!isWorkspaceFullscreen && (
+          <div className="px-4 pt-4">
             <CodeCoach
               code={code}
               language={language}
