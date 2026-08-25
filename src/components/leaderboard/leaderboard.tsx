@@ -78,6 +78,7 @@ export default function Leaderboard() {
         const profile = profilesByUserId.get(entry.userId);
         return {
         id: entry.id || entry.userId,
+        userId: entry.userId,
         rank: entry.rank,
         name: learnerName(entry, profile),
         avatarUrl: learnerAvatar(entry, profile),
@@ -90,6 +91,7 @@ export default function Leaderboard() {
   const currentUser: LeaderboardEntry | undefined = myRank
     ? {
         id: myRank.id || myRank.userId,
+        userId: myRank.userId,
         rank: myRank.rank,
         name:
           [myProfile?.firstName, myProfile?.lastName].filter(Boolean).join(" ") ||

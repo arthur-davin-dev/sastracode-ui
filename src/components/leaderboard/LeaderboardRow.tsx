@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { LeaderboardEntry } from "@/types/leaderboard";
 
@@ -8,8 +9,22 @@ const rankColors: Record<number, string> = {
 };
 
 export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
+  const profileHref = entry.userId
+    ? `/players/${encodeURIComponent(entry.userId)}?${new URLSearchParams({
+        name: entry.name,
+        avatarUrl: entry.avatarUrl,
+        rank: String(entry.rank),
+        xp: String(entry.xp),
+      }).toString()}`
+    : undefined;
+
   return (
-    <div
+    <Link
+      href={profileHref ?? "#"}
+      aria-disabled={!profileHref}
+      onClick={(event) => {
+        if (!profileHref) event.preventDefault();
+      }}
       className={`my-1.5 grid grid-cols-[2.5rem_minmax(0,1fr)] items-center gap-2 rounded-2xl border p-3 transition-all duration-300 sm:grid-cols-[3rem_minmax(0,1fr)_auto] sm:gap-3 sm:p-4 ${
         entry.isCurrentUser
           ? "bg-init-color/10 border-init-color/60 shadow-md"
@@ -61,6 +76,6 @@ export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
           {entry.xp.toLocaleString()} <span className="text-red-600 text-base font-bold">XP</span>
         </span>
       </div>
-    </div>
+    </Link>
   );
 }
