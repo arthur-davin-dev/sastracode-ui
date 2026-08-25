@@ -58,9 +58,14 @@ export default function Leaderboard() {
   const { data: myProfile } = useGetMyProfileQuery(undefined, {
     skip: !isAuthenticated,
   });
-  const { data: profiles } = useGetLeaderboardUserProfilesQuery(undefined, {
-    skip: !data?.content.length,
-  });
+  const leaderboardUserIds = useMemo(
+    () => (data?.content ?? []).map((entry) => entry.userId),
+    [data?.content],
+  );
+  const { data: profiles } = useGetLeaderboardUserProfilesQuery(
+    leaderboardUserIds,
+    { skip: leaderboardUserIds.length === 0 },
+  );
 
   const profilesByUserId = useMemo(
     () => new Map(profiles?.content.map((profile) => [profile.userId, profile]) ?? []),
