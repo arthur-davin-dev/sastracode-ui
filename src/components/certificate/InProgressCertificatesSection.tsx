@@ -9,12 +9,14 @@ interface InProgressCertificatesSectionProps {
   certificates: InProgressCertificate[];
 }
 
-export function InProgressCertificatesSection({ certificates }: InProgressCertificatesSectionProps) {
+export function InProgressCertificatesSection({
+  certificates,
+}: InProgressCertificatesSectionProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl font-semibold flex items-center gap-2 text-primary-color dark:text-white">
-          ⏳ វិញ្ញាបនបត្រកំពុងដំណើរការ
+        <CardTitle className="text-lg font-semibold flex items-center gap-2 text-primary-color dark:text-white">
+         វិញ្ញាបនបត្រកំពុងដំណើរការ
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">

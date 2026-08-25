@@ -42,7 +42,7 @@ export function EarnedCertificatesSection({
     <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
       {/* Header */}
       <CardHeader className="flex flex-row items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
-        <CardTitle className="text-[18px] font-semibold flex items-center gap-2.5 text-slate-900 dark:text-slate-100">
+        <CardTitle className="text-[18px] font-semibold flex items-center gap-2.5 text-primary-color22 dark:text-slate-100">
           <span className="h-7 w-7 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800/40 flex items-center justify-center shrink-0">
             <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
           </span>
@@ -51,7 +51,7 @@ export function EarnedCertificatesSection({
 
         <Link
           href="/certificate"
-          className="text-[18px] text-indigo-600 dark:text-indigo-400 flex items-center gap-1 font-medium hover:underline transition-colors"
+          className="text-[18px] text-primary-color dark:text-indigo-400 flex items-center gap-1 font-medium hover:underline transition-colors"
         >
           មើលទាំងអស់ <ChevronRight className="h-4 w-4" />
         </Link>
@@ -67,7 +67,7 @@ export function EarnedCertificatesSection({
               onClick={() => setFilter("all")}
               className={`text-[18px] px-4 py-1.5 rounded-full font-medium transition-all ${
                 filter === "all"
-                  ? "bg-indigo-600 dark:bg-indigo-500 text-white shadow-xs"
+                  ? "bg-primary-color dark:bg-indigo-500 text-white shadow-xs"
                   : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
               }`}
             >
@@ -77,7 +77,7 @@ export function EarnedCertificatesSection({
               onClick={() => setFilter("docs")}
               className={`text-[18px] px-4 py-1.5 rounded-full flex items-center gap-2 font-medium transition-all ${
                 filter === "docs"
-                  ? "bg-indigo-600 dark:bg-indigo-500 text-white shadow-xs"
+                  ? "bg-primary-color dark:bg-indigo-500 text-white shadow-xs"
                   : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
               }`}
             >
@@ -108,7 +108,7 @@ export function EarnedCertificatesSection({
                 variant="ghost"
                 className={`h-7 w-7 rounded-md transition-colors ${
                   view === "grid"
-                    ? "bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-xs"
+                    ? "bg-white dark:bg-slate-800 text-primary-color dark:text-indigo-400 shadow-xs"
                     : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                 }`}
                 onClick={() => setView("grid")}
@@ -120,7 +120,7 @@ export function EarnedCertificatesSection({
                 variant="ghost"
                 className={`h-7 w-7 rounded-md transition-colors ${
                   view === "list"
-                    ? "bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-xs"
+                    ? "bg-white dark:bg-slate-800 text-primary-color dark:text-indigo-400 shadow-xs"
                     : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
                 }`}
                 onClick={() => setView("list")}
@@ -164,7 +164,7 @@ export function EarnedCertificatesSection({
 
                     {/* Card Body */}
                     <div className="flex-1 space-y-3">
-                      <h3 className="text-[18px] font-bold text-slate-900 dark:text-slate-100 line-clamp-1 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                      <h3 className="text-[18px] font-bold text-primary-color dark:text-slate-100 line-clamp-1 group-hover:text-primary-color/85 dark:group-hover:text-primary-color transition-colors">
                         {cert.title}
                       </h3>
 
@@ -185,7 +185,7 @@ export function EarnedCertificatesSection({
                           <span className="text-[10px] font-bold tracking-wider uppercase text-slate-400 dark:text-slate-500">
                             Certificate ID
                           </span>
-                          <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 font-mono">
+                          <span className="text-sm font-semibold text-primary-color dark:text-indigo-400 font-mono">
                             #{cert.certificateId}
                           </span>
                         </div>

@@ -50,24 +50,27 @@ export function CertificateStatsRow({
 
   const colorMap = {
     yellow: {
-      tag: "bg-init-color/20 text-primary-color dark:text-init-color border border-init/50",
+      tag: "bg-init-color/20 text-slate-900 dark:text-init-color border border-init/50",
       bar: "bg-init-color",
       iconBg: "bg-yellow-400/20 text-red-600 border border-yellow-400/50",
     },
     red: {
       tag: "bg-red-600/10 text-red-600 dark:text-red-400 border border-red-600/30",
       bar: "bg-red-600",
-      iconBg: "bg-red-600/10 text-red-600 dark:text-red-400 border border-red-600/30",
+      iconBg:
+        "bg-red-600/10 text-red-600 dark:text-red-400 border border-red-600/30",
     },
     orange: {
       tag: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30",
       bar: "bg-orange-500",
-      iconBg: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30",
+      iconBg:
+        "bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30",
     },
     gray: {
-      tag: "bg-primary-color dark:bg-primary-color text-white  border border-primary-color dark:border-slate-700",
+      tag: "bg-primary-color dark:bg-primary-color text-white border border-primary-color dark:border-slate-700",
       bar: "bg-primary-color/80 dark:bg-slate-600",
-      iconBg: "bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700",
+      iconBg:
+        "bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700",
     },
   };
 
@@ -89,7 +92,7 @@ export function CertificateStatsRow({
                 <div
                   className={cn(
                     "h-12 w-12 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-xs",
-                    c.iconBg
+                    c.iconBg,
                   )}
                 >
                   <stat.icon className="h-6 w-6" strokeWidth={2.5} />
@@ -97,7 +100,7 @@ export function CertificateStatsRow({
                 <span
                   className={cn(
                     "text-lg font-bold px-3.5 py-1 rounded-full shadow-xs",
-                    c.tag
+                    c.tag,
                   )}
                 >
                   {stat.tag}
@@ -105,12 +108,12 @@ export function CertificateStatsRow({
               </div>
 
               {/* Value (text-2xl & text-primary-color) */}
-              <div className="text-2xl font-extrabold text-primary-color dark:text-white pt-1">
+              <div className="text-2xl font-extrabold text-slate-900 dark:text-white pt-1">
                 {stat.value}
               </div>
 
               {/* Label (text-lg & text-primary-color) */}
-              <div className="text-lg font-medium text-primary-color dark:text-white opacity-80 leading-snug">
+              <div className="text-lg font-medium text-slate-700 dark:text-slate-300 leading-snug">
                 {stat.label}
               </div>
             </CardContent>
@@ -119,7 +122,7 @@ export function CertificateStatsRow({
             <span
               className={cn(
                 "absolute inset-x-0 bottom-0 h-1.5 transition-all duration-300 group-hover:h-2",
-                c.bar
+                c.bar,
               )}
             />
           </Card>

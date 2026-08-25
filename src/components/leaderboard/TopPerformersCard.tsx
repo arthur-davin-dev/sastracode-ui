@@ -16,8 +16,8 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
       {/* Top Gradient Ribbon Accent */}
       <div className=" w-full" />
 
-      <CardHeader className="flex flex-row items-center justify-between pb-3  border-b border-slate-100 dark:border-slate-800">
-        <div className="flex items-center gap-2.5">
+      <CardHeader className="flex flex-row items-center justify-between pb-2  border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-center gap-2">
           <div className="p-2 bg-primary-color/10 text-amber-600 dark:text-amber-400 rounded-xl">
             <Crown size={22} className="fill-amber-400" />
           </div>
