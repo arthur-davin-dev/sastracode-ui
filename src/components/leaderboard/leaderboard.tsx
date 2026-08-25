@@ -58,9 +58,14 @@ export default function Leaderboard() {
   const { data: myProfile } = useGetMyProfileQuery(undefined, {
     skip: !isAuthenticated,
   });
-  const { data: profiles } = useGetLeaderboardUserProfilesQuery(undefined, {
-    skip: !data?.content.length,
-  });
+  const leaderboardUserIds = useMemo(
+    () => (data?.content ?? []).map((entry) => entry.userId),
+    [data?.content],
+  );
+  const { data: profiles } = useGetLeaderboardUserProfilesQuery(
+    leaderboardUserIds,
+    { skip: leaderboardUserIds.length === 0 },
+  );
 
   const profilesByUserId = useMemo(
     () => new Map(profiles?.content.map((profile) => [profile.userId, profile]) ?? []),
@@ -73,6 +78,7 @@ export default function Leaderboard() {
         const profile = profilesByUserId.get(entry.userId);
         return {
         id: entry.id || entry.userId,
+        userId: entry.userId,
         rank: entry.rank,
         name: learnerName(entry, profile),
         avatarUrl: learnerAvatar(entry, profile),
@@ -85,6 +91,7 @@ export default function Leaderboard() {
   const currentUser: LeaderboardEntry | undefined = myRank
     ? {
         id: myRank.id || myRank.userId,
+        userId: myRank.userId,
         rank: myRank.rank,
         name:
           [myProfile?.firstName, myProfile?.lastName].filter(Boolean).join(" ") ||

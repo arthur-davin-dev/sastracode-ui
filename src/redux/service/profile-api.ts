@@ -5,6 +5,8 @@ import { sastraApi } from "@/redux/api";
 import type {
   ApiResponse,
   AvatarResponse,
+  PlayerProfile,
+  PlayerProfileResponse,
   UpdateUserInfoRequest,
   UserProfile,
   UserProfileResponse,
@@ -16,6 +18,16 @@ function mapProfile(profile: UserProfileResponse): UserProfile {
 
     avatarUrl: profile.avatarFileId
       ? `/api/profile/avatar/${encodeURIComponent(profile.avatarFileId)}`
+      : undefined,
+  };
+}
+
+function mapPlayerProfile(profile: PlayerProfileResponse): PlayerProfile {
+  return {
+    ...profile,
+
+    avatarUrl: profile.avatarFileId
+      ? `/api/v1/files/${encodeURIComponent(profile.avatarFileId)}`
       : undefined,
   };
 }
@@ -65,6 +77,26 @@ export const profileApi = sastraApi.injectEndpoints({
           }
         }
       },
+    }),
+
+    // =================================
+    // GET ANOTHER PLAYER'S PUBLIC PROFILE
+    // =================================
+
+    getPlayerProfile: builder.query<PlayerProfile, string>({
+      query: (userId) => ({
+        url: `/v1/users/${encodeURIComponent(userId)}/profile`,
+
+        method: "GET",
+      }),
+
+      transformResponse: (response: ApiResponse<PlayerProfileResponse>) => {
+        return mapPlayerProfile(response.data);
+      },
+
+      providesTags: (_result, _error, userId) => [
+        { type: "Profile", id: userId },
+      ],
     }),
 
     // =================================
@@ -134,6 +166,8 @@ export const profileApi = sastraApi.injectEndpoints({
 
 export const {
   useGetMyProfileQuery,
+
+  useGetPlayerProfileQuery,
 
   useUpdateMyProfileMutation,
 
