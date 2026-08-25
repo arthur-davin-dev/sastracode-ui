@@ -108,7 +108,7 @@ function TypingTitle({
           )}
         </span>
 
-        <span aria-hidden="true" className="block text-[#002455]">
+        <span aria-hidden="true" className="block text-primary-color">
           {secondLine}
           {hasSecondLine && (
             <span
@@ -118,7 +118,7 @@ function TypingTitle({
                 h-[0.9em]
                 w-[3px]
                 animate-pulse
-                bg-[#002455]
+                bg-primary-color
                 align-[-0.06em]
               "
             />

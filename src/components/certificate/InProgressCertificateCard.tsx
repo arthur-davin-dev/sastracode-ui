@@ -101,7 +101,7 @@ export function InProgressCertificateCard({ courseId }: { courseId: string }) {
         {/* Action Button (Red Secondary with Yellow Hover) */}
         <Button
           size="lg"
-          render={<Link href={mapped.href} />}
+          render={<Link href={mapped.href ?? `/courses/${mapped.id}`} />}
           className="w-full md:w-auto h-14 px-6 rounded-2xl text-lg font-bold text-white bg-primary-color hover:bg-blue-400 hover:text-slate-950  transition-all duration-300 gap-2 shrink-0 flex items-center justify-center group/btn"
         >
           <PlayCircle className="h-6 w-6 transition-transform duration-300 group-hover/btn:scale-110" />

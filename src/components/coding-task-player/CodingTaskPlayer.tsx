@@ -132,13 +132,22 @@ function editorLanguage(language: unknown): string {
 function normalizeCode(raw: string): string {
   if (!raw) return raw;
   const looksDoubleEscaped = raw.includes("\\n") && !raw.includes("\n");
-  if (!looksDoubleEscaped) return raw;
-  return raw
-    .replace(/\\r\\n/g, "\n")
-    .replace(/\\n/g, "\n")
-    .replace(/\\t/g, "\t")
-    .replace(/\\"/g, '"')
-    .replace(/\\\\/g, "\\");
+  if (looksDoubleEscaped) {
+    return raw
+      .replace(/\\r\\n/g, "\n")
+      .replace(/\\n/g, "\n")
+      .replace(/\\t/g, "\t")
+      .replace(/\\"/g, '"')
+      .replace(/\\\\/g, "\\");
+  }
+  // Some sources escape quotes only (e.g. `class=\"foo\"`) while leaving
+  // real newlines intact, so the double-escaped check above never fires.
+  // Left alone, those literal backslash-quote pairs corrupt HTML attributes
+  // and break the live preview iframe, so unescape them independently.
+  if (raw.includes('\\"')) {
+    return raw.replace(/\\"/g, '"');
+  }
+  return raw;
 }
 
 /**
@@ -159,17 +168,6 @@ function shuffleLines<T>(items: T[]): T[] {
   return isSameOrder ? shuffleLines(items) : shuffled;
 }
 
-/**
- * Splits starter code into one draggable block per non-blank line, folding
- * any surrounding blank lines into the neighboring block instead of
- * discarding them. Rejoining the blocks with "\n" in their original order
- * reproduces the starter code byte-for-byte — including blank lines —
- * which matters because the backend grades an arrange-blocks submission by
- * comparing the reassembled text against that exact starter code. Simply
- * dropping blank lines (the previous behavior) permanently lost that
- * whitespace, so a learner could arrange every visible line correctly and
- * still get marked wrong because the reconstructed code no longer matched.
- */
 function splitIntoArrangeBlocks(raw: string): string[] {
   const lines = raw.split("\n");
   const groups: string[] = [];
@@ -236,14 +234,6 @@ export function CodingTaskPlayer({
     setAttempt(0);
     setShowHints(false);
     setIsFullscreen(false);
-    // Keyed on task.id (not the task object) so a background refetch of
-    // this same task — e.g. the cache invalidation that submitCodingTask
-    // triggers right after a successful submit — doesn't wipe the just-set
-    // submitResult before the learner ever sees it. A real task switch
-    // still remounts this whole component (CodingTaskLessonSection keys
-    // CodingTaskPlayer by task id), so this effect only needs to cover the
-    // initial load.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [task?.id]);
 
   async function run(codeToRun = code) {
