@@ -39,7 +39,7 @@ export default function Review() {
         className="relative px-8 pb-12 sm:px-12"
         data-hs-carousel='{"loadingClasses":"opacity-0","dotsItemClasses":"size-3 cursor-pointer rounded-full border border-slate-400 bg-transparent transition-all dark:border-slate-500","isAutoPlay":true,"slidesQty":{"xs":1,"sm":2,"lg":3}}'
       >
-        <div className="hs-carousel relative min-h-96 w-full overflow-hidden">
+        <div className="hs-carousel relative min-h-80 w-full overflow-hidden">
           <div className="hs-carousel-body absolute inset-s-0 bottom-0 top-0 flex flex-nowrap transition-transform ">
             {t.items.map((review, index) => (
               <div className="hs-carousel-slide px-3" key={review.name}>
@@ -59,7 +59,7 @@ export default function Review() {
                     </div>
 
                     {/* Review Text */}
-                    <p className="flex-1 text-base leading-relaxed text-gray-700 dark:text-gray-300">
+                    <p className="mb-6 text-base leading-relaxed text-gray-700 dark:text-gray-300">
                       “{review.text}”
                     </p>
 
