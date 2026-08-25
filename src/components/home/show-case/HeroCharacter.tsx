@@ -11,7 +11,9 @@ export default function HeroCharacter() {
   const [visibleTitle, setVisibleTitle] = useState("");
 
   useEffect(() => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     if (reduceMotion) {
       const titleTimer = window.setTimeout(() => setVisibleTitle(title), 0);
       return () => window.clearTimeout(titleTimer);
@@ -51,40 +53,45 @@ export default function HeroCharacter() {
 
     return parts.map((part, i) =>
       part && "SastraCode".startsWith(part) ? (
-        <span key={i} className="text-secondary-color dark:text-blue-400">
+        <span key={i} className="text-secondary-color dark:text-secondary-color">
           {part}
         </span>
       ) : (
         <span key={i} className="text-gray-900 dark:text-white">
           {part}
         </span>
-      )
+      ),
     );
   };
 
   return (
-    /* Full-width outer section for page-wide background color */
-    <section className="relative flex w-full items-center transition-colors duration-300 py-12 pt-16 sm:py-16 sm:pt-20 lg:py-20 lg:pt-12">
-
+    <section className="relative flex min-h-[calc(100dvh-5rem)] w-full items-center justify-center transition-colors duration-300">
       {/* Centered inner container for grid content and bounds */}
       <div className="relative mx-auto w-full max-w-7xl px-6">
-
-        {/* Corner decorations - hidden on mobile so they don't overlap the badge/heading */}
-        <div className="pointer-events-none absolute left-0 top-0 h-10 w-10 rounded-tl-2xl border-l-[6px] border-t-[6px] border-[#ff383c] dark:border-red-500 sm:h-14 sm:w-14 sm:border-l-[8px] sm:border-t-[8px] lg:h-21.75 lg:w-21.75 lg:border-l-14 lg:border-t-14"></div>
-        <div className="pointer-events-none absolute bottom-0 right-0 h-10 w-10 rotate-180 rounded-tl-2xl border-l-[6px] border-t-[6px] border-[#ff383c] dark:border-red-500 sm:h-14 sm:w-14 sm:border-l-[8px] sm:border-t-[8px] lg:h-21.75 lg:w-21.75 lg:border-l-14 lg:border-t-14"></div>
-        <div className="grid items-center gap-12 pt-12 sm:pt-14 lg:grid-cols-2 lg:pt-0">
+        {/* Corner decorations */}
+        <div className="pointer-events-none absolute left-0 top-0 h-10 w-10 rounded-tl-2xl border-l-[6px] border-t-[6px] border-[#ff383c] dark:border-red-500 sm:h-14 sm:w-14 sm:border-l-8 sm:border-t-8 lg:h-21.75 lg:w-21.75 lg:border-l-14 lg:border-t-14"></div>
+        <div className="pointer-events-none absolute bottom-0 right-0 h-10 w-10 rotate-180 rounded-tl-2xl border-l-[6px] border-t-[6px] border-[#ff383c] dark:border-red-500 sm:h-14 sm:w-14 sm:border-l-8 sm:border-t-8 lg:h-21.75 lg:w-21.75 lg:border-l-14 lg:border-t-14"></div>
+        <div className="grid items-center gap-12 p-8 sm:p-10 lg:grid-cols-2 lg:p-12">
           {/* Left Column: Text & Content */}
           <div className="space-y-4 sm:space-y-6">
-            <div className="badge-gradient inline-flex items-center gap-2 rounded-[13px] border border-navy-muted dark:border-gray-700 px-4 py-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm transition-colors duration-300">
-              <span className="size-1 rounded-full bg-navy dark:bg-blue-400"></span>
-              <span className="font-khmer text-lg text-primary-color dark:text-blue-400 transition-colors duration-300">
+            <div className="inline-flex items-center gap-2 rounded-[13px] border border-primary-color bg-primary-color px-4 py-2 text-white transition-all duration-300 hover:opacity-90 dark:border-primary-color dark:bg-primary-color dark:text-white">
+              <span className="size-1.5 rounded-full bg-white"></span>
+              <span className="font-khmer text-lg text-white">
                 {currentT.showCase.heroCharacter.badge}
               </span>
             </div>
 
-            <h2 aria-label={title} className="font-khmer text-4xl font-medium leading-tight transition-colors duration-300 sm:text-5xl">
-              <span aria-hidden="true">{renderFormattedTitle(visibleTitle)}</span>
-              <span aria-hidden="true" className="ml-1 inline-block h-[0.9em] w-0.75 animate-pulse bg-current align-[-0.06em]" />
+            <h2
+              aria-label={title}
+              className="font-khmer text-4xl font-medium leading-tight transition-colors duration-300 sm:text-5xl"
+            >
+              <span aria-hidden="true">
+                {renderFormattedTitle(visibleTitle)}
+              </span>
+              <span
+                aria-hidden="true"
+                className="ml-1 inline-block h-[0.9em] w-0.75 animate-pulse bg-current align-[-0.06em]"
+              />
             </h2>
 
             <p className="max-w-md font-khmer text-lg leading-8 text-black/80 dark:text-gray-300 transition-colors duration-300">
@@ -93,9 +100,13 @@ export default function HeroCharacter() {
 
             <Link
               href="/playground/editor"
-              className="inline-flex items-center gap-2 rounded-xl border border-[#bfc8d5] dark:border-gray-700 bg-white dark:bg-gray-800 px-5 py-3 text-sm font-medium text-black dark:text-white transition-all duration-300 hover:bg-slate-50 dark:hover:bg-gray-700"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary-color px-5 py-3 text-sm font-medium text-white transition-all duration-300 hover:opacity-90 dark:bg-primary-color dark:text-white dark:hover:opacity-90"
             >
-              <img src="/home/svg/coding.svg" alt="" className="size-6 dark:invert" />
+              <img
+                src="/home/svg/coding.svg"
+                alt=""
+                className="size-6 brightness-0 invert"
+              />
               <span className="font-khmer">
                 {currentT.showCase.heroCharacter.button}
               </span>
@@ -121,7 +132,6 @@ export default function HeroCharacter() {
             />
           </div>
         </div>
-
       </div>
     </section>
   );
