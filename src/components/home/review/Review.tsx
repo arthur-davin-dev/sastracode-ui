@@ -1,8 +1,10 @@
 "use client";
+
 import Image from "next/image";
 import { Star } from "lucide-react";
 import { useTranslation } from "@/hooks/useTranslations";
 
+// Only include images that physically exist in your /public/images/ folder
 const reviewImages = [
   "/images/chhay_davin.jpg",
   "/images/chhay_kongkea.jpg",
@@ -40,32 +42,17 @@ export default function Review() {
         data-hs-carousel='{"loadingClasses":"opacity-0","dotsItemClasses":"size-3 cursor-pointer rounded-full border border-slate-400 bg-transparent transition-all dark:border-slate-500","isAutoPlay":true,"slidesQty":{"xs":1,"sm":2,"lg":3}}'
       >
         <div className="hs-carousel relative min-h-80 w-full overflow-hidden">
-          <div className="hs-carousel-body absolute inset-s-0 bottom-0 top-0 flex flex-nowrap transition-transform ">
+          <div className="hs-carousel-body absolute inset-s-0 bottom-0 top-0 flex flex-nowrap transition-transform">
             {t.items.map((review, index) => (
-              <div className="hs-carousel-slide px-3" key={review.name}>
-                <article className="flex h-full justify-center rounded-2xl border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800">
+              <div
+                className="hs-carousel-slide w-full shrink-0 px-3 sm:w-1/2 lg:w-1/3"
+                key={review.name}
+              >
+                <article className="flex h-full flex-col justify-between rounded-2xl border border-gray-200 bg-white p-6 shadow-lg dark:border-gray-700 dark:bg-gray-800">
                   <div className="flex h-full flex-col">
-                    {/* Star Rating */}
-                    <div
-                      className="mb-3 flex gap-1"
-                      aria-label="5 out of 5 stars"
-                    >
-                      {Array.from({ length: 5 }, (_, star) => (
-                        <Star
-                          key={star}
-                          className="h-5 w-5 fill-init-color text-init-color"
-                        />
-                      ))}
-                    </div>
-
-                    {/* Review Text */}
-                    <p className="mb-6 text-base leading-relaxed text-gray-700 dark:text-gray-300">
-                      “{review.text}”
-                    </p>
-
-                    {/* Author Details */}
-                    <div className="flex items-center gap-3 mt-auto  dark:border-gray-700">
-                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full ring-2 J dark:ring-slate-700">
+                    {/* 1. Author Details (Top) */}
+                    <div className="mb-4 flex items-center gap-3">
+                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full ring-2 dark:ring-slate-700">
                         <Image
                           src={
                             "image" in review &&
@@ -88,6 +75,24 @@ export default function Review() {
                         </p>
                       </div>
                     </div>
+
+                    {/* 2. Star Rating (Middle) */}
+                    <div
+                      className="mb-3 flex gap-1"
+                      aria-label="5 out of 5 stars"
+                    >
+                      {Array.from({ length: 5 }, (_, star) => (
+                        <Star
+                          key={star}
+                          className="h-5 w-5 fill-init-color text-init-color"
+                        />
+                      ))}
+                    </div>
+
+                    {/* 3. Review Text (Bottom) */}
+                    <p className="mt-3 text-base leading-relaxed text-gray-700 dark:text-gray-300">
+                      “{review.text}”
+                    </p>
                   </div>
                 </article>
               </div>

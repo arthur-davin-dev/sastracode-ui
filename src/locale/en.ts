@@ -582,7 +582,21 @@ export const en = {
       { name: "Alex Kumar", role: "Data Scientist at Amazon", text: "I was hesitant at first, but the community support and expert guidance made it the best career investment I've made." },
       { name: "Maria Rodriguez", role: "Senior Developer at Microsoft", text: "The DSA course changed how I prepared for interviews. Complex topics were broken down into simple, understandable lessons." },
       { name: "Tom Lee", role: "Backend Engineer at Stripe", text: "I loved the practice-focused teaching. Career guidance and code reviews helped me land interview opportunities." },
-      { name: "Emily Wang", role: "Product Manager at Meta", text: "The best part is the community. Discussions and feedback from fellow learners strengthened my understanding and confidence." },
+      { name: "Emily Wang", role: "Product Manager at Meta", text: "The best part is the community. Discussions and feedback from fellow learners strengthened my understanding and confidence." }, {
+        name: "Sok Vanna",
+        role: "Frontend Developer",
+        text: "The practical lessons and exercises made learning fast and easy to understand for beginners.",
+      },
+      {
+        name: "Keo Ratha",
+        role: "Mobile Developer",
+        text: "Clear lesson structure and step-by-step guidance helped me sharpen my coding skills very quickly.",
+      },
+      {
+        name: "Chan Dara",
+        role: "DevOps Engineer",
+        text: "The techniques and real-world examples provided in this course are 100% applicable to actual software projects.",
+      },
     ],
   },
 
