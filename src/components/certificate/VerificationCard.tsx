@@ -1,17 +1,16 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ShieldCheck, CheckCircle2, Fingerprint } from "lucide-react";
+import { ShieldCheck, CheckCircle2, XCircle } from "lucide-react";
 
 interface VerificationCardProps {
-  status: string;
+  revoked: boolean;
   issuedDate: string;
   verificationId: string;
 }
 
 export function VerificationCard({
-  status,
+  revoked,
   issuedDate,
   verificationId,
 }: VerificationCardProps) {
@@ -44,10 +43,17 @@ export function VerificationCard({
           {/* Status Row */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-200 dark:border-slate-700">
             <span className="text-lg font-medium text-primary-color dark:text-white opacity-70">ស្ថានភាព</span>
-            <span className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-50 dark:bg-green-950/30 text-green-600 border border-green-200 dark:border-green-900 text-lg font-bold w-fit">
-              <CheckCircle2 className="h-5 w-5" /> 
-              {status || "ត្រឹមត្រូវ"}
-            </span>
+            {revoked ? (
+              <span className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-50 dark:bg-red-950/30 text-red-600 border border-red-200 dark:border-red-900 text-lg font-bold w-fit">
+                <XCircle className="h-5 w-5" />
+                ដកហូត
+              </span>
+            ) : (
+              <span className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-50 dark:bg-green-950/30 text-green-600 border border-green-200 dark:border-green-900 text-lg font-bold w-fit">
+                <CheckCircle2 className="h-5 w-5" />
+                ត្រឹមត្រូវ
+              </span>
+            )}
           </div>
 
           {/* Issued Date Row */}
@@ -57,22 +63,15 @@ export function VerificationCard({
           </div>
 
           {/* ID Row */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <span className="text-lg font-medium text-primary-color dark:text-white opacity-70">ID</span>
-            <span className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-yellow-400/10 border border-yellow-400/40 text-lg font-mono font-bold text-primary-color dark:text-white  w-fit">
-              <Fingerprint className="h-5 w-5 text-secondary-color" />
+          <div className="flex flex-col gap-2">
+            <span className="text-lg font-medium text-primary-color dark:text-white opacity-70">Verification ID</span>
+            <span className="block px-3 py-1.5 rounded-xl bg-yellow-400/10 border border-yellow-400/40 text-lg font-mono font-bold text-primary-color dark:text-white break-all">
               {verificationId}
             </span>
           </div>
 
         </div>
 
-        {/* Action Button (Red Primary, Yellow Hover) */}
-        <Button className="w-full h-14 rounded-2xl text-lg font-bold text-white bg-primary-color hover:bg-blue-400 hover:text-slate-950 shadow-md transition-all duration-300 gap-2 group flex items-center justify-center">
-          <ShieldCheck className="h-6 w-6 transition-transform duration-300 group-hover:scale-110" /> 
-          បម្រុងទុកព័ត៌មានវិញ្ញាបនបត្រ
-        </Button>
-        
       </CardContent>
     </Card>
   );

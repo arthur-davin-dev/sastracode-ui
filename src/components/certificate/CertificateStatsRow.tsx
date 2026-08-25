@@ -1,22 +1,41 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import { Card, CardContent } from "@/components/ui/card";
-import { GraduationCap, CheckCircle2, Hourglass, Lock } from "lucide-react";
+import { GraduationCap, CheckCircle2, Hourglass } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useGetMyCertificatesQuery } from "@/redux/features/certificate/certificateApi";
+import { useGetMyEnrollmentsQuery } from "@/redux/api";
 
-interface CertificateStatsRowProps {
-  totalCourses: number;
-  completedCourses: number;
-  inProgressCourses: number;
-  lockedCourses: number;
-}
+export function CertificateStatsRow() {
+  const { status } = useSession();
+  const isAuthenticated = status === "authenticated";
 
-export function CertificateStatsRow({
-  totalCourses,
-  completedCourses,
-  inProgressCourses,
-  lockedCourses,
-}: CertificateStatsRowProps) {
+  const { data: certificatesData, isFetching: isFetchingCertificates } =
+    useGetMyCertificatesQuery(
+      { page: 0, size: 1 },
+      { skip: !isAuthenticated },
+    );
+  const { data: completedEnrollments, isFetching: isFetchingCompleted } =
+    useGetMyEnrollmentsQuery(
+      { status: "COMPLETED", size: 1 },
+      { skip: !isAuthenticated },
+    );
+  const { data: activeEnrollments, isFetching: isFetchingActive } =
+    useGetMyEnrollmentsQuery(
+      { status: "ACTIVE", size: 1 },
+      { skip: !isAuthenticated },
+    );
+
+  const isLoading =
+    status === "loading" ||
+    (isAuthenticated &&
+      (isFetchingCertificates || isFetchingCompleted || isFetchingActive));
+
+  const totalCourses = certificatesData?.data.totalElements ?? 0;
+  const completedCourses = completedEnrollments?.totalElements ?? 0;
+  const inProgressCourses = activeEnrollments?.totalElements ?? 0;
+
   const stats = [
     {
       icon: GraduationCap,
@@ -39,13 +58,6 @@ export function CertificateStatsRow({
       tag: "កំពុងសិក្សា",
       color: "orange",
     },
-    {
-      icon: Lock,
-      value: lockedCourses,
-      label: "វគ្គសិក្សាជាប់សោ",
-      tag: "មិនទាន់មាន",
-      color: "gray",
-    },
   ];
 
   const colorMap = {
@@ -57,22 +69,50 @@ export function CertificateStatsRow({
     red: {
       tag: "bg-red-600/10 text-red-600 dark:text-red-400 border border-red-600/30",
       bar: "bg-red-600",
-      iconBg: "bg-red-600/10 text-red-600 dark:text-red-400 border border-red-600/30",
+      iconBg:
+        "bg-red-600/10 text-red-600 dark:text-red-400 border border-red-600/30",
     },
     orange: {
       tag: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30",
       bar: "bg-orange-500",
-      iconBg: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30",
+      iconBg:
+        "bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30",
     },
     gray: {
       tag: "bg-primary-color dark:bg-primary-color text-white  border border-primary-color dark:border-slate-700",
       bar: "bg-primary-color/80 dark:bg-slate-600",
-      iconBg: "bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700",
+      iconBg:
+        "bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700",
     },
   };
 
+  if (isLoading) {
+    return (
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        aria-busy="true"
+      >
+        {[1, 2, 3].map((i) => (
+          <Card
+            key={i}
+            className="rounded-3xl border-2 border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl"
+          >
+            <CardContent className="p-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="h-12 w-12 rounded-2xl bg-slate-100 dark:bg-slate-800 animate-pulse" />
+                <div className="h-8 w-16 rounded-full bg-slate-100 dark:bg-slate-800 animate-pulse" />
+              </div>
+              <div className="h-7 w-12 rounded bg-slate-100 dark:bg-slate-800 animate-pulse" />
+              <div className="h-5 w-40 rounded bg-slate-100 dark:bg-slate-800 animate-pulse" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {stats.map((stat, i) => {
         const c = colorMap[stat.color as keyof typeof colorMap];
         return (
@@ -89,7 +129,7 @@ export function CertificateStatsRow({
                 <div
                   className={cn(
                     "h-12 w-12 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-xs",
-                    c.iconBg
+                    c.iconBg,
                   )}
                 >
                   <stat.icon className="h-6 w-6" strokeWidth={2.5} />
@@ -97,7 +137,7 @@ export function CertificateStatsRow({
                 <span
                   className={cn(
                     "text-lg font-bold px-3.5 py-1 rounded-full shadow-xs",
-                    c.tag
+                    c.tag,
                   )}
                 >
                   {stat.tag}
@@ -119,7 +159,7 @@ export function CertificateStatsRow({
             <span
               className={cn(
                 "absolute inset-x-0 bottom-0 h-1.5 transition-all duration-300 group-hover:h-2",
-                c.bar
+                c.bar,
               )}
             />
           </Card>

@@ -3,18 +3,61 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, Circle, Award, Sparkles, ArrowRight } from "lucide-react";
+import {
+  CheckCircle2,
+  Circle,
+  Award,
+  Sparkles,
+  ArrowRight,
+} from "lucide-react";
+import {
+  useGetCourseByIdQuery,
+  useGetCourseProgressQuery,
+} from "@/redux/api";
 import { RequirementChecklistItem } from "@/types/certificate";
 
 interface ClaimCertificateCardProps {
-  items: RequirementChecklistItem[];
+  courseId: string;
 }
 
-export function ClaimCertificateCard({ items }: ClaimCertificateCardProps) {
-  const completedCount = items.filter((item) => item.completed).length;
-  const totalCount = items.length;
-  const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
-  const allDone = items.every((item) => item.completed);
+export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
+  const { data: course, isFetching: isFetchingCourse } =
+    useGetCourseByIdQuery(courseId);
+  const { data: progress, isFetching: isFetchingProgress } =
+    useGetCourseProgressQuery(courseId);
+
+  if ((isFetchingCourse || isFetchingProgress) && !course) {
+    return (
+      <Card className="rounded-3xl border-2 border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
+        <CardContent className="flex flex-col items-center gap-6 p-8 animate-pulse">
+          <div className="h-20 w-20 rounded-2xl bg-slate-100 dark:bg-slate-800" />
+          <div className="h-6 w-2/3 rounded bg-slate-100 dark:bg-slate-800" />
+          <div className="h-3 w-full max-w-sm rounded-full bg-slate-100 dark:bg-slate-800" />
+          <div className="h-24 w-full max-w-sm rounded-2xl bg-slate-100 dark:bg-slate-800" />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!course) return null;
+
+  const totalVideos = progress?.totalVideos ?? 0;
+  const completedVideos = Math.min(
+    progress?.completedVideos ?? 0,
+    totalVideos,
+  );
+  const progressPercent = Math.round(
+    progress?.percentage ??
+      (totalVideos > 0 ? (completedVideos / totalVideos) * 100 : 0),
+  );
+  const allDone = totalVideos > 0 && completedVideos >= totalVideos;
+
+  const items: RequirementChecklistItem[] = [
+    { label: "ចាប់ផ្តើមសិក្សាមេរៀន", completed: completedVideos > 0 },
+    { label: "សិក្សាបានលើសពី ៥០%", completed: progressPercent >= 50 },
+    { label: "សិក្សាបានលើសពី ៨០%", completed: progressPercent >= 80 },
+    { label: "បញ្ចប់វីដេអូទាំងអស់", completed: allDone },
+  ];
 
   return (
     <motion.div
@@ -23,7 +66,6 @@ export function ClaimCertificateCard({ items }: ClaimCertificateCardProps) {
       transition={{ duration: 0.3 }}
     >
       <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl transition-all duration-300">
-        
         {/* Top Accent Gradient Line (Red Secondary & Yellow Accent) */}
         <div className="absolute top-0 left-0 w-full h-2 " />
 
@@ -35,7 +77,6 @@ export function ClaimCertificateCard({ items }: ClaimCertificateCardProps) {
         />
 
         <CardContent className="flex flex-col items-center gap-6 p-8 text-center relative z-10">
-          
           {/* Top Animated Icon Header */}
           <div className="relative pt-2">
             <motion.div
@@ -66,6 +107,9 @@ export function ClaimCertificateCard({ items }: ClaimCertificateCardProps) {
             <h3 className="text-2xl font-extrabold text-primary-color dark:text-white leading-tight">
               ទាមទារវិញ្ញាបនបត្រ
             </h3>
+            <p className="text-lg font-bold text-primary-color dark:text-white truncate">
+              {course.title}
+            </p>
             <p className="text-lg text-primary-color dark:text-white opacity-80 leading-relaxed">
               បំពេញគ្រប់លក្ខខណ្ឌខាងក្រោមដើម្បីទទួលបានវិញ្ញាបនបត្រនេះ
             </p>
@@ -74,12 +118,16 @@ export function ClaimCertificateCard({ items }: ClaimCertificateCardProps) {
           {/* Progress Status Bar */}
           <div className="w-full max-w-sm space-y-2 pt-1">
             <div className="flex justify-between items-center text-lg font-bold text-primary-color dark:text-white">
-              <span className="opacity-80">លក្ខខណ្ឌដែលបានបំពេញ</span>
-              <span className={allDone ? "text-primary-color" : "text-secondary-color"}>
-                {completedCount} / {totalCount} ({progressPercent}%)
+              <span className="opacity-80">វឌ្ឍនភាពសិក្សា</span>
+              <span
+                className={
+                  allDone ? "text-primary-color" : "text-secondary-color"
+                }
+              >
+                {completedVideos} / {totalVideos} ({progressPercent}%)
               </span>
             </div>
-            
+
             <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-700">
               <div
                 className="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-primary-color to-blue-400"
@@ -104,7 +152,9 @@ export function ClaimCertificateCard({ items }: ClaimCertificateCardProps) {
                 ) : (
                   <Circle className="h-6 w-6 text-slate-400 shrink-0" />
                 )}
-                <span className={`text-lg font-bold ${item.completed ? "line-through opacity-80" : ""}`}>
+                <span
+                  className={`text-lg font-bold ${item.completed ? "line-through opacity-80" : ""}`}
+                >
                   {item.label}
                 </span>
               </div>
@@ -121,13 +171,14 @@ export function ClaimCertificateCard({ items }: ClaimCertificateCardProps) {
                   : "bg-primary-color dark:bg-slate-800 text-white cursor-not-allowed border  dark:border-slate-700"
               }`}
             >
-              <span>{allDone ? "ទាមទារវិញ្ញាបនបត្រឥឡូវនេះ" : "មិនទាន់គ្រប់លក្ខខណ្ឌ"}</span>
+              <span>
+                {allDone ? "ទាមទារវិញ្ញាបនបត្រឥឡូវនេះ" : "មិនទាន់គ្រប់លក្ខខណ្ឌ"}
+              </span>
               {allDone && (
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
               )}
             </Button>
           </div>
-
         </CardContent>
       </Card>
     </motion.div>
