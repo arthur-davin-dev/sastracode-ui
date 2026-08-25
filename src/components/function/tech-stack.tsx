@@ -45,17 +45,13 @@ export default function TechStack() {
       <section className="relative w-full overflow-hidden py-10">
         {/* Header */}
         <div className="mb-8 text-center px-4">
-          <h2 className="text-2xl font-bold tracking-tight text-primary-color sm:text-3xl font-khmer">
+          <h2 className="text-2xl font-bold tracking-tight text-primary-color dark:text-white sm:text-3xl font-khmer">
             {currentT["tech-stack"]?.title}
           </h2>
-          <p className="mt-2 text-sm text-primary-color font-khmer">
+          <p className="mt-2 text-sm text-primary-color dark:text-gray-300 font-khmer">
             {currentT["tech-stack"]?.subtitle}
           </p>
         </div>
-
-        {/* Edge Fade Overlays */}
-        <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-24 bg-linear-to-r from-[#fafbfc] to-transparent" />
-        <div className="pointer-events-none absolute right-0 top-0 z-10 h-full w-24 bg-linear-to-l from-[#fafbfc] to-transparent" />
 
         {/* Marquee Track */}
         <div className="animate-marquee-rtl py-4">
@@ -65,7 +61,7 @@ export default function TechStack() {
               className="tech-item group mx-7 flex shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 transition-transform duration-200 ease-out hover:-translate-y-1 hover:scale-110"
             >
               {/* Icon Container */}
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-100 bg-white p-3 shadow-sm transition-all duration-200 group-hover:border-slate-200 group-hover:shadow-lg">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 shadow-sm transition-all duration-200 group-hover:border-slate-200 dark:group-hover:border-slate-700 group-hover:shadow-lg">
                 <img
                   src={item.icon}
                   alt={item.name}
@@ -73,7 +69,7 @@ export default function TechStack() {
                 />
               </div>
               {/* Title Label */}
-              <span className="text-xs font-medium text-primary-color transition-colors duration-200 group-hover:font-semibold group-hover:text-slate-900">
+              <span className="text-xs font-medium text-primary-color dark:text-white transition-colors duration-200 group-hover:font-semibold group-hover:text-slate-900 dark:group-hover:text-white">
                 {item.name}
               </span>
             </div>

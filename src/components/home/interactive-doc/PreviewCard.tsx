@@ -13,6 +13,9 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
   const currentT = useTranslation();
   const sections = currentT.interactiveDoc?.sections;
 
+  // Font style for Consolas code rendering
+  const consolasStyle = { fontFamily: "Consolas, 'Courier New', Monaco, monospace" };
+
   // Dynamic configurations for each section using translations
   const previewContent: Record<
     SectionKey,
@@ -28,7 +31,7 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
       title: sections?.introduction?.title || "HTML Introduction",
       description: sections?.introduction?.description || "HTML is the standard markup language for creating Web pages.",
       codeMarkup: (
-        <p>
+        <p style={consolasStyle}>
           <span className="text-pink-600 dark:text-pink-400">&lt;!DOCTYPE html&gt;</span>
           <br />
           <span className="text-pink-600 dark:text-pink-400">&lt;html&gt;</span>
@@ -54,7 +57,7 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
       title: sections?.elements?.title || "HTML Elements",
       description: sections?.elements?.description || "HTML elements are the building blocks of HTML pages.",
       codeMarkup: (
-        <>
+        <div style={consolasStyle}>
           <p>
             <span className="text-pink-600 dark:text-pink-400">&lt;h1&gt;</span>
             <span className="text-slate-800 dark:text-gray-200">Hello SastraCode!</span>
@@ -65,7 +68,7 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
             <span className="text-slate-800 dark:text-gray-200">Welcome to your learning journey.</span>
             <span className="text-pink-600 dark:text-pink-400">&lt;/p&gt;</span>
           </p>
-        </>
+        </div>
       ),
       editorText: "<h1>Hello SastraCode!</h1>\n<p>Welcome to your learning journey.</p>",
       previewElement: (
@@ -79,7 +82,7 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
       title: sections?.attributes?.title || "HTML Attributes",
       description: sections?.attributes?.description || "Attributes provide additional information about HTML elements.",
       codeMarkup: (
-        <p>
+        <p style={consolasStyle}>
           <span className="text-pink-600 dark:text-pink-400">&lt;a</span>{" "}
           <span className="text-indigo-600 dark:text-indigo-400">href</span>=
           <span className="text-green-600 dark:text-green-400">&quot;https://sastracode.com&quot;</span>
@@ -100,7 +103,7 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
       title: sections?.semantic?.title || "Semantic HTML",
       description: sections?.semantic?.description || "Semantic elements clearly describe their meaning to both browser and developer.",
       codeMarkup: (
-        <p>
+        <p style={consolasStyle}>
           <span className="text-pink-600 dark:text-pink-400">&lt;article&gt;</span>
           <br />
           &nbsp;&nbsp;<span className="text-pink-600 dark:text-pink-400">&lt;h2&gt;</span>
@@ -122,7 +125,7 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
       title: sections?.forms?.title || "HTML Forms",
       description: sections?.forms?.description || "Forms are used to collect user input.",
       codeMarkup: (
-        <p>
+        <p style={consolasStyle}>
           <span className="text-pink-600 dark:text-pink-400">&lt;input</span>{" "}
           <span className="text-indigo-600 dark:text-indigo-400">type</span>=
           <span className="text-green-600 dark:text-green-400">&quot;text&quot;</span>{" "}
@@ -148,7 +151,7 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
       title: sections?.tables?.title || "HTML Tables",
       description: sections?.tables?.description || "Tables allow web developers to arrange data into rows and columns.",
       codeMarkup: (
-        <p>
+        <p style={consolasStyle}>
           <span className="text-pink-600 dark:text-pink-400">&lt;table&gt;</span>
           <br />
           &nbsp;&nbsp;<span className="text-pink-600 dark:text-pink-400">&lt;tr&gt;&lt;th&gt;</span>Name
@@ -222,6 +225,7 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
 
           {/* Code Block */}
           <div
+            style={consolasStyle}
             className="
               rounded-xl
               border
@@ -229,7 +233,6 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
               bg-slate-50 dark:bg-gray-900
               p-3
               sm:p-4
-              font-mono
               text-[10px]
               sm:text-xs
               whitespace-pre-wrap
@@ -251,6 +254,7 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {/* Editor */}
               <div
+                style={consolasStyle}
                 className="
                   rounded-xl
                   border
@@ -258,13 +262,13 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
                   bg-indigo-50/40 dark:bg-indigo-950/30
                   p-3
                   sm:p-4
-                  font-mono
                   text-[10px]
                   sm:text-xs
                   text-slate-700 dark:text-gray-300
                   min-h-24
                   sm:min-h-40
                   break-all
+                  whitespace-pre-wrap
                   transition-colors duration-300
                 "
               >
