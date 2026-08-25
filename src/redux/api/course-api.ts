@@ -4,6 +4,7 @@ import type {
   ContinueLearningResponse,
   CourseAccessType,
   CourseDetailResponse,
+  CourseProgressResponse,
   CourseSectionResponse,
   EnrollmentResponse,
   PagedResponseCourseDetailResponse,
@@ -160,6 +161,12 @@ export const courseApi = sastraApi.injectEndpoints({
       providesTags: [{ type: "Course", id: "CONTINUE_LEARNING" }],
     }),
 
+    getCourseProgress: builder.query<CourseProgressResponse, string>({
+      query: (courseId) =>
+        `/v1/courses/${encodeURIComponent(courseId)}/progress`,
+      providesTags: (_result, _error, courseId) => [courseTag(courseId)],
+    }),
+
     enrollCourse: builder.mutation<EnrollmentResponse, string>({
       query: (courseId) => ({
         url: `/v1/courses/${encodeURIComponent(courseId)}/enroll`,
@@ -192,6 +199,7 @@ export const {
   useGetMyPrivateCoursesQuery,
   useGetMyEnrollmentsQuery,
   useGetContinueLearningQuery,
+  useGetCourseProgressQuery,
   useEnrollCourseMutation,
   useCancelEnrollmentMutation,
 } = courseApi;
