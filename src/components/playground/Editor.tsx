@@ -2233,17 +2233,17 @@ export default function Editor() {
             {/* Editor Header */}
 
             <div className="flex h-11 shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50 px-4 text-slate-800 dark:border-white/10 dark:bg-[#111827] dark:text-slate-200">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 <Code2 className="h-4 w-4 text-slate-400" />
                 <span className="text-xs font-bold uppercase tracking-[0.14em]">
                   Editor
                 </span>
 
+                {/* Language Badge matched to Run button size */}
                 <span
-                  className="rounded px-2 py-0.5 text-[10px] font-bold"
+                  className="inline-flex h-8 items-center justify-center rounded-lg px-4 text-xs font-bold shadow-sm"
                   style={{
                     backgroundColor: activeColor,
-
                     color: activeTextColor,
                   }}
                 >
@@ -2253,18 +2253,18 @@ export default function Editor() {
 
               <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
                 {!isPreviewMode && (
+                  /* Scaled-up Run Button (h-8 = 32px tall inside 44px header) */
                   <button
                     type="button"
                     onClick={handleRun}
                     disabled={isRunning}
                     style={{
                       backgroundColor: activeColor,
-
                       color: activeTextColor,
                     }}
-                    className="flex items-center gap-1.5 rounded-lg px-3 py-1 text-xs font-bold shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="flex h-8 items-center gap-1.5 rounded-lg px-4 text-xs font-bold shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                   >
-                    <Play className="h-3.5 w-3.5" />
+                    <Play className="h-4 w-4 fill-current" />
                     {isRunning ? "Running..." : "Run"}
                   </button>
                 )}
@@ -2272,7 +2272,7 @@ export default function Editor() {
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="rounded-md p-1 transition hover:bg-slate-200/70 dark:hover:bg-white/10"
+                  className="rounded-md p-1.5 transition hover:bg-slate-200/70 dark:hover:bg-white/10"
                   title={copyStatus === "copied" ? "Copied!" : "Copy code"}
                   aria-label={
                     copyStatus === "copied" ? "Code copied" : "Copy code"
