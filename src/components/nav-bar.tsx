@@ -417,7 +417,7 @@ export default function Navbar() {
             px-3 py-2.5
             text-sm font-medium text-gray-700
             transition-all duration-150
-            hover:bg-[#002455]/5 hover:text-[#002455]
+            hover:bg-primary-color/5 hover:text-primary-color
             dark:text-gray-200
             dark:hover:bg-slate-800
             dark:hover:text-white
@@ -429,7 +429,7 @@ export default function Navbar() {
               rounded-lg bg-gray-100
               transition-colors
               group-hover:bg-[#002455]/10
-              dark:bg-slate-800
+              dark:bg-slate-800 text-[18px]
             "
                       >
                         <User className="h-4 w-4" />

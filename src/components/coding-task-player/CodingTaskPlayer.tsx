@@ -27,7 +27,10 @@ import {
   CheckCircle2,
   ChevronDown,
   GripVertical,
+  Lightbulb,
   Loader2,
+  Maximize2,
+  Minimize2,
   PartyPopper,
   Play,
   RotateCcw,
@@ -222,6 +225,8 @@ export function CodingTaskPlayer({
     null,
   );
   const [attempt, setAttempt] = useState(0);
+  const [showHints, setShowHints] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     if (!task) return;
@@ -229,6 +234,8 @@ export function CodingTaskPlayer({
     setRunResult(null);
     setSubmitResult(null);
     setAttempt(0);
+    setShowHints(false);
+    setIsFullscreen(false);
   }, [task]);
 
   async function run(codeToRun = code) {
@@ -311,90 +318,141 @@ export function CodingTaskPlayer({
 
   const inlineResult = submitResult ?? runResult;
 
+  const hints = (task.taskConfig?.instructions ?? []).filter(
+    (item): item is string => typeof item === "string" && item.trim().length > 0,
+  );
+
   return (
-    <div className="mx-auto max-w-6xl px-5 py-7 sm:px-7 sm:py-8">
-      <header className="mb-6 text-center">
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          <span
-            className={`rounded-full px-3 py-1 text-xs font-semibold ${uiConfig.tagColorClass}`}
+    <div
+      className={
+        isFullscreen
+          ? "fixed inset-0 z-50 overflow-y-auto bg-white dark:bg-slate-950"
+          : ""
+      }
+    >
+      <div className="mx-auto max-w-6xl px-5 py-7 sm:px-7 sm:py-8">
+        <header className="relative mb-6 text-center">
+          <button
+            type="button"
+            onClick={() => setIsFullscreen((value) => !value)}
+            title={isFullscreen ? "Exit fullscreen" : "Open fullscreen"}
+            aria-label={isFullscreen ? "Exit fullscreen" : "Open fullscreen"}
+            className="absolute right-0 top-0 flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 dark:text-slate-400 dark:hover:bg-white/10 dark:hover:text-white"
           >
-            {task.challengeType.replaceAll("_", " ")}
-          </span>
-          <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-white/10 dark:text-slate-300">
-            {task.difficulty}
+            {isFullscreen ? (
+              <Minimize2 className="h-4 w-4" />
+            ) : (
+              <Maximize2 className="h-4 w-4" />
+            )}
+          </button>
+
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${uiConfig.tagColorClass}`}
+            >
+              {task.challengeType.replaceAll("_", " ")}
+            </span>
+            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-white/10 dark:text-slate-300">
+              {task.difficulty}
+            </span>
+          </div>
+
+          <h2 className="mt-4 text-xl font-bold text-slate-900 sm:text-2xl dark:text-white">
+            {task.title}
+          </h2>
+
+          <p className="mx-auto mt-2 max-w-3xl whitespace-pre-wrap text-sm leading-6 text-slate-600 dark:text-slate-300">
+            {task.description}
+          </p>
+
+          {hints.length > 0 && (
+            <div className="mx-auto mt-4 max-w-3xl text-left">
+              <button
+                type="button"
+                onClick={() => setShowHints((value) => !value)}
+                className="inline-flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3.5 py-2 text-sm font-semibold text-amber-700 transition hover:bg-amber-100 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300 dark:hover:bg-amber-500/15"
+              >
+                <Lightbulb className="h-4 w-4" />
+                {showHints ? "Hide hint" : "Show hint"}
+              </button>
+
+              {showHints && (
+                <ul className="mt-3 space-y-2 rounded-xl border border-amber-200 bg-amber-50/60 p-4 text-sm text-amber-900 dark:border-amber-500/20 dark:bg-amber-500/5 dark:text-amber-200">
+                  {hints.map((hint, hintIndex) => (
+                    <li key={hintIndex} className="flex gap-2">
+                      <span className="font-semibold">{hintIndex + 1}.</span>
+                      <span className="whitespace-pre-wrap">{hint}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+        </header>
+
+        {blankMode ? (
+          <BlankPlayer
+            task={task}
+            token={token}
+            result={inlineResult as CodeSubmitResult | null}
+            attempt={attempt}
+            isSubmitting={isSubmitting}
+            onSubmit={submit}
+            hasNext={hasNext}
+            onNext={onNext}
+          />
+        ) : task.challengeType === "ARRANGE_BLOCKS" ? (
+          <ArrangePlayer
+            task={task}
+            result={inlineResult}
+            attempt={attempt}
+            isRunning={isRunning}
+            isSubmitting={isSubmitting}
+            onRun={run}
+            onSubmit={submit}
+            onReset={() => {
+              setRunResult(null);
+              setSubmitResult(null);
+            }}
+            hasNext={hasNext}
+            onNext={onNext}
+          />
+        ) : (
+          <EditorPlayer
+            task={task}
+            code={code}
+            onChange={setCode}
+            result={inlineResult}
+            attempt={attempt}
+            webMode={webMode}
+            isRunning={isRunning}
+            isSubmitting={isSubmitting}
+            onRun={() => void run()}
+            onSubmit={() => void submit()}
+            onReset={() => {
+              setCode(normalizeCode(task.starterCode));
+              setRunResult(null);
+              setSubmitResult(null);
+            }}
+            hasNext={hasNext}
+            onNext={onNext}
+            isFullscreen={isFullscreen}
+          />
+        )}
+
+        <div className="mt-7 flex items-center justify-between border-t border-slate-200 pt-5 dark:border-slate-800">
+          <button
+            type="button"
+            disabled={!hasPrevious}
+            onClick={onPrevious}
+            className="text-sm font-semibold text-slate-500 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-30 dark:text-slate-400 dark:hover:text-white"
+          >
+            Previous exercise
+          </button>
+          <span className="text-xs font-medium text-slate-400 dark:text-slate-500">
+            {index + 1} / {total}
           </span>
         </div>
-
-        <h2 className="mt-4 text-xl font-bold text-slate-900 sm:text-2xl dark:text-white">
-          {task.title}
-        </h2>
-
-        <p className="mx-auto mt-2 max-w-3xl whitespace-pre-wrap text-sm leading-6 text-slate-600 dark:text-slate-300">
-          {task.description}
-        </p>
-      </header>
-
-      {blankMode ? (
-        <BlankPlayer
-          task={task}
-          token={token}
-          result={inlineResult as CodeSubmitResult | null}
-          attempt={attempt}
-          isSubmitting={isSubmitting}
-          onSubmit={submit}
-          hasNext={hasNext}
-          onNext={onNext}
-        />
-      ) : task.challengeType === "ARRANGE_BLOCKS" ? (
-        <ArrangePlayer
-          task={task}
-          result={inlineResult}
-          attempt={attempt}
-          isRunning={isRunning}
-          isSubmitting={isSubmitting}
-          onRun={run}
-          onSubmit={submit}
-          onReset={() => {
-            setRunResult(null);
-            setSubmitResult(null);
-          }}
-          hasNext={hasNext}
-          onNext={onNext}
-        />
-      ) : (
-        <EditorPlayer
-          task={task}
-          code={code}
-          onChange={setCode}
-          result={inlineResult}
-          attempt={attempt}
-          webMode={webMode}
-          isRunning={isRunning}
-          isSubmitting={isSubmitting}
-          onRun={() => void run()}
-          onSubmit={() => void submit()}
-          onReset={() => {
-            setCode(normalizeCode(task.starterCode));
-            setRunResult(null);
-            setSubmitResult(null);
-          }}
-          hasNext={hasNext}
-          onNext={onNext}
-        />
-      )}
-
-      <div className="mt-7 flex items-center justify-between border-t border-slate-200 pt-5 dark:border-slate-800">
-        <button
-          type="button"
-          disabled={!hasPrevious}
-          onClick={onPrevious}
-          className="text-sm font-semibold text-slate-500 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-30 dark:text-slate-400 dark:hover:text-white"
-        >
-          Previous exercise
-        </button>
-        <span className="text-xs font-medium text-slate-400 dark:text-slate-500">
-          {index + 1} / {total}
-        </span>
       </div>
     </div>
   );
@@ -834,6 +892,7 @@ function EditorPlayer({
   onReset,
   hasNext,
   onNext,
+  isFullscreen,
 }: {
   task: CodingTaskDetail;
   code: string;
@@ -848,6 +907,8 @@ function EditorPlayer({
   onReset: () => void;
   hasNext: boolean;
   onNext: () => void;
+  /** Whether the whole exercise (header, editor, result, coach) is in the fullscreen viewer. Used only to give the editor more room — the overlay itself lives in the parent. */
+  isFullscreen: boolean;
 }) {
   const language = editorLanguage(task.taskConfig?.language);
   const isDark = useIsDarkMode();
@@ -875,7 +936,7 @@ function EditorPlayer({
           }`}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700/50 dark:bg-[#1a1d27]">
+          <div className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700/50 dark:bg-[#1a1d27]">
             <div className="flex items-center gap-2">
               <Icon className={`h-5 w-5 ${uiConfig.headerColorClass}`} />
               <span className="font-semibold text-slate-700 dark:text-white">
@@ -932,7 +993,7 @@ function EditorPlayer({
                       : language}
               </div>
               <Editor
-                height="400px"
+                height={isFullscreen ? "60vh" : "400px"}
                 language={language}
                 value={code}
                 onChange={(value) => onChange(value ?? "")}
@@ -962,7 +1023,11 @@ function EditorPlayer({
                     ? "allow-scripts"
                     : ""
                 }
-                className="h-[400px] w-full border-none bg-white"
+                className={
+                  isFullscreen
+                    ? "h-[60vh] w-full border-none bg-white"
+                    : "h-[400px] w-full border-none bg-white"
+                }
               />
             </div>
           </div>
@@ -993,7 +1058,7 @@ function EditorPlayer({
               </div>
 
               <Editor
-                height="340px"
+                height={isFullscreen ? "60vh" : "340px"}
                 language={language}
                 value={code}
                 onChange={(value) => onChange(value ?? "")}

@@ -35,9 +35,23 @@ export function useNotificationSocket() {
       reconnectDelay: 5000,
       heartbeatIncoming: 10000,
       heartbeatOutgoing: 10000,
+      debug: (message) => {
+        if (process.env.NODE_ENV !== "production") {
+          console.debug("[notification-socket]", message);
+        }
+      },
     });
 
+    client.onWebSocketError = (event) => {
+      console.error("Notification socket WebSocket error:", event);
+    };
+
+    client.onDisconnect = (frame) => {
+      console.warn("Notification socket disconnected:", frame.headers?.message ?? frame);
+    };
+
     client.onConnect = () => {
+      console.info("Notification socket connected");
       client.subscribe("/user/queue/notifications", (message) => {
         dispatch(
           notificationApi.util.invalidateTags([

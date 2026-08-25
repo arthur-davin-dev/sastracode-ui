@@ -18,6 +18,7 @@ import {
 import { createContext, useContext, useEffect, useState } from "react";
 
 import type { TutorialBlock } from "@/types/tutorial-reader";
+import { VideoPlayer } from "@/components/video/VideoPlayer";
 import {
   type QuizAttemptDetail,
   type QuizScope,
@@ -390,9 +391,21 @@ function stringArrayValue(data: BlockData, ...keys: string[]): string[] {
   for (const key of keys) {
     const value = data[key];
 
-    if (Array.isArray(value)) {
-      return value.filter((item): item is string => typeof item === "string");
-    }
+    if (!Array.isArray(value)) continue;
+
+    const items = value.flatMap((item) => {
+      if (typeof item === "string") return item.trim() ? [item] : [];
+
+      if (item && typeof item === "object") {
+        const record = item as Record<string, unknown>;
+        const text = record.text ?? record.label ?? record.value ?? record.content;
+        return typeof text === "string" && text.trim() ? [text.trim()] : [];
+      }
+
+      return [];
+    });
+
+    if (items.length > 0) return items;
   }
 
   return [];
@@ -754,6 +767,21 @@ function ImageBlock({ data }: { data: BlockData }) {
   );
 }
 
+function VideoBlock({ data }: { data: BlockData }) {
+  const url = stringValue(
+    data,
+    "url",
+    "videoUrl",
+    "youtubeUrl",
+    "src",
+    "link",
+    "href",
+  );
+  const title = stringValue(data, "title", "caption") || "មេរៀនវីដេអូ";
+
+  return <VideoPlayer src={url || undefined} title={title} />;
+}
+
 function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
   const quizContext = useContext(QuizContext);
   const [selected, setSelected] = useState<string | null>(null);
@@ -994,12 +1022,21 @@ export default function LessonBlockRenderer({
     case "IMAGE":
       return <ImageBlock data={data} />;
 
+    case "VIDEO":
+    case "YOUTUBE":
+    case "YOUTUBE_VIDEO":
+      return <VideoBlock data={data} />;
+
     case "QUIZ":
       return <QuizBlock data={data} blockId={block.id} />;
 
     case "LIST":
     case "BULLET_LIST":
     case "UNORDERED_LIST":
+    case "POINT":
+    case "POINTS":
+    case "BULLET_POINT":
+    case "BULLET_POINTS":
       return <ListBlock data={data} />;
 
     case "ORDERED_LIST":

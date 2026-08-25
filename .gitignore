@@ -43,6 +43,7 @@ schema-file-response.json
 schema-file-summary.json
 tsconfig.tsbuildinfo
 tsconfig.tutorail-check.tsbuildinfo
+AGENTS.md
 
 # env files (can opt-in for committing if needed)
 .env*
