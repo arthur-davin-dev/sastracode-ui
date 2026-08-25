@@ -236,7 +236,15 @@ export function CodingTaskPlayer({
     setAttempt(0);
     setShowHints(false);
     setIsFullscreen(false);
-  }, [task]);
+    // Keyed on task.id (not the task object) so a background refetch of
+    // this same task — e.g. the cache invalidation that submitCodingTask
+    // triggers right after a successful submit — doesn't wipe the just-set
+    // submitResult before the learner ever sees it. A real task switch
+    // still remounts this whole component (CodingTaskLessonSection keys
+    // CodingTaskPlayer by task id), so this effect only needs to cover the
+    // initial load.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [task?.id]);
 
   async function run(codeToRun = code) {
     if (!task || !codeToRun.trim()) return;
@@ -268,6 +276,10 @@ export function CodingTaskPlayer({
     } catch (error) {
       toast.error(errorMessage(error));
     }
+  }
+
+  function tryAgain() {
+    setSubmitResult(null);
   }
 
   if (isLoading) {
@@ -390,7 +402,15 @@ export function CodingTaskPlayer({
           )}
         </header>
 
-        {blankMode ? (
+        {submitResult ? (
+          <FullResultPanel
+            result={submitResult}
+            task={task}
+            hasNext={hasNext}
+            onNext={onNext}
+            onTryAgain={tryAgain}
+          />
+        ) : blankMode ? (
           <BlankPlayer
             task={task}
             token={token}
@@ -453,6 +473,106 @@ export function CodingTaskPlayer({
             {index + 1} / {total}
           </span>
         </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Takes over the whole exercise area on submit — replacing the editor,
+ * blanks, or arrange blocks entirely with a single pass/fail card — instead
+ * of appending a small inline banner underneath the still-visible editor.
+ * Only submit results show this (see the `submitResult` check in
+ * CodingTaskPlayer); a Run keeps its lightweight inline feedback so the
+ * learner can iterate without losing their code from view.
+ */
+function FullResultPanel({
+  result,
+  task,
+  hasNext,
+  onNext,
+  onTryAgain,
+}: {
+  result: CodeSubmitResult;
+  task: CodingTaskDetail;
+  hasNext: boolean;
+  onNext: () => void;
+  onTryAgain: () => void;
+}) {
+  const { passed } = result;
+  const total = result.testsTotal ?? 0;
+  const passedCount = Math.min(
+    result.testsPassed ?? 0,
+    total || (result.testsPassed ?? 0),
+  );
+  const xpEarned = result.xpEarned;
+
+  return (
+    <div
+      role="status"
+      className={`relative overflow-hidden rounded-[28px] px-6 py-16 text-center shadow-lg sm:py-20 ${
+        passed ? "bg-emerald-500" : "bg-rose-500"
+      }`}
+    >
+      {passed && (
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <PartyPopper className="absolute left-8 top-8 h-8 w-8 -rotate-12 text-white/70 animate-bounce" />
+          <Sparkles className="absolute right-10 top-10 h-6 w-6 text-white/80 animate-ping" />
+          <Sparkles className="absolute right-20 top-24 h-5 w-5 text-white/60 animate-pulse" />
+        </div>
+      )}
+
+      <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/20 text-white">
+        {passed ? (
+          <CheckCircle2 className="h-9 w-9" />
+        ) : (
+          <XCircle className="h-9 w-9" />
+        )}
+      </span>
+
+      <h3 className="mt-5 text-2xl font-bold text-white sm:text-3xl">
+        {passed ? "Correct Answer!" : "Wrong Answer!"}
+      </h3>
+
+      {total > 0 && (
+        <p className="mt-2 text-sm font-semibold text-white/85">
+          {passedCount}/{total} checks passed
+        </p>
+      )}
+
+      {passed && !!xpEarned && (
+        <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3.5 py-1.5 text-sm font-bold text-white">
+          <Sparkles className="h-4 w-4" />+{xpEarned} XP
+        </span>
+      )}
+
+      <p className="sr-only">{task.title}</p>
+
+      <div className="mt-6">
+        {passed ? (
+          hasNext ? (
+            <button
+              type="button"
+              onClick={onNext}
+              className="rounded-xl bg-[#002455] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#00346f]"
+            >
+              Next Question »
+            </button>
+          ) : (
+            <span className="inline-block rounded-xl bg-white/20 px-6 py-3 text-sm font-bold text-white">
+              All coding challenges completed
+            </span>
+          )
+        ) : (
+          <button
+            type="button"
+            onClick={onTryAgain}
+            className="inline-flex items-center gap-2 rounded-xl bg-[#002455] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#00346f]"
+          >
+            <RotateCcw className="h-4 w-4" />
+            Try Again
+          </button>
+        )}
       </div>
     </div>
   );
