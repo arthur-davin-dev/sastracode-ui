@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 import {
   Play,
@@ -26,7 +27,6 @@ import {
   Sparkles,
   Columns2,
   Bot,
-  MessageCircle,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -2632,103 +2632,100 @@ export default function Editor() {
           )}
         </div>
 
-        {!isWorkspaceFullscreen && (
-          <div className="px-4 pb-4">
-            <CodeCoach
-              code={code}
-              language={language}
-              codingTaskId={codingTaskId}
-              onApplyCode={handleApplyCoachCode}
-            />
-          </div>
-        )}
-
         {/* ================================================= */}
-        {/* FULLSCREEN FLOATING AI COACH */}
+        {/* FLOATING AI COACH (icon trigger -> action list) */}
         {/* ================================================= */}
 
+        {isAiCoachOpen && (
+          <aside
+            className={
+              isWorkspaceFullscreen
+                ? "fixed bottom-20 right-4 left-4 z-[90] max-h-[calc(100vh-7rem)] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-[390px]"
+                : "fixed bottom-24 right-4 left-4 z-[90] max-h-[70vh] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-[390px]"
+            }
+            aria-label="AI coding coach"
+          >
+            <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-white/10">
+              <div className="flex items-center gap-3">
+                <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600 text-white shadow-lg shadow-violet-600/20">
+                  <Bot className="h-5 w-5" />
+                  <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-400 dark:border-[#0b1020]" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">
+                    Sastra AI Coach
+                  </p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    {codingTaskId
+                      ? "Hints, explain, improve, and fix your code."
+                      : "Explain and improve your code."}
+                  </p>
+                </div>
+              </div>
 
-        {!isWorkspaceFullscreen && (
-          <div className="px-4 pt-4">
-            <CodeCoach
-              code={code}
-              language={language}
-              codingTaskId={codingTaskId}
-              onApplyCode={handleApplyCoachCode}
-            />
-          </div>
-        )}
-
-        {/* ================================================= */}
-        {/* FULLSCREEN FLOATING AI COACH */}
-        {/* ================================================= */}
-
-        {isWorkspaceFullscreen && (
-          <>
-            {isAiCoachOpen && (
-              <aside
-                className="absolute bottom-20 left-4 right-4 z-[90] max-h-[calc(100vh-7rem)] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-[390px]"
-                aria-label="AI coding coach"
+              <button
+                type="button"
+                onClick={() => setIsAiCoachOpen(false)}
+                className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-white/10 dark:hover:text-white"
+                aria-label="Close AI coach"
               >
-                <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-white/10">
-                  <div className="flex items-center gap-3">
-                    <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600 text-white shadow-lg shadow-violet-600/20">
-                      <Bot className="h-5 w-5" />
-                      <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-400 dark:border-[#0b1020]" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-slate-900 dark:text-white">
-                        Sastra AI Coach
-                      </p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
-                        {codingTaskId
-                          ? "Hints, explain, improve, and fix without leaving fullscreen."
-                          : "Explain and improve without leaving fullscreen."}
-                      </p>
-                    </div>
-                  </div>
+                <X className="h-4 w-4" />
+              </button>
+            </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setIsAiCoachOpen(false)}
-                    className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-white/10 dark:hover:text-white"
-                    aria-label="Close AI coach"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-
-                <div className="max-h-[calc(100vh-12rem)] overflow-y-auto p-3">
-                  <CodeCoach
-                    code={code}
-                    language={language}
-                    codingTaskId={codingTaskId}
-                    compact
-                    onApplyCode={handleApplyCoachCode}
-                  />
-                </div>
-              </aside>
-            )}
-
-            <button
-              type="button"
-              onClick={() => setIsAiCoachOpen((previous) => !previous)}
-              className="absolute bottom-5 right-5 z-[91] inline-flex h-12 items-center gap-2 rounded-full bg-violet-600 px-4 text-sm font-bold text-white shadow-xl shadow-violet-950/25 transition hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300/40"
-              aria-expanded={isAiCoachOpen}
-              aria-label="Open AI coding coach"
-              title="AI Coach: hints, explanation, improvements, and fixes"
+            <div
+              className={
+                isWorkspaceFullscreen
+                  ? "max-h-[calc(100vh-12rem)] overflow-y-auto p-3"
+                  : "max-h-[calc(70vh-4rem)] overflow-y-auto p-3"
+              }
             >
-              {isAiCoachOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <MessageCircle className="h-5 w-5" />
-              )}
-              <span className="hidden sm:inline">
-                {isAiCoachOpen ? "Close Coach" : "AI Coach"}
-              </span>
-            </button>
-          </>
+              <CodeCoach
+                code={code}
+                language={language}
+                codingTaskId={codingTaskId}
+                compact
+                onApplyCode={handleApplyCoachCode}
+              />
+            </div>
+          </aside>
         )}
+
+        <div className="fixed bottom-5 right-5 z-[91]">
+          {!isAiCoachOpen && (
+            <span className="absolute inset-0 animate-ping rounded-full bg-violet-500 opacity-40" />
+          )}
+
+          <button
+            type="button"
+            onClick={() => setIsAiCoachOpen((previous) => !previous)}
+            className="relative inline-flex h-12 items-center gap-2 rounded-full bg-violet-600 px-4 text-sm font-bold text-white shadow-xl shadow-violet-950/25 transition hover:-translate-y-0.5 hover:bg-violet-700 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-violet-300/40"
+            aria-expanded={isAiCoachOpen}
+            aria-label="Open AI coding coach"
+            title="AI Coach: hints, explanation, improvements, and fixes"
+          >
+            {isAiCoachOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <span className="relative -ml-1 flex items-center">
+                <Image
+                  src="/home/image/aiCoachRobot.png"
+                  alt="AI Coach"
+                  width={32}
+                  height={32}
+                  className="h-8 w-8 object-contain drop-shadow"
+                />
+                <span className="absolute -right-0.5 -top-0.5 flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                </span>
+              </span>
+            )}
+            <span className="hidden sm:inline">
+              {isAiCoachOpen ? "Close Coach" : "AI Coach"}
+            </span>
+          </button>
+        </div>
       </div>
 
       {isPreviewFullscreen && isPreviewMode && (
