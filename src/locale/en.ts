@@ -2,10 +2,10 @@ export const en = {
   banner: {
     badge: "LEARN. CODE. BUILD THE FUTURE.",
     title1: "Start Learning ",
-    title2: "Coding",
-    title3: "New Skills ",
-    title4: "for",
-    title5: "Code",
+    title2: "Coding & ",
+    title3: "Building Skills ",
+    title4: "for ",
+    title5: "the Future",
     description:
       "Learn programming and develop new skills with AI Assistant, Coding Exercises, Interactive Lessons, and an Online Compiler.",
     start: "Start Learning",
@@ -256,7 +256,7 @@ export const en = {
   courses: {
     banner: {
       welcomeText: "Welcome to Sastra Code",
-      titleFirstLine: "Learn to Code",
+      titleFirstLine: "Learn to Code in khmer",
       titleSecondLine: "From Basics to Real Projects",
       description:
         "SastraCode helps you build coding skills step by step through video lessons, documentation, hands-on exercises, and real projects designed for Cambodian learners.",
@@ -582,11 +582,11 @@ export const en = {
       { name: "Ben Thona", role: "Data Scientist at Amazon", text: "I was hesitant at first, but the community support and expert guidance made it the best career investment I've made." },
       { name: "Meng Kimleap", role: "Senior Developer at Microsoft", text: "The DSA course changed how I prepared for interviews. Complex topics were broken down into simple, understandable lessons." },
       { name: "Vel Sothoun", role: "Backend Engineer at Stripe", text: "I loved the practice-focused teaching. Career guidance and code reviews helped me land interview opportunities." },
-      { name: "Vuth Vatana", role: "Product Manager at Meta", text: "The best part is the community. Discussions and feedback from fellow learners strengthened my understanding and confidence." }, 
-      {name: "`Mon Narea", role: "Frontend Developer", text: "The practical lessons and exercises made learning fast and easy to understand for beginners.",},
-      { name: "Soeurt Bomnorng", role: "Mobile Developer", text: "Clear lesson structure and step-by-step guidance helped me sharpen my coding skills very quickly."},
-      { name: "Lot Los", role: "DevOps Engineer", text: "The techniques and real-world examples provided in this course are 100% applicable to actual software projects."},
-      { name: "Chhat Sovanney", role: "Full Stack Developer", text: "I was hesitant at first, but the community support and expert guidance made it the best career investment I've made."},
+      { name: "Vuth Vatana", role: "Product Manager at Meta", text: "The best part is the community. Discussions and feedback from fellow learners strengthened my understanding and confidence." },
+      { name: "Mon Narea", role: "Frontend Developer", text: "The practical lessons and exercises made learning fast and easy to understand for beginners.", },
+      { name: "Soeurt Bomnorng", role: "Mobile Developer", text: "Clear lesson structure and step-by-step guidance helped me sharpen my coding skills very quickly." },
+      { name: "Lot Los", role: "DevOps Engineer", text: "The techniques and real-world examples provided in this course are 100% applicable to actual software projects." },
+      { name: "Chhat Sovanney", role: "Full Stack Developer", text: "I was hesitant at first, but the community support and expert guidance made it the best career investment I've made." },
     ],
   },
 

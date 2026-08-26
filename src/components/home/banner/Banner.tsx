@@ -1,24 +1,22 @@
-// Banner.tsx
 "use client"
-// import { CodeBracketIcon } from '@heroicons/react/24/outline'
 import { useEffect, useState } from 'react'
 import Stats from './Stats'
 import CodeWindow from './CodeWindow'
 import { useTranslation } from '@/hooks/useTranslations'
 import Link from 'next/link'
 import GlowButton from '@/components/ui/GlowButton'
-// import { LeftWavyStack } from '../technology-stack/WavyStack'
 
 type BannerTitle = {
   title1: string
   title2: string
   title3: string
   title4: string
+  title5: string
 }
 
-function TypingTitle({ title1, title2, title3, title4 }: BannerTitle) {
+function TypingTitle({ title1, title2, title3, title4, title5 }: BannerTitle) {
   const firstLine = `${title1}${title2}`
-  const secondLine = `${title3}${title4}`
+  const secondLine = `${title3}${title4}${title5}`
   const fullTitle = `${firstLine}\n${secondLine}`
   const [visibleTitle, setVisibleTitle] = useState("")
 
@@ -104,16 +102,9 @@ export default function Banner() {
           {/* LEFT */}
 
           <div className="text-center lg:text-left">
-            <GlowButton onClick={() => {}}>
-              {/* <div className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border bg-gradient-to-r from-primary-color/50 to-secondary-color/80 text-white border-blue-600/15 bg-blue-100 px-5 py-3 text-lg  dark:bg-gradient-to-r dark:from-primary-color dark:to-secondary-color dark:bg-clip-text dark:text-transparent font-bold shadow-sm transition-colors dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 sm:px-6 "> */}
-              {/* <span className="mr-2 h-3 w-3 rounded-full bg-init-color "></span> */}
+            <GlowButton onClick={() => { }}>
               {currentT.banner.freeLearning}
-            {/* </div> */}
             </GlowButton>
-            {/* <div className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border bg-gradient-to-r from-primary-color/50 to-secondary-color/80 text-white border-blue-600/15 bg-blue-100 px-5 py-3 text-lg  dark:bg-gradient-to-r dark:from-primary-color dark:to-secondary-color dark:bg-clip-text dark:text-transparent font-bold shadow-sm transition-colors dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 sm:px-6 ">
-              <span className="mr-2 h-3 w-3 rounded-full bg-init-color "></span>
-              {currentT.banner.freeLearning}
-            </div> */}
 
             <TypingTitle
               key={`${currentT.banner.title1}-${currentT.banner.title2}`}
@@ -121,28 +112,29 @@ export default function Banner() {
               title2={currentT.banner.title2}
               title3={currentT.banner.title3}
               title4={currentT.banner.title4}
+              title5={currentT.banner.title5}
             />
 
             <p className="mt-6 sm:mt-8 max-w-xl mx-auto lg:mx-0 text-base sm:text-lg leading-7 sm:leading-8 text-gray-500 dark:text-gray-400">
               {currentT.banner.description}
             </p>
 
-            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+            <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
 
+              {/* Primary CTA Button */}
               <Link
                 href="/documentation"
-                className="min-w-[12rem] lg:min-w-[16rem] rounded-full bg-[#0B2B66]  dark:text-white-800  px-6 sm:px-10 py-3 sm:py-4 text-xs sm:text-base font-semibold text-white hover:bg-blue-900 dark:hover:bg-blue-700 transition-colors text-center"
+                className="inline-flex items-center justify-center rounded-full bg-[#0B2B66] px-8 py-3.5 text-sm sm:text-base font-semibold text-white hover:bg-blue-900 transition-colors"
               >
                 {currentT.banner.start}
               </Link>
 
-              <Stats />
+              {/* Tagline Pill Badge */}
+              <div className="inline-flex items-center gap-2.5 rounded-full border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/80 px-5 py-3.5 text-xs sm:text-sm font-semibold tracking-wide text-slate-700 dark:text-slate-300 shadow-sm whitespace-nowrap">
+                <span className="h-2.5 w-2.5 rounded-full bg-purple-500 shrink-0" />
+                <span>{currentT.banner.badge}</span>
+              </div>
 
-              {/* <button
-                className="min-w-[8rem] lg:min-w-[10rem] rounded-[16px] border border-gray-300 dark:border-gray-600 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-center"
-              >
-                {"</>"} {currentT.banner.explore}
-              </button> */}
             </div>
 
           </div>
@@ -154,7 +146,6 @@ export default function Banner() {
         </div>
 
       </div>
-      {/* <LeftWavyStack /> */}
     </section>
 
   )
