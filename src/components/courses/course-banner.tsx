@@ -241,7 +241,7 @@ export default function CourseBanner() {
                 leading-7
                 text-slate-600
                 dark:text-slate-300
-                sm:text-lg
+                !text-[24px]
                 sm:leading-8
               "
             >

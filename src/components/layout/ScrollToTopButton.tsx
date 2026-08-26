@@ -27,14 +27,16 @@ export default function ScrollToTopButton() {
   };
 
   return (
-    <button
-      onClick={scrollToTop}
-      className={`cursor-pointer fixed bottom-6 right-6 z-50 p-3 rounded-full shadow-lg transition-all duration-300 ${
-        isVisible ? "opacity-100 scale-100" : "opacity-0 scale-50 pointer-events-none"
-      } bg-blue-600 text-white hover:bg-blue-800 active:scale-95`}
-      aria-label="Scroll to top"
-    >
-      <IoIosArrowUp size={20} />
-    </button>
+   <button
+  onClick={scrollToTop}
+  className={`fixed bottom-6 right-6 z-50 rounded-full p-3.5 text-white shadow-lg transition-all duration-300 ease-in-out cursor-pointer ${
+    isVisible
+      ? "opacity-100 scale-100"
+      : "opacity-0 scale-50 pointer-events-none"
+  } bg-primary-color hover:bg-primary-color/90 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary-color/30 active:scale-95`}
+  aria-label="Scroll to top"
+>
+  <IoIosArrowUp size={20} />
+</button>
   );
 }

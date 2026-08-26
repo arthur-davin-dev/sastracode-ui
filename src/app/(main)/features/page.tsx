@@ -1,3 +1,4 @@
+import FeaturesProcess from "@/components/feature-page/features-process";
 import TechStack from "@/components/function/tech-stack";
 import TechStackSection from "@/components/function/TechStackSection";
 import InteractiveDoc from "@/components/home/interactive-doc/InteractiveDoc";
@@ -12,6 +13,7 @@ export default function Features(){
             <HeroCharacter />
             <InteractiveGrid />
             <InteractiveDoc />
+            <FeaturesProcess></FeaturesProcess>
             {/* <TechStackSection /> */}
             <TechStack></TechStack>
             <SupportTeam />

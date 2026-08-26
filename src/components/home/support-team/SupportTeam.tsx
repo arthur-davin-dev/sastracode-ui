@@ -43,7 +43,7 @@ export default function SupportTeam() {
   return (
     <section className="px-6 pt-10 pb-20">
       <div className="max-w-5xl mx-auto text-center">
-        <h2 className="text-2xl md:text-3xl font-extrabold text-primary-color">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-primary-color dark:text-white">
           {currentT.supportTeam.title}
         </h2>
         <div className="mt-2 flex justify-center gap-1 text-amber-400">
@@ -75,9 +75,9 @@ export default function SupportTeam() {
                   {/* Name & email for members positioned up on desktop */}
                   {member.offset === "up" && (
                     <div className="text-center order-2 md:order-1">
-                      <p className="text-[18px] font-semibold text-primary-color">
+                      <span className="text-[22px] font-semibold text-primary-color dark:text-white">
                         {name}
-                      </p>
+                      </span>
                       <p className="mt-0.5 flex items-center justify-center gap-1 text-[15px] text-slate-400 dark:text-gray-400">
                         <Mail className="h-3.5 w-3.5" /> {member.email}
                       </p>
@@ -99,9 +99,9 @@ export default function SupportTeam() {
                   {/* Name & email for members positioned down on desktop */}
                   {member.offset === "down" && (
                     <div className="text-center order-2 md:order-3">
-                      <p className="text-[18px] font-semibold text-primary-color">
+                      <span className="text-[22px] font-semibold text-primary-color dark:text-white">
                         {name}
-                      </p>
+                      </span>
                       <p className="mt-0.5 flex items-center justify-center gap-1 text-[15px] text-slate-400 dark:text-gray-400">
                         <Mail className="h-3.5 w-3.5" /> {member.email}
                       </p>

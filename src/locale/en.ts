@@ -659,6 +659,48 @@ export const en = {
     },
   },
 
+  featuresProcess: {
+    header: {
+      title: "Our Proven 4-Step Learning Pathway",
+      subtitle:
+        "From your very first lesson to earning an official credential, follow our structured path to master new tech skills.",
+    },
+    steps: [
+      {
+        id: 1,
+        stepLabel: "1",
+        title: "Video-Led Courses",
+        description: "Expert-led HD video lessons with step-by-step guidance.",
+        badge: "24/7 Access",
+        buttonText: "Explore Courses",
+      },
+      {
+        id: 2,
+        stepLabel: "2",
+        title: "Flexible Learning Paths",
+        description: "Learn at your own pace across all devices.",
+        badge: "Self-Paced",
+        buttonText: "Plan My Path",
+      },
+      {
+        id: 3,
+        stepLabel: "3",
+        title: "Real-World Assessments",
+        description: "Validate skills with quizzes and real code challenges.",
+        badge: "Hands-on",
+        buttonText: "Practice Skills",
+      },
+      {
+        id: 4,
+        stepLabel: "4",
+        title: "Earn Certification",
+        description: "Get official credentials upon completing every course.",
+        badge: "Official Credential",
+        buttonText: "Start Certification",
+      },
+    ],
+  },
+
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.
   footer: {
     description:
