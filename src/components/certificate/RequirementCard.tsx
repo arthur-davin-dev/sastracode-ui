@@ -29,7 +29,7 @@ export function RequirementCard({
           </h3>
 
           {/* Progress Percent Label (text-lg & text-primary-color) */}
-          <div className="flex items-center justify-between text-lg font-medium text-slate-700 dark:text-slate-300 pt-1">
+          <div className="flex items-center justify-between text-base font-medium text-slate-700 dark:text-slate-300 pt-1">
             <span>បញ្ចប់ចំណេះដឹងមូលដ្ឋាន</span>
             <span className="font-bold text-secondary-color">
               {requirement.progressPercent}%
