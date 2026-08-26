@@ -654,8 +654,10 @@ export const en = {
       html: "Build the structure and foundation of modern web pages.",
       css: "Create beautiful layouts, animations, and visual experiences.",
       javascript: "Add logic, functionality, and interactivity to your websites.",
+      nodejs: "Build fast, scalable servers and APIs with a JavaScript runtime.",
       python: "Learn programming through data, automation, and applications.",
       java: "Build powerful backend and enterprise applications.",
+      tailwind: "Style modern interfaces fast with utility-first CSS classes.",
     },
   },
 
