@@ -18,7 +18,6 @@ import {
   GraduationCap,
   LockKeyhole,
   AlertTriangle,
-  Hourglass,
   CheckCircle2,
 } from "lucide-react";
 import type { EnrollmentResponse } from "@/types/api/course";
@@ -53,7 +52,7 @@ function ClaimList({
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
       {enrollments.map((enrollment, i) => (
         <motion.div
           key={enrollment.id}
@@ -160,7 +159,7 @@ export function ClaimCertificateSection() {
             </button>
           </div>
         ) : isLoading ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             {[1, 2].map((i) => (
               <div
                 key={i}
