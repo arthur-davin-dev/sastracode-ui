@@ -28,6 +28,15 @@ const podiumStyles: Record<number, { card: string; avatar: string; trophy: strin
 // Visual podium order: 2nd on the left, 1st elevated in the middle, 3rd on the right.
 const podiumOrder = [2, 1, 3];
 
+// Busts stale browser-cached avatar thumbnails (e.g. after a user updates their
+// profile picture but the file URL stays the same) by tagging each page load.
+const CACHE_BUST = typeof window !== "undefined" ? Date.now() : 0;
+
+function withCacheBust(url?: string) {
+  if (!url) return url;
+  return `${url}${url.includes("?") ? "&" : "?"}v=${CACHE_BUST}`;
+}
+
 export function TopPerformersCard({ performers }: { performers: TopPerformer[] }) {
   const byRank = new Map(performers.map((p) => [p.rank, p]));
   const ordered = podiumOrder
@@ -94,7 +103,7 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
 
               {/* Avatar */}
               <Avatar className={`border-2 ${style.avatar}`}>
-                <AvatarImage src={p.avatarUrl} alt={p.name} />
+                <AvatarImage src={withCacheBust(p.avatarUrl)} alt={p.name} />
                 <AvatarFallback className="bg-primary-color/20 text-amber-700 dark:text-amber-400 font-extrabold">
                   {p.name?.[0] || "U"}
                 </AvatarFallback>
@@ -112,7 +121,11 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
               </p>
 
               {/* XP Badge */}
-              <span className="mt-2 w-full truncate rounded-lg border border-slate-200 bg-white px-2 py-1 text-xs font-extrabold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white">
+              <span
+                className={`mt-2 w-full truncate rounded-lg border border-slate-200 bg-white font-extrabold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white ${
+                  isFirst ? "px-2.5 py-1.5 text-lg" : "px-2 py-1 text-base"
+                }`}
+              >
                 {p.xp.toLocaleString()} <span className="text-red-600 dark:text-red-400">XP</span>
               </span>
             </Link>
