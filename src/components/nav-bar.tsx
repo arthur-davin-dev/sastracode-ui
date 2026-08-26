@@ -61,7 +61,7 @@ export default function Navbar() {
         { label: "មេរៀន", href: "/documentation" },
         { label: "វគ្គសិក្សា", href: "/courses" },
         { label: "កន្លែងសាកល្បងកូដ", href: "/playground" },
-        { label: "មុខងារ", href: "/function" },
+        { label: "មុខងារ", href: "/features" },
         { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
       ],
 
@@ -77,7 +77,7 @@ export default function Navbar() {
         { label: "Lessons", href: "/documentation" },
         { label: "Courses", href: "/courses" },
         { label: "Playground", href: "/playground" },
-        { label: "Function", href: "/function" },
+        { label: "Features", href: "/features" },
         { label: "About Sastra Code", href: "/about-us" },
       ],
 
@@ -338,7 +338,7 @@ export default function Navbar() {
       "
                 >
                   {/* User Header */}
-                  <div className="bg-gradient-to-br from-[#002455]/5 to-transparent p-4 dark:from-white/5">
+                  <div className="bg-linear-to-br from-[#002455]/5 to-transparent p-4 dark:from-white/5">
                     <div className="flex items-center gap-3">
                       {/* Avatar */}
                       <div className="relative shrink-0">
@@ -417,7 +417,7 @@ export default function Navbar() {
             px-3 py-2.5
             text-sm font-medium text-gray-700
             transition-all duration-150
-            hover:bg-[#002455]/5 hover:text-[#002455]
+            hover:bg-primary-color/5 hover:text-primary-color
             dark:text-gray-200
             dark:hover:bg-slate-800
             dark:hover:text-white
@@ -429,7 +429,7 @@ export default function Navbar() {
               rounded-lg bg-gray-100
               transition-colors
               group-hover:bg-[#002455]/10
-              dark:bg-slate-800
+              dark:bg-slate-800 text-[18px]
             "
                       >
                         <User className="h-4 w-4" />

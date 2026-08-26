@@ -1,8 +1,12 @@
+import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+
 import { sastraApi } from "@/redux/api";
 
 import type {
   ApiResponse,
   AvatarResponse,
+  PlayerProfile,
+  PlayerProfileResponse,
   UpdateUserInfoRequest,
   UserProfile,
   UserProfileResponse,
@@ -14,6 +18,16 @@ function mapProfile(profile: UserProfileResponse): UserProfile {
 
     avatarUrl: profile.avatarFileId
       ? `/api/profile/avatar/${encodeURIComponent(profile.avatarFileId)}`
+      : undefined,
+  };
+}
+
+function mapPlayerProfile(profile: PlayerProfileResponse): PlayerProfile {
+  return {
+    ...profile,
+
+    avatarUrl: profile.avatarFileId
+      ? `/api/v1/files/${encodeURIComponent(profile.avatarFileId)}`
       : undefined,
   };
 }
@@ -36,6 +50,53 @@ export const profileApi = sastraApi.injectEndpoints({
       },
 
       providesTags: ["Profile"],
+
+      // Accounts created via a federated login (e.g. Google through Keycloak)
+      // exist in Keycloak but have no local profile row yet, so this 404s on
+      // first load. PATCH /v1/users/me already provisions that row on any
+      // authenticated user before applying updates, so an empty patch here
+      // creates it, then the "Profile" tag invalidation refetches this query.
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+        } catch (err) {
+          const fetchError = (err as { error?: FetchBaseQueryError }).error;
+          const data =
+            fetchError && "data" in fetchError
+              ? (fetchError.data as { errorCode?: string } | undefined)
+              : undefined;
+
+          if (fetchError?.status === 404 && data?.errorCode === "User_Not_Found") {
+            try {
+              await dispatch(
+                profileApi.endpoints.updateMyProfile.initiate({}),
+              ).unwrap();
+            } catch {
+              // Provisioning failed; the profile page keeps its normal error state.
+            }
+          }
+        }
+      },
+    }),
+
+    // =================================
+    // GET ANOTHER PLAYER'S PUBLIC PROFILE
+    // =================================
+
+    getPlayerProfile: builder.query<PlayerProfile, string>({
+      query: (userId) => ({
+        url: `/v1/users/${encodeURIComponent(userId)}/profile`,
+
+        method: "GET",
+      }),
+
+      transformResponse: (response: ApiResponse<PlayerProfileResponse>) => {
+        return mapPlayerProfile(response.data);
+      },
+
+      providesTags: (_result, _error, userId) => [
+        { type: "Profile", id: userId },
+      ],
     }),
 
     // =================================
@@ -105,6 +166,8 @@ export const profileApi = sastraApi.injectEndpoints({
 
 export const {
   useGetMyProfileQuery,
+
+  useGetPlayerProfileQuery,
 
   useUpdateMyProfileMutation,
 

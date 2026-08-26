@@ -125,6 +125,7 @@ import {
   useMarkAllNotificationsReadMutation,
   useMarkNotificationReadMutation,
 } from "@/redux/service/notificationApi";
+import { useNotificationSocket } from "@/hooks/useNotificationSocket";
 
 function relativeTime(value: string) {
   const timestamp = new Date(value).getTime();
@@ -139,6 +140,8 @@ export default function NotificationBell() {
   const { status } = useSession();
   const [open, setOpen] = useState(false);
   const enabled = status === "authenticated";
+
+  useNotificationSocket();
   const { data: unreadCount = 0 } = useGetUnreadNotificationCountQuery(
     undefined,
     {

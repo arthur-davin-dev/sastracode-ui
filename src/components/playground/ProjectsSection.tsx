@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Code2, LayoutTemplate, Sigma, Database, ArrowRight, Clock, Users } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
+import TiltedCard from "../ui/TiltedCard";
 
 const content = {
   km: {
@@ -106,8 +107,17 @@ const fallbackCommunity: CommunityData = {
   members: [],
 };
 
+// Only shown if /v1/community/overview is unreachable and no real verified
+// members can be loaded, so the banner still has something to render.
+const fallbackAvatars = [
+  { src: "/images/ben_thona.jpg", alt: "Ben Thona" },
+  { src: "/images/chhay_davin.jpg", alt: "Chhay Davin" },
+  { src: "/images/mon_narea.jpg", alt: "Mon Narea" },
+  { src: "/images/meng_kimleap.jpg", alt: "Meng Kimleap" },
+];
+
 function formatMemberCount(count: number | null) {
-  if (count === null) return "10,000+";
+  if (count === null) return "10K";
   return new Intl.NumberFormat("en-US", {
     notation: count >= 10_000 ? "compact" : "standard",
     maximumFractionDigits: 1,
@@ -128,20 +138,44 @@ export default function ProjectsSection() {
 
     async function loadCommunity() {
       try {
-        const [overviewResponse, usersResponse] = await Promise.all([
-          fetch("/api/backend/v1/admin/dashboard/overview", { cache: "no-store" }),
-          fetch("/api/backend/v1/admin/users?page=0&size=3", { cache: "no-store" }),
-        ]);
+        // /v1/community/overview never existed on the backend (confirmed:
+        // no such controller), so this always 404'd silently and the banner
+        // fell back to 4 hardcoded stock photos every time. Build the same
+        // picture from real, already-working endpoints instead:
+        // /v1/leaderboards is public and gives real ranked (XP-earning,
+        // logged-in) users; their name/avatar comes from
+        // /v1/users/{userId}/profile, which requires the viewer to be
+        // signed in — for anonymous visitors that call 401s and the member
+        // just renders with initials instead of a name/photo.
+        const leaderboardResponse = await fetch(
+          "/api/backend/v1/leaderboards?period=GLOBAL&page=0&size=4",
+          { cache: "no-store" },
+        );
 
-        if (!overviewResponse.ok || !usersResponse.ok) return;
+        if (!leaderboardResponse.ok) return;
 
-        const [overview, users] = await Promise.all([
-          overviewResponse.json(),
-          usersResponse.json(),
-        ]);
+        const leaderboardPayload = await leaderboardResponse.json();
+        const entries: { userId: string }[] = Array.isArray(leaderboardPayload?.data?.content)
+          ? leaderboardPayload.data.content
+          : [];
+        const totalUsers = Number(leaderboardPayload?.data?.totalElements);
 
-        const totalUsers = Number(overview?.data?.users?.total);
-        const members = Array.isArray(users?.data?.content) ? users.data.content : [];
+        const members = await Promise.all(
+          entries.map(async (entry): Promise<CommunityMember> => {
+            try {
+              const profileResponse = await fetch(
+                `/api/backend/v1/users/${encodeURIComponent(entry.userId)}/profile`,
+                { cache: "no-store" },
+              );
+              if (!profileResponse.ok) return { userId: entry.userId };
+
+              const profilePayload = await profileResponse.json();
+              return { userId: entry.userId, ...profilePayload?.data };
+            } catch {
+              return { userId: entry.userId };
+            }
+          }),
+        );
 
         if (active) {
           setCommunity({
@@ -220,49 +254,57 @@ export default function ProjectsSection() {
       </div>
 
       {/* Community Banner */}
-      <div className="relative overflow-hidden rounded-3xl border border-indigo-200/80 dark:border-indigo-900/50 bg-gradient-to-r from-indigo-50/80 via-white to-indigo-50/50 dark:from-indigo-950/40 dark:via-slate-900 dark:to-indigo-950/20 backdrop-blur-md p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm transition-colors duration-300">
-        <div className="flex gap-4 items-start">
-          <div className="h-10 w-10 shrink-0 rounded-2xl bg-indigo-600/10 dark:bg-indigo-400/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-            <Users className="h-5 w-5" />
-          </div>
-          <p className="text-[18px] text-slate-700 dark:text-slate-200 font-medium max-w-xl leading-relaxed transition-colors duration-300">
-            {communityText}
-          </p>
-        </div>
-
-        {/* Avatar Stack */}
-        <div className="flex items-center -space-x-3 shrink-0 self-end md:self-center">
-          {community.members.map((member) => (
-            <div
-              key={member.userId}
-              title={memberName(member)}
-              className="h-10 w-10 overflow-hidden rounded-full border-2 border-white bg-slate-200 shadow-sm dark:border-slate-900 dark:bg-slate-700"
-            >
-              {member.avatarFileId ? (
-                <img
-                  src={`/api/files/${encodeURIComponent(member.avatarFileId)}/content`}
-                  alt={memberName(member)}
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <span className="flex h-full w-full items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-200">
-                  {memberName(member).charAt(0).toUpperCase()}
-                </span>
-              )}
+      <TiltedCard rotateAmplitude={2} scaleOnHover={1.03}>
+        <div className="relative overflow-hidden rounded-3xl border border-indigo-200/80 dark:border-indigo-900/50 bg-gradient-to-r from-indigo-50/80 via-white to-indigo-50/50 dark:from-indigo-950/40 dark:via-slate-900 dark:to-indigo-950/20 backdrop-blur-md p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm transition-colors duration-300"
+        >
+          <div className="flex gap-4 items-start">
+            <div className="h-10 w-10 shrink-0 rounded-2xl bg-indigo-600/10 dark:bg-indigo-400/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+              <Users className="h-5 w-5" />
             </div>
-          ))}
-          {community.members.length === 0 && (
-            <>
-              <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-amber-400 to-orange-400 border-2 border-white dark:border-slate-900 shadow-sm" />
-              <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-blue-400 to-cyan-400 border-2 border-white dark:border-slate-900 shadow-sm" />
-              <div className="h-10 w-10 rounded-full bg-gradient-to-tr from-emerald-400 to-teal-400 border-2 border-white dark:border-slate-900 shadow-sm" />
-            </>
-          )}
-          <div className="h-10 w-10 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white border-2 border-white dark:border-slate-900 flex items-center justify-center text-xs font-bold shadow-sm">
-            +{memberCount}
+            <p className="text-[18px] text-slate-700 dark:text-slate-200 font-medium max-w-xl leading-relaxed transition-colors duration-300">
+              {communityText}
+            </p>
+          </div>
+
+
+          {/* Avatar Stack — real verified members from /v1/community/overview,
+              with the static local photos as a fallback only if that request
+              returned nothing (API down, or no verified members yet). */}
+          <div className="flex items-center -space-x-2.5 shrink-0 self-end md:self-center">
+            {community.members.length > 0
+              ? community.members.slice(0, 4).map((member) => {
+                  const name = memberName(member);
+                  return member.avatarFileId ? (
+                    <img
+                      key={member.userId}
+                      src={`/api/v1/files/${encodeURIComponent(member.avatarFileId)}`}
+                      alt={name}
+                      className="inline-block h-10 w-10 rounded-full object-cover border-2 border-white dark:border-slate-900 shadow-sm"
+                    />
+                  ) : (
+                    <div
+                      key={member.userId}
+                      className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900/60 text-sm font-bold text-indigo-700 dark:text-indigo-200 border-2 border-white dark:border-slate-900 shadow-sm"
+                    >
+                      {name[0]?.toUpperCase() || "U"}
+                    </div>
+                  );
+                })
+              : fallbackAvatars.map(({ src, alt }) => (
+                  <img
+                    key={alt}
+                    src={src}
+                    alt={alt}
+                    className="inline-block h-10 w-10 rounded-full object-cover border-2 border-white dark:border-slate-900 shadow-sm"
+                  />
+                ))}
+
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 dark:bg-indigo-500 text-xs font-bold text-white border-2 border-white dark:border-slate-900 shadow-sm">
+              +{memberCount}
+            </div>
           </div>
         </div>
-      </div>
+      </TiltedCard>
     </section>
   );
 }

@@ -1,82 +1,14 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { CertificateStatsRow } from "@/components/certificate/CertificateStatsRow";
 import { EarnedCertificatesSection } from "@/components/certificate/EarnedCertificatesSection";
 import { InProgressCertificatesSection } from "@/components/certificate/InProgressCertificatesSection";
-import { RequirementCard } from "@/components/certificate/RequirementCard";
-import { ClaimCertificateCard } from "@/components/certificate/ClaimCertificateCard";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Lock } from "lucide-react";
-import {
-  EarnedCertificate,
-  InProgressCertificate,
-  CertificateRequirement,
-  RequirementChecklistItem,
-} from "@/types/certificate";
-
-const earnedCertificates: EarnedCertificate[] = [
-  {
-    id: "1",
-    title: "HTML, CSS & JavaScript",
-    thumbnailUrl: "/images/certi.png",
-    level: "Beginner",
-    date: "12/03/2025",
-    certificateId: "SC-9821-XP",
-    category: "Beginner Web",
-  },
-  {
-    id: "2",
-    title: "React.js Fundamental",
-    thumbnailUrl: "/images/certi.png",
-    level: "Intermediate",
-    date: "05/04/2025",
-    certificateId: "SC-7712-XP",
-    category: "Frontend",
-  },
-  {
-    id: "3",
-    title: "Java Programming",
-    thumbnailUrl: "/images/certi.png",
-    level: "Advanced",
-    date: "20/04/2025",
-    certificateId: "SC-6611-XP",
-    category: "Backend",
-  },
-];
-
-const inProgressCertificates: InProgressCertificate[] = [
-  {
-    id: "1",
-    title: "Node.js Advanced",
-    thumbnailUrl: "/images/certificate.png",
-    progressPercent: 68,
-    level: "Advanced",
-    daysLeft: 10,
-    totalDays: 15,
-  },
-  {
-    id: "2",
-    title: "Fullstack Web Development",
-    thumbnailUrl: "/images/certificate2.png",
-    progressPercent: 42,
-    level: "Intermediate",
-    daysLeft: 7,
-    totalDays: 20,
-  },
-];
+import { ClaimCertificateSection } from "@/components/certificate/ClaimCertificateSection";
+import { CertificateRequirement } from "@/types/certificate";
 
 const requirements: CertificateRequirement[] = [
   { id: "1", title: "DevOps Fundamentals", progressPercent: 30 },
   { id: "2", title: "AI & Machine Learning", progressPercent: 20 },
-];
-
-const checklistItems: RequirementChecklistItem[] = [
-  { label: "បញ្ចប់មេរៀន", completed: true },
-  { label: "បញ្ចប់លំហាត់", completed: true },
-  { label: "ការប្រលង", completed: true },
-  { label: "ការសិក្សាបន្ថែម", completed: false },
-  { label: "ការវាយតម្លៃចុងក្រោយ", completed: false },
 ];
 
 export default function Certificate() {
@@ -93,18 +25,13 @@ export default function Certificate() {
         មើល និងគ្រប់គ្រងវិញ្ញាបនបត្រនិងវឌ្ឍនភាពសិក្សារបស់អ្នក
       </p>
 
-      <CertificateStatsRow
-        totalCourses={12}
-        completedCourses={8}
-        inProgressCourses={2}
-        lockedCourses={2}
-      />
+      <CertificateStatsRow />
 
-      <EarnedCertificatesSection certificates={earnedCertificates} />
+      <EarnedCertificatesSection />
 
-      <InProgressCertificatesSection certificates={inProgressCertificates} />
+      <InProgressCertificatesSection />
 
-      <Card>
+      {/* <Card>
         <CardHeader>
           <CardTitle className="text-lg font-semibold flex items-center gap-2 text-primary-color dark:text-white">
             <span className="h-6 w-6 rounded-full bg-primary-color/20 flex items-center justify-center">
@@ -125,9 +52,9 @@ export default function Certificate() {
             </motion.div>
           ))}
         </CardContent>
-      </Card>
+      </Card> */}
 
-      <ClaimCertificateCard items={checklistItems} />
-    </main>
+      <ClaimCertificateSection />
+    </div>
   );
 }

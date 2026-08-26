@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 import {
   Play,
@@ -26,7 +27,6 @@ import {
   Sparkles,
   Columns2,
   Bot,
-  MessageCircle,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -864,7 +864,7 @@ export default function Editor() {
   // Always points to the latest Format Code handler.
   // Monaco keybindings are registered once when the editor mounts, so using
   // a ref prevents the shortcuts from calling an old render's handler.
-  const formatCodeActionRef = useRef<() => void>(() => {});
+  const formatCodeActionRef = useRef<() => void>(() => { });
 
   // ====================================================
   // CURRENT LANGUAGE
@@ -1714,16 +1714,15 @@ export default function Editor() {
   // ====================================================
 
   return (
-    <div className="min-h-screen bg-[#f4f7fb] px-3 pb-10 pt-5 font-sans text-slate-900 transition-colors duration-300 dark:bg-[#070b14] dark:text-slate-100 sm:px-5 lg:px-7">
+    <div className="min-h-screen  px-3 pb-10 pt-5 font-sans text-slate-900 transition-colors duration-300  dark:text-slate-100 sm:px-5 lg:px-7">
       {copyStatus !== "idle" && (
         <div
           role="status"
           aria-live="polite"
-          className={`fixed right-5 top-5 z-[100] flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-semibold shadow-xl backdrop-blur-sm transition-all ${
-            copyStatus === "copied"
-              ? "border-emerald-200 bg-white/95 text-emerald-700 dark:border-emerald-700/60 dark:bg-slate-900/95 dark:text-emerald-400"
-              : "border-red-200 bg-white/95 text-red-700 dark:border-red-800 dark:bg-slate-900/95 dark:text-red-400"
-          }`}
+          className={`fixed right-5 top-5 z-[100] flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-semibold shadow-xl backdrop-blur-sm transition-all ${copyStatus === "copied"
+            ? "border-emerald-200 bg-white/95 text-emerald-700 dark:border-emerald-700/60 dark:bg-slate-900/95 dark:text-emerald-400"
+            : "border-red-200 bg-white/95 text-red-700 dark:border-red-800 dark:bg-slate-900/95 dark:text-red-400"
+            }`}
         >
           {copyStatus === "copied" ? (
             <Check className="h-5 w-5" />
@@ -1793,17 +1792,16 @@ export default function Editor() {
                 style={
                   isActive
                     ? {
-                        backgroundColor: item.color,
+                      backgroundColor: item.color,
 
-                        color: itemTextColor,
-                      }
+                      color: itemTextColor,
+                    }
                     : undefined
                 }
-                className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-all ${
-                  isActive
-                    ? ""
-                    : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
-                }`}
+                className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold transition-all ${isActive
+                  ? ""
+                  : "text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+                  }`}
               >
                 <span
                   className="h-1.5 w-1.5 rounded-full"
@@ -1816,9 +1814,8 @@ export default function Editor() {
 
                 {item.mode === "preview" && (
                   <span
-                    className={`ml-1 text-[9px] font-bold uppercase ${
-                      isActive ? "opacity-70" : "text-emerald-500"
-                    }`}
+                    className={`ml-1 text-[9px] font-bold uppercase ${isActive ? "opacity-70" : "text-emerald-500"
+                      }`}
                   >
                     Live
                   </span>
@@ -1981,11 +1978,10 @@ export default function Editor() {
             <button
               type="button"
               onClick={() => setShowLineNumbers((previous) => !previous)}
-              className={`flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 dark:border-slate-800 dark:text-slate-300 ${
-                showLineNumbers
-                  ? "bg-slate-100 dark:bg-slate-800"
-                  : "text-slate-500"
-              }`}
+              className={`flex items-center gap-1.5 rounded-lg border border-slate-200 px-3 py-1.5 text-sm text-slate-700 dark:border-slate-800 dark:text-slate-300 ${showLineNumbers
+                ? "bg-slate-100 dark:bg-slate-800"
+                : "text-slate-500"
+                }`}
             >
               <ListOrdered className="h-3.5 w-3.5" />
               Line
@@ -2031,11 +2027,10 @@ export default function Editor() {
             <button
               type="button"
               onClick={() => void toggleWorkspaceFullscreen()}
-              className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-semibold transition ${
-                isWorkspaceFullscreen
-                  ? "border-indigo-500 bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300"
-                  : "border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800"
-              }`}
+              className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-sm font-semibold transition ${isWorkspaceFullscreen
+                ? "border-indigo-500 bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-300"
+                : "border-slate-200 text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800"
+                }`}
               title="Fullscreen code and result together"
             >
               <Columns2 className="h-3.5 w-3.5" />
@@ -2059,26 +2054,6 @@ export default function Editor() {
                 Exit Fullscreen
               </Button>
             )} */}
-
-            {/* Run only compiler/backend languages */}
-
-            {!isPreviewMode && (
-              <Button
-                type="button"
-                onClick={handleRun}
-                disabled={isRunning}
-                style={{
-                  backgroundColor: activeColor,
-
-                  color: activeTextColor,
-                }}
-                className="h-10 gap-2 rounded-xl px-5 font-bold shadow-md hover:opacity-90"
-              >
-                <Play className="h-4 w-4" />
-
-                {isRunning ? "Running..." : "Run"}
-              </Button>
-            )}
 
             {/* Format Code */}
 
@@ -2230,17 +2205,6 @@ export default function Editor() {
           </div>
         )}
 
-        {!isWorkspaceFullscreen && (
-          <div className="px-4 pt-4">
-            <CodeCoach
-              code={code}
-              language={language}
-              codingTaskId={codingTaskId}
-              onApplyCode={handleApplyCoachCode}
-            />
-          </div>
-        )}
-
         {/* ================================================= */}
         {/* EDITOR + PREVIEW/OUTPUT */}
         {/* ================================================= */}
@@ -2269,17 +2233,17 @@ export default function Editor() {
             {/* Editor Header */}
 
             <div className="flex h-11 shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50 px-4 text-slate-800 dark:border-white/10 dark:bg-[#111827] dark:text-slate-200">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 <Code2 className="h-4 w-4 text-slate-400" />
                 <span className="text-xs font-bold uppercase tracking-[0.14em]">
                   Editor
                 </span>
 
+                {/* Language Badge matched to Run button size */}
                 <span
-                  className="rounded px-2 py-0.5 text-[10px] font-bold"
+                  className="inline-flex h-8 items-center justify-center rounded-lg px-4 text-xs font-bold shadow-sm"
                   style={{
                     backgroundColor: activeColor,
-
                     color: activeTextColor,
                   }}
                 >
@@ -2288,10 +2252,27 @@ export default function Editor() {
               </div>
 
               <div className="flex items-center gap-3 text-slate-500 dark:text-slate-400">
+                {!isPreviewMode && (
+                  /* Scaled-up Run Button (h-8 = 32px tall inside 44px header) */
+                  <button
+                    type="button"
+                    onClick={handleRun}
+                    disabled={isRunning}
+                    style={{
+                      backgroundColor: activeColor,
+                      color: activeTextColor,
+                    }}
+                    className="flex h-8 items-center gap-1.5 rounded-lg px-4 text-xs font-bold shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <Play className="h-4 w-4 fill-current" />
+                    {isRunning ? "Running..." : "Run"}
+                  </button>
+                )}
+
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="rounded-md p-1 transition hover:bg-slate-200/70 dark:hover:bg-white/10"
+                  className="rounded-md p-1.5 transition hover:bg-slate-200/70 dark:hover:bg-white/10"
                   title={copyStatus === "copied" ? "Copied!" : "Copy code"}
                   aria-label={
                     copyStatus === "copied" ? "Code copied" : "Copy code"
@@ -2628,12 +2609,12 @@ export default function Editor() {
                             line === "Success! Output:"
                               ? "font-semibold text-emerald-600 dark:text-emerald-400"
                               : line === "Error:" ||
-                                  line.startsWith("Execution failed") ||
-                                  line.startsWith("Execution timed out") ||
-                                  line.startsWith("Error:")
+                                line.startsWith("Execution failed") ||
+                                line.startsWith("Execution timed out") ||
+                                line.startsWith("Error:")
                                 ? "font-semibold text-red-600 dark:text-red-400"
                                 : line.startsWith("Process finished") ||
-                                    line.startsWith("Execution time:")
+                                  line.startsWith("Execution time:")
                                   ? "text-slate-500 dark:text-slate-400"
                                   : line.startsWith("Running")
                                     ? "text-blue-600 dark:text-blue-400"
@@ -2652,75 +2633,99 @@ export default function Editor() {
         </div>
 
         {/* ================================================= */}
-        {/* FULLSCREEN FLOATING AI COACH */}
+        {/* FLOATING AI COACH (icon trigger -> action list) */}
         {/* ================================================= */}
 
-        {isWorkspaceFullscreen && (
-          <>
-            {isAiCoachOpen && (
-              <aside
-                className="absolute bottom-20 left-4 right-4 z-[90] max-h-[calc(100vh-7rem)] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-[390px]"
-                aria-label="AI coding coach"
+        {isAiCoachOpen && (
+          <aside
+            className={
+              isWorkspaceFullscreen
+                ? "fixed bottom-20 right-4 left-4 z-[90] max-h-[calc(100vh-7rem)] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-[390px]"
+                : "fixed bottom-24 right-4 left-4 z-[90] max-h-[70vh] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-[390px]"
+            }
+            aria-label="AI coding coach"
+          >
+            <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-white/10">
+              <div className="flex items-center gap-3">
+                <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600 text-white shadow-lg shadow-violet-600/20">
+                  <Bot className="h-5 w-5" />
+                  <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-400 dark:border-[#0b1020]" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">
+                    Sastra AI Coach
+                  </p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    {codingTaskId
+                      ? "Hints, explain, improve, and fix your code."
+                      : "Explain and improve your code."}
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsAiCoachOpen(false)}
+                className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-white/10 dark:hover:text-white"
+                aria-label="Close AI coach"
               >
-                <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-white/10">
-                  <div className="flex items-center gap-3">
-                    <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600 text-white shadow-lg shadow-violet-600/20">
-                      <Bot className="h-5 w-5" />
-                      <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-400 dark:border-[#0b1020]" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-slate-900 dark:text-white">
-                        Sastra AI Coach
-                      </p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
-                        {codingTaskId
-                          ? "Hints, explain, improve, and fix without leaving fullscreen."
-                          : "Explain and improve without leaving fullscreen."}
-                      </p>
-                    </div>
-                  </div>
+                <X className="h-4 w-4" />
+              </button>
+            </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setIsAiCoachOpen(false)}
-                    className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-white/10 dark:hover:text-white"
-                    aria-label="Close AI coach"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-
-                <div className="max-h-[calc(100vh-12rem)] overflow-y-auto p-3">
-                  <CodeCoach
-                    code={code}
-                    language={language}
-                    codingTaskId={codingTaskId}
-                    compact
-                    onApplyCode={handleApplyCoachCode}
-                  />
-                </div>
-              </aside>
-            )}
-
-            <button
-              type="button"
-              onClick={() => setIsAiCoachOpen((previous) => !previous)}
-              className="absolute bottom-5 right-5 z-[91] inline-flex h-12 items-center gap-2 rounded-full bg-violet-600 px-4 text-sm font-bold text-white shadow-xl shadow-violet-950/25 transition hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-300/40"
-              aria-expanded={isAiCoachOpen}
-              aria-label="Open AI coding coach"
-              title="AI Coach: hints, explanation, improvements, and fixes"
+            <div
+              className={
+                isWorkspaceFullscreen
+                  ? "max-h-[calc(100vh-12rem)] overflow-y-auto p-3"
+                  : "max-h-[calc(70vh-4rem)] overflow-y-auto p-3"
+              }
             >
-              {isAiCoachOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <MessageCircle className="h-5 w-5" />
-              )}
-              <span className="hidden sm:inline">
-                {isAiCoachOpen ? "Close Coach" : "AI Coach"}
-              </span>
-            </button>
-          </>
+              <CodeCoach
+                code={code}
+                language={language}
+                codingTaskId={codingTaskId}
+                compact
+                onApplyCode={handleApplyCoachCode}
+              />
+            </div>
+          </aside>
         )}
+
+        <div className="fixed bottom-5 right-5 z-[91]">
+          {!isAiCoachOpen && (
+            <span className="absolute inset-0 animate-ping rounded-full bg-violet-500 opacity-40" />
+          )}
+
+          <button
+            type="button"
+            onClick={() => setIsAiCoachOpen((previous) => !previous)}
+            className="relative inline-flex h-12 items-center gap-2 rounded-full bg-violet-600 px-4 text-sm font-bold text-white shadow-xl shadow-violet-950/25 transition hover:-translate-y-0.5 hover:bg-violet-700 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-violet-300/40"
+            aria-expanded={isAiCoachOpen}
+            aria-label="Open AI coding coach"
+            title="AI Coach: hints, explanation, improvements, and fixes"
+          >
+            {isAiCoachOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <span className="relative -ml-1 flex items-center">
+                <Image
+                  src="/home/image/aiCoachRobot.png"
+                  alt="AI Coach"
+                  width={32}
+                  height={32}
+                  className="h-8 w-8 object-contain drop-shadow"
+                />
+                <span className="absolute -right-0.5 -top-0.5 flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                </span>
+              </span>
+            )}
+            <span className="hidden sm:inline">
+              {isAiCoachOpen ? "Close Coach" : "AI Coach"}
+            </span>
+          </button>
+        </div>
       </div>
 
       {isPreviewFullscreen && isPreviewMode && (

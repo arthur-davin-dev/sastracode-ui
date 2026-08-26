@@ -14,6 +14,7 @@ import {
   useGetLeaderboardUserProfilesQuery,
 } from "@/redux/service/leaderboardApi";
 import { useGetMyProfileQuery } from "@/redux/service/profile-api";
+import { useSession } from "next-auth/react";
 
 type SupportedPeriod = Exclude<LeaderboardPeriod, "COURSE">;
 
@@ -46,13 +47,25 @@ export default function Leaderboard() {
   const [activeTab, setActiveTab] = useState<SupportedPeriod>("GLOBAL");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const { status } = useSession();
+  const isAuthenticated = status === "authenticated";
+
   const { data, isLoading, isFetching, isError, refetch } =
     useGetLeaderboardQuery({ period: activeTab, size: 50 });
-  const { data: myRank } = useGetMyLeaderboardRankQuery(activeTab);
-  const { data: myProfile } = useGetMyProfileQuery();
-  const { data: profiles } = useGetLeaderboardUserProfilesQuery(undefined, {
-    skip: !data?.content.length,
+  const { data: myRank } = useGetMyLeaderboardRankQuery(activeTab, {
+    skip: !isAuthenticated,
   });
+  const { data: myProfile } = useGetMyProfileQuery(undefined, {
+    skip: !isAuthenticated,
+  });
+  const leaderboardUserIds = useMemo(
+    () => (data?.content ?? []).map((entry) => entry.userId),
+    [data?.content],
+  );
+  const { data: profiles } = useGetLeaderboardUserProfilesQuery(
+    leaderboardUserIds,
+    { skip: leaderboardUserIds.length === 0 },
+  );
 
   const profilesByUserId = useMemo(
     () => new Map(profiles?.content.map((profile) => [profile.userId, profile]) ?? []),
@@ -65,6 +78,7 @@ export default function Leaderboard() {
         const profile = profilesByUserId.get(entry.userId);
         return {
         id: entry.id || entry.userId,
+        userId: entry.userId,
         rank: entry.rank,
         name: learnerName(entry, profile),
         avatarUrl: learnerAvatar(entry, profile),
@@ -77,6 +91,7 @@ export default function Leaderboard() {
   const currentUser: LeaderboardEntry | undefined = myRank
     ? {
         id: myRank.id || myRank.userId,
+        userId: myRank.userId,
         rank: myRank.rank,
         name:
           [myProfile?.firstName, myProfile?.lastName].filter(Boolean).join(" ") ||
@@ -93,11 +108,12 @@ export default function Leaderboard() {
     { icon: "chart", value: myRank?.rank ? `#${myRank.rank}` : "—", label: "Your rank", color: "" },
   ];
 
-  const topPerformers = entries.slice(0, 3).map(({ rank, name, xp, avatarUrl }) => ({
+  const topPerformers = entries.slice(0, 3).map(({ rank, name, xp, avatarUrl, userId }) => ({
     rank,
     name,
     xp,
     avatarUrl,
+    userId,
   }));
 
   const filteredEntries = useMemo(() => {
@@ -141,6 +157,8 @@ export default function Leaderboard() {
           onTabChange={(tab) => setActiveTab(tab as SupportedPeriod)}
         />
 
+        {topPerformers.length > 0 && <TopPerformersCard performers={topPerformers} />}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             {isLoading ? (
@@ -165,7 +183,6 @@ export default function Leaderboard() {
 
           <div className="space-y-4">
             <YourStatsCard stats={userStats} />
-            {topPerformers.length > 0 && <TopPerformersCard performers={topPerformers} />}
           </div>
         </div>
       </div>

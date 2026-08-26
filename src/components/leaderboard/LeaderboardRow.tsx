@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { LeaderboardEntry } from "@/types/leaderboard";
 import { Award, Crown, Medal, type LucideIcon } from "lucide-react";
@@ -81,6 +82,6 @@ export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
           <span className="text-red-600 text-base font-bold">XP</span>
         </span>
       </div>
-    </div>
+    </Link>
   );
 }

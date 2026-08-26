@@ -61,7 +61,7 @@ export default function TeamMember() {
   }
 
   return (
-    <section className="w-full py-12 px-4 sm:px-8 md:px-12 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <section className="w-full py-12 px-4 sm:px-8 md:px-12 text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <div className="container mx-auto">
         {/* Responsive Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-12 sm:gap-6 justify-items-center">

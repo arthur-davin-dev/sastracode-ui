@@ -73,6 +73,32 @@ export interface UpdateUserInfoRequest {
   avatarFileId?: string;
 }
 
+export interface PlayerProfileResponse {
+  userId?: string;
+
+  username?: string;
+
+  firstName?: string;
+
+  lastName?: string;
+
+  biography?: string;
+
+  workStudyType?: WorkStudyType;
+
+  institutionName?: string;
+
+  avatarFileId?: string;
+}
+
+/**
+ * Public view of another user's profile (no email/phone/status — those are
+ * private fields only returned for the signed-in user's own profile).
+ */
+export interface PlayerProfile extends PlayerProfileResponse {
+  avatarUrl?: string;
+}
+
 export interface AvatarResponse {
   avatarFileId: string;
   avatarUrl: string;

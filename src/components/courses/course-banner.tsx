@@ -1,5 +1,6 @@
 "use client";
 
+import PlatformShowcase from "@/components/home/PlatformShowcase";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
@@ -189,51 +190,21 @@ export default function CourseBanner() {
         overflow-hidden
         border-b
         border-slate-200
-        bg-white
-        py-12
+        bg-transparent
+        py-4
         transition-colors
         duration-300
         dark:border-slate-800
-        dark:bg-slate-950
-        sm:py-16
-        lg:py-20
+        dark:bg-transparent
+        sm:py-6
+        lg:py-8
       "
     >
-      {/* Background decoration */}
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          -left-24
-          -top-24
-          h-64
-          w-64
-          rounded-full
-          bg-[#002455]/5
-          dark:bg-[#002455]/20
-        "
-      />
-
-      <div
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          -bottom-28
-          -right-20
-          h-72
-          w-72
-          rounded-full
-          bg-[#F51518]/5
-          dark:bg-[#F51518]/10
-        "
-      />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           {/* ================= LEFT ================= */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-6">
             {/* Badge */}
             <div
               className="
@@ -283,7 +254,7 @@ export default function CourseBanner() {
             </p>
 
             {/* Features */}
-            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-5">
+            <div className="mt-8 flex flex-wrap xl:flex-nowrap gap-x-4 lg:gap-x-6 gap-y-5">
               {FEATURES.map(({ label, icon: Icon }) => (
                 <div
                   key={label}
@@ -291,7 +262,7 @@ export default function CourseBanner() {
                     flex
                     items-center
                     gap-3
-                    text-lg
+                    text-base xl:text-lg
                     font-medium
                     text-slate-700
                     dark:text-slate-300
@@ -326,13 +297,13 @@ export default function CourseBanner() {
                 href="#latest-courses"
                 className={`
                   ${buttonVariants({
-                    variant: "default",
-                    size: "lg",
-                  })}
+                  variant: "default",
+                  size: "lg",
+                })}
                   group
-                  h-14
-                  rounded-xl
-                  bg-primary-color
+                  h-12
+                  rounded-full
+                  bg-[#0B2B66]
                   px-8
                   text-lg
                   font-semibold
@@ -340,8 +311,9 @@ export default function CourseBanner() {
                   shadow-sm
                   transition-all
                   duration-300
-                  hover:bg-[#001b40]
+                  hover:bg-blue-900
                   hover:text-white
+                  dark:hover:bg-blue-700
                   active:scale-[0.98]
                 `}
               >
@@ -362,22 +334,9 @@ export default function CourseBanner() {
           </div>
 
           {/* ================= RIGHT ================= */}
-          <div className="relative lg:col-span-5">
-            <div className="group relative mx-auto aspect-[3/2] w-full max-w-md overflow-hidden rounded-3xl bg-slate-100 lg:max-w-none">
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                className="absolute inset-0 h-full w-full object-cover"
-              >
-                <source src="/student.gif.mp4" type="video/mp4" />
-              </video>
-
-              {/* Very light overlay only */}
-              <div className="pointer-events-none absolute inset-0 bg-black/[0.02]" />
-            </div>
+          {/* after */}
+          <div className="relative lg:col-span-6">
+            <PlatformShowcase />
           </div>
         </div>
       </div>

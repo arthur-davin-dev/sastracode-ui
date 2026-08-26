@@ -103,6 +103,13 @@ export interface EnrollmentResponse {
 
 export type PagedResponseEnrollmentResponse = PagedResponse<EnrollmentResponse>;
 
+export interface CourseProgressResponse {
+  courseId?: string;
+  completedVideos?: number;
+  totalVideos?: number;
+  percentage?: number;
+}
+
 export interface ContinueLearningResponse {
   courseId?: string;
   courseTitle?: string;

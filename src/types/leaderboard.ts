@@ -1,5 +1,6 @@
 export interface LeaderboardEntry {
   id: string;
+  userId: string;
   rank: number;
   name: string;
   avatarUrl: string;
@@ -93,4 +94,5 @@ export interface TopPerformer {
   name: string;
   xp: number;
   avatarUrl?: string;
+  userId?: string;
 }

@@ -157,7 +157,7 @@ const OrbitingNode = ({
           aspectRatio: "1 / 1",
           borderColor: node.ring ?? "#2f4fd6",
           zIndex: 10,
-          cursor: "pointer",
+          // cursor: "pointer",
         }}
         whileHover={{
           scale: 1.25,
@@ -207,7 +207,7 @@ export default function TechStackSection({
   };
 
   return (
-    <section className="flex flex-col lg:flex-row w-full overflow-hidden bg-white px-4 sm:px-8 dark:bg-gray-900 transition-colors duration-300 items-center justify-between gap-6 sm:gap-8 lg:gap-12">
+    <section className="flex flex-col lg:flex-row w-full overflow-hidden px-4 sm:px-8 transition-colors duration-300 items-center justify-between gap-6 sm:gap-8 lg:gap-12">
       <div className="mx-auto flex max-w-2xl flex-col items-center text-center">
         <span className="mb-3 sm:mb-4 rounded-full border border-[#c9d3f5] dark:border-blue-700 bg-[#eef1fd] dark:bg-blue-950 px-3.5 py-1 text-[11px] font-semibold tracking-wide text-[#3a52c9] dark:text-blue-300">
           {currentT.technologyStack.badge}

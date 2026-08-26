@@ -145,7 +145,6 @@ export function CourseCard({ course }: CourseCardProps) {
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             onError={(event) => {
-              console.error("COURSE IMAGE FAILED:", imageSrc);
               event.currentTarget.onerror = null;
               event.currentTarget.src = FALLBACK_IMAGE;
             }}

@@ -10,18 +10,54 @@ import {
   Sparkles,
   ArrowRight,
 } from "lucide-react";
+import {
+  useGetCourseByIdQuery,
+  useGetCourseProgressQuery,
+} from "@/redux/api";
 import { RequirementChecklistItem } from "@/types/certificate";
 
 interface ClaimCertificateCardProps {
-  items: RequirementChecklistItem[];
+  courseId: string;
 }
 
-export function ClaimCertificateCard({ items }: ClaimCertificateCardProps) {
-  const completedCount = items.filter((item) => item.completed).length;
-  const totalCount = items.length;
-  const progressPercent =
-    totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
-  const allDone = items.every((item) => item.completed);
+export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
+  const { data: course, isFetching: isFetchingCourse } =
+    useGetCourseByIdQuery(courseId);
+  const { data: progress, isFetching: isFetchingProgress } =
+    useGetCourseProgressQuery(courseId);
+
+  if ((isFetchingCourse || isFetchingProgress) && !course) {
+    return (
+      <Card className="rounded-3xl border-2 border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
+        <CardContent className="flex flex-col items-center gap-6 p-8 animate-pulse">
+          <div className="h-20 w-20 rounded-2xl bg-slate-100 dark:bg-slate-800" />
+          <div className="h-6 w-2/3 rounded bg-slate-100 dark:bg-slate-800" />
+          <div className="h-3 w-full max-w-sm rounded-full bg-slate-100 dark:bg-slate-800" />
+          <div className="h-24 w-full max-w-sm rounded-2xl bg-slate-100 dark:bg-slate-800" />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!course) return null;
+
+  const totalVideos = progress?.totalVideos ?? 0;
+  const completedVideos = Math.min(
+    progress?.completedVideos ?? 0,
+    totalVideos,
+  );
+  const progressPercent = Math.round(
+    progress?.percentage ??
+      (totalVideos > 0 ? (completedVideos / totalVideos) * 100 : 0),
+  );
+  const allDone = totalVideos > 0 && completedVideos >= totalVideos;
+
+  const items: RequirementChecklistItem[] = [
+    { label: "ចាប់ផ្តើមសិក្សាមេរៀន", completed: completedVideos > 0 },
+    { label: "សិក្សាបានលើសពី ៥០%", completed: progressPercent >= 50 },
+    { label: "សិក្សាបានលើសពី ៨០%", completed: progressPercent >= 80 },
+    { label: "បញ្ចប់វីដេអូទាំងអស់", completed: allDone },
+  ];
 
   return (
     <motion.div
@@ -71,25 +107,24 @@ export function ClaimCertificateCard({ items }: ClaimCertificateCardProps) {
             <h3 className="text-2xl font-extrabold text-slate-900 dark:text-white leading-tight">
               ទាមទារវិញ្ញាបនបត្រ
             </h3>
-            <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+            <p className="text-lg font-bold text-primary-color dark:text-white truncate">
+              {course.title}
+            </p>
+            <p className="text-lg text-primary-color dark:text-white opacity-80 leading-relaxed">
               បំពេញគ្រប់លក្ខខណ្ឌខាងក្រោមដើម្បីទទួលបានវិញ្ញាបនបត្រនេះ
             </p>
           </div>
 
           {/* Progress Status Bar */}
           <div className="w-full max-w-sm space-y-2 pt-1">
-            <div className="flex justify-between items-center text-lg font-bold text-slate-900 dark:text-white">
-              <span className="text-slate-700 dark:text-slate-300">
-                លក្ខខណ្ឌដែលបានបំពេញ
-              </span>
+            <div className="flex justify-between items-center text-lg font-bold text-primary-color dark:text-white">
+              <span className="opacity-80">វឌ្ឍនភាពសិក្សា</span>
               <span
                 className={
-                  allDone
-                    ? "text-slate-900 dark:text-white"
-                    : "text-secondary-color"
+                  allDone ? "text-primary-color" : "text-secondary-color"
                 }
               >
-                {completedCount} / {totalCount} ({progressPercent}%)
+                {completedVideos} / {totalVideos} ({progressPercent}%)
               </span>
             </div>
 
@@ -132,8 +167,8 @@ export function ClaimCertificateCard({ items }: ClaimCertificateCardProps) {
               disabled={!allDone}
               className={`w-full h-14 rounded-2xl text-lg font-bold shadow-md transition-all duration-300 gap-2 flex items-center justify-center group ${
                 allDone
-                  ? "bg-init-color hover:bg-yellow-400 hover:text-slate-950 text-white"
-                  : "bg-primary-color dark:bg-slate-800 text-white cursor-not-allowed border  dark:border-slate-700"
+                  ? "bg-primary-color hover:bg-blue-400 hover:text-slate-950 text-white"
+                  : "bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 cursor-not-allowed border border-slate-300 dark:border-slate-700"
               }`}
             >
               <span>

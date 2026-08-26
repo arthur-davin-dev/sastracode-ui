@@ -1,3 +1,4 @@
+import TechStack from "@/components/function/tech-stack";
 import TechStackSection from "@/components/function/TechStackSection";
 import InteractiveDoc from "@/components/home/interactive-doc/InteractiveDoc";
 import InteractiveGrid from "@/components/home/interactive-grid/InteractiveGrid";
@@ -5,13 +6,14 @@ import HeroCharacter from "@/components/home/show-case/HeroCharacter";
 import Showcase from "@/components/home/show-case/Showcase";
 import SupportTeam from "@/components/home/support-team/SupportTeam";
 
-export default function FunctionPage(){
+export default function Features(){
     return (
-       <section className="dark:bg-gray-900">
+       <section>
             <HeroCharacter />
             <InteractiveGrid />
             <InteractiveDoc />
-            <TechStackSection />
+            {/* <TechStackSection /> */}
+            <TechStack></TechStack>
             <SupportTeam />
        </section>
     )

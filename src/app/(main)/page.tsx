@@ -5,6 +5,7 @@ import LandingCourses from "@/components/home/landing-courses/course";
 import HomePopularDocumentation from "@/components/home/HomePopularDocumentation";
 import ScrollReveal from "@/components/home/ScrollReveal";
 
+
 export default function Page() {
   return (
     <main className="min-h-screen bg-transparent text-gray-900 transition-colors duration-300 dark:bg-transparent dark:text-gray-100">
