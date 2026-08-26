@@ -398,19 +398,19 @@ export default function CodeCoach({
       className={
         compact
           ? "overflow-hidden rounded-xl bg-white dark:bg-[#0b1020]"
-          : "rounded-xl border border-violet-200 bg-violet-50/60 p-4 dark:border-violet-900/70 dark:bg-violet-950/20"
+          : "rounded-3xl border border-violet-200/70 bg-gradient-to-br from-violet-50 via-white to-white p-4 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-violet-900/50 dark:from-violet-950/30 dark:via-slate-950 dark:to-slate-950 sm:p-5"
       }
     >
       {!compact && (
         <div className="flex items-start gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-violet-600 text-white shadow-sm">
-            <Bot className="h-4 w-4" />
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-violet-600 text-white shadow-md shadow-violet-600/30">
+            <Bot className="h-5 w-5" />
           </div>
           <div className="min-w-0 flex-1">
-            <h2 className="text-sm font-bold text-violet-950 dark:text-violet-100">
+            <h2 className="text-sm font-bold tracking-tight text-violet-950 dark:text-violet-100">
               Sastra AI Coach
             </h2>
-            <p className="mt-0.5 text-xs leading-5 text-violet-800/80 dark:text-violet-200/80">
+            <p className="mt-0.5 text-xs leading-5 text-violet-800/70 dark:text-violet-200/70">
               Start with a hint, understand your code, or ask for safer
               improvements.
             </p>
@@ -425,14 +425,14 @@ export default function CodeCoach({
         </div>
       )}
 
-      <div className={`${compact ? "" : "mt-3"} grid grid-cols-2 gap-2`}>
+      <div className={`${compact ? "" : "mt-4"} grid grid-cols-2 gap-2.5`}>
         {hasTask && (
           <button
             type="button"
             onClick={() => askCoach("hint")}
             disabled={loading || (fixUnlocked && nextHintLevel >= 5)}
             title="Get the next progressive hint"
-            className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-amber-200 bg-amber-50 px-2.5 py-2 text-xs font-semibold text-amber-800 transition hover:bg-amber-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300"
+            className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-amber-200 bg-amber-50 px-2.5 py-2 text-xs font-semibold text-amber-800 shadow-xs transition hover:-translate-y-0.5 hover:bg-amber-100 hover:shadow-sm disabled:pointer-events-none disabled:opacity-50 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-300"
           >
             <Lightbulb className="h-4 w-4" />
             {hasHintProgress ? `Next Hint (${nextHintLevel}/5)` : "Get Hint"}
@@ -443,7 +443,7 @@ export default function CodeCoach({
           type="button"
           onClick={() => askCoach("explain")}
           disabled={loading}
-          className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-violet-200 bg-white px-2.5 py-2 text-xs font-semibold text-violet-700 transition hover:bg-violet-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-violet-800 dark:bg-slate-950 dark:text-violet-300"
+          className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-violet-200 bg-white px-2.5 py-2 text-xs font-semibold text-violet-700 shadow-xs transition hover:-translate-y-0.5 hover:bg-violet-100 hover:shadow-sm disabled:pointer-events-none disabled:opacity-60 dark:border-violet-800 dark:bg-slate-950 dark:text-violet-300"
         >
           <Sparkles className="h-4 w-4" />
           Explain
@@ -453,49 +453,49 @@ export default function CodeCoach({
           type="button"
           onClick={() => askCoach("improve")}
           disabled={loading}
-          className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg border border-sky-200 bg-sky-50 px-2.5 py-2 text-xs font-semibold text-sky-700 transition hover:bg-sky-100 disabled:cursor-not-allowed disabled:opacity-60 dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-300"
+          className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-sky-200 bg-sky-50 px-2.5 py-2 text-xs font-semibold text-sky-700 shadow-xs transition hover:-translate-y-0.5 hover:bg-sky-100 hover:shadow-sm disabled:pointer-events-none disabled:opacity-60 dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-300"
         >
           <Wrench className="h-4 w-4" />
           Improve
         </button>
 
-        <button
-          type="button"
-          onClick={() => askCoach("fix")}
-          disabled={loading || !hasTask || !fixUnlocked}
-          title={
-            !hasTask
-              ? "Open from a coding task to use Fix Code"
-              : fixUnlocked
+        {hasTask && (
+          <button
+            type="button"
+            onClick={() => askCoach("fix")}
+            disabled={loading || !fixUnlocked}
+            title={
+              fixUnlocked
                 ? "Generate the fixed code"
                 : "Fix Code unlocks after the progressive hints"
-          }
-          className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg bg-violet-600 px-2.5 py-2 text-xs font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 dark:disabled:bg-slate-800 dark:disabled:text-slate-500"
-        >
-          {fixUnlocked ? (
-            <WandSparkles className="h-4 w-4" />
-          ) : (
-            <LockKeyhole className="h-4 w-4" />
-          )}
-          Fix Code
-        </button>
+            }
+            className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-violet-600 px-2.5 py-2 text-xs font-semibold text-white shadow-sm shadow-violet-600/30 transition hover:-translate-y-0.5 hover:bg-violet-700 hover:shadow-md disabled:pointer-events-none disabled:translate-y-0 disabled:bg-slate-300 disabled:text-slate-500 disabled:shadow-none dark:disabled:bg-slate-800 dark:disabled:text-slate-500"
+          >
+            {fixUnlocked ? (
+              <WandSparkles className="h-4 w-4" />
+            ) : (
+              <LockKeyhole className="h-4 w-4" />
+            )}
+            Fix Code
+          </button>
+        )}
       </div>
 
       {hasTask && (
-        <div className="mt-3 rounded-lg border border-slate-200 bg-white/70 px-3 py-2 dark:border-white/10 dark:bg-white/[0.03]">
+        <div className="mt-3 rounded-2xl border border-slate-200 bg-white/80 px-3.5 py-3 dark:border-white/10 dark:bg-white/[0.03]">
           <div className="flex items-center justify-between gap-3 text-xs">
             <span className="font-semibold text-slate-700 dark:text-slate-200">
               Progressive hints
             </span>
-            <span className="text-slate-500 dark:text-slate-400">
+            <span className="rounded-full bg-slate-100 px-2 py-0.5 font-semibold text-slate-500 dark:bg-white/10 dark:text-slate-400">
               {hintsUsed}/5 used
             </span>
           </div>
-          <div className="mt-2 flex gap-1">
+          <div className="mt-2.5 flex gap-1">
             {[1, 2, 3, 4, 5].map((step) => (
               <span
                 key={step}
-                className={`h-1.5 flex-1 rounded-full ${
+                className={`h-1.5 flex-1 rounded-full transition-colors duration-300 ${
                   step <= hintsUsed
                     ? "bg-amber-500"
                     : "bg-slate-200 dark:bg-slate-800"
@@ -503,7 +503,7 @@ export default function CodeCoach({
               />
             ))}
           </div>
-          <p className="mt-2 text-[11px] leading-4 text-slate-500 dark:text-slate-400">
+          <p className="mt-2.5 text-[11px] leading-4 text-slate-500 dark:text-slate-400">
             {fixUnlocked
               ? "Fix Code is unlocked."
               : typeof remainingHints === "number"
@@ -514,7 +514,7 @@ export default function CodeCoach({
       )}
 
       {!hasTask && (
-        <p className="mt-3 rounded-lg bg-slate-50 px-3 py-2 text-[11px] leading-4 text-slate-500 dark:bg-white/[0.03] dark:text-slate-400">
+        <p className="mt-7 rounded-2xl bg-slate-50 px-3.5 py-2.5 text-[10px] leading-4 text-slate-500 dark:bg-white/[0.03] dark:text-slate-400">
           Explain and Improve work in the Playground. Hint and Fix Code are
           only available from a coding challenge.
         </p>
