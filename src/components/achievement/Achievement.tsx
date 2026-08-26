@@ -17,6 +17,10 @@ import {
   useGetMyXpTransactionsQuery,
   useGetMyBadgesQuery,
 } from "@/redux/service/achievementApi";
+import {
+  useGetMyLearningProgressQuery,
+  useGetContinueLearningQuery,
+} from "@/redux/api/course-api";
 
 const fallbackUserData: UserSummary = {
   name: "ឆាយ​ ដាវីន",
@@ -34,12 +38,6 @@ const activities: Activity[] = [
   { id: "1", icon: <Tv className="h-5 w-5" />, title: "បញ្ចប់មូលដ្ឋានគ្រឹះ JavaScript", subtitle: "រៀនមេរៀនមូលដ្ឋានទាំងអស់នៃ JS", xp: 500 },
   { id: "2", icon: <Wrench className="h-5 w-5" />, title: "បន្ថែមកម្មវិធីដំបូងរបស់អ្នក", subtitle: "បង្កើត និងដាក់ឲ្យប្រើប្រាស់កម្មវិធី", xp: 800 },
   { id: "3", icon: <Target className="h-5 w-5" />, title: "ដោះស្រាយបញ្ហាប្រឈម", subtitle: "ដោះស្រាយ ២៥ លំហាត់កូដ", xp: 600 },
-];
-
-const paths: LearningPath[] = [
-  { id: "1", name: "ចូលរៀនផ្នែក Web", status: "រួចរាល់", progressPercent: 100 },
-  { id: "2", name: "JS Foundation", status: "រៀបចំ", progressPercent: 100 },
-  { id: "3", name: "React Dev", status: "កំពុងរៀន", progressPercent: 60 },
 ];
 
 function activityTitle(sourceType?: string) {
@@ -62,6 +60,12 @@ export default function Achievement() {
     skip: !authenticated,
   });
   const badgesQuery = useGetMyBadgesQuery(undefined, { skip: !authenticated });
+  const learningProgressQuery = useGetMyLearningProgressQuery(undefined, {
+    skip: !authenticated,
+  });
+  const continueLearningQuery = useGetContinueLearningQuery(undefined, {
+    skip: !authenticated,
+  });
   const badges: AchievementBadge[] =
     badgesQuery.data?.map(({ badge, earned, currentValue, targetValue, progressPercentage }) => ({
       id: badge.id,
@@ -74,6 +78,18 @@ export default function Achievement() {
       remaining: Math.max(0, targetValue - currentValue),
       locked: !earned,
     })) ?? [];
+
+  const paths: LearningPath[] = (learningProgressQuery.data ?? []).map((p) => ({
+    id: p.courseId,
+    name: p.courseTitle,
+    status: p.status === "COMPLETED" ? "បានបញ្ចប់" : "កំពុងរៀន",
+    progressPercent: p.percentage,
+  }));
+
+  const continueHref =
+    continueLearningQuery.data?.courseId && continueLearningQuery.data?.videoId
+      ? `/courses/${continueLearningQuery.data.courseId}/learn/${continueLearningQuery.data.videoId}`
+      : "/courses";
 
   const totalXp = xpQuery.data?.totalXp ?? 0;
   const currentLevel = Math.floor(totalXp / 1000) + 1;
@@ -238,6 +254,7 @@ export default function Achievement() {
               paths={paths}
               completedCount={paths.filter((p) => p.progressPercent === 100).length}
               totalCount={paths.length}
+              continueHref={continueHref}
             />
           </CardContent>
         </Card>

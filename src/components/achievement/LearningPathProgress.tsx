@@ -8,9 +8,10 @@ interface LearningPathProgressProps {
   paths: LearningPath[];
   completedCount: number;
   totalCount: number;
+  continueHref: string;
 }
 
-export function LearningPathProgress({ paths, completedCount, totalCount }: LearningPathProgressProps) {
+export function LearningPathProgress({ paths, completedCount, totalCount, continueHref }: LearningPathProgressProps) {
   return (
     <div className="space-y-6">
       
@@ -31,6 +32,11 @@ export function LearningPathProgress({ paths, completedCount, totalCount }: Lear
 
         {/* Right Side: Learning Paths List */}
         <div className="flex-1 space-y-5 w-full">
+          {paths.length === 0 && (
+            <p className="rounded-2xl border border-dashed border-slate-300 p-6 text-center text-lg text-slate-500 dark:border-slate-700 dark:text-slate-400">
+              អ្នកមិនទាន់បានចុះឈ្មោះក្នុងវគ្គសិក្សាណាមួយនៅឡើយទេ
+            </p>
+          )}
           {paths.map((path) => {
             const isCompleted = path.progressPercent === 100;
 
@@ -80,8 +86,8 @@ export function LearningPathProgress({ paths, completedCount, totalCount }: Lear
 
       {/* Action Footer (Continue Learning Link) */}
       <div className="flex justify-end pt-2">
-        <a 
-          href="/documentation" 
+        <a
+          href={continueHref}
           className="group inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary-color hover:bg-primary-color/70
            text-white text-lg font-bold shadow-md hover:shadow-lg transition-all duration-300"
         >

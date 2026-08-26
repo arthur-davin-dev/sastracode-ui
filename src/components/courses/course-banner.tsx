@@ -301,9 +301,9 @@ export default function CourseBanner() {
                   size: "lg",
                 })}
                   group
-                  h-14
-                  rounded-xl
-                  bg-primary-color
+                  h-12
+                  rounded-full
+                  bg-[#0B2B66]
                   px-8
                   text-lg
                   font-semibold
@@ -311,8 +311,9 @@ export default function CourseBanner() {
                   shadow-sm
                   transition-all
                   duration-300
-                  hover:bg-[#001b40]
+                  hover:bg-blue-900
                   hover:text-white
+                  dark:hover:bg-blue-700
                   active:scale-[0.98]
                 `}
               >

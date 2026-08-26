@@ -41,7 +41,7 @@ export function YourStatsCard({ stats }: { stats: UserStat[] }) {
               className="flex items-center gap-3.5 p-3 rounded-2xl bg-slate-50/80 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 hover:bg-slate-100/80 dark:hover:bg-slate-800/80 transition-all duration-200"
             >
               {/* Icon Container */}
-              <div className="h-10 w-10 rounded-xl flex items-center justify-center bg-slate-200 text-amber-600 dark:text-white shrink-0">
+              <div className="h-10 w-10 rounded-xl flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-amber-600 dark:text-white shrink-0">
                 <Icon size={20} className="stroke-[2.5]" />
               </div>
 

@@ -94,4 +94,5 @@ export interface TopPerformer {
   name: string;
   xp: number;
   avatarUrl?: string;
+  userId?: string;
 }

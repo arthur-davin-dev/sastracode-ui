@@ -108,11 +108,12 @@ export default function Leaderboard() {
     { icon: "chart", value: myRank?.rank ? `#${myRank.rank}` : "—", label: "Your rank", color: "" },
   ];
 
-  const topPerformers = entries.slice(0, 3).map(({ rank, name, xp, avatarUrl }) => ({
+  const topPerformers = entries.slice(0, 3).map(({ rank, name, xp, avatarUrl, userId }) => ({
     rank,
     name,
     xp,
     avatarUrl,
+    userId,
   }));
 
   const filteredEntries = useMemo(() => {
@@ -156,6 +157,8 @@ export default function Leaderboard() {
           onTabChange={(tab) => setActiveTab(tab as SupportedPeriod)}
         />
 
+        {topPerformers.length > 0 && <TopPerformersCard performers={topPerformers} />}
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             {isLoading ? (
@@ -180,7 +183,6 @@ export default function Leaderboard() {
 
           <div className="space-y-4">
             <YourStatsCard stats={userStats} />
-            {topPerformers.length > 0 && <TopPerformersCard performers={topPerformers} />}
           </div>
         </div>
       </div>

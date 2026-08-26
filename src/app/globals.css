@@ -386,30 +386,10 @@ p {
 
 .category-scroll {
   overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .category-scroll::-webkit-scrollbar {
-  height: 6px;
-  -webkit-appearance: none;
-}
-
-.category-scroll::-webkit-scrollbar-button:single-button,
-.category-scroll::-webkit-scrollbar-button:horizontal:decrement,
-.category-scroll::-webkit-scrollbar-button:horizontal:increment {
   display: none;
-  width: 0;
-  height: 0;
-}
-
-.category-scroll::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.category-scroll::-webkit-scrollbar-thumb {
-  background-color: rgb(203 213 225); /* slate-300 */
-  border-radius: 9999px;
-}
-
-.dark .category-scroll::-webkit-scrollbar-thumb {
-  background-color: rgb(71 85 105); /* slate-600 */
 }

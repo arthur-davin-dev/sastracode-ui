@@ -107,6 +107,15 @@ const fallbackCommunity: CommunityData = {
   members: [],
 };
 
+// Only shown if /v1/community/overview is unreachable and no real verified
+// members can be loaded, so the banner still has something to render.
+const fallbackAvatars = [
+  { src: "/images/ben_thona.jpg", alt: "Ben Thona" },
+  { src: "/images/chhay_davin.jpg", alt: "Chhay Davin" },
+  { src: "/images/mon_narea.jpg", alt: "Mon Narea" },
+  { src: "/images/meng_kimleap.jpg", alt: "Meng Kimleap" },
+];
+
 function formatMemberCount(count: number | null) {
   if (count === null) return "10K";
   return new Intl.NumberFormat("en-US", {
@@ -129,16 +138,44 @@ export default function ProjectsSection() {
 
     async function loadCommunity() {
       try {
-        const response = await fetch("/api/backend/v1/community/overview?size=3", {
-          cache: "no-store",
-        });
+        // /v1/community/overview never existed on the backend (confirmed:
+        // no such controller), so this always 404'd silently and the banner
+        // fell back to 4 hardcoded stock photos every time. Build the same
+        // picture from real, already-working endpoints instead:
+        // /v1/leaderboards is public and gives real ranked (XP-earning,
+        // logged-in) users; their name/avatar comes from
+        // /v1/users/{userId}/profile, which requires the viewer to be
+        // signed in — for anonymous visitors that call 401s and the member
+        // just renders with initials instead of a name/photo.
+        const leaderboardResponse = await fetch(
+          "/api/backend/v1/leaderboards?period=GLOBAL&page=0&size=4",
+          { cache: "no-store" },
+        );
 
-        if (!response.ok) return;
+        if (!leaderboardResponse.ok) return;
 
-        const overview = await response.json();
+        const leaderboardPayload = await leaderboardResponse.json();
+        const entries: { userId: string }[] = Array.isArray(leaderboardPayload?.data?.content)
+          ? leaderboardPayload.data.content
+          : [];
+        const totalUsers = Number(leaderboardPayload?.data?.totalElements);
 
-        const totalUsers = Number(overview?.data?.totalVerifiedUsers);
-        const members = Array.isArray(overview?.data?.members) ? overview.data.members : [];
+        const members = await Promise.all(
+          entries.map(async (entry): Promise<CommunityMember> => {
+            try {
+              const profileResponse = await fetch(
+                `/api/backend/v1/users/${encodeURIComponent(entry.userId)}/profile`,
+                { cache: "no-store" },
+              );
+              if (!profileResponse.ok) return { userId: entry.userId };
+
+              const profilePayload = await profileResponse.json();
+              return { userId: entry.userId, ...profilePayload?.data };
+            } catch {
+              return { userId: entry.userId };
+            }
+          }),
+        );
 
         if (active) {
           setCommunity({
@@ -230,29 +267,37 @@ export default function ProjectsSection() {
           </div>
 
 
-          {/* Avatar Stack */}
-          {/* Avatar Stack */}
+          {/* Avatar Stack — real verified members from /v1/community/overview,
+              with the static local photos as a fallback only if that request
+              returned nothing (API down, or no verified members yet). */}
           <div className="flex items-center -space-x-2.5 shrink-0 self-end md:self-center">
-            <img
-              src="/images/ben_thona.jpg"
-              alt="Ben Thona"
-              className="inline-block h-10 w-10 rounded-full object-cover border-2 border-white dark:border-slate-900 shadow-sm"
-            />
-            <img
-              src="/images/chhay_davin.jpg"
-              alt="Chhay Davin"
-              className="inline-block h-10 w-10 rounded-full object-cover border-2 border-white dark:border-slate-900 shadow-sm"
-            />
-            <img
-              src="/images/mon_narea.jpg"
-              alt="Mon Narea"
-              className="inline-block h-10 w-10 rounded-full object-cover border-2 border-white dark:border-slate-900 shadow-sm"
-            />
-            <img
-              src="/images/meng_kimleap.jpg"
-              alt="Meng Kimleap"
-              className="inline-block h-10 w-10 rounded-full object-cover border-2 border-white dark:border-slate-900 shadow-sm"
-            />
+            {community.members.length > 0
+              ? community.members.slice(0, 4).map((member) => {
+                  const name = memberName(member);
+                  return member.avatarFileId ? (
+                    <img
+                      key={member.userId}
+                      src={`/api/v1/files/${encodeURIComponent(member.avatarFileId)}`}
+                      alt={name}
+                      className="inline-block h-10 w-10 rounded-full object-cover border-2 border-white dark:border-slate-900 shadow-sm"
+                    />
+                  ) : (
+                    <div
+                      key={member.userId}
+                      className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-100 dark:bg-indigo-900/60 text-sm font-bold text-indigo-700 dark:text-indigo-200 border-2 border-white dark:border-slate-900 shadow-sm"
+                    >
+                      {name[0]?.toUpperCase() || "U"}
+                    </div>
+                  );
+                })
+              : fallbackAvatars.map(({ src, alt }) => (
+                  <img
+                    key={alt}
+                    src={src}
+                    alt={alt}
+                    className="inline-block h-10 w-10 rounded-full object-cover border-2 border-white dark:border-slate-900 shadow-sm"
+                  />
+                ))}
 
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 dark:bg-indigo-500 text-xs font-bold text-white border-2 border-white dark:border-slate-900 shadow-sm">
               +{memberCount}

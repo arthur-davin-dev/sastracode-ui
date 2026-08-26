@@ -12,10 +12,6 @@ import type { ApiNotification } from "@/types/notification";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-/**
- * Keeps notification data live by pushing cache invalidations whenever the
- * backend broadcasts on the user's private STOMP queue, instead of polling.
- */
 export function useNotificationSocket() {
   const { data: session, status } = useSession();
   const dispatch = useAppDispatch();
