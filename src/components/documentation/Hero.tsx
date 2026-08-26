@@ -11,8 +11,7 @@ function TypingTitle({
   firstLine: string;
   secondLine: string;
 }) {
-  const FULL_TITLE = `${TITLE_FIRST_LINE}\n${TITLE_SECOND_LINE}`;
-  const [visibleTitle, setVisibleTitle] = useState("");
+  const [visibleSecondLine, setVisibleSecondLine] = useState("");
 
   useEffect(() => {
     const reduceMotion = window.matchMedia(
@@ -20,11 +19,14 @@ function TypingTitle({
     ).matches;
 
     if (reduceMotion) {
-      const titleTimer = window.setTimeout(() => setVisibleTitle(FULL_TITLE), 0);
+      const titleTimer = window.setTimeout(
+        () => setVisibleSecondLine(TITLE_SECOND_LINE),
+        0,
+      );
       return () => window.clearTimeout(titleTimer);
     }
 
-    const characters = Array.from(FULL_TITLE);
+    const characters = Array.from(TITLE_SECOND_LINE);
 
     let index = 0;
     let deleting = false;
@@ -33,7 +35,7 @@ function TypingTitle({
     const type = () => {
       index += deleting ? -1 : 1;
 
-      setVisibleTitle(characters.slice(0, index).join(""));
+      setVisibleSecondLine(characters.slice(0, index).join(""));
 
       if (!deleting && index === characters.length) {
         deleting = true;
@@ -57,10 +59,7 @@ function TypingTitle({
         window.clearTimeout(timer);
       }
     };
-  }, [FULL_TITLE]);
-
-  const hasSecondLine = visibleTitle.includes("\n");
-  const [firstLine = "", secondLine = ""] = visibleTitle.split("\n");
+  }, [TITLE_SECOND_LINE]);
 
   return (
     <div className="relative">
@@ -68,11 +67,11 @@ function TypingTitle({
         aria-hidden="true"
         className="
           invisible
+          sm:text-5xl
           text-4xl
           font-extrabold
           leading-[1.4]
           tracking-tight
-          sm:text-5xl
         "
       >
         <span className="block">{TITLE_FIRST_LINE}</span>
@@ -84,45 +83,33 @@ function TypingTitle({
         className="
           absolute
           inset-0
+          sm:text-5xl
           text-4xl
           font-extrabold
           leading-[1.4]
           tracking-tight
-          sm:text-5xl
         "
       >
-        <span aria-hidden="true" className="block text-secondary-color">
-          {firstLine}
-          {!hasSecondLine && (
-            <span
-              className="
-                ml-1
-                inline-block
-                h-[0.9em]
-                w-[3px]
-                animate-pulse
-                bg-secondary-color
-                align-[-0.06em]
-              "
-            />
-          )}
+        <span
+          aria-hidden="true"
+          className="block text-primary-color dark:text-white"
+        >
+          {TITLE_FIRST_LINE}
         </span>
 
-        <span aria-hidden="true" className="block text-primary-color">
-          {secondLine}
-          {hasSecondLine && (
-            <span
-              className="
-                ml-1
-                inline-block
-                h-[0.9em]
-                w-[3px]
-                animate-pulse
-                bg-primary-color
-                align-[-0.06em]
-              "
-            />
-          )}
+        <span aria-hidden="true" className="block text-secondary-color">
+          {visibleSecondLine}
+          <span
+            className="
+              ml-1
+              inline-block
+              h-[0.9em]
+              w-[3px]
+              animate-pulse
+              bg-primary-color
+              align-[-0.06em]
+            "
+          />
         </span>
       </h1>
     </div>
@@ -158,13 +145,12 @@ export default function Hero() {
         <p
           className="
             max-w-xl
-            text-[20px]
+            !text-[24px]
             leading-[1.8]
             text-slate-600
             transition-colors
             duration-300
             dark:text-slate-300
-            sm:text-[22px]
           "
         >
           {currentT.hero.description}

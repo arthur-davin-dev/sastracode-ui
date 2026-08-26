@@ -73,7 +73,7 @@ export default function CourseCard({ course }: CourseCardProps) {
       <div className="flex flex-1 flex-col p-5">
         
         {/* Title */}
-        <h3 className="text-[22px] font-bold text-slate-800 dark:text-slate-100 transition-colors duration-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 line-clamp-1 mb-2">
+        <h3 className="text-[22px] font-bold text-slate-800 dark:text-slate-100 transition-colors duration-300 group-hover:text-primary-color/70 dark:group-hover:text-primary-color line-clamp-1 mb-2">
           {course.title}
         </h3>
 
@@ -89,7 +89,7 @@ export default function CourseCard({ course }: CourseCardProps) {
           </div>
 
           <div className="flex shrink-0 items-center gap-2">
-            <span className="rounded-lg bg-blue-600 px-2.5 py-1 text-base font-semibold tracking-wide text-white shadow-sm">
+            <span className="rounded-full bg-primary-color px-2.5 py-1 text-base font-semibold tracking-wide text-white shadow-sm">
               ឥតគិតថ្លៃ
             </span>
             <button
@@ -98,7 +98,7 @@ export default function CourseCard({ course }: CourseCardProps) {
               disabled={bookmarkLoading}
               aria-label={bookmark ? "Remove tutorial bookmark" : "Bookmark tutorial"}
               aria-pressed={Boolean(bookmark)}
-              className="relative z-20 flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-[#002455] shadow-sm transition hover:scale-105 hover:bg-slate-50 disabled:cursor-wait disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800 dark:text-blue-400 dark:hover:bg-slate-700"
+              className="relative z-20 flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-primary-color shadow-sm transition hover:scale-105 hover:bg-slate-50 disabled:cursor-wait disabled:opacity-60 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
             >
               <Bookmark
                 className="h-4 w-4"

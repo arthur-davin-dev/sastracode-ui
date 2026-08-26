@@ -199,7 +199,7 @@ export default function DocumentationTutorials({
               className={`flex h-10 w-10 items-center justify-center rounded-full border text-lg transition-colors ${
                 currentPage === 1
                   ? "pointer-events-none border-slate-200 text-slate-300 dark:border-slate-800 dark:text-slate-700"
-                  : "border-slate-300 text-slate-600 hover:border-blue-600 hover:text-blue-600 dark:border-slate-700 dark:text-slate-300"
+                  : "border-slate-300 text-slate-600 hover:border-primary-color/70 hover:text-primary-color/70 dark:border-slate-700 dark:text-slate-300"
               }`}
             >
               <span aria-hidden="true">‹</span>
@@ -213,8 +213,8 @@ export default function DocumentationTutorials({
                 aria-current={pageNumber === currentPage ? "page" : undefined}
                 className={`flex h-10 w-10 items-center justify-center rounded-full border text-base font-semibold transition-colors ${
                   pageNumber === currentPage
-                    ? "border-primary-color bg-primary-color text-white dark:border-blue-600 dark:bg-blue-600"
-                    : "border-slate-300 bg-white text-slate-600 hover:border-blue-600 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+                    ? "border-primary-color bg-primary-color text-white dark:border-primary-color/70 dark:bg-primary-color/70"
+                    : "border-slate-300 bg-white text-slate-600 hover:border-primary-color/70 hover:text-primary-color dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
                 }`}
               >
                 {pageNumber}
