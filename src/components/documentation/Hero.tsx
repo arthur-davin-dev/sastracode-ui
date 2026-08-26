@@ -91,7 +91,8 @@ function TypingTitle({
           sm:text-5xl
         "
       >
-        <span aria-hidden="true" className="block text-secondary-color">
+        {/* Line 1: Light mode original color, Dark mode White */}
+        <span aria-hidden="true" className="block text-secondary-color dark:!text-white">
           {firstLine}
           {!hasSecondLine && (
             <span
@@ -102,13 +103,15 @@ function TypingTitle({
                 w-[3px]
                 animate-pulse
                 bg-secondary-color
+                dark:!bg-white
                 align-[-0.06em]
               "
             />
           )}
         </span>
 
-        <span aria-hidden="true" className="block text-primary-color">
+        {/* Line 2: Light mode original blue, Dark mode exact #F51518 Crimson Red */}
+        <span aria-hidden="true" className="block text-primary-color dark:!text-[#F51518]">
           {secondLine}
           {hasSecondLine && (
             <span
@@ -119,6 +122,7 @@ function TypingTitle({
                 w-[3px]
                 animate-pulse
                 bg-primary-color
+                dark:!bg-[#F51518]
                 align-[-0.06em]
               "
             />
