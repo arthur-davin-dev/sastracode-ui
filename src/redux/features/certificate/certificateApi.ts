@@ -37,6 +37,17 @@ export const certificateApi = sastraApi.injectEndpoints({
       providesTags: ["Certificate"],
     }),
 
+    // POST /api/v1/courses/{courseId}/certificate
+    issueCourseCertificate: builder.mutation<ApiResponse<Certificate>, string>({
+      query: (courseId) => ({
+        url: `/v1/courses/${encodeURIComponent(courseId)}/certificate`,
+        method: "POST",
+      }),
+      // Issuing a certificate can also flip the enrollment to COMPLETED
+      // server-side, so refresh the enrollment lists alongside certificates.
+      invalidatesTags: ["Certificate", { type: "Course", id: "MY_ENROLLMENTS" }],
+    }),
+
     // GET /api/v1/certificates/{id}
     getCertificateById: builder.query<ApiResponse<Certificate>, string>({
       query: (id) => ({
@@ -85,6 +96,7 @@ export const certificateApi = sastraApi.injectEndpoints({
 export const {
   useGetMyCertificatesQuery,
   useGetCourseCertificateQuery,
+  useIssueCourseCertificateMutation,
   useGetCertificateByIdQuery,
   useLazyGetCertificateDownloadQuery,
   useVerifyCertificateMutation,

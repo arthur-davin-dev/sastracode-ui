@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,14 +9,22 @@ import {
   CheckCircle2,
   Circle,
   Award,
-  Sparkles,
   ArrowRight,
+  Loader2,
 } from "lucide-react";
 import {
   useGetCourseByIdQuery,
   useGetCourseProgressQuery,
 } from "@/redux/api";
+import {
+  useGetCourseCertificateQuery,
+  useIssueCourseCertificateMutation,
+} from "@/redux/features/certificate/certificateApi";
 import { RequirementChecklistItem } from "@/types/certificate";
+
+// Matches the backend's rule: a certificate can be issued once course
+// progress reaches 80%, not only at 100%.
+const ISSUE_ELIGIBLE_PERCENT = 80;
 
 interface ClaimCertificateCardProps {
   courseId: string;
@@ -25,8 +35,20 @@ export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
     useGetCourseByIdQuery(courseId);
   const { data: progress, isFetching: isFetchingProgress } =
     useGetCourseProgressQuery(courseId);
+  const { data: existingCertificate, isFetching: isFetchingCertificate } =
+    useGetCourseCertificateQuery(courseId);
+  const [issueCertificate, { isLoading: isIssuing }] =
+    useIssueCourseCertificateMutation();
+  const [issueError, setIssueError] = useState<string | null>(null);
+  // Flip the button to the disabled "already received" state the instant
+  // issuance succeeds, instead of waiting on the certificate-existence
+  // query to refetch (and without needing to navigate away to see it).
+  const [justIssued, setJustIssued] = useState(false);
 
-  if ((isFetchingCourse || isFetchingProgress) && !course) {
+  if (
+    (isFetchingCourse || isFetchingProgress || isFetchingCertificate) &&
+    !course
+  ) {
     return (
       <Card className="rounded-3xl border-2 border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
         <CardContent className="flex flex-col items-center gap-6 p-8 animate-pulse">
@@ -50,14 +72,31 @@ export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
     progress?.percentage ??
       (totalVideos > 0 ? (completedVideos / totalVideos) * 100 : 0),
   );
-  const allDone = totalVideos > 0 && completedVideos >= totalVideos;
+  const allVideosCompleted = totalVideos > 0 && completedVideos >= totalVideos;
+  const canIssue = progressPercent >= ISSUE_ELIGIBLE_PERCENT;
+  const alreadyIssued = justIssued || !!existingCertificate?.data;
+  const unlocked = alreadyIssued || canIssue;
 
   const items: RequirementChecklistItem[] = [
     { label: "ចាប់ផ្តើមសិក្សាមេរៀន", completed: completedVideos > 0 },
     { label: "សិក្សាបានលើសពី ៥០%", completed: progressPercent >= 50 },
     { label: "សិក្សាបានលើសពី ៨០%", completed: progressPercent >= 80 },
-    { label: "បញ្ចប់វីដេអូទាំងអស់", completed: allDone },
+    { label: "បញ្ចប់វីដេអូទាំងអស់", completed: allVideosCompleted },
   ];
+
+  const handleIssue = async () => {
+    if (!canIssue || isIssuing) return;
+    setIssueError(null);
+    try {
+      await issueCertificate(courseId).unwrap();
+      setJustIssued(true);
+      toast.success("ទទួលបានវិញ្ញាបនបត្រដោយជោគជ័យ!");
+    } catch (error) {
+      console.error("Issue certificate error:", error);
+      setIssueError("មិនអាចទាមទារវិញ្ញាបនបត្របានទេ សូមព្យាយាមម្ដងទៀត");
+      toast.error("មិនអាចទាមទារវិញ្ញាបនបត្របានទេ");
+    }
+  };
 
   return (
     <motion.div
@@ -72,42 +111,41 @@ export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
         {/* Ambient Glow */}
         <div
           className={`absolute -top-16 -right-16 h-48 w-48 rounded-full blur-3xl transition-all duration-500 ${
-            allDone ? "bg-init-color/20" : "bg-init-color/10"
+            alreadyIssued
+              ? "bg-green-500/20"
+              : canIssue
+                ? "bg-init-color/20"
+                : "bg-init-color/10"
           }`}
         />
 
         <CardContent className="flex flex-col items-center gap-6 p-8 text-center relative z-10">
-          {/* Top Animated Icon Header */}
+          {/* Top Icon Header */}
           <div className="relative pt-2">
             <motion.div
               whileHover={{ scale: 1.05 }}
               className={`h-20 w-20 rounded-2xl flex items-center justify-center shadow-md transition-all duration-300 border ${
-                allDone
-                  ? "bg-init-color/20 border-init-color/60 text-secondary-color"
-                  : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-secondary-color"
+                alreadyIssued
+                  ? "bg-green-50 dark:bg-green-950/30 border-green-300 dark:border-green-800 text-green-600"
+                  : canIssue
+                    ? "bg-init-color/20 border-init-color/60 text-secondary-color"
+                    : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-secondary-color"
               }`}
             >
-              <Award className="h-10 w-10 text-secondary-color" />
+              {alreadyIssued ? (
+                <CheckCircle2 className="h-10 w-10 text-green-600" />
+              ) : (
+                <Award className="h-10 w-10 text-secondary-color" />
+              )}
             </motion.div>
-
-            {/* Sparkle Badge Indicator when Unlocked */}
-            {allDone && (
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="absolute -top-1 -right-1 bg-secondary-color text-white p-1.5 rounded-full shadow-md"
-              >
-                <Sparkles className="h-4 w-4 text-init-color" />
-              </motion.div>
-            )}
           </div>
 
           {/* Title & Subtitle */}
-          <div className="space-y-2 max-w-sm">
+          <div className="space-y-2 w-full max-w-sm">
             <h3 className="text-2xl font-extrabold text-primary-color dark:text-white leading-tight">
               ទាមទារវិញ្ញាបនបត្រ
             </h3>
-            <p className="text-lg font-bold text-primary-color dark:text-white truncate">
+            <p className="text-lg font-bold text-primary-color dark:text-white">
               {course.title}
             </p>
             <p className="text-lg text-primary-color dark:text-white opacity-80 leading-relaxed">
@@ -121,7 +159,7 @@ export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
               <span className="opacity-80">វឌ្ឍនភាពសិក្សា</span>
               <span
                 className={
-                  allDone ? "text-primary-color" : "text-secondary-color"
+                  unlocked ? "text-primary-color" : "text-secondary-color"
                 }
               >
                 {completedVideos} / {totalVideos} ({progressPercent}%)
@@ -162,22 +200,42 @@ export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
           </div>
 
           {/* Action Button */}
-          <div className="w-full max-w-sm pt-2">
-            <Button
-              disabled={!allDone}
-              className={`w-full h-14 rounded-2xl text-lg font-bold shadow-md transition-all duration-300 gap-2 flex items-center justify-center group ${
-                allDone
-                  ? "bg-primary-color hover:bg-blue-400 hover:text-slate-950 text-white"
-                  : "bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 cursor-not-allowed border border-slate-300 dark:border-slate-700"
-              }`}
-            >
-              <span>
-                {allDone ? "ទាមទារវិញ្ញាបនបត្រឥឡូវនេះ" : "មិនទាន់គ្រប់លក្ខខណ្ឌ"}
-              </span>
-              {allDone && (
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-              )}
-            </Button>
+          <div className="w-full max-w-sm pt-2 space-y-2">
+            {alreadyIssued ? (
+              <Button
+                disabled
+                className="w-full h-14 rounded-2xl text-lg font-bold shadow-md transition-all duration-300 gap-2 flex items-center justify-center bg-green-600 text-white opacity-90 disabled:opacity-90 cursor-not-allowed"
+              >
+                <CheckCircle2 className="h-5 w-5" />
+                <span>បានទទួលវិញ្ញាបនបត្រ</span>
+              </Button>
+            ) : (
+              <Button
+                onClick={handleIssue}
+                disabled={!canIssue || isIssuing}
+                className={`w-full h-14 rounded-2xl text-lg font-bold shadow-md transition-all duration-300 gap-2 flex items-center justify-center group ${
+                  canIssue
+                    ? "bg-primary-color hover:bg-blue-400 hover:text-slate-950 text-white"
+                    : "bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 cursor-not-allowed border border-slate-300 dark:border-slate-700"
+                }`}
+              >
+                {isIssuing ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <span>
+                    {canIssue
+                      ? "ទាមទារវិញ្ញាបនបត្រឥឡូវនេះ"
+                      : "មិនទាន់គ្រប់លក្ខខណ្ឌ"}
+                  </span>
+                )}
+                {canIssue && !isIssuing && (
+                  <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                )}
+              </Button>
+            )}
+            {issueError && (
+              <p className="text-sm font-medium text-red-600">{issueError}</p>
+            )}
           </div>
         </CardContent>
       </Card>

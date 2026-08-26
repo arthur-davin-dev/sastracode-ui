@@ -99,8 +99,8 @@ export default function CertificateViewPage({
     return (
       <div className="space-y-6 p-6">
         <div className="h-8 w-64 rounded bg-slate-100 dark:bg-slate-800 animate-pulse" />
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 h-96 rounded-3xl bg-slate-100 dark:bg-slate-800 animate-pulse" />
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div className="xl:col-span-2 h-96 rounded-3xl bg-slate-100 dark:bg-slate-800 animate-pulse" />
           <div className="h-96 rounded-3xl bg-slate-100 dark:bg-slate-800 animate-pulse" />
         </div>
       </div>
@@ -128,7 +128,8 @@ export default function CertificateViewPage({
   }
 
   const canDownload =
-    !isRevoked && !!resolveCertificateFileContentUrl(certificate.certificateFileId);
+    !isRevoked &&
+    !!resolveCertificateFileContentUrl(certificate.certificateFileId);
   const isBusy = isDownloadingPdf || isGeneratingPng;
 
   return (
@@ -147,14 +148,14 @@ export default function CertificateViewPage({
           <ChevronLeft className="h-5 w-5" /> ត្រឡប់ទៅបញ្ជីវិញ្ញាបនបត្រ
         </Link>
 
-        <div className="flex gap-3">
+        <div className="flex flex-wrap gap-3 w-full sm:w-auto">
           <DropdownMenu>
             <DropdownMenuTrigger
               render={
                 <Button
                   disabled={isBusy || !canDownload}
                   title={isRevoked ? "វិញ្ញាបនបត្រនេះត្រូវបានដកហូត" : undefined}
-                  className="h-12 px-5 gap-2 bg-primary-color hover:bg-blue-400 hover:text-slate-950 text-white text-lg font-bold shadow-md rounded-2xl transition-all disabled:opacity-60"
+                  className="h-12 px-4 sm:px-5 gap-2 flex-1 sm:flex-none justify-center bg-primary-color hover:bg-blue-400 hover:text-slate-950 text-white text-base sm:text-lg font-bold shadow-md rounded-2xl transition-all disabled:opacity-60"
                 />
               }
             >
@@ -186,7 +187,7 @@ export default function CertificateViewPage({
           <Button
             variant="outline"
             onClick={handleShare}
-            className="h-12 px-5 gap-2 text-lg font-bold rounded-2xl border-2 border-slate-200 dark:border-slate-800 text-primary-color hover:bg-slate-100"
+            className="h-12 px-4 sm:px-5 gap-2 flex-1 sm:flex-none justify-center text-base sm:text-lg font-bold rounded-2xl border-2 border-slate-200 dark:border-slate-800 text-primary-color hover:bg-slate-100"
           >
             {copied ? (
               <Check className="h-5 w-5" />
@@ -199,23 +200,38 @@ export default function CertificateViewPage({
       </motion.div>
 
       {/* Main Grid: Certificate Image Preview & Verification Side-by-Side */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Certificate Preview Image Panel */}
         <motion.div
-          className="lg:col-span-2"
+          className="xl:col-span-2"
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
           {resolveCertificateFileUrl(certificate.certificateFileId) ? (
-            <Card className="relative overflow-hidden rounded-3xl border-4 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-2xl transition-all duration-300">
+            <Card className="relative overflow-hidden rounded-3xl border-4 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 sm:p-4 shadow-2xl transition-all duration-300">
               {/* PDF content is rendered via the browser's native PDF viewer;
-                  an <img> tag cannot display PDF bytes. */}
-              <iframe
-                src={resolveCertificateFileUrl(certificate.certificateFileId)}
-                title={`${certificate.courseTitle} certificate`}
-                className="w-full aspect-[1.41/1] rounded-2xl border border-slate-100 dark:border-slate-800"
-              />
+                  an <img> tag cannot display PDF bytes. The PDF's real page
+                  ratio never matches our guessed aspect box exactly, so an
+                  equal padding frame on every side keeps the leftover space
+                  even instead of piling up on one edge. The wrapper clips
+                  overflow so the iframe can fill it edge-to-edge, and the
+                  iframe is oversized past both the right and bottom edges
+                  (Chrome's viewer keeps its own scrollbars even with
+                  #scrollbar=0, and at narrower widths it shows both a
+                  vertical and a horizontal one) so those scrollbar strips
+                  are clipped off instead of shown at any screen size. */}
+              <div className="relative w-full aspect-[1.41/1] overflow-hidden rounded-xl">
+                <iframe
+                  src={resolveCertificateFileUrl(certificate.certificateFileId)}
+                  title={`${certificate.courseTitle} certificate`}
+                  className="absolute top-0 left-0"
+                  style={{
+                    width: "calc(96% + 24px)",
+                    height: "calc(98% + 24px)",
+                  }}
+                />
+              </div>
             </Card>
           ) : (
             <CertificateImageView

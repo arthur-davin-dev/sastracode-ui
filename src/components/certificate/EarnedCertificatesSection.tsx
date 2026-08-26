@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -32,6 +32,24 @@ import {
 import type { Certificate } from "@/types/certificate";
 
 const FALLBACK_THUMBNAIL = "/images/certi.png";
+// List view's row layout needs real width to make sense, so it's only ever
+// offered (and only ever rendered) at this breakpoint and up; phones and
+// tablets always get the grid card layout.
+const DESKTOP_BREAKPOINT_QUERY = "(min-width: 1024px)";
+
+function useIsDesktopViewport() {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(DESKTOP_BREAKPOINT_QUERY);
+    const update = () => setIsDesktop(mediaQuery.matches);
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
+  }, []);
+
+  return isDesktop;
+}
 
 function formatIssuedDate(issuedAt?: string) {
   if (!issuedAt) return "";
@@ -60,15 +78,18 @@ function CertificateThumbnail({
   }
 
   return (
-    // Chrome's built-in PDF viewer keeps its own scrollbar even with
-    // #scrollbar=0, so the iframe is widened past the clipped container
-    // and the scrollbar strip falls outside the visible area.
+    // Chrome's built-in PDF viewer keeps its own scrollbars (both a
+    // vertical and a horizontal one) even with #scrollbar=0, so the iframe
+    // is anchored top-left and oversized past both the right and bottom
+    // edges; the parent's overflow-hidden clips those strips off instead of
+    // showing them, and the oversizing also makes the certificate fill the
+    // thumbnail edge-to-edge.
     <iframe
       src={fileUrl}
       title={title}
       tabIndex={-1}
-      className="h-full pointer-events-none group-hover:scale-105 transition-transform duration-300"
-      style={{ width: "calc(96% + 24px)" }}
+      className="absolute top-0 left-0 pointer-events-none group-hover:scale-105 transition-transform duration-300"
+      style={{ width: "calc(96% + 24px)", height: "calc(96% + 24px)" }}
     />
   );
 }
@@ -134,6 +155,8 @@ export function EarnedCertificatesSection() {
   const { status } = useSession();
   const isAuthenticated = status === "authenticated";
   const [view, setView] = useState<"grid" | "list">("grid");
+  const isDesktop = useIsDesktopViewport();
+  const effectiveView = isDesktop ? view : "grid";
 
   const { data, isFetching, isError, refetch } = useGetMyCertificatesQuery(
     { page: 0, size: 50 },
@@ -149,7 +172,10 @@ export function EarnedCertificatesSection() {
     e.stopPropagation();
     try {
       setBusyCertId(cert.id);
-      await downloadCertificatePdf(cert.certificateFileId, cert.certificateNumber);
+      await downloadCertificatePdf(
+        cert.certificateFileId,
+        cert.certificateNumber,
+      );
     } catch (error) {
       console.error("Certificate PDF download error:", error);
     } finally {
@@ -162,7 +188,10 @@ export function EarnedCertificatesSection() {
     e.stopPropagation();
     try {
       setBusyCertId(cert.id);
-      await downloadCertificatePng(cert.certificateFileId, cert.certificateNumber);
+      await downloadCertificatePng(
+        cert.certificateFileId,
+        cert.certificateNumber,
+      );
     } catch (error) {
       console.error("Certificate PNG export error:", error);
     } finally {
@@ -181,7 +210,7 @@ export function EarnedCertificatesSection() {
           វិញ្ញាបនបត្រដែលបានទទួល
         </CardTitle>
 
-        <div className="flex items-center gap-0.5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 rounded-lg p-1">
+        <div className="hidden lg:flex items-center gap-0.5 border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 rounded-lg p-1">
           <button
             type="button"
             aria-label="Grid view"
@@ -247,8 +276,8 @@ export function EarnedCertificatesSection() {
             {/* Dynamic Cards Container */}
             <div
               className={
-                view === "grid"
-                  ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+                effectiveView === "grid"
+                  ? "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5"
                   : "flex flex-col gap-4"
               }
             >
@@ -270,7 +299,7 @@ export function EarnedCertificatesSection() {
                         href={`/certificate/${cert.id}`}
                         className="block group"
                       >
-                        {view === "grid" ? (
+                        {effectiveView === "grid" ? (
                           /* GRID CARD VIEW */
                           <div className="relative flex flex-col justify-between h-full rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-800 transition-all duration-300">
                             {/* Image */}
@@ -299,12 +328,12 @@ export function EarnedCertificatesSection() {
 
                               <div className="border-t border-slate-100 dark:border-slate-800/80 my-2" />
 
-                              <div className="flex items-center justify-between pt-1">
-                                <div className="flex flex-col">
+                              <div className="flex items-center justify-between gap-2 pt-1">
+                                <div className="flex min-w-0 flex-1 flex-col">
                                   <span className="text-[10px] font-bold tracking-wider uppercase text-slate-400 dark:text-slate-500">
                                     Certificate ID
                                   </span>
-                                  <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 font-mono">
+                                  <span className="truncate text-sm font-semibold text-indigo-600 dark:text-indigo-400 font-mono">
                                     #{cert.certificateNumber}
                                   </span>
                                 </div>
@@ -314,14 +343,15 @@ export function EarnedCertificatesSection() {
                                   busy={busyCertId === cert.id}
                                   onDownloadPdf={handleDownloadPdf}
                                   onDownloadPng={handleDownloadPng}
+                                  className="shrink-0"
                                 />
                               </div>
                             </div>
                           </div>
                         ) : (
                           /* LIST CARD VIEW */
-                          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-800 transition-all duration-300">
-                            <div className="relative aspect-[16/10] w-full sm:w-48 overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800 shrink-0">
+                          <div className="flex flex-col lg:flex-row items-center justify-between gap-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-800 transition-all duration-300">
+                            <div className="relative aspect-[16/10] w-full lg:w-48 overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800 shrink-0">
                               <CertificateThumbnail
                                 certificateFileId={cert.certificateFileId}
                                 title={cert.courseTitle}
@@ -343,11 +373,11 @@ export function EarnedCertificatesSection() {
                               </div>
                             </div>
 
-                            <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-slate-800">
+                            <div className="flex lg:flex-col items-center lg:items-end justify-between w-full lg:w-auto lg:max-w-[9rem] pt-2 lg:pt-0 border-t lg:border-t-0 border-slate-100 dark:border-slate-800 shrink-0">
                               <span className="text-xs text-slate-400 dark:text-slate-500 uppercase font-bold">
                                 ID
                               </span>
-                              <span className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 font-mono">
+                              <span className="truncate text-sm font-semibold text-indigo-600 dark:text-indigo-400 font-mono">
                                 #{cert.certificateNumber}
                               </span>
                             </div>
