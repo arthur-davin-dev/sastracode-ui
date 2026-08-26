@@ -58,7 +58,7 @@ export function EarnedCertificateCard({
               font-semibold
               text-primary-color
               dark:bg-slate-200/95
-              dark:text-primary-100 
+              dark:text-primary-color
               shadow
               hover:bg-white
             "
@@ -75,8 +75,8 @@ export function EarnedCertificateCard({
               min-height: 72px
               line-clamp-2
               text-lg
-              text-primary-color
-              dark:text-primary-100
+              text-slate-900
+              dark:text-white
               font-bold
               leading-tight
               tracking-tight
@@ -87,7 +87,7 @@ export function EarnedCertificateCard({
 
           {/* Date + Status */}
           <div className="flex items-center justify-between">
-            <span className="text-lg text-primary-color dark:text-white text-muted-foreground">
+            <span className="text-lg text-slate-700 dark:text-slate-300">
               {certificate.date}
             </span>
 
@@ -111,7 +111,7 @@ export function EarnedCertificateCard({
           {/* Footer */}
           <div className="mt-auto flex items-center justify-between border-t pt-5">
             <div>
-              <p className="text-lg text-primary-color dark:text-white uppercase tracking-wider text-muted-foreground">
+              <p className="text-lg text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                 Certificate ID
               </p>
               <p className="text-primary-color dark:text-white  text-lg font-semibold">

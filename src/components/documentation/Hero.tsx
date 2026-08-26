@@ -68,11 +68,11 @@ function TypingTitle({
         aria-hidden="true"
         className="
           invisible
+          sm:text-5xl
           text-4xl
           font-extrabold
           leading-[1.4]
           tracking-tight
-          sm:text-5xl
         "
       >
         <span className="block">{TITLE_FIRST_LINE}</span>
@@ -84,11 +84,11 @@ function TypingTitle({
         className="
           absolute
           inset-0
+          sm:text-5xl
           text-4xl
           font-extrabold
           leading-[1.4]
           tracking-tight
-          sm:text-5xl
         "
       >
         {/* Line 1: Light mode original color, Dark mode White */}
@@ -162,13 +162,12 @@ export default function Hero() {
         <p
           className="
             max-w-xl
-            text-[20px]
+            !text-[24px]
             leading-[1.8]
             text-slate-600
             transition-colors
             duration-300
             dark:text-slate-300
-            sm:text-[22px]
           "
         >
           {currentT.hero.description}

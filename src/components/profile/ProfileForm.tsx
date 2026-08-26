@@ -452,7 +452,7 @@ export function ProfileForm({
             variant="outline"
             disabled={isUpdating}
             onClick={onCancel}
-            className="h-11 rounded-xl px-6 bg-white text-slate-700 hover:bg-primary-color/50 dark:bg-slate-950 dark:text-slate-700 dark:hover:bg-slate-800"
+            className="h-11 rounded-xl px-6 bg-white text-slate-700 hover:bg-primary-color hover:text-white dark:bg-slate-950 dark:text-slate-700 dark:hover:bg-slate-800"
           >
             <X className="mr-2 h-4 w-4" />
             បោះបង់

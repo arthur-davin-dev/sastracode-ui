@@ -16,10 +16,10 @@ export function LearningPathProgress({ paths, completedCount, totalCount, contin
     <div className="space-y-6">
       
       {/* Top Header & Main Progress Overview */}
-      <div className="flex flex-col md:flex-row items-center gap-8 p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+      <div className="flex flex-col md:flex-row items-center gap-8 p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-white/10">
         
         {/* Left Side: Completion Badge Container */}
-        <div className="flex flex-col items-center justify-center shrink-0 p-4 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 shadow-sm text-center min-w-[120px]">
+        <div className="flex flex-col items-center justify-center shrink-0 p-4 rounded-2xl bg-white dark:bg-slate-900/25 border-2 border-slate-200 dark:border-white/10 text-center min-w-[120px]">
           <XpLevelBadge level={completedCount} size={76} />
           <div className="mt-2 flex items-center gap-1 text-lg font-bold text-primary-color dark:text-white">
             <Award className="h-5 w-5 text-init-color" />
@@ -43,7 +43,7 @@ export function LearningPathProgress({ paths, completedCount, totalCount, contin
             return (
               <div 
                 key={path.id} 
-                className="space-y-2 p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xs hover:border-blue-100 transition-all duration-300 group"
+                className="space-y-2 p-4 rounded-2xl bg-white dark:bg-slate-900/25 border border-slate-100 dark:border-white/10 hover:border-blue-100 transition-all duration-300 group"
               >
                 {/* Title & Status Bar */}
                 <div className="flex justify-between items-center gap-2">

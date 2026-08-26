@@ -8,7 +8,7 @@ import { UserSummary } from "@/types/achievement";
 
 export function ProfileSummaryCard({ user }: { user: UserSummary }) {
   return (
-    <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900
+    <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-200 shadow-none dark:border-white/10 bg-white dark:bg-slate-900/30 dark:backdrop-blur-sm
     hover:border-primary-color/25 hover:-translate-y-1.5 transition-all duration-300">
       
       {/* Background Decorative Ambient Glows */}
@@ -52,7 +52,7 @@ export function ProfileSummaryCard({ user }: { user: UserSummary }) {
         </div>
 
         {/* Center Section: XP Progress Bar */}
-        <div className="w-full lg:max-w-md space-y-3 bg-slate-50 dark:bg-slate-800/50 p-5 
+        <div className="w-full lg:max-w-md space-y-3 bg-slate-50 dark:bg-slate-800/20 p-5
         rounded-2xl border border-slate-100 dark:border-slate-800">
           <div className="flex justify-between items-center text-lg font-bold">
             <span className="text-primary-color dark:text-white">

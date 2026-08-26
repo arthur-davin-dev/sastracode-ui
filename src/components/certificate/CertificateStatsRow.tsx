@@ -93,7 +93,7 @@ export function CertificateStatsRow() {
 
   const colorMap = {
     yellow: {
-      tag: "bg-init-color/20 text-primary-color dark:text-init-color border border-init/50",
+      tag: "bg-init-color/20 text-slate-900 dark:text-init-color border border-init/50",
       bar: "bg-init-color",
       iconBg: "bg-yellow-400/20 text-red-600 border border-yellow-400/50",
     },
@@ -110,7 +110,7 @@ export function CertificateStatsRow() {
         "bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/30",
     },
     gray: {
-      tag: "bg-primary-color dark:bg-primary-color text-white  border border-primary-color dark:border-slate-700",
+      tag: "bg-primary-color dark:bg-primary-color text-white border border-primary-color dark:border-slate-700",
       bar: "bg-primary-color/80 dark:bg-slate-600",
       iconBg:
         "bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-200 dark:border-slate-700",

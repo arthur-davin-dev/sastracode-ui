@@ -25,7 +25,7 @@ export function LeaderboardTabs({ activeTab, onTabChange }: LeaderboardTabsProps
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
             className={`
-              relative px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition-colors duration-200 select-none flex-1 sm:flex-none text-center
+              relative px-4 py-2 rounded-xl text-lg font-bold transition-colors duration-200 select-none flex-1 sm:flex-none text-center
               ${
                 isActive
                   ? "text-white dark:text-slate-950"

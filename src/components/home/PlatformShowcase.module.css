@@ -4,7 +4,7 @@
 
 .stageContainer {
   container-type: inline-size;
-  aspect-ratio: 1280 / 720;
+  aspect-ratio: 1280 / 820;
   border-radius: 1.2cqw;
 }
 
@@ -14,12 +14,25 @@
 
 .featureCard {
   gap: 1.15cqw;
-  padding: 1.55cqw 1.7cqw;
+  padding: 1.35cqw 1.7cqw;
   border-radius: 1.15cqw;
 
   box-shadow:
     0 0.6cqw 2cqw rgba(0, 0, 0, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.cardTitle {
+  font-size: 2.6cqw;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.35cqw;
+}
+
+.cardDescription {
+  font-size: 2.05cqw;
+  font-weight: 400;
+  line-height: 1.42;
 }
 
 .cardIconCircle {
@@ -59,6 +72,44 @@
   filter: blur(2px);
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+/* Flowing current (ចរន្ត) riding along the connector wires */
+.connectorCurrent {
+  fill: none;
+  stroke: rgba(215, 231, 255, 0.95);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 5 16;
+  filter: drop-shadow(0 0 3px rgba(140, 180, 255, 0.85));
+  animation: connectorDashFlow 1.3s linear infinite;
+}
+
+@keyframes connectorDashFlow {
+  to {
+    stroke-dashoffset: -42;
+  }
+}
+
+.connectorSpark {
+  fill: #f4f8ff;
+  filter: drop-shadow(0 0 5px rgba(150, 190, 255, 0.95));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .connectorCurrent {
+    animation: none;
+  }
+
+  .connectorSpark {
+    display: none;
+  }
+
+  .mobileFlow::after,
+  .mobileFlowRow::after {
+    animation: none;
+  }
 }
 
 .domeGlowSvg {
@@ -146,6 +197,44 @@
     0 0 10px rgba(62, 121, 255, 0.2);
 
   z-index: 0;
+}
+
+
+/* Flowing current (ចរន្ត) riding down the main trunk */
+.mobileFlow::after {
+  content: "";
+
+  position: absolute;
+
+  left: 27px;
+  top: 36px;
+  bottom: 44px;
+
+  width: 2px;
+
+  border-radius: 999px;
+
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.95) 0px,
+    rgba(255, 255, 255, 0.95) 4px,
+    transparent 4px,
+    transparent 15px
+  );
+  background-size: 2px 42px;
+
+  filter: drop-shadow(0 0 3px rgba(120, 170, 255, 0.9));
+
+  animation: mobileCurrentFlowY 1.2s linear infinite;
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes mobileCurrentFlowY {
+  to {
+    background-position: 0 42px;
+  }
 }
 
 
@@ -269,6 +358,46 @@
 }
 
 
+/* Flowing current (ចរន្ត) riding along the branch */
+.mobileFlowRow::after {
+  content: "";
+
+  position: absolute;
+
+  left: 27px;
+  top: 50%;
+
+  width: 40px;
+  height: 2px;
+
+  transform: translateY(-50%);
+
+  border-radius: 999px;
+
+  background: repeating-linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.95) 0px,
+    rgba(255, 255, 255, 0.95) 4px,
+    transparent 4px,
+    transparent 15px
+  );
+  background-size: 42px 2px;
+
+  filter: drop-shadow(0 0 3px rgba(120, 170, 255, 0.9));
+
+  animation: mobileCurrentFlowX 1.2s linear infinite;
+
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes mobileCurrentFlowX {
+  to {
+    background-position: -42px 0;
+  }
+}
+
+
 /* Small glowing junction circle */
 .mobileJunction {
   position: absolute;
@@ -307,11 +436,11 @@
   min-height: 76px;
 
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 
   gap: 12px;
 
-  padding: 11px 13px;
+  padding: 12px 13px;
 
   border-radius: 14px;
 
@@ -371,7 +500,8 @@
    ========================================================= */
 
 @media (max-width: 359px) {
-  .mobileFlow::before {
+  .mobileFlow::before,
+  .mobileFlow::after {
     left: 23px;
   }
 
@@ -402,7 +532,8 @@
     min-height: 86px;
   }
 
-  .mobileFlowRow::before {
+  .mobileFlowRow::before,
+  .mobileFlowRow::after {
     left: 23px;
     width: 34px;
   }

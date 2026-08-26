@@ -96,10 +96,10 @@ export function SkillsCard({
                 <Clock className="h-6 w-6" />
               </div>
               <div className="space-y-1">
-                <p className="text-lg font-bold text-primary-color dark:text-white">
+                <p className="text-base font-bold text-primary-color dark:text-white">
                   រយៈពេលសិក្សា {studyDuration}
                 </p>
-                <p className="text-lg font-medium text-primary-color dark:text-white opacity-80">
+                <p className="text-base font-medium text-primary-color dark:text-white opacity-80">
                   បញ្ចប់ក្នុងរយៈពេល <span className="font-bold text-secondary-color">{completionWeeks}</span>
                 </p>
               </div>

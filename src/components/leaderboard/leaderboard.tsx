@@ -127,14 +127,14 @@ export default function Leaderboard() {
   }, [entries, searchQuery]);
 
   return (
-    <div className="relative min-h-full w-full overflow-hidden rounded-3xl bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] px-4 py-6 transition-colors duration-300 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 sm:px-6 sm:py-8">
+    <div className="relative min-h-full w-full overflow-hidden rounded-3xl px-4 py-6 transition-colors duration-300 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 sm:px-6 sm:py-8">
       <div className="max-w-6xl mx-auto space-y-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col  sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-lg font-bold uppercase tracking-wider text-primary-color dark:text-white">
               Community ranking
             </p>
-            <h1 className="mt-1 text-2xl font-extrabold text-indigo-950 transition-colors duration-300 dark:text-white sm:text-3xl">
+            <h1 className="mt-1 text-2xl font-extrabold text-indigo-950 transition-colors duration-300 dark:text-white">
               តារាងចំណាត់ថ្នាក់
             </h1>
           </div>

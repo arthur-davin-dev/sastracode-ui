@@ -56,7 +56,7 @@ export function ProfileHeaderCard({ profile, isEditing = false, onEditClick }: P
   };
 
   return (
-    <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#693fe7] via-[#4338ca] to-[#18217f] px-6 py-7 text-white shadow-lg sm:px-10 sm:py-8">
+    <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary-color via-primary-color/80 to-primary-color px-6 py-7 text-white shadow-lg sm:px-10 sm:py-8">
       <div className="pointer-events-none absolute inset-0 opacity-40">
         <div className="absolute -right-28 -top-40 size-[430px] rounded-full border border-white/20" />
         <div className="absolute -right-12 -top-24 size-[340px] rounded-full border border-white/15" />

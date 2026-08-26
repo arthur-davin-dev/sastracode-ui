@@ -21,10 +21,26 @@ export const en = {
     startLearning: "Start Learning",
   }, platformShowcase: {
     features: [
-      { title: "Learn with Interactive Docs" },
-      { title: "Get AI-Powered Help" },
-      { title: "Practice & Test Your Skills" },
-      { title: "Track Progress & Earn Rewards" },
+      {
+        title: "Interactive Docs",
+        description:
+          "Browse structured docs with examples and code snippets.",
+      },
+      {
+        title: "AI-Powered Help",
+        description:
+          "Ask questions and get smart, instant code explanations.",
+      },
+      {
+        title: "Practice & Test Skills",
+        description:
+          "Solve tasks, take quizzes, and test yourself live.",
+      },
+      {
+        title: "Progress & Rewards",
+        description:
+          "Earn XP, unlock badges, and climb the leaderboard.",
+      },
     ],
   },
 

@@ -168,7 +168,7 @@ export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
 
             <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-700">
               <div
-                className="h-full rounded-full transition-all duration-500 bg-gradient-to-r from-primary-color to-blue-400"
+                className="h-full rounded-full transition-all duration-500 bg-linear-to-r from-primary-color to-blue-400"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -181,8 +181,8 @@ export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
                 key={i}
                 className={`flex items-center gap-3 p-3.5 rounded-2xl border-2 transition-all ${
                   item.completed
-                    ? "bg-init-color/10 border-init-color/40 text-primary-color"
-                    : "bg-slate-50 dark:bg-slate-800/40 border-slate-100 dark:border-slate-800 text-primary-color opacity-60"
+                    ? "bg-init-color/10 border-init-color/40 text-slate-900 dark:text-white"
+                    : "bg-slate-50 dark:bg-slate-800/40 border-slate-100 dark:border-slate-800 text-slate-700 dark:text-slate-300 opacity-60"
                 }`}
               >
                 {item.completed ? (
