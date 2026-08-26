@@ -55,6 +55,6 @@ export default function Certificate() {
       </Card> */}
 
       <ClaimCertificateSection />
-    </div>
+    </main>
   );
 }
