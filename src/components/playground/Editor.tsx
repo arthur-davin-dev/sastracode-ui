@@ -24,7 +24,6 @@ import {
   Eraser,
   Code2,
   TerminalSquare,
-  Sparkles,
   Columns2,
   Bot,
 } from "lucide-react";
@@ -784,26 +783,32 @@ root.render(
 // ======================================================
 
 export default function Editor() {
+  const searchParams = useSearchParams();
+
   // ====================================================
   // MAIN STATE
   // ====================================================
 
-  const [code, setCode] = useState(defaultLanguage.starterCode);
+  const requestedLanguageParam = searchParams.get("language");
+  const initialLanguage = requestedLanguageParam
+    ? findPlaygroundLanguage(requestedLanguageParam)
+    : defaultLanguage;
 
-  const [activeLabel, setActiveLabel] = useState(defaultLanguage.label);
+  const [code, setCode] = useState(initialLanguage.starterCode);
 
-  const [activeColor, setActiveColor] = useState(defaultLanguage.color);
+  const [activeLabel, setActiveLabel] = useState(initialLanguage.label);
 
-  const [language, setLanguage] = useState(defaultLanguage.value);
+  const [activeColor, setActiveColor] = useState(initialLanguage.color);
 
-  const [mode, setMode] = useState<PlaygroundMode>(defaultLanguage.mode);
+  const [language, setLanguage] = useState(initialLanguage.value);
+
+  const [mode, setMode] = useState<PlaygroundMode>(initialLanguage.mode);
 
   const [stdin, setStdin] = useState("Khmer Coder");
 
   const [output, setOutput] = useState<string[]>([]);
 
   const [previewHtml, setPreviewHtml] = useState("");
-  const searchParams = useSearchParams();
   const codingTaskId =
     searchParams.get("codingTaskId") ?? searchParams.get("taskId") ?? undefined;
 
