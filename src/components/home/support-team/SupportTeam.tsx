@@ -75,9 +75,9 @@ export default function SupportTeam() {
                   {/* Name & email for members positioned up on desktop */}
                   {member.offset === "up" && (
                     <div className="text-center order-2 md:order-1">
-                      <p className="text-[18px] font-semibold text-primary-color dark:text-white">
+                      <span className="text-[22px] font-semibold text-primary-color dark:text-white">
                         {name}
-                      </p>
+                      </span>
                       <p className="mt-0.5 flex items-center justify-center gap-1 text-[15px] text-slate-400 dark:text-gray-400">
                         <Mail className="h-3.5 w-3.5" /> {member.email}
                       </p>
@@ -99,9 +99,9 @@ export default function SupportTeam() {
                   {/* Name & email for members positioned down on desktop */}
                   {member.offset === "down" && (
                     <div className="text-center order-2 md:order-3">
-                      <p className="text-[18px] font-semibold text-primary-color dark:text-white">
+                      <span className="text-[22px] font-semibold text-primary-color dark:text-white">
                         {name}
-                      </p>
+                      </span>
                       <p className="mt-0.5 flex items-center justify-center gap-1 text-[15px] text-slate-400 dark:text-gray-400">
                         <Mail className="h-3.5 w-3.5" /> {member.email}
                       </p>

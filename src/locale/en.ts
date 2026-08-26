@@ -62,9 +62,9 @@ export const en = {
           "Write and run code directly in your browser with instant results — no installation required.",
       },
       // {
-      //     title: "AI Code Coach",
-      //     description:
-      //         "Get smart guidance, explanations tailored to you, and real-time debugging help.",
+      //    title: "AI Code Coach",
+      //    description:
+      //        "Get smart guidance, explanations tailored to you, and real-time debugging help.",
       // },
       {
         title: "Quiz & Assessment",
@@ -97,49 +97,49 @@ export const en = {
   },
 
   interactiveDoc: {
-  title: "Interactive Documentation",
-  description: "Learn web development interactively with examples and previews.",
-  link: "Explore Documentation",
-  
-  sections: {
-    introduction: {
-      label: "Introduction",
-      title: "Interactive Documentation",
-      description: "Learn web development interactively with examples, code previews, and AI assistance.",
-      linkText: "Explore Documentation"
-    },
-    elements: {
-      label: "HTML Elements",
-      title: "HTML Elements",
-      description: "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag.",
-      linkText: "Explore HTML Elements"
-    },
-    attributes: {
-      label: "Attributes",
-      title: "HTML Attributes",
-      description: "Provide additional information about elements, such as classes, IDs, sources, and alternative text.",
-      linkText: "Learn about Attributes"
-    },
-    semantic: {
-      label: "Semantic HTML",
-      title: "Semantic HTML",
-      description: "Use meaningful tags like <article>, <section>, and <nav> to improve accessibility and SEO.",
-      linkText: "Discover Semantic Tags"
-    },
-    forms: {
-      label: "Forms",
-      title: "HTML Forms",
-      description: "Collect user input with interactive elements like text fields, checkboxes, radios, and submit buttons.",
-      linkText: "Build Forms"
-    },
-    tables: {
-      label: "Tables",
-      title: "HTML Tables",
-      description: "Organize data into rows and columns efficiently using <table>, <tr>, <th>, and <td> tags.",
-      linkText: "View Table Guides"
+    title: "Interactive Documentation",
+    description: "Learn web development interactively with examples and previews.",
+    link: "Explore Documentation",
+
+    sections: {
+      introduction: {
+        label: "Introduction",
+        title: "Interactive Documentation",
+        description: "Learn web development interactively with examples, code previews, and AI assistance.",
+        linkText: "Explore Documentation"
+      },
+      elements: {
+        label: "HTML Elements",
+        title: "HTML Elements",
+        description: "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag.",
+        linkText: "Explore HTML Elements"
+      },
+      attributes: {
+        label: "Attributes",
+        title: "HTML Attributes",
+        description: "Provide additional information about elements, such as classes, IDs, sources, and alternative text.",
+        linkText: "Learn about Attributes"
+      },
+      semantic: {
+        label: "Semantic HTML",
+        title: "Semantic HTML",
+        description: "Use meaningful tags like <article>, <section>, and <nav> to improve accessibility and SEO.",
+        linkText: "Discover Semantic Tags"
+      },
+      forms: {
+        label: "Forms",
+        title: "HTML Forms",
+        description: "Collect user input with interactive elements like text fields, checkboxes, radios, and submit buttons.",
+        linkText: "Build Forms"
+      },
+      tables: {
+        label: "Tables",
+        title: "HTML Tables",
+        description: "Organize data into rows and columns efficiently using <table>, <tr>, <th>, and <td> tags.",
+        linkText: "View Table Guides"
+      }
     }
-  }
-},
+  },
 
   "aiChatCard": {
     "aiChat": "AI Coach helps you analyze code errors and provides hints instantly.",
@@ -590,34 +590,76 @@ export const en = {
   },
 
   docs: {
-  searchPlaceholder: "Search topics...",
-  sections: {
-    introduction: {
-      title: "Introduction",
-      description: "Get started with the basics of web development and HTML structure."
-    },
-    elements: {
-      title: "HTML Elements",
-      description: "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag."
-    },
-    attributes: {
-      title: "HTML Attributes",
-      description: "Provide additional information about elements, such as classes, IDs, sources, and alternative text."
-    },
-    semantic: {
-      title: "Semantic HTML",
-      description: "Use meaningful tags like <article>, <section>, and <nav> to improve accessibility and SEO."
-    },
-    forms: {
-      title: "Forms",
-      description: "Learn how to collect user input using input fields, buttons, and select dropdowns."
-    },
-    tables: {
-      title: "Tables",
-      description: "Organize data into structured rows and columns using standard table tags."
+    searchPlaceholder: "Search topics...",
+    sections: {
+      introduction: {
+        title: "Introduction",
+        description: "Get started with the basics of web development and HTML structure."
+      },
+      elements: {
+        title: "HTML Elements",
+        description: "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag."
+      },
+      attributes: {
+        title: "HTML Attributes",
+        description: "Provide additional information about elements, such as classes, IDs, sources, and alternative text."
+      },
+      semantic: {
+        title: "Semantic HTML",
+        description: "Use meaningful tags like <article>, <section>, and <nav> to improve accessibility and SEO."
+      },
+      forms: {
+        title: "Forms",
+        description: "Learn how to collect user input using input fields, buttons, and select dropdowns."
+      },
+      tables: {
+        title: "Tables",
+        description: "Organize data into structured rows and columns using standard table tags."
+      }
     }
-  }
-},
+  },
+
+  featuresProcess: {
+    header: {
+      title: "Our Proven 4-Step Learning Pathway",
+      subtitle:
+        "From your very first lesson to earning an official credential, follow our structured path to master new tech skills.",
+    },
+    steps: [
+      {
+        id: 1,
+        stepLabel: "1",
+        title: "Video-Led Courses",
+        description: "Expert-led HD video lessons with step-by-step guidance.",
+        badge: "24/7 Access",
+        buttonText: "Explore Courses",
+      },
+      {
+        id: 2,
+        stepLabel: "2",
+        title: "Flexible Learning Paths",
+        description: "Learn at your own pace across all devices.",
+        badge: "Self-Paced",
+        buttonText: "Plan My Path",
+      },
+      {
+        id: 3,
+        stepLabel: "3",
+        title: "Real-World Assessments",
+        description: "Validate skills with quizzes and real code challenges.",
+        badge: "Hands-on",
+        buttonText: "Practice Skills",
+      },
+      {
+        id: 4,
+        stepLabel: "4",
+        title: "Earn Certification",
+        description: "Get official credentials upon completing every course.",
+        badge: "Official Credential",
+        buttonText: "Start Certification",
+      },
+    ],
+  },
 
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.
   footer: {

@@ -299,14 +299,14 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
                     mt-4
                     w-fit
                     rounded-md
-                    bg-blue-600 dark:bg-blue-500
+                    bg-primary-color dark:bg-blue-500
                     px-3
                     py-2
                     text-xs
                     font-medium
                     text-white
                     transition-all
-                    hover:bg-blue-700 dark:hover:bg-blue-600
+                    hover:bg-primary-color/80 dark:hover:bg-blue-600
                   "
                 >
                   Action
@@ -317,14 +317,14 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
             <button
               className="
                 rounded-lg
-                bg-indigo-600 dark:bg-indigo-500
+                bg-primary-color dark:bg-blue-500
                 px-5
                 py-2
                 text-xs
                 font-medium
                 text-white
                 transition-all
-                hover:bg-indigo-700 dark:hover:bg-indigo-600
+                hover:bg-primary-color/80 dark:hover:bg-blue-600
               "
             >
               Run

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "@/hooks/useTranslations";
 
 const TECH_ITEMS = [
@@ -15,6 +15,11 @@ const TECH_ITEMS = [
 
 export default function TechStack() {
   const currentT = useTranslation();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   const displayItems = [
     ...TECH_ITEMS,
@@ -53,28 +58,41 @@ export default function TechStack() {
           </p>
         </div>
 
-        {/* Marquee Track */}
-        <div className="animate-marquee-rtl py-4">
-          {displayItems.map((item, index) => (
-            <div
-              key={index}
-              className="tech-item group mx-7 flex shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 transition-transform duration-200 ease-out hover:-translate-y-1 hover:scale-110"
-            >
-              {/* Icon Container */}
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 shadow-sm transition-all duration-200 group-hover:border-slate-200 dark:group-hover:border-slate-700 group-hover:shadow-lg">
-                <img
-                  src={item.icon}
-                  alt={item.name}
-                  className="h-8 w-8 object-contain"
-                />
-              </div>
-              {/* Title Label */}
-              <span className="text-xs font-medium text-primary-color dark:text-white transition-colors duration-200 group-hover:font-semibold group-hover:text-slate-900 dark:group-hover:text-white">
-                {item.name}
-              </span>
+        {/* Marquee Track / Skeleton Loader */}
+        {!isLoaded ? (
+          <div className="flex w-full overflow-hidden py-4 justify-center">
+            <div className="flex w-max space-x-7 animate-pulse">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="flex flex-col items-center justify-center gap-2.5 shrink-0">
+                  <div className="h-16 w-16 rounded-2xl bg-slate-200 dark:bg-slate-700" />
+                  <div className="h-3 w-12 rounded bg-slate-200 dark:bg-slate-700" />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <div className="flex w-max animate-marquee-rtl py-4">
+            {displayItems.map((item, index) => (
+              <div
+                key={index}
+                className="tech-item group mx-7 flex shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 transition-transform duration-200 ease-out hover:-translate-y-1 hover:scale-110"
+              >
+                {/* Icon Container */}
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-100 dark:border-slate-700 bg-white dark:bg-slate-800 p-3 shadow-sm transition-all duration-200 group-hover:border-slate-200 dark:group-hover:border-slate-700 group-hover:shadow-lg">
+                  <img
+                    src={item.icon}
+                    alt={item.name}
+                    className="h-8 w-8 object-contain"
+                  />
+                </div>
+                {/* Title Label */}
+                <span className="text-xs font-medium text-primary-color dark:text-white transition-colors duration-200 group-hover:font-semibold group-hover:text-slate-900 dark:group-hover:text-white">
+                  {item.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
     </>
   );

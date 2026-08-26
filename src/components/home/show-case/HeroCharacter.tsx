@@ -53,11 +53,11 @@ export default function HeroCharacter() {
 
     return parts.map((part, i) =>
       part && "SastraCode".startsWith(part) ? (
-        <span key={i} className="text-secondary-color dark:text-secondary-color">
+        <span key={i} className="text-secondary-color dark:text-primary-color">
           {part}
         </span>
       ) : (
-        <span key={i} className="text-gray-900 dark:text-white">
+        <span key={i} className="text-primary-color dark:text-white">
           {part}
         </span>
       ),
@@ -73,8 +73,8 @@ export default function HeroCharacter() {
         <div className="pointer-events-none absolute bottom-0 right-0 h-10 w-10 rotate-180 rounded-tl-2xl border-l-[6px] border-t-[6px] border-[#ff383c] dark:border-red-500 sm:h-14 sm:w-14 sm:border-l-8 sm:border-t-8 lg:h-21.75 lg:w-21.75 lg:border-l-14 lg:border-t-14"></div>
         <div className="grid items-center gap-12 p-8 sm:p-10 lg:grid-cols-2 lg:p-12">
           {/* Left Column: Text & Content */}
-          <div className="space-y-4 sm:space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-[13px] border border-primary-color bg-primary-color px-4 py-2 text-white transition-all duration-300 hover:opacity-90 dark:border-primary-color dark:bg-primary-color dark:text-white">
+          <div className="flex flex-col items-start space-y-4 sm:space-y-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary-color bg-primary-color px-4 py-2 text-white transition-all duration-300 hover:opacity-90 dark:border-primary-color dark:bg-primary-color dark:text-white">
               <span className="size-1.5 rounded-full bg-white"></span>
               <span className="font-khmer text-lg text-white">
                 {currentT.showCase.heroCharacter.badge}
@@ -83,7 +83,7 @@ export default function HeroCharacter() {
 
             <h2
               aria-label={title}
-              className="font-khmer text-4xl font-medium leading-tight transition-colors duration-300 sm:text-5xl"
+              className="font-khmer text-[48px] font-medium leading-tight transition-colors duration-300"
             >
               <span aria-hidden="true">
                 {renderFormattedTitle(visibleTitle)}
@@ -94,13 +94,14 @@ export default function HeroCharacter() {
               />
             </h2>
 
-            <p className="max-w-md font-khmer text-lg leading-8 text-black/80 dark:text-gray-300 transition-colors duration-300">
+            {/* Span element with 24px font size */}
+            <span className="block max-w-md font-khmer text-[24px] leading-snug text-black/80 dark:text-gray-300 transition-colors duration-300">
               {currentT.showCase.heroCharacter.description}
-            </p>
+            </span>
 
             <Link
               href="/playground/editor"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary-color px-5 py-3 text-sm font-medium text-white transition-all duration-300 hover:opacity-90 dark:bg-primary-color dark:text-white dark:hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-full bg-primary-color px-5 py-3 text-sm font-medium text-white transition-all duration-300 hover:opacity-90 dark:bg-primary-color dark:text-white dark:hover:opacity-90"
             >
               <img
                 src="/home/svg/coding.svg"

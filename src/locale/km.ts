@@ -102,50 +102,50 @@ export const km = {
   },
 
   interactiveDoc: {
-  title: "ឯកសារបង្រៀនអន្តរកម្ម",
-  description: "រៀនអភិវឌ្ឍន៍វេបសាយតាមបែបអន្តរកម្មជាមួយឧទាហរណ៍ និងការមើលកូដផ្ទាល់។",
-  link: "ស្វែងយល់បន្ថែម",
-  sections: {
-    introduction: {
-      label: "សេចក្តីផ្តើម",
-      title: "ឯកសារបង្រៀនអន្តរកម្ម",
-      description: "រៀនអភិវឌ្ឍន៍វេបសាយតាមបែបអន្តរកម្មជាមួយឧទាហរណ៍ ការមើលកូដផ្ទាល់ និងការជួយពី AI។",
-      linkText: "ស្វែងយល់បន្ថែម"
-    },
-    elements: {
-      label: "ធាតុ HTML",
-      title: "ធាតុ HTML (Elements)",
-      description: "សិក្សាអំពីគ្រឹះនៃទំព័រវេបសាយ។ ធាតុនិមួយៗផ្សំឡើងពី start tag, មាតិកា, និង end tag។",
-      linkText: "ស្វែងយល់អំពីធាតុ HTML"
-    },
-    attributes: {
-      label: "លក្ខណៈ",
-      title: "លក្ខណៈ HTML (Attributes)",
-      description: "ផ្តល់ព័ត៌មានបន្ថែមអំពីធាតុ HTML ដូចជា class, ID, source, និង alt text។",
-      linkText: "រៀនអំពី Attributes"
-    },
-    semantic: {
-      label: "Semantic HTML",
-      title: "Semantic HTML",
-      description: "ប្រើប្រាស់ tag ដែលមានន័យច្បាស់លាស់ដូចជា <article>, <section>, និង <nav> ដើម្បីពង្រឹង Accessibility និង SEO។",
-      linkText: "ស្វែងយល់ពី Semantic Tags"
-    },
-    forms: {
-      label: "ទម្រង់ (Forms)",
-      title: "ទម្រង់ HTML (Forms)",
-      description: "ប្រមូលទិន្នន័យពីអ្នកប្រើប្រាស់ជាមួយធាតុអន្តរកម្មដូចជា text field, checkbox, radio, និងប៊ូតុង submit។",
-      linkText: "បង្កើតទម្រង់"
-    },
-    tables: {
-      label: "តារាង (Tables)",
-      title: "តារាង HTML (Tables)",
-      description: "រៀបចំទិន្នន័យជាជួរដេក និងជួរឈរដោយប្រកបដោយប្រសិទ្ធភាពដោយប្រើ <table>, <tr>, <th>, និង <td>។",
-      linkText: "មើលការណែនាំតារាង"
+    title: "ឯកសារបង្រៀនអន្តរកម្ម",
+    description: "រៀនអភិវឌ្ឍន៍វេបសាយតាមបែបអន្តរកម្មជាមួយឧទាហរណ៍ និងការមើលកូដផ្ទាល់។",
+    link: "ស្វែងយល់បន្ថែម",
+    sections: {
+      introduction: {
+        label: "សេចក្តីផ្តើម",
+        title: "ឯកសារបង្រៀនអន្តរកម្ម",
+        description: "រៀនអភិវឌ្ឍន៍វេបសាយតាមបែបអន្តរកម្មជាមួយឧទាហរណ៍ ការមើលកូដផ្ទាល់ និងការជួយពី AI។",
+        linkText: "ស្វែងយល់បន្ថែម"
+      },
+      elements: {
+        label: "ធាតុ HTML",
+        title: "ធាតុ HTML (Elements)",
+        description: "សិក្សាអំពីគ្រឹះនៃទំព័រវេបសាយ។ ធាតុនិមួយៗផ្សំឡើងពី start tag, មាតិកា, និង end tag។",
+        linkText: "ស្វែងយល់អំពីធាតុ HTML"
+      },
+      attributes: {
+        label: "លក្ខណៈ",
+        title: "លក្ខណៈ HTML (Attributes)",
+        description: "ផ្តល់ព័ត៌មានបន្ថែមអំពីធាតុ HTML ដូចជា class, ID, source, និង alt text។",
+        linkText: "រៀនអំពី Attributes"
+      },
+      semantic: {
+        label: "Semantic HTML",
+        title: "Semantic HTML",
+        description: "ប្រើប្រាស់ tag ដែលមានន័យច្បាស់លាស់ដូចជា <article>, <section>, និង <nav> ដើម្បីពង្រឹង Accessibility និង SEO។",
+        linkText: "ស្វែងយល់ពី Semantic Tags"
+      },
+      forms: {
+        label: "ទម្រង់ (Forms)",
+        title: "ទម្រង់ HTML (Forms)",
+        description: "ប្រមូលទិន្នន័យពីអ្នកប្រើប្រាស់ជាមួយធាតុអន្តរកម្មដូចជា text field, checkbox, radio, និងប៊ូតុង submit។",
+        linkText: "បង្កើតទម្រង់"
+      },
+      tables: {
+        label: "តារាង (Tables)",
+        title: "តារាង HTML (Tables)",
+        description: "រៀបចំទិន្នន័យជាជួរដេក និងជួរឈរដោយប្រកបដោយប្រសិទ្ធភាពដោយប្រើ <table>, <tr>, <th>, និង <td>។",
+        linkText: "មើលការណែនាំតារាង"
+      }
     }
-  }
-},
+  },
 
-"aiChatCard": {
+  "aiChatCard": {
     "aiChat": "គ្រូបង្វឹក AI ជួយអ្នកវិភាគកំហុសកូដ និងផ្តល់ជាការណែនាំភ្លាមៗ។",
     "userRole": "អ្នក",
     "userQuestion": "ហេតុអ្វីបានជាប៊ូតុងរបស់ខ្ញុំមិនដំណើរការ?",
@@ -155,7 +155,7 @@ export const km = {
     "hint2Title": "ការណែនាំទី ២",
     "hint2TextPrefix": "ប្រាកដថាប៊ូតុងស្ថិតនៅខាងក្នុងស្លាក",
     "hint2TextSuffix": "។",
-    "successText": "មើលទៅល្អហើយ! សាកល្បងរ៉ាន់ម្តងទៀត។"
+    "successText": "មើលទៅល្អហើយ! សាកល្បងរ៉ាន់ម្តងទៀត。"
   },
 
   resultAndRewards: {
@@ -183,6 +183,7 @@ export const km = {
       ctaLabel: "ចាប់ផ្តើមរៀន",
     },
   },
+
   showCase: {
     heroCharacter: {
       badge: "ដំណើរឆ្ពោះទៅរកអនាគត",
@@ -192,7 +193,7 @@ export const km = {
       title3: "Code",
 
       description:
-        "ពីអ្នកចាប់ផ្តើមដំបូង ទៅជាអ្នកអភិវឌ្ឍន៍ជំនាញ - មេរៀនងាយយល់, ប្រកួតប្រជែង, រៀនបែបកម្សាន្ត,  ពុំចាំបាច់ដំឡើងកម្មវិធីស្មុគស្មាញសម្រាប់ run code",
+        "ពីអ្នកចាប់ផ្តើមដំបូង ទៅជាអ្នកអភិវឌ្ឍន៍ជំនាញ - មេរៀនងាយយល់, ប្រកួតប្រជែង, រៀនបែបកម្សាន្ត, ពុំចាំបាច់ដំឡើងកម្មវិធីស្មុគស្មាញសម្រាប់ run code",
 
       button: "សាកល្បង coding",
     },
@@ -208,12 +209,15 @@ export const km = {
       liveCoding: "រៀនបានគ្រប់ពេលនិងគ្រប់ទីកន្លែង",
     },
   },
+
   technologyStack: {
     badge: "បច្ចេកវិទ្យាដែលត្រូវសិក្សា",
 
     title1: "កន្លែងសរសេរ និងសាកល្បងកូដ",
     description: "បច្ចេកវិទ្យាទំនើបៗជំរុញបទពិសោធន៍សិក្សាជំនាន់ក្រោយ។",
-  }, tutorials: {
+  },
+
+  tutorials: {
     loadingLabel: "កំពុងទាញយកមេរៀន",
     errorMessage: "មិនអាចទាញយកមេរៀនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
     retry: "ព្យាយាមម្ដងទៀត",
@@ -226,12 +230,16 @@ export const km = {
       recommended: "មេរៀនសិក្សាអនុសាសន៍",
       popular: "មេរៀនពេញនិយម",
     },
-  }, hero: {
+  },
+
+  hero: {
     titleFirstLine: "មេរៀនបច្ចេកវិទ្យាព័ត៌មានវិទ្យា",
     titleSecondLine: "(IT) ជាភាសាខ្មែរ",
     description:
       "សិក្សាពីមូលដ្ឋានគ្រឹះនៃការសរសេរកូដ ការរចនា និងអភិវឌ្ឍគេហទំព័រ ការដោះស្រាយបញ្ហា មូលដ្ឋាននៃទិន្នន័យ បញ្ញាសិប្បនិម្មិត (AI) ប្រព័ន្ធសន្តិសុខសាយប័រ វិទ្យាសាស្ត្រទិន្នន័យ និងបច្ចេកវិទ្យាព័ត៌មានវិទ្យា (IT) ថ្មីៗជាច្រើនទៀត រហូតដល់ក្លាយខ្លួនជាអ្នកជំនាញ និងមានអាជីពវិជ្ជាជីវៈ។",
-  }, courses: {
+  },
+
+  courses: {
     banner: {
       welcomeText: "សូមស្វាគមន៍មកកាន់ Sastra Code",
       titleFirstLine: "រៀនសរសេរកូដជាភាសាខ្មែរ",
@@ -255,7 +263,8 @@ export const km = {
       popular: "វគ្គសិក្សាពេញនិយម",
       searchResults: "លទ្ធផលស្វែងរក",
       allCourses: "ថ្នាក់រៀនទាំងអស់",
-    }, card: {
+    },
+    card: {
       viewCourse: "មើលវគ្គសិក្សា",
       privateCourse: "វគ្គសិក្សាឯកជន",
     },
@@ -532,7 +541,6 @@ export const km = {
     ],
   },
 
-  // ដាក់​ transaltion ឲនៅពីលើ footer។។។​ សូមអរគុណ
   homeCourses: {
     new: "វគ្គសិក្សាថ្មីៗ",
     recommended: "វគ្គសិក្សាណែនាំ",
@@ -564,43 +572,85 @@ export const km = {
   },
 
   "tech-stack": {
-  "title": "កន្លែងសម្រាប់អនុវត្តកូដដែលគាំទ្រ",
-  "subtitle": "សរសេរ ប្រតិបត្តិការ និងតេស្តកូដរបស់អ្នកដោយផ្ទាល់នៅលើកម្មវិធីរុករក តាមភាសា និង Framework ល្បីៗ"
-},
+    "title": "កន្លែងសម្រាប់អនុវត្តកូដដែលគាំទ្រ",
+    "subtitle": "សរសេរ ប្រតិបត្តិការ និងតេស្តកូដរបស់អ្នកដោយផ្ទាល់នៅលើកម្មវិធីរុករក តាមភាសា និង Framework ល្បីៗ"
+  },
 
-docs: {
-  searchPlaceholder: "ស្វែងរកប្រធានបទ...",
-  sections: {
-    introduction: {
-      title: "សេចក្តីផ្តើម",
-      description: "ចាប់ផ្តើមជាមួយមូលដ្ឋានគ្រឹះនៃការអភិវឌ្ឍវេបសាយ និងរចនាសម្ព័ន្ធ HTML។"
-    },
-    elements: {
-      title: "ធាតុ HTML (Elements)",
-      description: "សិក្សាអំពីគ្រឹះនៃទំព័រវេបសាយ។ ធាតុនិមួយៗផ្សំឡើងពី start tag, មាតិកា, និង end tag។"
-    },
-    attributes: {
-      title: "លក្ខណៈ HTML (Attributes)",
-      description: "ផ្តល់ព័ត៌មានបន្ថែមអំពីធាតុ HTML ដូចជា class, ID, source, និង alt text។"
-    },
-    semantic: {
-      title: "Semantic HTML",
-      description: "ប្រើប្រាស់ tag ដែលមានន័យច្បាស់លាស់ដូចជា <article>, <section>, និង <nav> ដើម្បីពង្រឹង Accessibility និង SEO។"
-    },
-    forms: {
-      title: "ទម្រង់ (Forms)",
-      description: "រៀនពីរបៀបទទួលទិន្នន័យពីអ្នកប្រើប្រាស់តាមរយៈ Input, Button, និង Select dropdown។"
-    },
-    tables: {
-      title: "តារាង (Tables)",
-      description: "រៀបចំទិន្នន័យជាជួរដេក និងជួរឈរដោយប្រើប្រាស់ tag តារាងស្តង់ដារ។"
+  docs: {
+    searchPlaceholder: "ស្វែងរកប្រធានបទ...",
+    sections: {
+      introduction: {
+        title: "សេចក្តីផ្តើម",
+        description: "ចាប់ផ្តើមជាមួយមូលដ្ឋានគ្រឹះនៃការអភិវឌ្ឍវេបសាយ និងរចនាសម្ព័ន្ធ HTML।"
+      },
+      elements: {
+        title: "ធាតុ HTML (Elements)",
+        description: "សិក្សាអំពីគ្រឹះនៃទំព័រវេបសាយ។ ធាតុនិមួយៗផ្សំឡើងពី start tag, មាតិកា, និង end tag।"
+      },
+      attributes: {
+        title: "លក្ខណៈ HTML (Attributes)",
+        description: "ផ្តល់ព័ត៌មានបន្ថែមអំពីធាតុ HTML ដូចជា class, ID, source, និង alt text।"
+      },
+      semantic: {
+        title: "Semantic HTML",
+        description: "ប្រើប្រាស់ tag ដែលមានន័យច្បាស់លាស់ដូចជា <article>, <section>, និង <nav> ដើម្បីពង្រឹង Accessibility និង SEO।"
+      },
+      forms: {
+        title: "ទម្រង់ (Forms)",
+        description: "រៀនពីរបៀបទទួលទិន្នន័យពីអ្នកប្រើប្រាស់តាមរយៈ Input, Button, និង Select dropdown।"
+      },
+      tables: {
+        title: "តារាង (Tables)",
+        description: "រៀបចំទិន្នន័យជាជួរដេក និងជួរឈរដោយប្រើប្រាស់ tag តារាងស្តង់ដារ।"
+      }
     }
-  }
-},
+  },
+
+  featuresProcess: {
+    header: {
+      title: "ផ្លូវសិក្សា ៤ ជំហានដែលច្បាស់លាស់",
+      subtitle:
+        "ចាប់ពីមេរៀនដំបូងរបស់អ្នក រហូតដល់ទទួលបានវិញ្ញាបនបត្រផ្លូវការ សូមដើរតាមផ្លូវដែលបានរៀបចំរបស់យើងដើម្បីស្ទាត់ជំនាញបច្ចេកវិទ្យាថ្មីៗ។",
+    },
+    steps: [
+      {
+        id: 1,
+        stepLabel: "1",
+        title: "វគ្គសិក្សាវីដេអូដឹកនាំដោយអ្នកជំនាញ",
+        description: "មេរៀនវីដេអូ HD ដឹកនាំដោយអ្នកជំនាញ ជាមួយការណែនាំជាជំហានៗ។",
+        badge: "ចូលរៀនបាន ២៤/៧",
+        buttonText: "ស្វែងរកវគ្គសិក្សា",
+      },
+      {
+        id: 2,
+        stepLabel: "2",
+        title: "ផ្លូវសិក្សាដែលមានភាពបត់បែន",
+        description: "រៀនតាមល្បឿនផ្ទាល់ខ្លួនរបស់អ្នកនៅលើគ្រប់ឧបករណ៍។",
+        badge: "រៀនតាមល្បឿនខ្លួនឯង",
+        buttonText: "រៀបចំផែនការសិក្សា",
+      },
+      {
+        id: 3,
+        stepLabel: "3",
+        title: "ការវាយតម្លៃជាក់ស្តែង",
+        description: "បញ្ជាក់សមត្ថភាព និងជំនាញតាមរយៈកម្រងសំណួរ និងលំហាត់កូដជាក់ស្តែង។",
+        badge: "អនុវត្តផ្ទាល់",
+        buttonText: "អនុវត្តជំនាញ",
+      },
+      {
+        id: 4,
+        stepLabel: "4",
+        title: "ទទួលបានវិញ្ញាបនបត្រ",
+        description: "ទទួលបានវិញ្ញាបនបត្រផ្លូវការបន្ទាប់ពីបញ្ចប់វគ្គសិក្សានីមួយៗ។",
+        badge: "វិញ្ញាបនបត្រផ្លូវការ",
+        buttonText: "ចាប់ផ្តើមទទួលវិញ្ញាបនបត្រ",
+      },
+    ],
+  },
 
   footer: {
     description:
-      "បង្កើតឡើងដើម្បីលើកកម្ពស់អ្នកអភិវឌ្ឍន៍ តាមរយៈមាតិកាបច្ចេកវិទ្យាដែលមានគុណភាព និងងាយយល់។",
+      "បង្កើតឡើងដើម្បីលើកកម្ពស់អ្នកអភិវឌ្ឍន៍ តាមរយៈមាតិការបច្ចេកវិទ្យាដែលមានគុណភាព និងងាយយល់។",
 
     quickLinks: {
       title: "តំណភ្ជាប់រហ័ស",
