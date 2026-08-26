@@ -104,7 +104,8 @@ export default function Banner() {
           {/* LEFT */}
 
           <div className="text-center lg:text-left">
-            <GlowButton onClick={() => {}}>
+            <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+              <GlowButton onClick={() => {}}>
               {/* <div className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border bg-gradient-to-r from-primary-color/50 to-secondary-color/80 text-white border-blue-600/15 bg-blue-100 px-5 py-3 text-lg  dark:bg-gradient-to-r dark:from-primary-color dark:to-secondary-color dark:bg-clip-text dark:text-transparent font-bold shadow-sm transition-colors dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 sm:px-6 "> */}
               {/* <span className="mr-2 h-3 w-3 rounded-full bg-init-color "></span> */}
               {currentT.banner.freeLearning}
@@ -114,6 +115,8 @@ export default function Banner() {
               <span className="mr-2 h-3 w-3 rounded-full bg-init-color "></span>
               {currentT.banner.freeLearning}
             </div> */}
+              <Stats />
+            </div>
 
             <TypingTitle
               key={`${currentT.banner.title1}-${currentT.banner.title2}`}
@@ -130,13 +133,11 @@ export default function Banner() {
             <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
 
               <Link
-                href="/documentation"
+                href="/courses"
                 className="min-w-[12rem] lg:min-w-[16rem] rounded-full bg-[#0B2B66]  dark:text-white-800  px-6 sm:px-10 py-3 sm:py-4 text-xs sm:text-base font-semibold text-white hover:bg-blue-900 dark:hover:bg-blue-700 transition-colors text-center"
               >
                 {currentT.banner.start}
               </Link>
-
-              <Stats />
 
               {/* <button
                 className="min-w-[8rem] lg:min-w-[10rem] rounded-[16px] border border-gray-300 dark:border-gray-600 px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-center"

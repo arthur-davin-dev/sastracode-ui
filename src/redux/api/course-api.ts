@@ -14,6 +14,13 @@ import type {
 
 const ALL_PAGE_SIZE = 100;
 
+export interface CourseLearningProgress {
+  courseId: string;
+  courseTitle: string;
+  status: "ACTIVE" | "COMPLETED" | "CANCELLED";
+  percentage: number;
+}
+
 function courseTag(id: string) {
   return { type: "Course" as const, id };
 }
@@ -167,6 +174,52 @@ export const courseApi = sastraApi.injectEndpoints({
       providesTags: (_result, _error, courseId) => [courseTag(courseId)],
     }),
 
+    /**
+     * Combines each active enrollment with its course-level progress so the
+     * achievement page can render a per-course completion bar without the
+     * caller juggling one useGetCourseProgressQuery per row.
+     */
+    getMyLearningProgress: builder.query<CourseLearningProgress[], void>({
+      async queryFn(_arg, _api, _extra, baseQuery) {
+        const enrollmentsResult = await baseQuery({
+          url: "/v1/users/me/enrollments",
+          params: { page: 0, size: ALL_PAGE_SIZE },
+        });
+
+        if (enrollmentsResult.error) {
+          return { error: enrollmentsResult.error };
+        }
+
+        const enrollments = (
+          (enrollmentsResult.data as PagedResponseEnrollmentResponse).content ?? []
+        ).filter((enrollment) => enrollment.status !== "CANCELLED");
+
+        const progress = await Promise.all(
+          enrollments.map(async (enrollment) => {
+            const result = await baseQuery(
+              `/v1/courses/${encodeURIComponent(enrollment.courseId)}/progress`,
+            );
+            const data = result.data as CourseProgressResponse | undefined;
+
+            return {
+              courseId: enrollment.courseId,
+              courseTitle: enrollment.courseTitle ?? "",
+              status: enrollment.status ?? "ACTIVE",
+              percentage: Math.round(
+                enrollment.status === "COMPLETED" ? 100 : data?.percentage ?? 0,
+              ),
+            };
+          }),
+        );
+
+        return { data: progress };
+      },
+      providesTags: (result) => [
+        { type: "Course", id: "MY_LEARNING_PROGRESS" },
+        ...(result?.map((p) => courseTag(p.courseId)) ?? []),
+      ],
+    }),
+
     enrollCourse: builder.mutation<EnrollmentResponse, string>({
       query: (courseId) => ({
         url: `/v1/courses/${encodeURIComponent(courseId)}/enroll`,
@@ -200,6 +253,7 @@ export const {
   useGetMyEnrollmentsQuery,
   useGetContinueLearningQuery,
   useGetCourseProgressQuery,
+  useGetMyLearningProgressQuery,
   useEnrollCourseMutation,
   useCancelEnrollmentMutation,
 } = courseApi;
