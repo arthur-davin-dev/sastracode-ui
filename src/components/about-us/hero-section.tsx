@@ -173,14 +173,6 @@ export default function AboutUs() {
               clipPath: "polygon(0 45%, 100% 0, 100% 100%, 0 100%)",
             }}
           >
-            <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <span
-                  key={i}
-                  className="h-1.5 w-1.5 rounded-full bg-white/70"
-                />
-              ))}
-            </div>
           </div>
 
           <div className="absolute -left-2 top-10 h-2/3 w-1.5 rounded-full bg-[#B8081C]" />

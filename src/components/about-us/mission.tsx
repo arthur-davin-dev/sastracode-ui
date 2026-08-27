@@ -10,7 +10,7 @@ export default function MissionVision() {
   const { mission } = useTranslation();
 
   return (
-    <section className="w-full text-slate-800 dark:text-slate-100 py-20 px-6 md:px-12 font-sans transition-colors duration-300">
+    <section className="w-full text-slate-800 dark:text-slate-100 py-10 px-4 md:px-12 font-sans transition-colors duration-300">
       <div className="max-w-6xl mx-auto space-y-20">
         {/* SECTION HEADER */}
         <motion.div
