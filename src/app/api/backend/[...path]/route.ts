@@ -57,7 +57,7 @@ async function proxyRequest(
       headers,
       body,
       cache: "no-store",
-      redirect: "manual",
+      redirect: "follow",
     });
 
     if (upstream.status === 204 || upstream.status === 304) {

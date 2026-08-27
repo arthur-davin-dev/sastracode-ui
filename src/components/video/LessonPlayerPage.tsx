@@ -3,11 +3,10 @@
 import { useState } from "react";
 import { VideoPlayer } from "./VideoPlayer";
 import { LessonHeader } from "./LessonHeader";
-import { DiscussionSection } from "./DiscussionSection";
+import { QASection } from "./qa/QASection";
 import { CourseContentSidebar } from "./CourseContentSidebar";
 import { UpNextCard } from "./UpNextCard";
 import {
-  comments,
   defaultSections,
   getTotalLessons,
   buildSectionsFromCurriculum,
@@ -95,6 +94,7 @@ export default function LessonPlayerPage({
 
             <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
               <LessonHeader
+                videoId={lessonId}
                 title={lessonTitle}
                 sectionLabel={sectionLabel}
                 lessonPosition={lessonPosition}
@@ -103,7 +103,7 @@ export default function LessonPlayerPage({
               />
             </div>
 
-            <DiscussionSection comments={comments} totalCount={15} />
+            <QASection videoId={lessonId} />
           </div>
 
           {/* Right Sidebar Section */}

@@ -95,6 +95,8 @@ export const sastraApi = createApi({
     "Documentation",
     "Lesson",
     "Video",
+    "Question",
+    "Answer",
     "Quiz",
     "CodingTask",
     "Playground",
