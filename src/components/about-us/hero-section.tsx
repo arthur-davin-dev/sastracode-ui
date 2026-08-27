@@ -6,8 +6,6 @@ import { useEffect, useState } from "react";
 import DotGrid from "@/components/about-us/DotGrid";
 import { useTranslation } from "@/hooks/useTranslations";
 
-// Icons aren't stored in the text files, so we keep them here and
-// pair them with translated lines by index (order must match en.ts/km.ts).
 const FEATURE_ICONS = [BookOpen, Code2, Rocket, Trophy];
 
 function TypingSlogan({ title }: { title: string }) {
@@ -48,8 +46,6 @@ function TypingSlogan({ title }: { title: string }) {
 
     timer = window.setTimeout(type, 350);
     return () => window.clearTimeout(timer);
-    // Re-run the whole typing animation whenever the title text changes
-    // (i.e. whenever the language is switched).
   }, [title]);
 
   const [mainTitle = "", subtitle = ""] = visibleTitle.split("\n");
@@ -61,16 +57,16 @@ function TypingSlogan({ title }: { title: string }) {
         {!subtitle && (
           <span
             aria-hidden="true"
-            className="ml-1 inline-block h-[0.9em] w-0.75 animate-pulse bg-secondary-color align-[-0.06em] dark:bg-cyan-400"
+            className="ml-1 inline-block h-[0.9em] w-1 animate-pulse bg-secondary-color align-[-0.06em] dark:bg-primary-color"
           />
         )}
       </h1>
-      <h2 className="mb-6 font-khmer text-2xl font-extrabold leading-snug text-secondary-color sm:text-3xl">
+      <h2 className="mb-6 font-khmer text-2xl font-extrabold leading-snug text-primary-color dark:text-primary-color sm:text-3xl">
         <span aria-hidden="true">{subtitle}</span>
         {subtitle && (
           <span
             aria-hidden="true"
-            className="ml-1 inline-block h-[0.9em] w-0.75 animate-pulse bg-secondary-color align-[-0.06em] dark:bg-cyan-400"
+            className="ml-1 inline-block h-[0.9em] w-1 animate-pulse bg-secondary-color align-[-0.06em] dark:bg-primary-color"
           />
         )}
       </h2>
@@ -89,7 +85,7 @@ export default function AboutUs() {
   }));
 
   return (
-    <section className="relative bg-transparent dark:bg-transparent py-20 px-6 sm:px-10 lg:px-16 transition-colors duration-500 selection:bg-primary-color selection:text-white">
+    <section className="relative flex min-h-[calc(100svh-5rem)] flex-col justify-center overflow-hidden py-8 px-6 sm:px-10 lg:px-16 transition-colors duration-500 selection:bg-primary-color selection:text-white">
       {/* Background dot grids */}
       <DotGrid
         rows={4}
@@ -104,63 +100,37 @@ export default function AboutUs() {
         className="pointer-events-none absolute left-6 bottom-10 hidden lg:grid text-[#C9CEDA] dark:text-slate-800"
       />
 
-      <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-2 lg:gap-12">
-        {/* ---------------------------------------------------------- */}
-        {/* Left column                                                */}
-        {/* ---------------------------------------------------------- */}
+      <div className="mx-auto my-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-12">
+        {/* Left column */}
         <div>
-          {/* Eyebrow */}
-          <div className="mb-8 flex items-center gap-3">
-            <span
-              className="font-mono text-lg font-semibold text-primary-color dark:text-cyan-400"
-              aria-hidden="true"
-            >
-              {"</>"}
-            </span>
-            <span
-              className="px-5 py-2 text-sm font-bold tracking-wide text-white bg-secondary-color dark:bg-[#B8081C]"
-              style={{
-                clipPath: "polygon(0 0, 100% 0, 88% 100%, 0% 100%)",
-              }}
-            >
-              {about.eyebrow}
-            </span>
-            <span className="relative h-px flex-1 bg-[#0B2558]/40 dark:bg-slate-700">
-              <span className="absolute -right-0.5 top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-[#0B2558] dark:bg-cyan-400" />
-            </span>
-          </div>
-
           {/* Floating Background Accent Shapes */}
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <span className="animate-float-slow absolute left-[8%] top-[20%] h-2 w-2 rounded-full bg-[#B8081C]" />
-            <span className="animate-float-medium absolute left-[25%] top-[70%] h-2 w-2 rounded-full bg-[#0B2558] dark:bg-cyan-400" />
+            <span className="animate-float-medium absolute left-[25%] top-[70%] h-2 w-2 rounded-full bg-primary-color dark:bg-primary-color" />
             <span className="animate-float-fast absolute right-[25%] top-[15%] h-2.5 w-2.5 rounded-full bg-[#B8081C]" />
-            <span className="animate-float-slow absolute right-[8%] top-[65%] h-2 w-2 rounded-full bg-[#0B2558] dark:bg-cyan-400" />
+            <span className="animate-float-slow absolute right-[8%] top-[65%] h-2 w-2 rounded-full bg-primary-color dark:bg-primary-color" />
             <span className="animate-float-medium absolute left-[40%] bottom-[12%] h-5 w-5 rounded-full border-2 border-[#B8081C]/30" />
             <span className="animate-float-fast absolute right-[15%] bottom-[20%] h-4 w-4 rounded-full border border-[#0B2558]/30 dark:border-white/20" />
           </div>
 
-          {/* Heading (typed, animates on language switch too) */}
           <TypingSlogan title={about.title} />
 
-          <div className="mb-6 h-1 w-24 rounded-full bg-[#B8081C]" />
+          <div className="mb-4 h-1 w-24 rounded-full bg-[#B8081C]" />
 
-          {/* Paragraph */}
-          <p className="mb-10 max-w-xl font-khmer leading-relaxed text-primary-color dark:text-slate-400">
+          <span className="mb-8 max-w-xl text-[24px] font-khmer leading-relaxed text-primary-color dark:text-slate-400">
             {about.description}
-          </p>
+          </span>
 
-          {/* Feature Icons */}
-          <div className="mb-10 grid grid-cols-2 gap-y-8 sm:grid-cols-4 sm:gap-x-4">
+          <div className="mb-8 mt-4 grid grid-cols-2 gap-y-6 sm:grid-cols-4 sm:gap-x-4">
             {features.map(({ icon: Icon, line1, line2 }) => (
               <div
                 key={line1}
-                className="flex flex-col items-center gap-3 text-center"
+                className="group flex flex-col items-center gap-3 text-center cursor-pointer"
               >
-                <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-[#0B2558]/20 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 text-primary-color dark:text-cyan-400 backdrop-blur-sm shadow-sm">
-                  <Icon className="h-7 w-7" strokeWidth={1.75} />
+                <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-[#0B2558]/20 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 text-primary-color dark:text-primary-color backdrop-blur-sm shadow-sm transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-110 group-hover:shadow-md">
+                  <Icon className="h-6 w-6 transition-transform duration-300 group-hover:scale-105" strokeWidth={1.75} />
                 </div>
-                <p className="font-khmer text-sm font-semibold leading-snug text-primary-color dark:text-slate-200">
+                <p className="font-khmer text-xs font-semibold leading-snug text-primary-color dark:text-slate-200 transition-transform duration-300 group-hover:scale-105">
                   {line1}
                   <br />
                   {line2}
@@ -169,22 +139,18 @@ export default function AboutUs() {
             ))}
           </div>
 
-          {/* Bottom Rule */}
           <div className="flex items-center gap-3">
             <div className="h-0.5 w-24 bg-[#0B2558] dark:bg-slate-700" />
             <div className="flex gap-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#0B2558] dark:bg-cyan-400" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[#0B2558] dark:bg-primary-color" />
               <span className="h-1.5 w-1.5 rounded-full bg-[#B8081C]" />
               <span className="h-1.5 w-1.5 rounded-full bg-slate-300 dark:bg-slate-700" />
             </div>
           </div>
         </div>
 
-        {/* ---------------------------------------------------------- */}
-        {/* Right column — photo panel                                 */}
-        {/* ---------------------------------------------------------- */}
+        {/* Right column */}
         <div className="relative mx-auto w-full max-w-xl pb-10 pr-4 pt-4 lg:pb-14 lg:pr-6 lg:pt-6">
-          {/* Navy diagonal cut, top-right */}
           <div
             className="absolute right-0 top-0 h-40 w-2/3 sm:h-48 bg-[#041B45] dark:bg-slate-900 border-l border-t border-slate-700/50"
             style={{
@@ -201,7 +167,6 @@ export default function AboutUs() {
             />
           </div>
 
-          {/* Red angled frame, bottom */}
           <div
             className="absolute bottom-0 left-0 right-0 h-16 sm:h-20 bg-linear-to-r from-[#B8081C] to-[#8C0714]"
             style={{
@@ -218,10 +183,8 @@ export default function AboutUs() {
             </div>
           </div>
 
-          {/* Red vertical accent, left edge */}
           <div className="absolute -left-2 top-10 h-2/3 w-1.5 rounded-full bg-[#B8081C]" />
 
-          {/* Photo Card Container */}
           <div className="relative rounded-[28px] bg-white dark:bg-slate-900 p-3 shadow-xl dark:shadow-2xl border border-slate-200/60 dark:border-slate-800">
             <div className="relative aspect-4/3 overflow-hidden rounded-[20px]">
               <Image
@@ -234,9 +197,8 @@ export default function AboutUs() {
             </div>
           </div>
 
-          {/* Floating Badge: Code Together / Build Tomorrow */}
-          <div className="absolute -top-2 right-6 hidden max-w-55 rounded-xl bg-[#0B2558] dark:bg-slate-900 border border-slate-700/80 px-4 py-3 text-xs font-semibold leading-snug text-white shadow-lg sm:block lg:right-10">
-            <span className="mr-1 font-mono text-cyan-400 opacity-90">
+          <div className="absolute -top-2 right-6 hidden max-w-55 rounded-xl bg-[#0B2558] dark:bg-slate-900 border border-slate-700/80 px-4 py-3 text-[18px] font-semibold leading-snug text-white shadow-lg sm:block lg:right-10">
+            <span className="mr-1 font-mono text-primary-color opacity-90">
               {"</>"}
             </span>
             {about.code}
@@ -244,14 +206,12 @@ export default function AboutUs() {
             {about.build}
           </div>
 
-          {/* Floating "{}" Badge, Top-Right Corner */}
           <div className="absolute -right-3 top-24 hidden h-14 w-14 items-center justify-center rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg sm:flex lg:top-28">
-            <Braces className="h-6 w-6 text-[#B8081C] dark:text-cyan-400" />
+            <Braces className="h-6 w-6 text-[#B8081C] dark:text-primary-color" />
           </div>
 
-          {/* Floating "</>" Badge, Bottom-Right Corner */}
           <div className="absolute -right-3 bottom-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-lg">
-            <Code2 className="h-6 w-6 text-primary-color dark:text-cyan-400" />
+            <Code2 className="h-6 w-6 text-primary-color dark:text-primary-color" />
           </div>
         </div>
       </div>
