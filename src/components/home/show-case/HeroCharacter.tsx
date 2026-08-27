@@ -53,11 +53,11 @@ export default function HeroCharacter() {
 
     return parts.map((part, i) =>
       part && "SastraCode".startsWith(part) ? (
-        <span key={i} className="text-secondary-color dark:text-primary-color">
+        <span key={i} className="text-secondary-color">
           {part}
         </span>
       ) : (
-        <span key={i} className="text-primary-color dark:text-white">
+        <span key={i} className="text-primary-color">
           {part}
         </span>
       ),

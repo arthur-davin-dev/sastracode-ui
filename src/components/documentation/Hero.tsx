@@ -92,7 +92,7 @@ function TypingTitle({
         "
       >
         {/* Line 1: Light mode original color, Dark mode White */}
-        <span aria-hidden="true" className="block text-secondary-color dark:!text-white">
+        <span aria-hidden="true" className="block text-primary-color ">
           {firstLine}
           {!hasSecondLine && (
             <span
@@ -111,7 +111,7 @@ function TypingTitle({
         </span>
 
         {/* Line 2: Light mode original blue, Dark mode exact #F51518 Crimson Red */}
-        <span aria-hidden="true" className="block text-primary-color dark:!text-[#F51518]">
+        <span aria-hidden="true" className="block text-secondary-color">
           {secondLine}
           {hasSecondLine && (
             <span

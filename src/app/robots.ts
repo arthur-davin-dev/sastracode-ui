@@ -24,7 +24,7 @@ export default function robots(): MetadataRoute.Robots {
         "/playground/editor",
         "/verify-email",
         "/users",
-        "/features",
+        "/function",
         "/*/enroll",
         "/*/learn",
         "/quiz/*/results",

@@ -56,7 +56,7 @@ function TypingSlogan({ title }: { title: string }) {
 
   return (
     <div aria-label={title}>
-      <h1 className="mb-3 font-khmer text-[48px] font-extrabold leading-tight text-secondary-color dark:text-white">
+      <h1 className="mb-3 font-khmer text-[48px] font-extrabold leading-tight text-primary-color ">
         <span aria-hidden="true">{mainTitle}</span>
         {!subtitle && (
           <span
@@ -65,7 +65,7 @@ function TypingSlogan({ title }: { title: string }) {
           />
         )}
       </h1>
-      <h2 className="mb-6 font-khmer text-2xl font-extrabold leading-snug text-primary-color dark:text-slate-200 sm:text-3xl">
+      <h2 className="mb-6 font-khmer text-2xl font-extrabold leading-snug text-secondary-color sm:text-3xl">
         <span aria-hidden="true">{subtitle}</span>
         {subtitle && (
           <span
