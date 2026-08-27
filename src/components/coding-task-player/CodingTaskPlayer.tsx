@@ -238,11 +238,13 @@ export function CodingTaskPlayer({
 
   async function run(codeToRun = code) {
     if (!task || !codeToRun.trim()) return;
+    console.log("[CodingTask] run - user answer:", codeToRun);
     try {
       const result = await runTask({
         id: task.id,
         code: codeToRun,
       }).unwrap();
+      console.log("[CodingTask] run - result:", result);
       setRunResult(result);
       setSubmitResult(null);
       setAttempt((value) => value + 1);
@@ -253,11 +255,13 @@ export function CodingTaskPlayer({
 
   async function submit(codeToSubmit = code) {
     if (!task || !codeToSubmit.trim()) return;
+    console.log("[CodingTask] submit - user answer:", codeToSubmit);
     try {
       const result = await submitTask({
         id: task.id,
         code: codeToSubmit,
       }).unwrap();
+      console.log("[CodingTask] submit - result:", result);
 
       setSubmitResult(result);
       setRunResult(null);
