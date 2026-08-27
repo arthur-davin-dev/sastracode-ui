@@ -78,7 +78,7 @@ export function ProfileForm({
   onSaved,
 }: ProfileFormProps) {
   const inputClass =
-  "h-11 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100";
+  "h-11 rounded-xl border border-slate-200 bg-white px-3 text-lg text-slate-900 placeholder:text-slate-400 outline-none focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100";
   const [firstName, setFirstName] = useState(profile.firstName ?? "");
 
   const [lastName, setLastName] = useState(profile.lastName ?? "");
@@ -207,14 +207,14 @@ export function ProfileForm({
 
         <div className="space-y-6">
           <ProfileCard title="អំពីខ្ញុំ" icon={<BookOpen />}>
-            <p className="text-sm leading-7 text-slate-600 dark:text-slate-300">
+            <p className="text-lg leading-7 text-slate-600 dark:text-slate-300">
               {profile.biography || "មិនទាន់មានប្រវត្តិសង្ខេប។"}
             </p>
           </ProfileCard>
 
           <ProfileCard title="ស្ថានភាពគណនី" icon={<ShieldCheck />}>
             <span
-              className={`inline-flex rounded-lg px-4 py-2 text-xs font-bold ${
+              className={`inline-flex rounded-lg px-4 py-2 text-lg font-bold ${
                 profile.status === "ACTIVE"
                   ? "bg-emerald-50 text-emerald-600"
                   : "bg-slate-100 text-slate-600"
@@ -223,7 +223,7 @@ export function ProfileForm({
               {profile.status || "N/A"}
             </span>
 
-            <p className="mt-4 text-sm leading-6 text-slate-500">
+            <p className="mt-4 text-lg leading-6 text-slate-500">
               {profile.status === "ACTIVE"
                 ? "គណនីរបស់អ្នកកំពុងដំណើរការធម្មតា។"
                 : "ស្ថានភាពគណនីរបស់អ្នកត្រូវបានបង្ហាញខាងលើ។"}
@@ -250,7 +250,7 @@ export function ProfileForm({
         <ProfileCard
           title="ការសិក្សា និងការងារ"
           icon={<GraduationCap />}
-          className="min-h-[430px]"
+          className="min-h-107.5"
         >
           <div className="space-y-5">
             <WorkRow
@@ -268,7 +268,7 @@ export function ProfileForm({
           </div>
 
           <div className="mt-12 flex flex-col items-center">
-            <div className="flex h-28 w-28 items-center justify-center rounded-[30px] bg-gradient-to-br from-violet-100 to-indigo-100 text-violet-600 dark:from-violet-500/10 dark:to-indigo-500/10">
+            <div className="flex h-28 w-28 items-center justify-center rounded-[30px] bg-linear-to-br from-violet-100 to-indigo-100 text-violet-600 dark:from-violet-500/10 dark:to-indigo-500/10">
               {profile.workStudyType === "EMPLOYEE" ? (
                 <Building2 className="h-14 w-14" />
               ) : (
@@ -276,8 +276,8 @@ export function ProfileForm({
               )}
             </div>
 
-            <div className="mt-8 w-full rounded-2xl bg-gradient-to-r from-violet-50 to-indigo-50 p-4 text-center dark:from-violet-500/10 dark:to-indigo-500/10">
-              <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <div className="mt-8 w-full rounded-2xl bg-linear-to-r from-violet-50 to-indigo-50 p-4 text-center dark:from-violet-500/10 dark:to-indigo-500/10">
+              <p className="text-lg font-medium text-slate-700 dark:text-slate-300">
                 {profile.workStudyType === "EMPLOYEE"
                   ? "Keep building, keep growing."
                   : "Keep learning, keep growing."}
@@ -300,7 +300,7 @@ export function ProfileForm({
           កែប្រែព័ត៌មាន
         </h2>
 
-        <p className="mt-1 text-sm text-slate-500">
+        <p className="mt-1 text-lg text-slate-500">
           រៀបចំព័ត៌មានផ្ទាល់ខ្លួន និងគណនីរបស់អ្នក
         </p>
       </div>
@@ -375,7 +375,7 @@ export function ProfileForm({
             <select
               value={gender}
               onChange={(e) => setGender(e.target.value as Gender | "")}
-              className="h-11 w-full rounded-xl border border-input bg-white-900 text-slate-500 px-3 text-sm outline-none focus:ring-2 focus:ring-white-500/20"
+              className="h-11 w-full rounded-xl border border-input bg-white-900 text-slate-500 px-3 text-lg outline-none focus:ring-2 focus:ring-white-500/20"
             >
               <option value="">មិនបានកំណត់</option>
               <option value="MALE">ប្រុស</option>
@@ -390,7 +390,7 @@ export function ProfileForm({
               onChange={(e) =>
                 setWorkStudyType(e.target.value as WorkStudyType | "")
               }
-              className="h-11 w-full rounded-xl border border-input bg-white-900 text-slate-500 px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500/20"
+              className="h-11 w-full rounded-xl border border-input bg-white-900 text-slate-500 px-3 text-lg outline-none focus:ring-2 focus:ring-violet-500/20"
             >
               <option value="">មិនបានកំណត់</option>
               <option value="STUDENT">និស្សិត</option>
@@ -421,7 +421,7 @@ export function ProfileForm({
         <div>
           <Label
             htmlFor="biography"
-            className="text-sm font-semibold text-slate-700 dark:text-slate-200"
+            className="text-lg font-semibold text-slate-700 dark:text-slate-200"
           >
             ប្រវត្តិសង្ខេប
           </Label>
@@ -432,15 +432,15 @@ export function ProfileForm({
             maxLength={255}
             onChange={(e) => setBiography(e.target.value)}
             placeholder="សរសេរអំពីខ្លួនអ្នក..."
-            className="mt-2 min-h-32 w-full resize-none rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-800 outline-none transition focus:border-violet-400 focus:ring-4 focus:ring-violet-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            className="mt-2 min-h-32 w-full resize-none rounded-xl border border-slate-200 bg-white p-4 text-lg text-slate-800 outline-none transition focus:border-violet-400 focus:ring-4 focus:ring-violet-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
           />
 
-          <p className="mt-1 text-right text-xs text-slate-400">
+          <p className="mt-1 text-right text-lg text-slate-400">
             {biography.length}/255
           </p>
         </div>
 
-        <div className="flex gap-3 rounded-2xl bg-violet-50 p-4 text-sm text-slate-600 dark:bg-violet-500/10 dark:text-slate-300">
+        <div className="flex gap-3 rounded-2xl bg-violet-50 p-4 text-lg text-slate-600 dark:bg-violet-500/10 dark:text-slate-300">
           <Info className="mt-0.5 h-5 w-5 shrink-0 text-primary-color" />
 
           <p>សូមប្រាកដថាព័ត៌មានរបស់អ្នកត្រឹមត្រូវ មុនពេលរក្សាទុក។</p>
@@ -486,10 +486,10 @@ function ProfileCard({
 }) {
   return (
     <section
-      className={`rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_6px_30px_rgba(15,23,42,0.04)] dark:border-slate-800 dark:bg-slate-900 sm:p-6 ${className}`}
+      className={`rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_6px_30px_rgba(15,23,42,0.04)] dark:border-slate-800 dark:bg-slate-900 sm:p-6 ${className}`}
     >
       <div className="mb-5 flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-primary-color [&>svg]:h-[18px] [&>svg]:w-[18px] dark:bg-violet-500/10">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-primary-color [&>svg]:h-4.5 [&>svg]:w-4.5 dark:bg-violet-500/10">
           {icon}
         </div>
 
@@ -511,12 +511,12 @@ function InformationRow({
   badge?: boolean;
 }) {
   return (
-    <div className="grid grid-cols-[110px_1fr] gap-4 py-3 text-sm">
+    <div className="grid grid-cols-[110px_1fr] gap-4 py-3 text-lg">
       <span className="text-slate-500">{label}</span>
 
       <div className="min-w-0 text-right">
         {badge ? (
-          <span className="inline-flex rounded-lg bg-blue-50 px-3 py-1 text-xs font-bold text-blue-600 dark:bg-blue-500/10">
+          <span className="inline-flex rounded-lg bg-blue-50 px-3 py-1 text-lg font-bold text-blue-600 dark:bg-blue-500/10">
             {value}
           </span>
         ) : (
@@ -543,14 +543,14 @@ function WorkRow({
 }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <p className="text-sm text-slate-500">{label}</p>
+      <p className="text-lg text-slate-500">{label}</p>
 
       {badge ? (
-        <span className="rounded-lg bg-violet-100 px-3 py-1 text-xs font-bold text-primary-color dark:bg-violet-500/10">
+        <span className="rounded-lg bg-violet-100 px-3 py-1 text-lg font-bold text-primary-color dark:bg-violet-500/10">
           {value}
         </span>
       ) : (
-        <p className="max-w-[60%] truncate text-right text-sm font-semibold text-slate-800 dark:text-slate-200">
+        <p className="max-w-[60%] truncate text-right text-lg font-semibold text-slate-800 dark:text-slate-200">
           {value}
         </p>
       )}
@@ -569,7 +569,7 @@ function FormField({
 }) {
   return (
     <div className="space-y-2">
-      <Label className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
+      <Label className="flex items-center gap-2 text-lg font-semibold text-slate-700 dark:text-slate-200">
         {icon && (
           <span className="text-slate-400 [&>svg]:h-4 [&>svg]:w-4">{icon}</span>
         )}
