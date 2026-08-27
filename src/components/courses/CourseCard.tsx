@@ -186,7 +186,7 @@ export function CourseCard({ course }: CourseCardProps) {
             {course.category}
           </Badge>
 
-          <h3 className="mb-2 line-clamp-1 text-[22px] font-bold leading-snug text-slate-800 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
+          <h3 className="mb-2 line-clamp-2 text-[22px] font-bold leading-snug text-slate-800 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
             {course.title}
           </h3>
 
