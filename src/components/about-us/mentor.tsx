@@ -127,9 +127,9 @@ export default function Mentor() {
                     {mentor.role || mentor.position}
                   </span>
 
-                  {/* Quote - Spaced exactly like the screenshot */}
+                  {/* Quote - Wrapped tightly with double quotes */}
                   <p className="text-[16px] font-khmer text-slate-600 dark:text-slate-300 leading-relaxed mb-10">
-                    " {mentorQuote} "
+                    {`"${mentorQuote}"`}
                   </p>
 
                   {/* Social Icons Container */}
