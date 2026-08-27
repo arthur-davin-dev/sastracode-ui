@@ -90,7 +90,7 @@ export function QuestionCard({ question }: QuestionCardProps) {
               placeholder="ចំណងជើងសំណួរ..."
               required
               maxLength={200}
-              className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-900 outline-none focus:border-primary-color focus:bg-white dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+              className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-900 outline-none focus:border-primary-color focus:bg-white dark:focus:bg-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
             />
             <textarea
               value={draftContent}
@@ -99,7 +99,7 @@ export function QuestionCard({ question }: QuestionCardProps) {
               required
               rows={3}
               maxLength={5000}
-              className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none focus:border-primary-color focus:bg-white dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+              className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none focus:border-primary-color focus:bg-white dark:focus:bg-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
             />
             <div className="flex gap-2">
               <button

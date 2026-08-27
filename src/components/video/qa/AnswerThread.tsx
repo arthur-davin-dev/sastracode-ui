@@ -104,7 +104,7 @@ export function AnswerThread({
           placeholder="សរសេរចម្លើយរបស់អ្នក..."
           rows={2}
           maxLength={5000}
-          className="flex-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition-colors focus:border-primary-color focus:bg-white dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-primary-color"
+          className="flex-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition-colors focus:border-primary-color focus:bg-white dark:focus:bg-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-primary-color"
         />
         <div className="flex items-center justify-end gap-2 pt-1">
           <button
