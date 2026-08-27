@@ -2,7 +2,17 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Tv, Wrench, Target, Zap } from "lucide-react";
+import {
+  Award,
+  BookOpen,
+  CircleCheck,
+  GraduationCap,
+  Target,
+  Trophy,
+  Tv,
+  Wrench,
+  Zap,
+} from "lucide-react";
 import { ProfileSummaryCard } from "@/components/achievement/ProfileSummaryCard";
 import { BadgeCard } from "@/components/achievement/BadgeCard";
 import { RecentActivityItem } from "@/components/achievement/RecentActivityItem";
