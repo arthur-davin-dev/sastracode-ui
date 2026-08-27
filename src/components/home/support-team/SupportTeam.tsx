@@ -92,6 +92,8 @@ export default function SupportTeam() {
                     <img
                       src={member.img}
                       alt={name}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover rounded-full"
                     />
                   </div>

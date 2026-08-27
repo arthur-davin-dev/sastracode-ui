@@ -27,6 +27,8 @@ function AiCoachWidget() {
           <img
             src="/home/image/aiCoachRobot.png"
             alt="AI Coach robot"
+            loading="lazy"
+            decoding="async"
             className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 animate-float object-contain"
           />
         </div>

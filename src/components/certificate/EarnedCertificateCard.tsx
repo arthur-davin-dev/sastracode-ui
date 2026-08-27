@@ -34,6 +34,8 @@ export function EarnedCertificateCard({
           <img
             src={certificate.thumbnailUrl}
             alt={certificate.title}
+            loading="lazy"
+            decoding="async"
             className="
               h-48
               w-full

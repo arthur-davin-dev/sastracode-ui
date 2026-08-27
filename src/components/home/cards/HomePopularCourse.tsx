@@ -51,6 +51,8 @@ function CourseCard({
         <img
           src={image}
           alt={title}
+          loading="lazy"
+          decoding="async"
           className="relative z-20 aspect-video w-full brightness dark:brightness-60 object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
         <CardHeader className="flex-1 flex flex-col">

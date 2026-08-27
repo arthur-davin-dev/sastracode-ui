@@ -28,8 +28,9 @@ const googleSans = localFont({
 
 const siteUrl = "https://www.sastracode.tech";
 const siteName = "SastraCode";
+const brandNames = ["SastraCode", "Sastra Code", "សាស្ត្រាកូដ", "សាស្រ្តាកូដ"];
 const siteDescription =
-  "SastraCode is a programming learning platform offering interactive courses, coding playgrounds, quizzes, and certifications to help you learn to code.";
+  "SastraCode (Sastra Code) is a programming learning platform offering interactive courses, coding playgrounds, quizzes, and certifications to help you learn to code.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -40,15 +41,26 @@ export const metadata: Metadata = {
   description: siteDescription,
   keywords: [
     "SastraCode",
+    "Sastra Code",
+    "sastracode.tech",
+    "សាស្ត្រាកូដ",
+    "សាស្រ្តាកូដ",
     "learn programming",
+    "learn to code",
     "coding courses",
     "online coding platform",
     "programming for beginners",
     "coding playground",
+    "online compiler",
+    "coding certification",
+    "learn programming in Khmer",
+    "coding platform Cambodia",
+    "Khmer coding platform",
   ],
   authors: [{ name: siteName }],
   creator: siteName,
   publisher: siteName,
+  category: "education",
   alternates: {
     canonical: "/",
   },
@@ -68,12 +80,35 @@ export const metadata: Metadata = {
     title: `${siteName} — Programming Learning Platform`,
     description: siteDescription,
     locale: "en_US",
+    alternateLocale: "km_KH",
   },
   twitter: {
     card: "summary_large_image",
     title: `${siteName} — Programming Learning Platform`,
     description: siteDescription,
   },
+  verification: {
+    google: "eymXZsEKi8RHHpHz7Jwo4FCo3Ypwg0w6mMQdtLjTyrk",
+  },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: siteName,
+  alternateName: brandNames.filter((name) => name !== siteName),
+  url: siteUrl,
+  logo: `${siteUrl}/images/sastra_code_logo.png`,
+  description: siteDescription,
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: siteName,
+  alternateName: brandNames.filter((name) => name !== siteName),
+  url: siteUrl,
+  inLanguage: ["en", "km"],
 };
 
 export default function RootLayout({
@@ -88,6 +123,18 @@ export default function RootLayout({
       className={googleSans.variable}
     >
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
         <InteractiveBackground speed={1.0} density={100} enableMouseGlow={true} />
 
         <div className="relative z-10">

@@ -82,6 +82,8 @@ export default function TechStack() {
                   <img
                     src={item.icon}
                     alt={item.name}
+                    loading="lazy"
+                    decoding="async"
                     className="h-8 w-8 object-contain"
                   />
                 </div>
