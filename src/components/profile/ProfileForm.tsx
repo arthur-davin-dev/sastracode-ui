@@ -250,7 +250,7 @@ export function ProfileForm({
         <ProfileCard
           title="ការសិក្សា និងការងារ"
           icon={<GraduationCap />}
-          className="min-h-[430px]"
+          className="min-h-107.5"
         >
           <div className="space-y-5">
             <WorkRow
@@ -268,7 +268,7 @@ export function ProfileForm({
           </div>
 
           <div className="mt-12 flex flex-col items-center">
-            <div className="flex h-28 w-28 items-center justify-center rounded-[30px] bg-gradient-to-br from-violet-100 to-indigo-100 text-violet-600 dark:from-violet-500/10 dark:to-indigo-500/10">
+            <div className="flex h-28 w-28 items-center justify-center rounded-[30px] bg-linear-to-br from-violet-100 to-indigo-100 text-violet-600 dark:from-violet-500/10 dark:to-indigo-500/10">
               {profile.workStudyType === "EMPLOYEE" ? (
                 <Building2 className="h-14 w-14" />
               ) : (
@@ -276,7 +276,7 @@ export function ProfileForm({
               )}
             </div>
 
-            <div className="mt-8 w-full rounded-2xl bg-gradient-to-r from-violet-50 to-indigo-50 p-4 text-center dark:from-violet-500/10 dark:to-indigo-500/10">
+            <div className="mt-8 w-full rounded-2xl bg-linear-to-r from-violet-50 to-indigo-50 p-4 text-center dark:from-violet-500/10 dark:to-indigo-500/10">
               <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
                 {profile.workStudyType === "EMPLOYEE"
                   ? "Keep building, keep growing."
@@ -486,10 +486,10 @@ function ProfileCard({
 }) {
   return (
     <section
-      className={`rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_6px_30px_rgba(15,23,42,0.04)] dark:border-slate-800 dark:bg-slate-900 sm:p-6 ${className}`}
+      className={`rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_6px_30px_rgba(15,23,42,0.04)] dark:border-slate-800 dark:bg-slate-900 sm:p-6 ${className}`}
     >
       <div className="mb-5 flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-primary-color [&>svg]:h-[18px] [&>svg]:w-[18px] dark:bg-violet-500/10">
+        <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-primary-color [&>svg]:h-4.5 [&>svg]:w-4.5 dark:bg-violet-500/10">
           {icon}
         </div>
 
