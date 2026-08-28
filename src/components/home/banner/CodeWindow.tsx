@@ -6,7 +6,7 @@ export default function CodeWindow() {
   return (
     <TiltedCard rotateAmplitude={14} scaleOnHover={1.03}>
       <div className="relative mx-auto w-full max-w-sm sm:max-w-md lg:max-w-none">
-        <div className="relative rounded-2xl border border-gray-700/10 dark:border-gray-700/50 bg-white/70 dark:bg-gray-800/70 p-px backdrop-blur-sm transition-colors duration-300 shadow-xl">
+        <div className="relative rounded-2xl border border-gray-700/10 dark:border-gray-700/50 bg-white/70 dark:bg-gray-800/70 p-px backdrop-blur-sm transition-colors duration-300 shadow-xl overflow-hidden">
           {/* <!-- Window chrome --> */}
           <div className="flex items-center justify-between border-b border-gray-700/10 dark:border-gray-700/30 px-3 sm:px-4 py-2 sm:py-3">
             <div className="flex items-center gap-1.5 sm:gap-2">
@@ -22,8 +22,8 @@ export default function CodeWindow() {
           </div>
 
           {/* <!-- Code --> */}
-          <div className="no-scrollbar space-y-0 p-4 sm:p-6 lg:p-8 font-mono text-[10px] sm:text-[11px] lg:text-[13px] leading-[18px] sm:leading-[21px] overflow-x-auto ">
-            <p className="whitespace-nowrap">
+          <div className="no-scrollbar space-y-0 p-4 sm:p-6 lg:p-8 font-mono text-[9px] sm:text-[11px] lg:text-[13px] leading-[18px] sm:leading-[21px] overflow-x-auto max-w-full">
+            <p className="whitespace-pre-wrap break-words">
               <span className="text-orange-500">document</span>
               <span className="text-gray-700 dark:text-gray-300">.</span>
               <span className="text-blue-600 dark:text-blue-400">
@@ -37,13 +37,13 @@ export default function CodeWindow() {
                 , () =&gt; {"{"}
               </span>
             </p>
-            <p className="pl-2 sm:pl-4 whitespace-nowrap">
+            <p className="pl-2 sm:pl-4 whitespace-pre-wrap break-words">
               <span className="text-purple-600 dark:text-purple-400">let</span>
               <span className="text-gray-700 dark:text-gray-300"> count = </span>
               <span className="text-blue-500 dark:text-blue-400">0</span>
               <span className="text-gray-700 dark:text-gray-300">;</span>
             </p>
-            <p className="pl-2 sm:pl-4 whitespace-nowrap">
+            <p className="pl-2 sm:pl-4 whitespace-pre-wrap break-words">
               <span className="text-purple-600 dark:text-purple-400">const</span>
               <span className="text-gray-700 dark:text-gray-300"> button = document.</span>
               <span className="text-blue-600 dark:text-blue-400">
@@ -51,10 +51,10 @@ export default function CodeWindow() {
               </span>
               <span className="text-gray-700 dark:text-gray-300">(&quot;button&quot;);</span>
             </p>
-            <p className="pl-2 sm:pl-4 opacity-50 text-gray-700 dark:text-gray-400 whitespace-nowrap">
+            <p className="pl-2 sm:pl-4 opacity-50 text-gray-700 dark:text-gray-400 whitespace-pre-wrap break-words">
               ..
             </p>
-            <p className="pl-2 sm:pl-4 whitespace-nowrap">
+            <p className="pl-2 sm:pl-4 whitespace-pre-wrap break-words">
               <span className="text-gray-700 dark:text-gray-300">button.</span>
               <span className="text-blue-600 dark:text-blue-400">
                 addEventListener
@@ -65,26 +65,26 @@ export default function CodeWindow() {
                 , () =&gt; {"{"}
               </span>
             </p>
-            <p className="pl-4 sm:pl-8 text-gray-700 dark:text-gray-300 whitespace-nowrap">
+            <p className="pl-4 sm:pl-8 text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
               <span className="text-blue-600 dark:text-blue-400">
                 count
               </span>
               ++;
             </p>
-            <p className="pl-4 sm:pl-8 text-gray-700 dark:text-gray-300 whitespace-nowrap">
+            <p className="pl-4 sm:pl-8 text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
               button.textContent ={" "}
               <span className="text-green-600 dark:text-green-400">
                 `Clicked ${"{"}count{"}"} times`
               </span>
               ;
             </p>
-            <p className="pl-2 sm:pl-4 text-gray-700 dark:text-gray-300 whitespace-nowrap">
+            <p className="pl-2 sm:pl-4 text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
               {"}"});
             </p>
-            <p className="pl-2 sm:pl-4 opacity-50 text-gray-700 dark:text-gray-400 whitespace-nowrap">
+            <p className="pl-2 sm:pl-4 opacity-50 text-gray-700 dark:text-gray-400 whitespace-pre-wrap break-words">
               ..
             </p>
-            <p className="pl-2 sm:pl-4 whitespace-nowrap">
+            <p className="pl-2 sm:pl-4 whitespace-pre-wrap break-words">
               <span className="text-orange-500">document</span>
               <span className="text-gray-700 dark:text-gray-300">.body.</span>
               <span className="text-blue-600 dark:text-blue-400">
@@ -92,7 +92,7 @@ export default function CodeWindow() {
               </span>
               <span className="text-gray-700 dark:text-gray-300">(button);</span>
             </p>
-            <p className="text-gray-700 dark:text-gray-300 whitespace-nowrap">
+            <p className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap break-words">
               {"}"});
             </p>
             <div className="flex items-center gap-3 pt-4 sm:pt-6 lg:pt-8 opacity-60">
@@ -149,7 +149,7 @@ export default function CodeWindow() {
         </div>
 
         {/* <!-- ISTAD logo icon --> */}
-        <div className="absolute -bottom-4 left-2 sm:-bottom-6 sm:left-6 lg:-bottom-10 lg:left-16 rounded-xl bg-white/70 dark:bg-gray-800/70 p-2 sm:p-2.5 lg:p-4 shadow-lg backdrop-blur-sm transition-colors duration-300">
+        <div className="absolute -bottom-4 left-2 sm:-bottom-6 sm:left-6 lg:-bottom-10 lg:left-16 rounded-xl bg-white/70 dark:bg-gray-800/70 p-2 sm:p-2.5 lg:p-4 shadow-lg backdrop-blur-sm transition-colors duration-300 z-10">
           <Image
             src="/istad-logo.png"
             alt="ISTAD Logo"
