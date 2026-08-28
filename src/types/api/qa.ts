@@ -4,9 +4,20 @@ export interface UserSummaryResponse {
   avatarFileId?: string;
 }
 
+/**
+ * Video summary embedded in a QuestionResponse.
+ * Backend: kh.edu.istad.ite.features.qna.dto.response.VideoResponse (videoId, videoTitle).
+ * This is NOT the full VideoResponse used by the video player endpoints below.
+ */
+export interface QuestionVideoResponse {
+  videoId: string;
+  videoTitle?: string;
+}
+
 export interface QuestionResponse {
   id: string;
   user?: UserSummaryResponse;
+  video?: QuestionVideoResponse;
   title?: string;
   content?: string;
   isResolved?: boolean;
@@ -129,4 +140,35 @@ export interface ApiResponse<T> {
   message?: string;
   data: T;
   timestamp?: string;
+}
+
+// ---- Realtime (STOMP) ----
+//
+// Backend broadcasts a QnaRealtimeMessage to `/topic/videos/{videoId}/qna`
+// after every mutating Q&A operation commits.
+// Source: kh.edu.istad.ite.features.qna.realtime.QnaRealtimeEventType /
+//         kh.edu.istad.ite.features.qna.dto.response.QnaRealtimeMessage
+
+export type QnaRealtimeEventType =
+  | "QUESTION_CREATED"
+  | "QUESTION_UPDATED"
+  | "QUESTION_RESOLVED"
+  | "QUESTION_HIDDEN"
+  | "ANSWER_CREATED"
+  | "ANSWER_UPDATED"
+  | "ANSWER_ACCEPTED"
+  | "ANSWER_HIDDEN"
+  | "QUESTION_VOTE_CHANGED"
+  | "ANSWER_VOTE_CHANGED";
+
+export interface QnaRealtimeMessage {
+  event: QnaRealtimeEventType;
+  videoId: string;
+  /** Only the field relevant to the event is populated; the rest are null. */
+  questionId?: string | null;
+  answerId?: string | null;
+  question?: QuestionResponse | null;
+  answer?: AnswerResponse | null;
+  vote?: VoteResponse | null;
+  occurredAt: string;
 }
