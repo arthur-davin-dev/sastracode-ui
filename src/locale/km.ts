@@ -611,7 +611,6 @@ export const km = {
     titlePrefix: "បង្កើតឡើងសម្រាប់របៀបដែលអ្នក ",
     titleHighlight: "សរសេរកូដ។",
     description: "រៀនភាសាដែលជួយទ្រទ្រង់គេហទំព័រទំនើប កម្មវិធី ប្រព័ន្ធ Backend និងច្រើនទៀត។",
-    viewAll: "មើលភាសាទាំងអស់",
     startHere: "ចាប់ផ្តើមនៅទីនេះ",
     beginner: "កម្រិតដំបូង",
     outputPreview: "មើលលទ្ធផលគំរូ",
