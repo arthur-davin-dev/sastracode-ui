@@ -83,13 +83,15 @@ export default function CourseCard({ course }: CourseCardProps) {
         </p>
 
         <div className="flex items-center justify-between gap-3">
-          <div className="flex min-w-0 items-center gap-1.5 text-base font-medium text-slate-500 dark:text-slate-400">
+          <div className="flex min-w-0 items-center gap-1.5 text-sm font-medium text-slate-500 dark:text-slate-400">
             <Eye className="h-4 w-4 shrink-0" aria-hidden="true" />
-            <span>ចំនួនអ្នកសិក្សា {(course.viewCount ?? 0).toLocaleString()} នាក់</span>
+            <span className="whitespace-nowrap">
+              {(course.viewCount ?? 0).toLocaleString()} នាក់
+            </span>
           </div>
 
           <div className="flex shrink-0 items-center gap-2">
-            <span className="rounded-full bg-primary-color px-2.5 py-1 text-base font-semibold tracking-wide text-white shadow-sm">
+            <span className="rounded-full bg-primary-color px-2.5 py-1 text-sm font-semibold tracking-wide text-white shadow-sm">
               ឥតគិតថ្លៃ
             </span>
             <button
