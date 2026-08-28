@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { QuestionCard } from "./QuestionCard";
 import { useCreateQuestionMutation, useGetVideoQuestionsQuery } from "@/redux/api/qa-api";
 import { useGetMyProfileQuery } from "@/redux/service/profile-api";
+import { useVideoQnaSocket } from "@/hooks/useVideoQnaSocket";
 import { getApiErrorMessage, initialsFromName } from "@/lib/qa/qa-utils";
 import { QUESTION_PAGE_SIZE } from "@/lib/qa/qa-constants";
 import type { QuestionSort } from "@/types/api/qa";
@@ -32,6 +33,9 @@ export function QASection({ videoId }: QASectionProps) {
   const { data: profile } = useGetMyProfileQuery(undefined, {
     skip: status !== "authenticated",
   });
+
+  // Live updates: refresh question/answer/vote caches as other viewers act.
+  useVideoQnaSocket(videoId);
   const [tab, setTab] = useState<ViewTab>("all");
   const [sort, setSort] = useState<SortOption>("newest");
   const [page, setPage] = useState(0);

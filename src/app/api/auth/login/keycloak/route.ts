@@ -9,6 +9,7 @@ function getSafeCallbackUrl(request: NextRequest) {
     : "/";
 }
 
+
 export async function GET(request: NextRequest) {
   await signIn("keycloak", {
     redirectTo: getSafeCallbackUrl(request),
