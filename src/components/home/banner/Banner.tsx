@@ -183,7 +183,8 @@ export default function Banner() {
                 mt-6
                 mx-auto
                 max-w-xl
-                !text-[24px]
+                !text-[20px]
+                sm:!text-[24px]
                 leading-7
                 text-gray-500
                 dark:text-gray-400

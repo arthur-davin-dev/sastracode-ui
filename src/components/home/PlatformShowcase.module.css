@@ -8,6 +8,36 @@
   border-radius: 1.2cqw;
 }
 
+/* "section" variant: smaller text / icons + left-aligned content so titles
+   wrap in full (no ellipsis), descriptions never clip, and the whole block
+   fits within a single viewport on desktop & tablet */
+.stageSection .featureCard {
+  justify-content: flex-start;
+  gap: 1.4cqw;
+  padding: 1.5cqw 1.8cqw;
+}
+
+.stageSection .cardTitle {
+  font-size: 2.05cqw;
+  line-height: 1.25;
+  margin-bottom: 0.4cqw;
+}
+
+.stageSection .cardDescription {
+  font-size: 1.7cqw;
+  line-height: 1.4;
+}
+
+.stageSection .cardIconCircle {
+  width: 5.4cqw;
+  height: 5.4cqw;
+}
+
+.stageSection .cardIconCircle svg {
+  width: 2.7cqw;
+  height: 2.7cqw;
+}
+
 .heroHeader {
   padding: 0 4cqw;
 }
@@ -17,6 +47,14 @@
   padding: 1.35cqw 1.7cqw;
   border-radius: 1.15cqw;
 
+  /* Light mode: soft, blue-tinted elevation instead of a harsh black drop */
+  box-shadow:
+    0 0.15cqw 0.4cqw rgba(30, 58, 138, 0.08),
+    0 0.7cqw 1.8cqw -0.4cqw rgba(30, 58, 138, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+:global(.dark) .featureCard {
   box-shadow:
     0 0.6cqw 2cqw rgba(0, 0, 0, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
@@ -58,10 +96,14 @@
 
 .connectorLine {
   fill: none;
-  stroke: rgba(110, 163, 255, 0.55);
+  stroke: rgba(59, 110, 220, 0.7);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+:global(.dark) .connectorLine {
+  stroke: rgba(110, 163, 255, 0.55);
 }
 
 .connectorGlow {
@@ -445,15 +487,22 @@
   border-radius: 14px;
 
   box-shadow:
-    0 5px 14px rgba(0, 0, 0, 0.13),
-    0 12px 28px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 2px 6px rgba(30, 58, 138, 0.08),
+    0 10px 24px -6px rgba(30, 58, 138, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 
   z-index: 3;
 
   transition:
     transform 200ms ease,
     box-shadow 200ms ease;
+}
+
+:global(.dark) .mobileFeatureCard {
+  box-shadow:
+    0 5px 14px rgba(0, 0, 0, 0.13),
+    0 12px 28px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .mobileFeatureCard:active {
