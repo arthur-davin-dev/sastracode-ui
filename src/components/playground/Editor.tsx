@@ -844,6 +844,10 @@ export default function Editor() {
 
   const [isAiCoachOpen, setIsAiCoachOpen] = useState(false);
 
+  const [coachPos, setCoachPos] = useState<{ x: number; y: number } | null>(null);
+
+  const [coachSnapping, setCoachSnapping] = useState(false);
+
   const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">(
     "idle",
   );
@@ -870,6 +874,35 @@ export default function Editor() {
   // Monaco keybindings are registered once when the editor mounts, so using
   // a ref prevents the shortcuts from calling an old render's handler.
   const formatCodeActionRef = useRef<() => void>(() => { });
+
+  // Tracks drag state for the floating AI Coach button (not a re-render trigger)
+  const coachDragInfo = useRef({
+    dragging: false,
+    moved: false,
+    offsetX: 0,
+    offsetY: 0,
+    lastX: 0,
+    lastY: 0,
+  });
+
+  // Gap kept between the button and the screen edge when it snaps
+  const COACH_EDGE_MARGIN = 16;
+
+  // Looks up the Scroll-to-Top button's real position on screen right now.
+  // Returns null if it isn't visible (it only shows after scrolling down).
+  const getScrollButtonRect = () => {
+    const el = document.querySelector<HTMLElement>(
+      'button[aria-label="Scroll to top"]',
+    );
+    if (!el) return null;
+
+    const style = window.getComputedStyle(el);
+    if (style.pointerEvents === "none" || parseFloat(style.opacity) < 0.5) {
+      return null;
+    }
+
+    return el.getBoundingClientRect();
+  };
 
   // ====================================================
   // CURRENT LANGUAGE
@@ -1640,6 +1673,96 @@ export default function Editor() {
     if (isPreviewMode) {
       setPreviewHtml("");
     }
+  };
+
+  // ====================================================
+  // DRAG THE FLOATING AI COACH BUTTON
+  // ====================================================
+
+  const handleCoachPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    coachDragInfo.current = {
+      dragging: true,
+      moved: false,
+      offsetX: e.clientX - rect.left,
+      offsetY: e.clientY - rect.top,
+      lastX: rect.left,
+      lastY: rect.top,
+    };
+    setCoachSnapping(false);
+
+    const handleMove = (moveEvent: PointerEvent) => {
+      if (!coachDragInfo.current.dragging) return;
+      coachDragInfo.current.moved = true;
+
+      const maxX = window.innerWidth - rect.width;
+      const maxY = window.innerHeight - rect.height;
+      const nextX = Math.min(
+        Math.max(moveEvent.clientX - coachDragInfo.current.offsetX, 0),
+        maxX,
+      );
+      const nextY = Math.min(
+        Math.max(moveEvent.clientY - coachDragInfo.current.offsetY, 0),
+        maxY,
+      );
+
+      coachDragInfo.current.lastX = nextX;
+      coachDragInfo.current.lastY = nextY;
+      setCoachPos({ x: nextX, y: nextY });
+    };
+
+    const handleUp = () => {
+      coachDragInfo.current.dragging = false;
+      document.removeEventListener("pointermove", handleMove);
+      document.removeEventListener("pointerup", handleUp);
+
+      if (coachDragInfo.current.moved) {
+        const { lastX, lastY } = coachDragInfo.current;
+
+        const distLeft = lastX;
+        const distRight = window.innerWidth - (lastX + rect.width);
+        const distTop = lastY;
+        const distBottom = window.innerHeight - (lastY + rect.height);
+        const closest = Math.min(distLeft, distRight, distTop, distBottom);
+
+        let snappedX = lastX;
+        let snappedY = lastY;
+
+        if (closest === distLeft) {
+          snappedX = COACH_EDGE_MARGIN;
+        } else if (closest === distRight) {
+          snappedX = window.innerWidth - rect.width - COACH_EDGE_MARGIN;
+        } else if (closest === distTop) {
+          snappedY = COACH_EDGE_MARGIN;
+        } else {
+          snappedY = window.innerHeight - rect.height - COACH_EDGE_MARGIN;
+        }
+
+        // Step over the Scroll-to-Top button if they would land on each other
+        const scrollBtnRect = getScrollButtonRect();
+        if (scrollBtnRect) {
+          const gap = 12;
+          const wouldOverlap =
+            snappedX < scrollBtnRect.right + gap &&
+            snappedX + rect.width > scrollBtnRect.left - gap &&
+            snappedY < scrollBtnRect.bottom + gap &&
+            snappedY + rect.height > scrollBtnRect.top - gap;
+
+          if (wouldOverlap) {
+            const spaceAbove = scrollBtnRect.top - gap - rect.height;
+            snappedY = spaceAbove >= 0 ? spaceAbove : scrollBtnRect.bottom + gap;
+          }
+        }
+
+        setCoachSnapping(true);
+        setCoachPos({ x: snappedX, y: snappedY });
+
+        window.setTimeout(() => setCoachSnapping(false), 300);
+      }
+    };
+
+    document.addEventListener("pointermove", handleMove);
+    document.addEventListener("pointerup", handleUp);
   };
 
   // ====================================================
@@ -2696,14 +2819,29 @@ export default function Editor() {
           </aside>
         )}
 
-        <div className="fixed bottom-5 right-5 z-[91]">
+        <div
+          className="fixed z-[91] touch-none cursor-grab active:cursor-grabbing"
+          style={{
+            ...(coachPos
+              ? { left: coachPos.x, top: coachPos.y }
+              : { bottom: "1.25rem", right: "6rem" }),
+            transition: coachSnapping
+              ? "left 0.3s ease, top 0.3s ease"
+              : "none",
+          }}
+          onPointerDown={handleCoachPointerDown}
+        >
           {!isAiCoachOpen && (
             <span className="absolute inset-0 animate-ping rounded-full bg-violet-500 opacity-40" />
           )}
 
           <button
             type="button"
-            onClick={() => setIsAiCoachOpen((previous) => !previous)}
+            onClick={() => {
+              if (!coachDragInfo.current.moved) {
+                setIsAiCoachOpen((previous) => !previous);
+              }
+            }}
             className="relative inline-flex h-12 items-center gap-2 rounded-full bg-violet-600 px-4 text-sm font-bold text-white shadow-xl shadow-violet-950/25 transition hover:-translate-y-0.5 hover:bg-violet-700 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-violet-300/40"
             aria-expanded={isAiCoachOpen}
             aria-label="Open AI coding coach"
