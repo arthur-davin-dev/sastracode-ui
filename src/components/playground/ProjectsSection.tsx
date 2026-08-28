@@ -276,10 +276,20 @@ export default function ProjectsSection() {
           })
         );
 
+        // The per-user profile endpoint needs auth. When logged out it fails,
+        // leaving members with only a userId (no name / avatar), which renders
+        // as meaningless "M" circles. In that case, fall back to the static
+        // team avatars and the generic count instead of showing broken data.
+        const namedMembers = members.filter(
+          (member) => member.avatarFileId || member.firstName || member.lastName || member.username
+        );
+        const hasUsableMembers = namedMembers.length > 0;
+
         if (active) {
           setCommunity({
-            totalUsers: Number.isFinite(totalUsers) ? totalUsers : null,
-            members,
+            totalUsers:
+              hasUsableMembers && Number.isFinite(totalUsers) ? totalUsers : null,
+            members: hasUsableMembers ? namedMembers : [],
           });
         }
       } catch {
