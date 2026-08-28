@@ -1,16 +1,152 @@
-/* =========================================================
-   DESKTOP / TABLET
-   ========================================================= */
+:root {
+  --ps-bg-dark: #020817;
+  --ps-navy-card: rgba(5, 18, 45, 0.88);
+  --ps-navy-card-hover: rgba(8, 26, 62, 0.95);
+  --ps-border-blue: rgba(40, 130, 255, 0.65);
+  --ps-border-bright: rgba(59, 140, 255, 0.95);
+  --ps-electric-blue: #3b8cff;
+  --ps-light-blue: #9fc4ff;
+  --ps-white: #f4f8ff;
+
+  /* LIGHT MODE - Fade from outer (faint) to inner (solid) */
+  --ps-tier1-fill: url(#tier1LightGrad);
+  --ps-tier1-stroke: rgba(59, 140, 255, 0.2);
+
+  --ps-tier2-fill: url(#tier2LightGrad);
+  --ps-tier2-stroke: rgba(59, 140, 255, 0.4);
+
+  --ps-tier3-fill: url(#tier3LightGrad);
+
+  --ps-stage-glow-start: rgba(59, 140, 255, 0.3);
+  --ps-stage-glow-mid: rgba(59, 140, 255, 0.1);
+
+  --ps-tier1-filter: none;
+  --ps-tier2-filter: none;
+  --ps-tier3-filter: none;
+}
+
+:global(.dark) {
+  /* DARK MODE - Restores original setup */
+  --ps-tier1-fill: url(#tier1Top);
+  --ps-tier1-shadow-dark: #000000;
+  --ps-tier1-shadow-light: #0b39b3;
+  --ps-tier1-stop1: #1248d6;
+  --ps-tier1-stop2: #03123d;
+  --ps-tier1-stroke: #529dff;
+
+  --ps-tier2-fill: url(#tier2Top);
+  --ps-tier2-stop1: #287bff;
+  --ps-tier2-stop2: #0838a8;
+  --ps-tier2-stroke: #a3ceff;
+
+  --ps-tier3-fill: none;
+  --ps-tier3-shadow-dark: rgba(2, 10, 36, 0.6);
+  --ps-tier3-shadow-light: rgba(59, 140, 255, 0.35);
+
+  --ps-stage-glow-start: #1d72ff;
+  --ps-stage-glow-mid: #0757ff;
+
+  --ps-tier1-filter: url(#tier1Shadow);
+  --ps-tier2-filter: url(#tier2Shadow);
+  --ps-tier3-filter: url(#tier3Shadow);
+}
+
+.tier1Group {
+  filter: var(--ps-tier1-filter);
+}
+
+.tier1ShadowOnly {
+  opacity: 0.32;
+}
+
+:global(.dark) .tier1ShadowOnly {
+  opacity: 0;
+}
+
+.tier2Group {
+  filter: var(--ps-tier2-filter);
+}
+
+.tier3Group {
+  filter: var(--ps-tier3-filter);
+}
 
 .stageContainer {
   container-type: inline-size;
   aspect-ratio: 1280 / 820;
-  border-radius: 1.2cqw;
+  border-radius: 1.5cqw;
+  background: transparent;
+  box-shadow: none;
 }
 
-/* "section" variant: smaller text / icons + left-aligned content so titles
-   wrap in full (no ellipsis), descriptions never clip, and the whole block
-   fits within a single viewport on desktop & tablet */
+:global(.dark) .stageContainer {
+  background: transparent;
+  box-shadow: none;
+}
+
+.stageSection {
+  aspect-ratio: 1280 / 760;
+}
+
+.heroHeader {
+  padding: 0 4cqw;
+}
+
+/* Feature Cards */
+.featureCard {
+  gap: 1.15cqw;
+  padding: 1.35cqw 1.7cqw;
+  border-radius: 1.2cqw;
+  /* Light mode frosted glass panel base */
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.75) 0%,
+      rgba(240, 246, 255, 0.45) 100%);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+
+  /* Vibrant electric blue border frame */
+  border: 1.5px solid rgba(59, 140, 255, 0.55);
+
+  /* Dual inner/outer reflection highlights for glass edge depth */
+  box-shadow:
+    0 10px 30px -4px rgba(7, 87, 255, 0.15),
+    0 4px 12px 0 rgba(15, 23, 42, 0.04),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8),
+    inset 0 1.5px 2px 0 rgba(59, 140, 255, 0.15);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.featureCard:hover {
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(240, 246, 255, 0.65) 100%);
+  border-color: rgba(59, 140, 255, 0.85);
+  transform: translateY(-4px);
+  box-shadow:
+    0 16px 36px -6px rgba(7, 87, 255, 0.25),
+    0 6px 16px 0 rgba(15, 23, 42, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 1),
+    inset 0 2px 6px 0 rgba(59, 140, 255, 0.25);
+}
+
+:global(.dark) .featureCard {
+  background: rgba(5, 18, 45, 0.45);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1.5px solid rgba(59, 140, 255, 0.35);
+  box-shadow:
+    0 8px 32px 0 rgba(2, 8, 23, 0.6),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+:global(.dark) .featureCard:hover {
+  background: rgba(8, 26, 62, 0.65);
+  border-color: var(--ps-border-bright);
+  box-shadow:
+    0 12px 40px 0 rgba(59, 140, 255, 0.35),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.25);
+}
+
 .stageSection .featureCard {
   justify-content: flex-start;
   gap: 1.4cqw;
@@ -38,609 +174,360 @@
   height: 2.7cqw;
 }
 
-.heroHeader {
-  padding: 0 4cqw;
-}
-
-.featureCard {
-  gap: 1.15cqw;
-  padding: 1.35cqw 1.7cqw;
-  border-radius: 1.15cqw;
-
-  /* Light mode: soft, blue-tinted elevation instead of a harsh black drop */
-  box-shadow:
-    0 0.15cqw 0.4cqw rgba(30, 58, 138, 0.08),
-    0 0.7cqw 1.8cqw -0.4cqw rgba(30, 58, 138, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-
-:global(.dark) .featureCard {
-  box-shadow:
-    0 0.6cqw 2cqw rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
 .cardTitle {
-  font-size: 2.6cqw;
+  color: #0f172a;
+  font-size: 2.4cqw;
   font-weight: 600;
   line-height: 1.3;
   margin-bottom: 0.35cqw;
 }
 
+:global(.dark) .cardTitle {
+  color: var(--ps-white);
+}
+
 .cardDescription {
-  font-size: 2.05cqw;
+  color: #334155;
+  font-size: 1.9cqw;
   font-weight: 400;
   line-height: 1.42;
 }
 
+:global(.dark) .cardDescription {
+  color: var(--ps-light-blue);
+}
+
 .cardIconCircle {
-  width: 6.5cqw;
-  height: 6.5cqw;
-
-  background: radial-gradient(
-    circle at 32% 28%,
-    #4c86ff,
-    #2a56d6 65%,
-    #1c3fa8
-  );
-
+  width: 5.8cqw;
+  height: 5.8cqw;
+  background: linear-gradient(135deg, #1677ff 0%, #0757ff 100%);
+  border: 1px solid rgba(244, 248, 255, 0.4);
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
-    0 0.5cqw 1.4cqw rgba(45, 100, 240, 0.45);
+    0 0 16px rgba(22, 119, 255, 0.45),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4);
 }
 
 .cardIconCircle svg {
-  width: 3.2cqw;
-  height: 3.2cqw;
+  width: 2.9cqw;
+  height: 2.9cqw;
 }
 
+/* Connectors */
 .connectorLine {
   fill: none;
-  stroke: rgba(59, 110, 220, 0.7);
+  stroke: rgba(59, 140, 255, 0.7);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 :global(.dark) .connectorLine {
-  stroke: rgba(110, 163, 255, 0.55);
+  stroke: rgba(59, 140, 255, 0.85);
 }
 
 .connectorGlow {
   fill: none;
-  stroke: rgba(90, 140, 255, 0.9);
-  stroke-width: 5;
-  opacity: 0.18;
-  filter: blur(2px);
+  stroke: #0757ff;
+  stroke-width: 6;
+  opacity: 0.28;
+  filter: blur(3px);
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-/* Flowing current (ចរន្ត) riding along the connector wires */
-.connectorCurrent {
+/* Base Line */
+.connectorLine {
   fill: none;
-  stroke: rgba(215, 231, 255, 0.95);
+  stroke: rgba(59, 140, 255, 0.25);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 5 16;
-  filter: drop-shadow(0 0 3px rgba(140, 180, 255, 0.85));
-  animation: connectorDashFlow 1.3s linear infinite;
 }
 
-@keyframes connectorDashFlow {
-  to {
-    stroke-dashoffset: -42;
+:global(.dark) .connectorLine {
+  stroke: rgba(59, 140, 255, 0.35);
+}
+
+/* Ambient Base Glow */
+.connectorGlow {
+  fill: none;
+  stroke: #0757ff;
+  stroke-width: 6;
+  opacity: 0.15;
+  filter: blur(3px);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Moving Intense Light Flash */
+/* Moving Light Flash - Crisp & Soft Glow Beam */
+.connectorFlash {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  /* Thinner line prevents the heavy "worm" thickness */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 40 640;
+  /* Shortened beam length (40px) to look like a light streak */
+  stroke-dashoffset: 680;
+  opacity: 0.5;
+  /* Multi-layered bright drop shadow for a clean electric glow */
+  filter:
+    drop-shadow(0 0 8px #ffffff) drop-shadow(0 0 10px var(--ps-electric-blue)) drop-shadow(0 0 14px #3b8cff);
+  animation: flashFlow 2.5s linear infinite;
+  /* Keeps the smooth, slower speed */
+}
+
+@keyframes flashFlow {
+  0% {
+    stroke-dashoffset: 680;
   }
-}
 
-.connectorSpark {
-  fill: #f4f8ff;
-  filter: drop-shadow(0 0 5px rgba(150, 190, 255, 0.95));
+  100% {
+    stroke-dashoffset: -680;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .connectorCurrent {
+  .connectorFlash {
     animation: none;
-  }
-
-  .connectorSpark {
     display: none;
-  }
-
-  .mobileFlow::after,
-  .mobileFlowRow::after {
-    animation: none;
   }
 }
 
+/* Central Platform & Emblem */
 .domeGlowSvg {
-  width: 78cqw;
-  height: 29.3cqw;
+  width: 82cqw;
+  height: 55cqw;
 }
 
 .centerEmblem {
-  width: 10.2cqw;
-  height: 10.2cqw;
+  width: 9.8cqw;
+  height: 9.8cqw;
   border-radius: 22%;
+  /* Muted dark navy blue gradient base */
+  background: linear-gradient(180deg, #0e45bd 0%, #082ca3 100%);
+  border: 1px solid rgba(46, 130, 255, 0.5);
 
-  background: linear-gradient(
-    160deg,
-    #4c82fb 0%,
-    #2f66e6 55%,
-    #1e46b8 100%
-  );
-
+  /* Controlled dark drop-shadow with tight radius */
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-    0 0.4cqw 0.6cqw rgba(255, 255, 255, 0.12) inset,
-    0 1.2cqw 3cqw rgba(45, 100, 240, 0.55),
-    0 0 8cqw rgba(63, 125, 251, 0.35);
+    0 6px 16px -2px rgba(2, 8, 23, 0.5),
+    0 2px 8px -1px rgba(8, 44, 163, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 6px rgba(0, 15, 60, 0.5);
+  transition: all 0.3s ease;
 }
 
 .centerEmblem svg {
-  width: 4.6cqw;
-  height: 4.6cqw;
+  width: 4.4cqw;
+  height: 4.4cqw;
+  color: #e2ecff;
+  filter: drop-shadow(0 2px 4px rgba(2, 8, 23, 0.5));
 }
 
-
-/* =========================================================
-   MOBILE
-   Layout:
-   
-   [ <> ]
-      |
-      |------ [ Feature 1 ]
-      |
-      |------ [ Feature 2 ]
-      |
-      |------ [ Feature 3 ]
-      |
-      |------ [ Feature 4 ]
-   ========================================================= */
-
-.mobileFlow {
+/* =====================================================
+   MOBILE TIMELINE LAYOUT & SEQUENCED WORMS
+   ===================================================== */
+.mobileTimelineContainer {
   position: relative;
-
   width: 100%;
-  max-width: 430px;
-
-  margin-left: auto;
-  margin-right: auto;
-
-  padding-top: 8px;
-  padding-bottom: 8px;
+  max-width: 420px;
+  margin: 0 auto;
 }
 
-
-/* Main vertical connector line */
-.mobileFlow::before {
-  content: "";
-
+/* Base Central Vertical Track Line (Thicker: 3px) */
+.mobileStemLine {
   position: absolute;
-
-  left: 27px;
-  top: 36px;
-  bottom: 44px;
-
-  width: 2px;
-
-  border-radius: 999px;
-
-  background: linear-gradient(
-    to bottom,
-    rgba(75, 132, 255, 0.95),
-    rgba(75, 132, 255, 0.55),
-    rgba(75, 132, 255, 0.25)
-  );
-
-  box-shadow:
-    0 0 4px rgba(62, 121, 255, 0.55),
-    0 0 10px rgba(62, 121, 255, 0.2);
-
-  z-index: 0;
-}
-
-
-/* Flowing current (ចរន្ត) riding down the main trunk */
-.mobileFlow::after {
-  content: "";
-
-  position: absolute;
-
-  left: 27px;
-  top: 36px;
-  bottom: 44px;
-
-  width: 2px;
-
-  border-radius: 999px;
-
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.95) 0px,
-    rgba(255, 255, 255, 0.95) 4px,
-    transparent 4px,
-    transparent 15px
-  );
-  background-size: 2px 42px;
-
-  filter: drop-shadow(0 0 3px rgba(120, 170, 255, 0.9));
-
-  animation: mobileCurrentFlowY 1.2s linear infinite;
-
-  pointer-events: none;
-  z-index: 0;
-}
-
-@keyframes mobileCurrentFlowY {
-  to {
-    background-position: 0 42px;
-  }
-}
-
-
-/* =========================================================
-   MOBILE HUB
-   ========================================================= */
-
-.mobileHubWrapper {
-  position: relative;
-
-  width: 56px;
-  height: 56px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  z-index: 4;
-}
-
-.mobileHubGlow {
-  position: absolute;
-
-  left: 50%;
-  top: 50%;
-
-  transform: translate(-50%, -50%);
-
-  width: 95px;
-  height: 95px;
-
-  border-radius: 9999px;
-
-  background: rgba(59, 130, 246, 0.2);
-
-  filter: blur(18px);
-
-  pointer-events: none;
-}
-
-.mobileCenterEmblem {
-  position: relative;
-
-  width: 56px;
-  height: 56px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 14px;
-
-  background: linear-gradient(
-    160deg,
-    #4c82fb 0%,
-    #2f66e6 55%,
-    #1e46b8 100%
-  );
-
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-    0 2px 4px rgba(255, 255, 255, 0.14) inset,
-    0 8px 22px rgba(45, 100, 240, 0.5),
-    0 0 30px rgba(63, 125, 251, 0.38);
-
-  z-index: 5;
-}
-
-.mobileCenterEmblem svg {
-  width: 24px;
-  height: 24px;
-}
-
-
-/* =========================================================
-   MOBILE FEATURE ROW
-   ========================================================= */
-
-.mobileFlowRow {
-  position: relative;
-
-  display: grid;
-
-  grid-template-columns:
-    56px
-    minmax(0, 1fr);
-
-  column-gap: 10px;
-
-  align-items: center;
-
-  min-height: 92px;
-
+  left: 22.5px; /* Centered under 48px node: 24px - 1.5px */
+  top: 24px;
+  bottom: 24px;
+  width: 3px; /* Increased from 2px */
+  background: rgba(59, 140, 255, 0.45);
   z-index: 1;
 }
 
-
-/* Horizontal branch */
-.mobileFlowRow::before {
-  content: "";
-
+/* Vertical Worm Animation Track (Thicker: 3px) */
+.mobileVerticalWormTrack {
   position: absolute;
-
-  left: 27px;
-  top: 50%;
-
-  width: 40px;
-  height: 2px;
-
-  transform: translateY(-50%);
-
-  border-radius: 999px;
-
-  background: rgba(83, 137, 255, 0.68);
-
-  box-shadow:
-    0 0 4px rgba(60, 120, 255, 0.5),
-    0 0 8px rgba(60, 120, 255, 0.2);
-
-  z-index: 0;
-}
-
-
-/* Flowing current (ចរន្ត) riding along the branch */
-.mobileFlowRow::after {
-  content: "";
-
-  position: absolute;
-
-  left: 27px;
-  top: 50%;
-
-  width: 40px;
-  height: 2px;
-
-  transform: translateY(-50%);
-
-  border-radius: 999px;
-
-  background: repeating-linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.95) 0px,
-    rgba(255, 255, 255, 0.95) 4px,
-    transparent 4px,
-    transparent 15px
-  );
-  background-size: 42px 2px;
-
-  filter: drop-shadow(0 0 3px rgba(120, 170, 255, 0.9));
-
-  animation: mobileCurrentFlowX 1.2s linear infinite;
-
-  pointer-events: none;
-  z-index: 0;
-}
-
-@keyframes mobileCurrentFlowX {
-  to {
-    background-position: -42px 0;
-  }
-}
-
-
-/* Small glowing junction circle */
-.mobileJunction {
-  position: absolute;
-
-  left: 23px;
-  top: 50%;
-
-  width: 10px;
-  height: 10px;
-
-  transform: translateY(-50%);
-
-  border-radius: 50%;
-
-  background: #3972ef;
-
-  border: 2px solid rgba(214, 228, 255, 0.95);
-
-  box-shadow:
-    0 0 6px rgba(59, 130, 246, 0.8),
-    0 0 12px rgba(59, 130, 246, 0.45);
-
+  left: 22.5px;
+  top: 24px;
+  bottom: 24px;
+  width: 3px; /* Increased from 2px */
+  overflow: hidden;
   z-index: 2;
+  pointer-events: none;
 }
 
-
-/* =========================================================
-   MOBILE CARD
-   ========================================================= */
-
-.mobileFeatureCard {
-  position: relative;
-
+.mobileVerticalWorm {
   width: 100%;
-  min-width: 0;
-  min-height: 76px;
+  height: 48px; /* Slightly longer head for thicker line */
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 50%, #3b8cff 100%);
+  border-radius: 3px;
+  box-shadow: 0 0 10px #ffffff, 0 0 14px #3b8cff;
+  animation: verticalWormFlow 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
 
-  display: flex;
-  align-items: flex-start;
-
-  gap: 12px;
-
-  padding: 12px 13px;
-
+/* Top Icon Node */
+.mobileTopNode {
+  position: relative;
+  width: 48px;
+  height: 48px;
   border-radius: 14px;
-
-  box-shadow:
-    0 2px 6px rgba(30, 58, 138, 0.08),
-    0 10px 24px -6px rgba(30, 58, 138, 0.16),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-
-  z-index: 3;
-
-  transition:
-    transform 200ms ease,
-    box-shadow 200ms ease;
-}
-
-:global(.dark) .mobileFeatureCard {
-  box-shadow:
-    0 5px 14px rgba(0, 0, 0, 0.13),
-    0 12px 28px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.mobileFeatureCard:active {
-  transform: scale(0.98);
-}
-
-
-/* =========================================================
-   MOBILE CARD ICON
-   ========================================================= */
-
-.mobileIconCircle {
-  width: 42px;
-  height: 42px;
-
-  flex: 0 0 42px;
-
+  background: linear-gradient(135deg, #3b8cff 0%, #2563eb 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-
-  border-radius: 50%;
-
-  background: radial-gradient(
-    circle at 32% 28%,
-    #4c86ff,
-    #2a56d6 65%,
-    #1c3fa8
-  );
-
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-    0 4px 10px rgba(45, 100, 240, 0.45);
+    0 0 24px rgba(59, 140, 255, 0.7),
+    inset 0 1px 2px rgba(255, 255, 255, 0.6);
+  z-index: 4;
 }
 
-.mobileIconCircle svg {
-  width: 20px;
-  height: 20px;
+/* Timeline Row */
+.mobileTimelineRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 56px;
+  z-index: 2;
 }
 
+/* Horizontal Base Branch Line (Thicker: 3px) */
+.mobileBranchLine {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  width: 32px;
+  height: 3px; /* Increased from 2px */
+  background: rgba(59, 140, 255, 0.45);
+  transform: translateY(-50%);
+  z-index: 1;
+}
 
-/* =========================================================
-   SMALL MOBILE
-   ========================================================= */
+/* Horizontal Shoot-out Worm (Thicker: 3px) */
+.mobileBranchWorm {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  height: 3px; /* Increased from 2px */
+  width: 32px;
+  background: linear-gradient(90deg, #3b8cff 0%, #ffffff 100%);
+  box-shadow: 0 0 8px #ffffff, 0 0 12px #3b8cff;
+  transform: translateY(-50%);
+  transform-origin: left center;
+  z-index: 2;
+  opacity: 0;
+  animation: branchWormTrigger 2.8s ease-out infinite;
+}
 
-@media (max-width: 359px) {
-  .mobileFlow::before,
-  .mobileFlow::after {
-    left: 23px;
+/* Junction Dot */
+.mobileTimelineDot {
+  position: absolute;
+  left: 19px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #3b8cff;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 10px rgba(59, 140, 255, 0.9);
+  z-index: 3;
+}
+
+/* Mobile Feature Card Base */
+.mobileFeatureCard {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1.5px solid rgba(59, 140, 255, 0.25);
+  box-shadow:
+    0 10px 30px -5px rgba(59, 140, 255, 0.15),
+    0 4px 12px 0 rgba(15, 23, 42, 0.03);
+  z-index: 5;
+}
+
+:global(.dark) .mobileFeatureCard {
+  background: rgba(5, 18, 45, 0.92);
+  border-color: rgba(59, 140, 255, 0.35);
+  box-shadow: 0 8px 28px rgba(2, 8, 23, 0.6);
+}
+
+.mobileIconCircle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b8cff 0%, #1d4ed8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+}
+
+.mobileCardTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+:global(.dark) .mobileCardTitle {
+  color: var(--ps-white);
+}
+
+.mobileCardDesc {
+  display: block;
+  font-size: 12px;
+  color: #475569;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+:global(.dark) .mobileCardDesc {
+  color: var(--ps-light-blue);
+}
+
+/* Keyframe Animations */
+@keyframes verticalWormFlow {
+  0% {
+    transform: translateY(-40px);
   }
-
-  .mobileHubWrapper {
-    width: 48px;
-    height: 48px;
-  }
-
-  .mobileCenterEmblem {
-    width: 48px;
-    height: 48px;
-
-    border-radius: 12px;
-  }
-
-  .mobileCenterEmblem svg {
-    width: 21px;
-    height: 21px;
-  }
-
-  .mobileFlowRow {
-    grid-template-columns:
-      48px
-      minmax(0, 1fr);
-
-    column-gap: 8px;
-
-    min-height: 86px;
-  }
-
-  .mobileFlowRow::before,
-  .mobileFlowRow::after {
-    left: 23px;
-    width: 34px;
-  }
-
-  .mobileJunction {
-    left: 19px;
-  }
-
-  .mobileFeatureCard {
-    gap: 8px;
-
-    min-height: 72px;
-
-    padding: 9px 10px;
-
-    border-radius: 12px;
-  }
-
-  .mobileIconCircle {
-    width: 36px;
-    height: 36px;
-
-    flex-basis: 36px;
-  }
-
-  .mobileIconCircle svg {
-    width: 17px;
-    height: 17px;
+  100% {
+    transform: translateY(420px);
   }
 }
 
-
-/* =========================================================
-   LARGE MOBILE
-   ========================================================= */
-
-@media (min-width: 400px) and (max-width: 639px) {
-  .mobileFeatureCard {
-    min-height: 82px;
-
-    padding: 13px 15px;
-
-    gap: 13px;
+@keyframes branchWormTrigger {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
   }
-
-  .mobileIconCircle {
-    width: 44px;
-    height: 44px;
-
-    flex-basis: 44px;
+  2% {
+    opacity: 1;
   }
-
-  .mobileIconCircle svg {
-    width: 21px;
-    height: 21px;
+  12% {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
   }
+  85% {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+  95%, 100% {
+    clip-path: inset(0 0% 0 0);
+    opacity: 0;
+  }
+}
 
-  .mobileFlowRow {
-    min-height: 96px;
+@media (prefers-reduced-motion: reduce) {
+  .mobileVerticalWorm,
+  .mobileBranchWorm {
+    animation: none;
+    display: none;
   }
 }

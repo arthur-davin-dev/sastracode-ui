@@ -258,12 +258,19 @@ export default function CourseListingPage() {
             onChange={setSearch}
             placeholder={t.courses.search.placeholder}
           />
-          <CategoryFilter
-            categories={categories}
-            active={activeCategories}
-            counts={categoryCounts}
-            onToggle={handleCategoryToggle}
-          />
+          {isLoading && categories.length <= 3 ? (
+            <div className="flex items-center gap-2" aria-hidden="true">
+              <Skeleton className="h-10 w-24 rounded-xl bg-slate-200 dark:bg-slate-800" />
+              <Skeleton className="h-10 w-28 rounded-xl bg-slate-200 dark:bg-slate-800" />
+            </div>
+          ) : (
+            <CategoryFilter
+              categories={categories}
+              active={activeCategories}
+              counts={categoryCounts}
+              onToggle={handleCategoryToggle}
+            />
+          )}
         </div>
 
         {isLoading && allCourses.length === 0 ? (
