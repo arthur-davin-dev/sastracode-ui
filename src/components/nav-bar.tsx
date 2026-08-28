@@ -61,7 +61,7 @@ export default function Navbar() {
         { label: "មេរៀន", href: "/documentation" },
         { label: "វគ្គសិក្សា", href: "/courses" },
         { label: "កន្លែងសាកល្បងកូដ", href: "/playground" },
-        { label: "មុខងារ", href: "/features" },
+        { label: "មុខងារ", href: "/function" },
         { label: "អំពីសាស្ត្រាកូដ", href: "/about-us" },
       ],
 
@@ -77,7 +77,7 @@ export default function Navbar() {
         { label: "Lessons", href: "/documentation" },
         { label: "Courses", href: "/courses" },
         { label: "Playground", href: "/playground" },
-        { label: "Features", href: "/features" },
+        { label: "Features", href: "/function" },
         { label: "About Sastra Code", href: "/about-us" },
       ],
 
