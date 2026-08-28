@@ -2,6 +2,7 @@
 
 import type { Course } from "@/lib/course/courses";
 import CardSection from "./card-section";
+import ScrollReveal from "@/components/home/ScrollReveal";
 import { useTranslation } from "@/hooks/useTranslations";
 
 interface LandingCoursesViewProps {
@@ -17,11 +18,15 @@ export default function LandingCoursesView({
 
   return (
     <>
-      <CardSection title={currentT.homeCourses.new} courses={newCourses} />
-      <CardSection
-        title={currentT.homeCourses.recommended}
-        courses={recommendedCourses}
-      />
+      <ScrollReveal direction="up" distance={44} duration={0.7} amount={0.05}>
+        <CardSection title={currentT.homeCourses.new} courses={newCourses} />
+      </ScrollReveal>
+      <ScrollReveal direction="up" distance={44} duration={0.7} amount={0.05}>
+        <CardSection
+          title={currentT.homeCourses.recommended}
+          courses={recommendedCourses}
+        />
+      </ScrollReveal>
     </>
   );
 }

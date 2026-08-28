@@ -18,22 +18,20 @@ export default function Page() {
         {/* <Resource /> */}
         {/* <InteractiveGrid /> */}
         {/* <CoreFeatures /> */}
-        <ScrollReveal direction="up" distance={44} duration={0.7} amount={0.2}>
+        <ScrollReveal direction="up" distance={44} duration={0.7} amount={0.05}>
           <RightWavyStack />
         </ScrollReveal>
-        <ScrollReveal direction="up" distance={44} duration={0.7} amount={0.2}>
-          <LandingCourses />
-        </ScrollReveal>
+        <LandingCourses />
         {/* <HomePopularDoc />
         <HomePopularCourse /> */}
         {/* <HeroCharacter /> */}
         {/* <TechStackSection /> */}
-        <ScrollReveal direction="up" distance={44} duration={0.7} amount={0.2}>
+        <ScrollReveal direction="up" distance={44} duration={0.7} amount={0.05}>
           <div className="mx-auto mt-10 flex max-w-7xl flex-col gap-10 px-4 pb-16 sm:px-6 lg:px-8">
             <HomePopularDocumentation />
           </div>
         </ScrollReveal>
-        <ScrollReveal direction="up" distance={44} duration={0.7} amount={0.2}>
+        <ScrollReveal direction="up" distance={44} duration={0.7} amount={0.05}>
           <Review />
         </ScrollReveal>
       </main>

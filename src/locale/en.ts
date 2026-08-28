@@ -1,6 +1,6 @@
 export const en = {
   banner: {
-    badge: "LEARN. CODE. BUILD THE FUTURE.",
+    badge: "LEARN. CODE. NOW",
     title1: "Start Learning ",
     title2: "Coding & ",
     title3: "Building Skills ",
@@ -336,6 +336,11 @@ export const en = {
     card: {
       viewCourse: "View Course",
       privateCourse: "Private Course",
+      level: {
+        BEGINNER: "Beginner",
+        INTERMEDIATE: "Intermediate",
+        ADVANCED: "Advanced",
+      },
     },
     states: {
       loading: "Loading courses",

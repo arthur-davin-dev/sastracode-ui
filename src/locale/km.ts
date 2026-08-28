@@ -329,6 +329,11 @@ export const km = {
     card: {
       viewCourse: "មើលវគ្គសិក្សា",
       privateCourse: "វគ្គសិក្សាឯកជន",
+      level: {
+        BEGINNER: "កម្រិតដំបូង",
+        INTERMEDIATE: "កម្រិតមធ្យម",
+        ADVANCED: "កម្រិតខ្ពស់",
+      },
     },
     states: {
       loading: "កំពុងទាញយកវគ្គសិក្សា",
