@@ -1847,7 +1847,7 @@ export default function Editor() {
         <div
           role="status"
           aria-live="polite"
-          className={`fixed right-5 top-5 z-[100] flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-semibold shadow-xl backdrop-blur-sm transition-all ${copyStatus === "copied"
+          className={`fixed right-5 top-5 z-100 flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-semibold shadow-xl backdrop-blur-sm transition-all ${copyStatus === "copied"
             ? "border-emerald-200 bg-white/95 text-emerald-700 dark:border-emerald-700/60 dark:bg-slate-900/95 dark:text-emerald-400"
             : "border-red-200 bg-white/95 text-red-700 dark:border-red-800 dark:bg-slate-900/95 dark:text-red-400"
             }`}
@@ -2609,7 +2609,7 @@ export default function Editor() {
                       className={
                         isWorkspaceFullscreen
                           ? "min-h-0 flex-1 overflow-auto bg-white"
-                          : "h-[500px] overflow-auto bg-white"
+                          : "h-125 overflow-auto bg-white"
                       }
                     >
                       <iframe
@@ -2631,7 +2631,7 @@ export default function Editor() {
                       className={
                         isWorkspaceFullscreen
                           ? "flex min-h-0 flex-1 items-center justify-center bg-white dark:bg-slate-950"
-                          : "flex h-[500px] items-center justify-center bg-white dark:bg-slate-950"
+                          : "flex h-125 items-center justify-center bg-white dark:bg-slate-950"
                       }
                     >
                       <div className="px-6 text-center">
@@ -2722,7 +2722,7 @@ export default function Editor() {
                     className={
                       isWorkspaceFullscreen
                         ? "min-h-0 flex-1 space-y-1 overflow-y-auto bg-white p-4 font-mono transition-colors duration-300 dark:bg-[#090d16]"
-                        : "h-[500px] space-y-1 overflow-y-auto bg-white p-4 font-mono transition-colors duration-300 dark:bg-[#090d16]"
+                        : "h-125 space-y-1 overflow-y-auto bg-white p-4 font-mono transition-colors duration-300 dark:bg-[#090d16]"
                     }
                   >
                     {output.length === 0 ? (
@@ -2768,8 +2768,8 @@ export default function Editor() {
           <aside
             className={
               isWorkspaceFullscreen
-                ? "fixed bottom-20 right-4 left-4 z-[90] max-h-[calc(100vh-7rem)] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-[390px]"
-                : "fixed bottom-24 right-4 left-4 z-[90] max-h-[70vh] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-[390px]"
+                ? "fixed bottom-20 right-4 left-4 z-90 max-h-[calc(100vh-7rem)] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-97.5"
+                : "fixed bottom-24 right-4 left-4 z-90 max-h-[70vh] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-97.5"
             }
             aria-label="AI coding coach"
           >
@@ -2820,7 +2820,7 @@ export default function Editor() {
         )}
 
         <div
-          className="fixed z-[91] touch-none cursor-grab active:cursor-grabbing"
+          className="fixed z-91 touch-none cursor-grab active:cursor-grabbing"
           style={{
             ...(coachPos
               ? { left: coachPos.x, top: coachPos.y }
@@ -2872,7 +2872,7 @@ export default function Editor() {
       </div>
 
       {isPreviewFullscreen && isPreviewMode && (
-        <div className="fixed inset-0 z-[70] flex flex-col bg-white dark:bg-slate-950">
+        <div className="fixed inset-0 z-70 flex flex-col bg-white dark:bg-slate-950">
           <div className="flex h-14 shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50 px-4 dark:border-white/10 dark:bg-[#111827] sm:px-6">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2.5 w-2.5">

@@ -113,7 +113,7 @@ export default function LanguageCards() {
 
           <h2 className="max-w-2xl text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
             {t.languageCards.titlePrefix}{" "}
-            <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
               {t.languageCards.titleHighlight}
             </span>
           </h2>
@@ -139,7 +139,7 @@ export default function LanguageCards() {
               href={`/playground/editor?language=${language.query}`}
               className={`group block focus:outline-none transition-transform duration-300 ease-out hover:z-10 hover:scale-105 ${language.rotate} hover:rotate-0`}
             >
-              <Card className="relative flex min-h-[220px] w-full flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.04)] transition-all duration-300 ease-out hover:border-primary/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] dark:border-slate-800 dark:bg-slate-900/90 dark:shadow-none dark:hover:border-primary/40">
+              <Card className="relative flex min-h-55 w-full flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.04)] transition-all duration-300 ease-out hover:border-primary/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] dark:border-slate-800 dark:bg-slate-900/90 dark:shadow-none dark:hover:border-primary/40">
                 <div>
                   {/* Technology Brand Color Rounded Container */}
                   <div

@@ -398,7 +398,7 @@ export default function CodeCoach({
       className={
         compact
           ? "overflow-hidden rounded-xl bg-white dark:bg-[#0b1020]"
-          : "rounded-3xl border border-violet-200/70 bg-gradient-to-br from-violet-50 via-white to-white p-4 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-violet-900/50 dark:from-violet-950/30 dark:via-slate-950 dark:to-slate-950 sm:p-5"
+          : "rounded-3xl border border-violet-200/70 bg-linear-to-br from-violet-50 via-white to-white p-4 shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-violet-900/50 dark:from-violet-950/30 dark:via-slate-950 dark:to-slate-950 sm:p-5"
       }
     >
       {!compact && (
@@ -482,7 +482,7 @@ export default function CodeCoach({
       </div>
 
       {hasTask && (
-        <div className="mt-3 rounded-2xl border border-slate-200 bg-white/80 px-3.5 py-3 dark:border-white/10 dark:bg-white/[0.03]">
+        <div className="mt-3 rounded-2xl border border-slate-200 bg-white/80 px-3.5 py-3 dark:border-white/10 dark:bg-white/3">
           <div className="flex items-center justify-between gap-3 text-xs">
             <span className="font-semibold text-slate-700 dark:text-slate-200">
               Progressive hints
@@ -514,7 +514,7 @@ export default function CodeCoach({
       )}
 
       {!hasTask && (
-        <p className="mt-7 rounded-2xl bg-slate-50 px-3.5 py-2.5 text-[10px] leading-4 text-slate-500 dark:bg-white/[0.03] dark:text-slate-400">
+        <p className="mt-7 rounded-2xl bg-slate-50 px-3.5 py-2.5 text-[10px] leading-4 text-slate-500 dark:bg-white/3 dark:text-slate-400">
           Explain and Improve work in the Playground. Hint and Fix Code are
           only available from a coding challenge.
         </p>
