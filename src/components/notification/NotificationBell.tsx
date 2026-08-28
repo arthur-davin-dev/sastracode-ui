@@ -125,7 +125,6 @@ import {
   useMarkAllNotificationsReadMutation,
   useMarkNotificationReadMutation,
 } from "@/redux/service/notificationApi";
-import { useNotificationSocket } from "@/hooks/useNotificationSocket";
 
 function relativeTime(value: string) {
   const timestamp = new Date(value).getTime();
@@ -141,7 +140,8 @@ export default function NotificationBell() {
   const [open, setOpen] = useState(false);
   const enabled = status === "authenticated";
 
-  useNotificationSocket();
+  // Realtime notification delivery is handled once, app-wide, by
+  // <RealtimeProvider> over the shared STOMP connection.
   const { data: unreadCount = 0 } = useGetUnreadNotificationCountQuery(
     undefined,
     {

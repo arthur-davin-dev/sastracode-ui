@@ -1,27 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { Client } from "@stomp/stompjs";
 import { useSession } from "next-auth/react";
 
 import { useAppDispatch } from "@/redux/hook";
 import { qaApi } from "@/redux/api/qa-api";
-import { getSocketAccessToken } from "@/lib/auth/socket-token";
+import { useRealtimeSubscription } from "@/lib/realtime/use-realtime";
 import type { QnaRealtimeMessage } from "@/types/api/qa";
-
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-/**
- * STOMP endpoint from the backend NotificationWebSocketConfig
- * (`/ws/notifications`, a raw WebSocket — no SockJS handshake). The same
- * endpoint carries both `/user/queue/notifications` and the per-video Q&A
- * topics.
- */
-function resolveBrokerUrl(): string | null {
-  if (!BACKEND_URL) return null;
-  const base = BACKEND_URL.replace(/\/+$/, "").replace(/^http(s?):\/\//i, "ws$1://");
-  return `${base}/ws/notifications`;
-}
 
 /** Backend QnaRealtimePublisher.destination(videoId). */
 function qnaTopic(videoId: string): string {
@@ -91,80 +75,34 @@ function tagsForEvent(message: QnaRealtimeMessage): QaTag[] {
 }
 
 /**
- * Subscribes to `/topic/videos/{videoId}/qna` while the Q&A panel is mounted
- * and keeps its RTK Query caches fresh as other users ask, answer, resolve,
+ * Subscribes to `/topic/videos/{videoId}/qna` over the single shared STOMP
+ * connection (see `<RealtimeProvider>`) while the Q&A panel is mounted, and
+ * keeps its RTK Query caches fresh as other users ask, answer, resolve,
  * accept, hide, or vote. Requires an authenticated Keycloak session — the
- * backend rejects unauthenticated SUBSCRIBE frames.
+ * backend rejects unauthenticated SUBSCRIBE frames for this topic.
  */
 export function useVideoQnaSocket(videoId: string | undefined) {
   const { status } = useSession();
   const dispatch = useAppDispatch();
-  const clientRef = useRef<Client | null>(null);
 
-  const brokerURL = resolveBrokerUrl();
-  const enabled =
-    status === "authenticated" && Boolean(brokerURL) && Boolean(videoId);
+  const enabled = status === "authenticated" && Boolean(videoId);
 
-  useEffect(() => {
-    if (!enabled || !brokerURL || !videoId) return;
-
-    const client = new Client({
-      brokerURL,
-      // connectHeaders is populated by `beforeConnect` below, before every
-      // connection attempt, so the token is always current.
-      reconnectDelay: 5000,
-      heartbeatIncoming: 10000,
-      heartbeatOutgoing: 10000,
-      debug: (message) => {
-        if (process.env.NODE_ENV !== "production") {
-          console.debug("[qna-socket]", message);
-        }
-      },
-    });
-
-    // Runs before every connection attempt, including automatic reconnects, so
-    // an expired access token is never replayed. Pulls a freshly refreshed
-    // Keycloak token without any interactive login. If none is available the
-    // attempt is skipped and STOMP retries on its normal cadence; a genuine
-    // refresh failure is handled by <AuthProvider>, which signs the user out.
-    client.beforeConnect = async () => {
-      const token = await getSocketAccessToken();
-      if (token) {
-        client.connectHeaders = { Authorization: `Bearer ${token}` };
+  useRealtimeSubscription(
+    videoId ? qnaTopic(videoId) : null,
+    (message) => {
+      let payload: QnaRealtimeMessage;
+      try {
+        payload = JSON.parse(message.body) as QnaRealtimeMessage;
+      } catch {
+        return;
       }
-    };
+      if (!payload?.event) return;
 
-    client.onWebSocketError = (event) => {
-      console.error("Q&A socket WebSocket error:", event);
-    };
-
-    client.onStompError = (frame) => {
-      console.error("Q&A socket STOMP error:", frame.headers?.message);
-    };
-
-    client.onConnect = () => {
-      client.subscribe(qnaTopic(videoId), (message) => {
-        let payload: QnaRealtimeMessage;
-        try {
-          payload = JSON.parse(message.body) as QnaRealtimeMessage;
-        } catch {
-          return;
-        }
-        if (!payload?.event) return;
-
-        const tags = tagsForEvent(payload);
-        if (tags.length > 0) {
-          dispatch(qaApi.util.invalidateTags(tags));
-        }
-      });
-    };
-
-    client.activate();
-    clientRef.current = client;
-
-    return () => {
-      clientRef.current = null;
-      void client.deactivate();
-    };
-  }, [enabled, brokerURL, videoId, dispatch]);
+      const tags = tagsForEvent(payload);
+      if (tags.length > 0) {
+        dispatch(qaApi.util.invalidateTags(tags));
+      }
+    },
+    enabled,
+  );
 }
