@@ -86,7 +86,7 @@ export default function Hero() {
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
+            <h1 className="text-[36px] sm:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
               <span className="text-primary-color">
                 {visibleTitle}
                 <span
@@ -97,7 +97,7 @@ export default function Hero() {
             </h1>
 
             {/* Description set to 18px */}
-            <p className="!text-[24px] text-slate-600 dark:text-slate-300 mb-8 leading-relaxed font-normal transition-colors">
+            <p className="!text-[20px] sm:!text-[24px] text-slate-600 dark:text-slate-300 mb-8 leading-relaxed font-normal transition-colors">
               {t.description}
             </p>
 

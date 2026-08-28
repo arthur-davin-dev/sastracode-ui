@@ -298,7 +298,7 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
                   className="
                     mt-4
                     w-fit
-                    rounded-md
+                    rounded-full
                     bg-primary-color dark:bg-blue-500
                     px-3
                     py-2
@@ -316,7 +316,7 @@ export default function PreviewCard({ activeSection, setActiveSection }: Preview
 
             <button
               className="
-                rounded-lg
+                rounded-full
                 bg-primary-color dark:bg-blue-500
                 px-5
                 py-2

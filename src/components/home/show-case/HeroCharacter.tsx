@@ -83,7 +83,7 @@ export default function HeroCharacter() {
 
             <h2
               aria-label={title}
-              className="font-khmer text-[48px] font-medium leading-tight transition-colors duration-300"
+              className="font-khmer text-[36px] sm:text-[48px] font-medium leading-tight transition-colors duration-300"
             >
               <span aria-hidden="true">
                 {renderFormattedTitle(visibleTitle)}
@@ -95,7 +95,7 @@ export default function HeroCharacter() {
             </h2>
 
             {/* Span element with 24px font size */}
-            <span className="block max-w-md font-khmer text-[24px] leading-snug text-black/80 dark:text-gray-300 transition-colors duration-300">
+            <span className="block max-w-md font-khmer text-[20px] sm:text-[24px] leading-snug text-black/80 dark:text-gray-300 transition-colors duration-300">
               {currentT.showCase.heroCharacter.description}
             </span>
 

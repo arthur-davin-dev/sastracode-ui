@@ -145,7 +145,7 @@ function TypingTitle({
       className="
         relative
         max-w-3xl
-        text-2xl
+        text-[36px]
         font-bold
         leading-[1.45]
         tracking-tight
@@ -241,7 +241,8 @@ export default function CourseBanner() {
                 leading-7
                 text-slate-600
                 dark:text-slate-300
-                !text-[24px]
+                !text-[20px]
+                sm:!text-[24px]
                 sm:leading-8
               "
             >

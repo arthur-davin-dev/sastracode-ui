@@ -1105,7 +1105,13 @@ export function mapApiCourseToCourse(
         "SastraCode Instructor",
 
       avatar:
-        FALLBACK_AVATAR,
+        course.instructorId
+          ?.avatarFileId
+          ? resolveCourseImage(
+              course.instructorId
+                .avatarFileId,
+            )
+          : FALLBACK_AVATAR,
 
       tags: [
         course.level,

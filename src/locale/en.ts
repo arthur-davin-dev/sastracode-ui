@@ -1,6 +1,6 @@
 export const en = {
   banner: {
-    badge: "LEARN. CODE. BUILD THE FUTURE.",
+    badge: "LEARN. CODE. NOW",
     title1: "Start Learning ",
     title2: "Coding & ",
     title3: "Building Skills ",
@@ -41,6 +41,45 @@ export const en = {
         description:
           "Earn XP, unlock badges, and climb the leaderboard.",
       },
+    ],
+  },
+
+  learningShowcase: {
+    titleLead: "Learning Code. ",
+    titleHighlight: "Building Future.",
+    subtitleLine1:
+      "SastraCode is your all-in-one documentation and learning platform.",
+    subtitleLine2:
+      "Learn, practice, and level up with interactive docs, AI coaching, quizzes, and more.",
+    cards: [
+      {
+        title: "Learn with Interactive Docs",
+        description:
+          "Structured docs with examples, explanations, and ready-to-use code snippets.",
+      },
+      {
+        title: "Get AI-Powered Help",
+        description:
+          "Ask questions and get instant code explanations and smart hints when stuck.",
+      },
+      {
+        title: "Practice & Test Your Skills",
+        description:
+          "Solve coding tasks, take quizzes, and tackle real-world problems.",
+      },
+      {
+        title: "Track Progress & Earn Rewards",
+        description:
+          "Earn XP, unlock badges, and climb the leaderboard as you grow.",
+      },
+    ],
+    capabilities: [
+      { line1: "Multi-language", line2: "Playground" },
+      { line1: "Video Lessons", line2: "& Courses" },
+      { line1: "Coding Games", line2: "& Challenges" },
+      { line1: "Badges &", line2: "Certificates" },
+      { line1: "Leaderboard", line2: "& Community" },
+      { line1: "Powerful Search", line2: "& Navigation" },
     ],
   },
 
@@ -297,6 +336,11 @@ export const en = {
     card: {
       viewCourse: "View Course",
       privateCourse: "Private Course",
+      level: {
+        BEGINNER: "Beginner",
+        INTERMEDIATE: "Intermediate",
+        ADVANCED: "Advanced",
+      },
     },
     states: {
       loading: "Loading courses",

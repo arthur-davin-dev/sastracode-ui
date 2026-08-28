@@ -52,7 +52,7 @@ function TypingSlogan({ title }: { title: string }) {
 
   return (
     <div aria-label={title}>
-      <h1 className="mb-3 font-khmer text-[48px] font-extrabold leading-tight text-primary-color ">
+      <h1 className="mb-3 font-khmer text-[36px] sm:text-[48px] font-extrabold leading-tight text-primary-color ">
         <span aria-hidden="true">{mainTitle}</span>
         {!subtitle && (
           <span
@@ -117,7 +117,7 @@ export default function AboutUs() {
 
           <div className="mb-4 h-1 w-24 rounded-full bg-[#B8081C]" />
 
-          <span className="mb-8 max-w-xl text-[24px] font-khmer leading-relaxed text-primary-color dark:text-slate-400">
+          <span className="mb-8 max-w-xl text-[20px] sm:text-[24px] font-khmer leading-relaxed text-primary-color dark:text-slate-400">
             {about.description}
           </span>
 
@@ -173,14 +173,6 @@ export default function AboutUs() {
               clipPath: "polygon(0 45%, 100% 0, 100% 100%, 0 100%)",
             }}
           >
-            <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <span
-                  key={i}
-                  className="h-1.5 w-1.5 rounded-full bg-white/70"
-                />
-              ))}
-            </div>
           </div>
 
           <div className="absolute -left-2 top-10 h-2/3 w-1.5 rounded-full bg-[#B8081C]" />
