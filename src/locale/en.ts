@@ -747,6 +747,19 @@ export const en = {
     ],
   },
 
+  heros: {
+    startBusiness: "Start Online Business",
+    caseStudies: "College Case Studies",
+    learnAnywhere: "Learn Anywhere",
+    anytime: "Anytime",
+    liveCoding: "Live Coding",
+    progressValue: "28 / 35",
+    progress: "Progress",
+    aiAssistTitle: "AI Assistant",
+    aiAssistDesc: "AI supports your learning journey up to",
+    availability: "24 hours",
+  },
+
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.
   footer: {
     description:

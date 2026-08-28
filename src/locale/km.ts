@@ -739,6 +739,19 @@ export const km = {
     ],
   },
 
+  heros: {
+    startBusiness: "ចាប់ផ្តើមអាជីវកម្មអនឡាញ",
+    caseStudies: "សិក្សាករណីជាក់ស្តែង",
+    learnAnywhere: "រៀនគ្រប់ទីកន្លែង",
+    anytime: "បានគ្រប់ពេល",
+    liveCoding: "រៀនកូដផ្ទាល់",
+    progressValue: "២៨ / ៣៥",
+    progress: "លទ្ធផល",
+    aiAssistTitle: "AI ជំនួយ",
+    aiAssistDesc: "AI បានជំនួយជួយដល់ការសិក្សារបស់យើងរហូតទៅដល់",
+    availability: "24 ម៉ោង",
+  },
+
   footer: {
     description:
       "បង្កើតឡើងដើម្បីលើកកម្ពស់អ្នកអភិវឌ្ឍន៍ តាមរយៈមាតិការបច្ចេកវិទ្យាដែលមានគុណភាព និងងាយយល់។",
