@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Bot, FileText, Gamepad2, Trophy } from "lucide-react";
+import { Bot, FileText, Gamepad2, Trophy, FlaskConical } from "lucide-react";
 
 import styles from "./PlatformShowcase.module.css";
 import { useTranslation } from "@/hooks/useTranslations";
@@ -15,9 +15,6 @@ const DESKTOP_POSITIONS = [
   { left: "64.06%", top: "46.3%", width: "31.3%", height: "22%" },
 ];
 
-/* "section" variant: same left/width as desktop (keeps the connector wires
-   aligned) but taller cards so titles wrap in full (no ellipsis) and
-   descriptions are never clipped */
 const SECTION_POSITIONS = [
   { left: "5.63%", top: "16.5%", width: "32.3%", height: "28%" },
   { left: "61.88%", top: "16.5%", width: "32.3%", height: "28%" },
@@ -26,10 +23,12 @@ const SECTION_POSITIONS = [
 ];
 
 const CONNECTOR_PATHS = [
-  "M485,250 L595,250 Q610,250 610,265 L610,486",
-  "M792,250 L685,250 Q670,250 670,265 L670,486",
-  "M458,470 L558,470 Q570,470 570,485 L570,586",
-  "M820,470 L722,470 Q710,470 710,485 L710,586",
+  "M485,250 L510,250 Q610,250 610,350 L610,525", // Path 1 (100px huge curve radius)
+  "M792,250 L770,250 Q670,250 670,350 L670,525", // Path 2 (100px huge curve radius)
+  // "M458,470 L558,470 Q570,470 570,485 L570,586",
+  // "M820,470 L722,470 Q710,470 710,485 L710,586",
+  "M458,470 L520,470 Q570,470 570,520 L570,586", // Path 3 (Increased curve radius)
+  "M820,470 L760,470 Q710,470 710,520 L710,586", // Path 4 (Increased curve radius)
 ];
 
 type ShowcaseFeature = { title: string; description: string };
@@ -39,7 +38,6 @@ export default function PlatformShowcase({
   variant = "banner",
 }: {
   features?: ShowcaseFeature[];
-  /** "banner" keeps the courses-banner offset/scale; "section" sits neutrally in a centered block */
   variant?: "banner" | "section";
 } = {}) {
   const t = useTranslation();
@@ -54,19 +52,13 @@ export default function PlatformShowcase({
 
   return (
     <>
-      {/* =========================================================
-          DESKTOP / TABLET
-          ========================================================= */}
-
+      {/* DESKTOP LAYOUT */}
       <div className={desktopWrapperClass}>
         <div
-          className={`${styles.stageContainer} ${
-            variant === "section" ? styles.stageSection : ""
-          } relative w-full mx-auto overflow-hidden`}
+          className={`${styles.stageContainer} ${variant === "section" ? styles.stageSection : ""
+            } relative w-full mx-auto overflow-hidden`}
         >
-
           <header className={`${styles.heroHeader} absolute top-[3.2%] left-0 right-0 text-center`} />
-
 
           {/* Connector lines */}
           <svg
@@ -74,50 +66,36 @@ export default function PlatformShowcase({
             viewBox="0 0 1280 820"
             preserveAspectRatio="none"
           >
-            {/* Glow */}
-            <g>
-              {CONNECTOR_PATHS.map((d) => (
-                <path key={d} className={styles.connectorGlow} d={d} />
-              ))}
-            </g>
-
-            {/* Normal line */}
+            {/* Base background line */}
             <g>
               {CONNECTOR_PATHS.map((d) => (
                 <path key={d} className={styles.connectorLine} d={d} />
               ))}
             </g>
 
-            {/* Flowing current (ចរន្ត) */}
+            {/* Outer glow background */}
             <g>
               {CONNECTOR_PATHS.map((d) => (
-                <path key={d} className={styles.connectorCurrent} d={d} />
+                <path key={d} className={styles.connectorGlow} d={d} />
               ))}
             </g>
 
-            {/* Traveling spark */}
+            {/* Moving Light Flash / Pulse along the path */}
             <g>
               {CONNECTOR_PATHS.map((d, i) => (
-                <circle key={d} className={styles.connectorSpark} r="3.5">
-                  <animateMotion
-                    dur="1.8s"
-                    begin={`${i * 0.45}s`}
-                    repeatCount="indefinite"
-                    path={d}
-                  />
-                </circle>
+                <path
+                  key={d}
+                  className={styles.connectorFlash}
+                  style={{ animationDelay: `${i * 0.45}s` }}
+                  d={d}
+                />
               ))}
             </g>
           </svg>
 
-
-          {/* =====================================================
-              FEATURE CARDS
-              ===================================================== */}
-
+          {/* Desktop Feature Cards */}
           {features.map((feature, i) => {
             const Icon = FEATURE_ICONS[i];
-            const isPrimary = i === 0;
 
             return (
               <div
@@ -129,62 +107,22 @@ export default function PlatformShowcase({
                   overflow-hidden
                   flex
                   items-center
-                  justify-center
-
-                  border
-                  backdrop-saturate-150
-
                   z-[2]
                   transition-all
                   duration-300
                   ease-in-out
-
-                  hover:-translate-y-0.5
-
-                  ${
-                    isPrimary
-                      ? `
-                        bg-blue-50/90
-                        dark:bg-white/[0.04]
-                        border-blue-200/70
-                        dark:border-white/10
-                        backdrop-blur-2xl
-                        shadow-[0_10px_30px_-8px_rgba(30,58,138,0.22)]
-                        dark:shadow-[0_8px_32px_rgba(0,0,0,0.25)]
-                        ring-1
-                        ring-inset
-                        ring-blue-100/70
-                        dark:ring-white/[0.06]
-                        hover:bg-blue-50
-                        hover:border-blue-300/80
-                        hover:shadow-[0_16px_40px_-10px_rgba(30,58,138,0.28)]
-                        dark:hover:bg-white/[0.08]
-                        dark:hover:border-white/20
-                      `
-                      : `
-                        bg-white/90
-                        border-slate-200/80
-                        dark:bg-[rgba(13,19,38,0.55)]
-                        dark:border-[rgba(94,148,255,0.20)]
-                        backdrop-blur-xl
-                        hover:bg-white
-                        hover:border-slate-300
-                        dark:hover:border-[rgba(110,160,255,0.45)]
-                        dark:hover:bg-[rgba(16,23,46,0.75)]
-                      `
-                  }
                 `}
               >
                 <div className={`${styles.cardIconCircle} shrink-0 rounded-full flex items-center justify-center`}>
-                  <Icon className="text-[#eaf1ff]" strokeWidth={2} />
+                  <Icon className="text-white" strokeWidth={2} />
                 </div>
 
-                <div className="min-w-0">
-                  <h3 className={`${styles.cardTitle} text-slate-800 dark:text-slate-200 text-balance ${variant === "section" ? "" : "line-clamp-1"}`}>
+                <div className="min-w-0 flex-1">
+                  <h3 className={`${styles.cardTitle} text-balance ${variant === "section" ? "" : "line-clamp-1"}`}>
                     {feature.title}
                   </h3>
 
-                  <span className={`${styles.cardDescription} text-slate-600 dark:text-slate-400 text-balance ${variant === "section" ? "line-clamp-3" : "line-clamp-2"}`}>
+                  <span className={`${styles.cardDescription} text-balance ${variant === "section" ? "line-clamp-3" : "line-clamp-2"}`}>
                     {feature.description}
                   </span>
                 </div>
@@ -192,201 +130,152 @@ export default function PlatformShowcase({
             );
           })}
 
-
-          {/* =====================================================
-              DESKTOP BOTTOM GLOW
-              ===================================================== */}
-
+          {/* 3D CONCENTRIC ENERGY STAGE PLATFORM */}
           <svg
             className={`
-              ${styles.domeGlowSvg}
-              absolute
-              left-1/2
-              top-[74%]
-              -translate-x-1/2
-              -translate-y-1/2
-              z-[1]
-              pointer-events-none
-              overflow-visible
-            `}
-            viewBox="0 0 800 300"
+            ${styles.domeGlowSvg}
+            absolute
+            left-1/2
+            top-[80%]
+            -translate-x-1/2
+            -translate-y-1/2
+            z-[1]
+            pointer-events-none
+            overflow-visible
+          `}
+            viewBox="0 0 1000 450"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
+              {/* Light Mode Radial Gradients (Fade outer-to-inner / less visible to visible) */}
+              <radialGradient id="tier1LightGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#3b8cff" stopOpacity="0.45" />
+                <stop offset="70%" stopColor="#3b8cff" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#3b8cff" stopOpacity="0.15" />
+              </radialGradient>
 
-              <filter
-                id="b18"
-                x="-50%"
-                y="-50%"
-                width="200%"
-                height="200%"
-              >
-                <feGaussianBlur stdDeviation="18" />
+              <radialGradient id="tier2LightGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#2563eb" stopOpacity="0.8" />
+                <stop offset="80%" stopColor="#2563eb" stopOpacity="0.45" />
+                <stop offset="100%" stopColor="#2563eb" stopOpacity="0.2" />
+              </radialGradient>
+
+              <radialGradient id="tier3LightGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#1d4ed8" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="#1d4ed8" stopOpacity="0.3" />
+              </radialGradient>
+
+              {/* Dark Mode Linear Gradients */}
+              <linearGradient id="tier1Top" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="var(--ps-tier1-stop1)" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="var(--ps-tier1-stop2)" stopOpacity="0.98" />
+              </linearGradient>
+
+              <linearGradient id="tier2Top" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="var(--ps-tier2-stop1)" stopOpacity="0.98" />
+                <stop offset="100%" stopColor="var(--ps-tier2-stop2)" stopOpacity="1" />
+              </linearGradient>
+
+              <radialGradient id="baseGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="var(--ps-stage-glow-start)" stopOpacity="0.55" />
+                <stop offset="50%" stopColor="var(--ps-stage-glow-mid)" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="#0757ff" stopOpacity="0" />
+              </radialGradient>
+
+              {/* Light Mode Shadow Filter (tier1 only) — plain blur, applied to a
+                  dedicated solid shape below, since feDropShadow reads the source's
+                  alpha and tier1's light-mode fill/stroke are too translucent for
+                  a drop-shadow to read from directly. */}
+              <filter id="tier1ShadowBlurLight" x="-50%" y="-50%" width="200%" height="220%">
+                <feGaussianBlur stdDeviation="11" />
               </filter>
 
-
-              <filter
-                id="b9"
-                x="-50%"
-                y="-50%"
-                width="200%"
-                height="200%"
-              >
-                <feGaussianBlur stdDeviation="9" />
+              {/* Dark Mode Shadow Filters */}
+              <filter id="tier1Shadow" x="-50%" y="-50%" width="200%" height="220%">
+                <feDropShadow dx="0" dy="22" stdDeviation="12" floodColor="var(--ps-tier1-shadow-dark)" floodOpacity="0.85" />
+                <feDropShadow dx="0" dy="-12" stdDeviation="14" floodColor="var(--ps-tier1-shadow-light)" floodOpacity="1" />
               </filter>
 
-
-              <filter
-                id="b6"
-                x="-50%"
-                y="-50%"
-                width="200%"
-                height="200%"
-              >
-                <feGaussianBlur stdDeviation="6" />
+              <filter id="tier2Shadow" x="-30%" y="-30%" width="160%" height="180%">
+                <feDropShadow dx="0" dy="6" stdDeviation="4" floodColor="#000000" floodOpacity="0.75" />
+                <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#020a24" floodOpacity="0.6" />
               </filter>
 
-
-              <filter
-                id="b3"
-                x="-50%"
-                y="-50%"
-                width="200%"
-                height="200%"
-              >
-                <feGaussianBlur stdDeviation="3" />
+              <filter id="tier3Shadow" x="-30%" y="-40%" width="160%" height="200%">
+                <feDropShadow dx="0" dy="8" stdDeviation="5" floodColor="var(--ps-tier3-shadow-dark)" />
+                <feDropShadow dx="0" dy="-5" stdDeviation="6" floodColor="var(--ps-tier3-shadow-light)" />
               </filter>
-
             </defs>
 
+            {/* Outer Glow Ellipse */}
+            <ellipse cx="500" cy="225" rx="460" ry="120" fill="url(#baseGlow)" />
 
+            {/* Tier 1 dedicated shadow shape — solid fill so the blur is actually
+                visible; only shown in light mode (hidden in dark mode via CSS,
+                since dark mode gets its shadow from tier1Group's own filter). */}
             <ellipse
-              cx="400"
-              cy="150"
-              rx="390"
-              ry="98"
-              fill="#1e46b0"
-              opacity="0.28"
-              filter="url(#b18)"
+              className={styles.tier1ShadowOnly}
+              cx="500"
+              cy="241"
+              rx="380"
+              ry="88"
+              fill="#1d4ed8"
+              filter="url(#tier1ShadowBlurLight)"
             />
 
+            {/* Tier 1 (Outer Ring - Softest visibility with shadow) */}
+            <g id="3d-tier-1" className={styles.tier1Group}>
+              <ellipse cx="500" cy="225" rx="390" ry="95" fill="var(--ps-tier1-fill)" />
+              <ellipse
+                cx="500"
+                cy="225"
+                rx="390"
+                ry="95"
+                fill="none"
+                stroke="var(--ps-tier1-stroke)"
+                strokeWidth="2.5"
+                strokeOpacity="0.85"
+              />
+            </g>
 
-            <ellipse
-              cx="400"
-              cy="150"
-              rx="335"
-              ry="84"
-              fill="#193c96"
-              opacity="0.55"
-              filter="url(#b9)"
-            />
+            {/* Tier 2 (Middle Ring - Medium visibility) */}
+            <g id="3d-tier-2" className={styles.tier2Group}>
+              <ellipse cx="500" cy="210" rx="270" ry="66" fill="var(--ps-tier2-fill)" />
+              <ellipse
+                cx="500"
+                cy="210"
+                rx="270"
+                ry="66"
+                fill="none"
+                stroke="var(--ps-tier2-stroke)"
+                strokeWidth="2"
+                strokeOpacity="0.95"
+              />
+            </g>
 
-
-            <ellipse
-              cx="400"
-              cy="150"
-              rx="335"
-              ry="84"
-              fill="none"
-              stroke="#4d7cf0"
-              strokeOpacity={0.3}
-              strokeWidth={2.5}
-              filter="url(#b3)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="147"
-              rx="258"
-              ry="64"
-              fill="#2450c6"
-              opacity="0.62"
-              filter="url(#b9)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="147"
-              rx="258"
-              ry="64"
-              fill="none"
-              stroke="#6b98ff"
-              strokeOpacity={0.42}
-              strokeWidth={2.5}
-              filter="url(#b3)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="144"
-              rx="182"
-              ry="45"
-              fill="#3468e0"
-              opacity="0.72"
-              filter="url(#b6)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="144"
-              rx="182"
-              ry="45"
-              fill="none"
-              stroke="#9db9ff"
-              strokeOpacity={0.55}
-              strokeWidth={2.5}
-              filter="url(#b3)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="140"
-              rx="112"
-              ry="28"
-              fill="#5f8bf8"
-              opacity="0.85"
-              filter="url(#b6)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="140"
-              rx="112"
-              ry="28"
-              fill="none"
-              stroke="#cfe0ff"
-              strokeOpacity={0.6}
-              strokeWidth={2}
-              filter="url(#b3)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="132"
-              rx="58"
-              ry="15"
-              fill="#e4edff"
-              opacity="0.9"
-              filter="url(#b6)"
-            />
+            {/* Tier 3 (Inner Ring - Highest visibility) */}
+            <g id="3d-tier-3" className={styles.tier3Group}>
+              <ellipse cx="500" cy="195" rx="150" ry="37" fill="var(--ps-tier3-fill)" />
+              <ellipse
+                cx="500"
+                cy="195"
+                rx="150"
+                ry="37"
+                fill="none"
+                stroke="rgba(244, 248, 255, 0.9)"
+                strokeWidth="2"
+                strokeOpacity="0.95"
+              />
+            </g>
           </svg>
-
-
-          {/* Desktop center hub */}
           <div
             className={`
               ${styles.centerEmblem}
               absolute
               left-1/2
-              top-[59.3%]
+              top-[70%] /* Shifted down from top-[62.5%] */
               -translate-x-1/2
+              -translate-y-1/2
               flex
               items-center
               justify-center
@@ -403,124 +292,74 @@ export default function PlatformShowcase({
               className="text-[#f4f8ff]"
             >
               <polyline points="16 18 22 12 16 6" />
+              <polyline points="8 6 2 12 8 18" />
+            </svg>
+          </div>
+        </div>
+      </div>
 
+      {/* MOBILE LAYOUT */}
+      {/* MOBILE LAYOUT */}
+      <div className="sm:hidden w-full px-4 py-6">
+        <div className={styles.mobileTimelineContainer}>
+          {/* Central Vertical Track Line */}
+          <div className={styles.mobileStemLine} />
+
+          {/* Top Main Emblem Node */}
+          <div className={styles.mobileTopNode}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-6 h-6 text-white"
+            >
+              <polyline points="16 18 22 12 16 6" />
               <polyline points="8 6 2 12 8 18" />
             </svg>
           </div>
 
-        </div>
-      </div>
-
-
-      {/* =========================================================
-          MOBILE
-          ========================================================= */}
-
-      <div className="sm:hidden w-full px-3 min-[380px]:px-4 pt-6 pb-10">
-
-        <div className={styles.mobileFlow}>
-
-
-          {/* =====================================================
-              MOBILE HUB
-              ===================================================== */}
-
-          <div className={styles.mobileHubWrapper}>
-
-            <div className={styles.mobileHubGlow} />
-
-            <div className={styles.mobileCenterEmblem}>
-
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2.5}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-[#f4f8ff]"
-              >
-                <polyline points="16 18 22 12 16 6" />
-
-                <polyline points="8 6 2 12 8 18" />
-              </svg>
-
-            </div>
-
+          {/* Vertical Worm animation container */}
+          <div className={styles.mobileVerticalWormTrack}>
+            <div className={styles.mobileVerticalWorm} />
           </div>
 
+          {/* Feature Card Rows */}
+          <div className="space-y-5 pt-6">
+            {features.map((feature, i) => {
+              const Icon = FEATURE_ICONS[i];
 
-          {/* =====================================================
-              MOBILE FEATURES
-              ===================================================== */}
+              return (
+                <div key={feature.title} className={styles.mobileTimelineRow}>
+                  {/* Junction Dot */}
+                  <div className={styles.mobileTimelineDot} />
 
-          {features.map((feature, i) => {
-            const Icon = FEATURE_ICONS[i];
+                  {/* Horizontal Branch Base Line */}
+                  <div className={styles.mobileBranchLine} />
 
-            return (
-              <div key={feature.title} className={styles.mobileFlowRow}>
+                  {/* Horizontal Shoot Worm */}
+                  <div
+                    className={styles.mobileBranchWorm}
+                    style={{ animationDelay: `${0.55 + i * 0.55}s` }}
+                  />
 
-                <span className={styles.mobileJunction} />
+                  {/* Feature Card */}
+                  <div className={styles.mobileFeatureCard}>
+                    <div className={`${styles.mobileIconCircle} shrink-0`}>
+                      <Icon className="text-white w-5 h-5" strokeWidth={2} />
+                    </div>
 
-                <div />
-
-                <div
-                  className={`
-                    ${styles.mobileFeatureCard}
-                    bg-white/95
-                    border
-                    border-slate-200/80
-                    dark:bg-[rgba(13,19,38,0.68)]
-                    dark:border-[rgba(94,148,255,0.20)]
-                    backdrop-blur-xl
-                  `}
-                >
-
-                  <div className={styles.mobileIconCircle}>
-                    <Icon className="text-[#eaf1ff]" strokeWidth={2} size={20} />
+                    <div className="min-w-0 flex-1">
+                      <h3 className={styles.mobileCardTitle}>{feature.title}</h3>
+                      <span className={styles.mobileCardDesc}>{feature.description}</span>
+                    </div>
                   </div>
-
-                  <div className="min-w-0">
-                    <h3
-                      className="
-                        min-w-0
-                        text-[12px]
-                        min-[375px]:text-[13px]
-                        font-semibold
-                        leading-[1.4]
-                        text-slate-800
-                        dark:text-slate-200
-                        break-words
-                      "
-                    >
-                      {feature.title}
-                    </h3>
-
-                    <span
-                      className="
-                        mt-0.5
-                        block
-                        min-w-0
-                        text-[11px]
-                        min-[375px]:text-[12px]
-                        font-normal
-                        leading-[1.5]
-                        text-slate-600
-                        dark:text-slate-400
-                        break-words
-                        line-clamp-2
-                      "
-                    >
-                      {feature.description}
-                    </span>
-                  </div>
-
                 </div>
-
-              </div>
-            );
-          })}
-
+              );
+            })}
+          </div>
         </div>
       </div>
     </>
