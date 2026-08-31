@@ -27,7 +27,12 @@ export type ApiNotificationType =
   | "BADGE"
   | "LEADERBOARD"
   | "PROGRESS"
-  | "SYSTEM";
+  | "SYSTEM"
+  | "INSTRUCTOR_APPLICATION_SUBMITTED"
+  | "INSTRUCTOR_APPLICATION_RESUBMITTED"
+  | "INSTRUCTOR_APPLICATION_APPROVED"
+  | "INSTRUCTOR_APPLICATION_REJECTED"
+  | "INSTRUCTOR_ACCOUNT_CREATED";
 
 export interface ApiNotification {
   notificationReceiverId: string;

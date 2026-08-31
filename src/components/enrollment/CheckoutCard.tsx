@@ -3,6 +3,7 @@
 import { BookOpen, Clock, Infinity as InfinityIcon, Lock, Monitor } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import type { Course } from "@/lib/course/courses";
 import { useEnrollCourseMutation } from "@/redux/api/course-api";
 import { getCoursePricing } from "@/components/courses-detail/payment/payment-prcie";
@@ -36,7 +37,7 @@ export function CheckoutCard({ course }: CheckoutCardProps) {
       window.location.href = `/courses/${course.id}`;
     } catch (error) {
       console.error(error);
-      toast.error("មិនអាចចុះឈ្មោះវគ្គសិក្សាបាន");
+      toast.error(getApiErrorMessage(error, "មិនអាចចុះឈ្មោះវគ្គសិក្សាបាន"));
     }
   };
 

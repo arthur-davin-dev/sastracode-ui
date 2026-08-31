@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 import { LanguageProvider } from "@/lib/language-context";
+import LocaleSync from "@/components/i18n/LocaleSync";
 import StoreProvider from "./StoreProvider";
 import AuthProvider from "@/components/AuthProvider";
 import { RealtimeProvider } from "@/lib/realtime/RealtimeProvider";
@@ -143,6 +144,7 @@ export default function RootLayout({
             <StoreProvider>
               <RealtimeProvider>
                 <LanguageProvider>
+                  <LocaleSync />
                   {children}
 
                   {/* <KhmerNumerals /> */}

@@ -2,7 +2,7 @@
 // https://x.com/dominikkoch
 "use client";
 
-import { useMemo, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useMemo, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 
 type OrbitShape =
   | 'ellipse'
@@ -155,18 +155,20 @@ function OrbitItem({
       `}</style>
       <div
         className="absolute select-none pointer-events-auto"
-        style={{
-          width: itemSize,
-          height: itemSize,
-          offsetPath: `path("${path}")`,
-          WebkitOffsetPath: `path("${path}")`,
-          offsetRotate: rotateMode,
-          WebkitOffsetRotate: rotateMode,
-          offsetAnchor: 'center center',
-          animation: `${animName} ${duration}s linear infinite`,
-          animationPlayState: paused ? 'paused' : 'running',
-          animationDelay: `-${(startPercent / 100) * duration}s`,
-        }}
+        style={
+          {
+            width: itemSize,
+            height: itemSize,
+            offsetPath: `path("${path}")`,
+            WebkitOffsetPath: `path("${path}")`,
+            offsetRotate: rotateMode,
+            WebkitOffsetRotate: rotateMode,
+            offsetAnchor: 'center center',
+            animation: `${animName} ${duration}s linear infinite`,
+            animationPlayState: paused ? 'paused' : 'running',
+            animationDelay: `-${(startPercent / 100) * duration}s`,
+          } as CSSProperties
+        }
       >
         <div 
           className="w-full h-full"
