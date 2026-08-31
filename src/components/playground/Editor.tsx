@@ -33,6 +33,7 @@ import CodeCoach from "@/components/playground/CodeCoach";
 
 import MonacoEditor, { type OnMount } from "@monaco-editor/react";
 import { useExecuteCodeMutation } from "@/types/playgroundApi";
+import { getApiErrorMessage } from "@/lib/api/error";
 import {
   defaultLanguage,
   findPlaygroundLanguage,
@@ -1481,19 +1482,7 @@ export default function Editor() {
     } catch (error) {
       console.error("Code execution failed:", error);
 
-      let message = "Unable to execute code.";
-
-      if (typeof error === "object" && error !== null && "data" in error) {
-        const apiError = error as {
-          data?: {
-            message?: string;
-          };
-        };
-
-        if (apiError.data?.message) {
-          message = apiError.data.message;
-        }
-      }
+      const message = getApiErrorMessage(error, "Unable to execute code.");
 
       setOutput(["Execution failed.", "", message]);
     }

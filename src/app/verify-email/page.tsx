@@ -6,35 +6,11 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+import { getApiErrorMessage } from "@/lib/api/error";
 import { useResendVerificationEmailMutation } from "@/redux/api/auth-api";
 
-function getErrorMessage(error: unknown) {
-  if (!error || typeof error !== "object") {
-    return "មិនអាចផ្ញើអ៊ីមែលម្ដងទៀតបាន";
-  }
-
-  if ("data" in error) {
-    const data = (
-      error as {
-        data?: unknown;
-      }
-    ).data;
-
-    if (data && typeof data === "object" && "message" in data) {
-      const message = (
-        data as {
-          message?: unknown;
-        }
-      ).message;
-
-      if (typeof message === "string" && message.trim()) {
-        return message;
-      }
-    }
-  }
-
-  return "មិនអាចផ្ញើអ៊ីមែលម្ដងទៀតបាន។ សូមព្យាយាមម្ដងទៀត។";
-}
+const RESEND_FAILED_MESSAGE =
+  "មិនអាចផ្ញើអ៊ីមែលម្ដងទៀតបាន។ សូមព្យាយាមម្ដងទៀត។";
 
 export default function VerifyEmailPage() {
   const [email, setEmail] = useState("");
@@ -70,7 +46,7 @@ export default function VerifyEmailPage() {
 
       toast.success(result.message || "អ៊ីមែលផ្ទៀងផ្ទាត់ត្រូវបានផ្ញើម្ដងទៀត");
     } catch (error) {
-      toast.error(getErrorMessage(error));
+      toast.error(getApiErrorMessage(error, RESEND_FAILED_MESSAGE));
     }
   };
 

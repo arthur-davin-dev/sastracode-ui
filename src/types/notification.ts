@@ -28,6 +28,10 @@ export type ApiNotificationType =
   | "LEADERBOARD"
   | "PROGRESS"
   | "SYSTEM"
+  | "INSTRUCTOR_APPLICATION_SUBMITTED"
+  | "INSTRUCTOR_APPLICATION_RESUBMITTED"
+  | "INSTRUCTOR_APPLICATION_APPROVED"
+  | "INSTRUCTOR_APPLICATION_REJECTED"
   | "COURSE_ENROLLED"
   | "COURSE_LECTURE_ADDED"
   | "COURSE_UPDATED"
@@ -36,18 +40,8 @@ export type ApiNotificationType =
   | "QUESTION_ANSWERED"
   | "REVIEW_REPLIED"
   | "PAYMENT_SUCCEEDED"
-  | "PAYMENT_FAILED";
-
-export type ApiNotificationReferenceType =
-  | "COURSE"
-  | "VIDEO"
-  | "SECTION"
-  | "CERTIFICATE"
-  | "QUESTION"
-  | "ANSWER"
-  | "REVIEW"
-  | "PAYMENT"
-  | "NONE";
+  | "PAYMENT_FAILED"
+  | "INSTRUCTOR_ACCOUNT_CREATED";
 
 export interface ApiNotification {
   notificationReceiverId: string;
@@ -56,7 +50,7 @@ export interface ApiNotification {
   title: string;
   content: string;
   deepLink?: string;
-  referenceType?: ApiNotificationReferenceType;
+  referenceType?: ApiNotificationType;
   referenceId?: string;
   isRead: boolean;
   readAt?: string | null;

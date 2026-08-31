@@ -1,4 +1,6 @@
-import type { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+// Re-exported so existing `@/lib/qa/qa-utils` importers keep working; the
+// implementation now lives in the shared API error helper.
+export { getApiErrorMessage } from "@/lib/api/error";
 
 export function resolveAvatarUrl(avatarFileId?: string): string | undefined {
   const value = avatarFileId?.trim();
@@ -32,22 +34,4 @@ export function formatRelativeTime(iso?: string): string {
   if (diffMonths < 12) return `${diffMonths} ខែមុន`;
   const diffYears = Math.floor(diffMonths / 12);
   return `${diffYears} ឆ្នាំមុន`;
-}
-
-function isFetchBaseQueryError(error: unknown): error is FetchBaseQueryError {
-  return typeof error === "object" && error !== null && "status" in error;
-}
-
-export function getApiErrorMessage(error: unknown, fallback: string): string {
-  if (isFetchBaseQueryError(error)) {
-    const data = error.data;
-    if (data && typeof data === "object" && "message" in data) {
-      const message = (data as { message?: unknown }).message;
-      if (typeof message === "string" && message.trim()) return message;
-    }
-  } else if (error && typeof error === "object" && "message" in error) {
-    const message = (error as { message?: unknown }).message;
-    if (typeof message === "string" && message.trim()) return message;
-  }
-  return fallback;
 }

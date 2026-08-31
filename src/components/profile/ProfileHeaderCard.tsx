@@ -6,6 +6,7 @@ import Cropper, { Point, Area } from "react-easy-crop";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { useUploadMyAvatarMutation } from "@/redux/service/profile-api";
 import type { UserProfile } from "@/types/profile";
 
@@ -13,25 +14,6 @@ interface ProfileHeaderCardProps {
   profile: UserProfile;
   isEditing?: boolean;
   onEditClick?: () => void;
-}
-
-/**
- * Extracts a human-readable message from an RTK Query / fetch error so the user
- * sees why the upload failed instead of a generic message.
- */
-function getUploadErrorMessage(error: unknown): string | null {
-  if (!error || typeof error !== "object" || !("data" in error)) return null;
-
-  const data = (error as { data?: unknown }).data;
-
-  if (typeof data === "string" && data.trim()) return data;
-
-  if (data && typeof data === "object" && "message" in data) {
-    const message = (data as { message?: unknown }).message;
-    if (typeof message === "string" && message.trim()) return message;
-  }
-
-  return null;
 }
 
 // An avatar never renders larger than ~144px, so cap the encoded image well
@@ -174,7 +156,7 @@ export function ProfileHeaderCard({
       console.error("Upload avatar failed:", error);
       if (previewUrl) URL.revokeObjectURL(previewUrl);
       setAvatarPreviewUrl(undefined);
-      toast.error(getUploadErrorMessage(error) ?? "Unable to update the profile photo.");
+      toast.error(getApiErrorMessage(error, "Unable to update the profile photo."));
     }
   };
 

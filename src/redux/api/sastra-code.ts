@@ -106,6 +106,7 @@ export const sastraApi = createApi({
     "Leaderboard",
     "Notification",
     "Tutorial",
+    "InstructorApplication",
   ],
   // Realtime cache invalidation (see src/lib/realtime) is the primary way an
   // open page picks up admin edits without a refresh. These two are the

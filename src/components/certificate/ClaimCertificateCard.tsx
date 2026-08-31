@@ -20,6 +20,7 @@ import {
   useGetCourseCertificateQuery,
   useIssueCourseCertificateMutation,
 } from "@/redux/features/certificate/certificateApi";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { RequirementChecklistItem } from "@/types/certificate";
 
 // Matches the backend's rule: a certificate can be issued once course
@@ -93,8 +94,12 @@ export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
       toast.success("ទទួលបានវិញ្ញាបនបត្រដោយជោគជ័យ!");
     } catch (error) {
       console.error("Issue certificate error:", error);
-      setIssueError("មិនអាចទាមទារវិញ្ញាបនបត្របានទេ សូមព្យាយាមម្ដងទៀត");
-      toast.error("មិនអាចទាមទារវិញ្ញាបនបត្របានទេ");
+      const message = getApiErrorMessage(
+        error,
+        "មិនអាចទាមទារវិញ្ញាបនបត្របានទេ សូមព្យាយាមម្ដងទៀត",
+      );
+      setIssueError(message);
+      toast.error(message);
     }
   };
 

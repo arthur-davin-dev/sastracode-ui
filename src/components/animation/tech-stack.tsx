@@ -2,7 +2,7 @@
 // https://x.com/dominikkoch
 "use client";
 
-import { useMemo, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useMemo, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 
 type OrbitShape =
   | 'ellipse'

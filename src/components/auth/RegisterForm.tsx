@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import { getApiErrorMessage } from "@/lib/api/error";
 import { useRegisterMutation } from "@/redux/api/auth-api";
 
 const registerSchema = z
@@ -73,25 +74,7 @@ const registerSchema = z
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
-function errorMessage(error: unknown) {
-  if (!error || typeof error !== "object") {
-    return "មិនអាចបង្កើតគណនីបាន";
-  }
-
-  if ("data" in error) {
-    const data = (error as { data?: unknown }).data;
-
-    if (data && typeof data === "object" && "message" in data) {
-      const message = (data as { message?: unknown }).message;
-
-      if (typeof message === "string" && message.trim()) {
-        return message;
-      }
-    }
-  }
-
-  return "មិនអាចបង្កើតគណនីបាន។ សូមព្យាយាមម្ដងទៀត។";
-}
+const REGISTER_FAILED_MESSAGE = "មិនអាចបង្កើតគណនីបាន។ សូមព្យាយាមម្ដងទៀត។";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -157,7 +140,7 @@ export default function RegisterForm() {
 
       router.replace("/verify-email");
     } catch (error) {
-      toast.error(errorMessage(error));
+      toast.error(getApiErrorMessage(error, REGISTER_FAILED_MESSAGE));
     }
   };
 

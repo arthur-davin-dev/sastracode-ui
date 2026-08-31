@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Bookmark, Eye } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { Course } from "@/types/course";
 import {
   useAddBookmarkMutation,
@@ -42,8 +43,13 @@ export default function CourseCard({ course }: CourseCardProps) {
         await addBookmark({ itemType: "TUTORIAL", itemId: course.id }).unwrap();
         toast.success("Tutorial saved to bookmarks.");
       }
-    } catch {
-      toast.error("Unable to update this bookmark. Please try again.");
+    } catch (error) {
+      toast.error(
+        getApiErrorMessage(
+          error,
+          "Unable to update this bookmark. Please try again.",
+        ),
+      );
     }
   }
 

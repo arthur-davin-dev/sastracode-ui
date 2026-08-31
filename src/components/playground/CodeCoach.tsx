@@ -21,6 +21,7 @@ import {
   useImproveCodeMutation,
   type AiHintResponse,
 } from "@/types/playgroundApi";
+import { getApiErrorMessage } from "@/lib/api/error";
 
 type HelpMode = "hint" | "explain" | "improve" | "fix";
 
@@ -42,63 +43,7 @@ interface CodeCoachProps {
 function getRequestError(error: unknown) {
   console.error("AI Coach request failed:", error);
 
-  if (error && typeof error === "object") {
-    if ("data" in error) {
-      const data = (
-        error as {
-          data?: unknown;
-        }
-      ).data;
-
-      if (typeof data === "string") {
-        return data;
-      }
-
-      if (
-        data &&
-        typeof data === "object" &&
-        "message" in data
-      ) {
-        const message = (
-          data as {
-            message?: unknown;
-          }
-        ).message;
-
-        if (typeof message === "string") {
-          return message;
-        }
-      }
-    }
-
-    if ("error" in error) {
-      const message = (
-        error as {
-          error?: unknown;
-        }
-      ).error;
-
-      if (typeof message === "string") {
-        return message;
-      }
-    }
-
-    if ("status" in error) {
-      const status = (
-        error as {
-          status?: unknown;
-        }
-      ).status;
-
-      return `AI request failed (${String(status)}).`;
-    }
-  }
-
-  if (error instanceof Error) {
-    return error.message;
-  }
-
-  return "Unable to get AI help.";
+  return getApiErrorMessage(error, "Unable to get AI help.");
 }
 
 

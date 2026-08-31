@@ -23,6 +23,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { getApiErrorMessage } from "@/lib/api/error";
+import { type Lang, useLanguage } from "@/lib/language-context";
+
 import type { Gender, UserProfile, WorkStudyType } from "@/types/profile";
 
 import {
@@ -35,24 +38,6 @@ interface ProfileFormProps {
   isEditing: boolean;
   onCancel?: () => void;
   onSaved?: () => void;
-}
-
-function getApiErrorMessage(error: unknown) {
-  if (!error || typeof error !== "object" || !("data" in error)) {
-    return null;
-  }
-
-  const data = error.data;
-
-  if (typeof data === "string") {
-    return data;
-  }
-
-  if (data && typeof data === "object" && "message" in data) {
-    return typeof data.message === "string" ? data.message : null;
-  }
-
-  return null;
 }
 
 function formatBirthday(value?: string | null) {
@@ -101,7 +86,9 @@ export function ProfileForm({
     profile.institutionName ?? "",
   );
 
-  const [locale, setLocale] = useState(profile.locale ?? "");
+  // `locale` is not edited here — it is driven by the app language selector
+  // below and persisted automatically by <LocaleSync />.
+  const { lang, setLang } = useLanguage();
 
   const [updateProfile, { isLoading: isUpdating }] =
     useUpdateMyProfileMutation();
@@ -123,7 +110,6 @@ export function ProfileForm({
         gender: gender || undefined,
         workStudyType: workStudyType || undefined,
         institutionName: institutionName.trim() || undefined,
-        locale: locale.trim() || undefined,
       }).unwrap();
 
       toast.success("ព័ត៌មានត្រូវបានរក្សាទុកដោយជោគជ័យ។");
@@ -132,7 +118,7 @@ export function ProfileForm({
     } catch (error) {
       console.error("Update profile failed:", error);
 
-      toast.error(getApiErrorMessage(error) ?? "មិនអាចរក្សាទុកព័ត៌មានបានទេ។");
+      toast.error(getApiErrorMessage(error, "មិនអាចរក្សាទុកព័ត៌មានបានទេ។"));
     }
   };
 
@@ -144,7 +130,7 @@ export function ProfileForm({
     } catch (error) {
       console.error("Reset password failed:", error);
 
-      toast.error("មិនអាចប្ដូរលេខសម្ងាត់បានទេ។");
+      toast.error(getApiErrorMessage(error, "មិនអាចប្ដូរលេខសម្ងាត់បានទេ។"));
     }
   };
 
@@ -408,13 +394,18 @@ export function ProfileForm({
           </FormField>
 
           <FormField label="ភាសា" icon={<Globe2 />}>
-            <Input
-              value={locale}
-              maxLength={10}
-              placeholder="km"
-              onChange={(e) => setLocale(e.target.value)}
-              className={inputClass}
-            />
+            <select
+              value={lang}
+              onChange={(e) => setLang(e.target.value as Lang)}
+              className="h-11 w-full rounded-xl border border-input bg-white-900 text-slate-500 px-3 text-lg outline-none focus:ring-2 focus:ring-violet-500/20"
+            >
+              <option value="km">ខ្មែរ (Khmer)</option>
+              <option value="en">English</option>
+            </select>
+
+            <p className="text-sm text-slate-400">
+              ការជ្រើសរើសនេះប្ដូរភាសាកម្មវិធីភ្លាមៗ ហើយរក្សាទុកទៅ locale របស់អ្នកដោយស្វ័យប្រវត្តិ។
+            </p>
           </FormField>
         </div>
 

@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
+import { getApiErrorMessage } from "@/lib/api/error";
 import type { Course } from "@/lib/course/courses";
 import {
   useAddBookmarkMutation,
@@ -106,8 +107,13 @@ export function CourseCard({ course }: CourseCardProps) {
         await addBookmark({ itemType: "COURSE", itemId: course.id }).unwrap();
         toast.success("Course saved to bookmarks.");
       }
-    } catch {
-      toast.error("Unable to update this bookmark. Please try again.");
+    } catch (error) {
+      toast.error(
+        getApiErrorMessage(
+          error,
+          "Unable to update this bookmark. Please try again.",
+        ),
+      );
     }
   }
 
