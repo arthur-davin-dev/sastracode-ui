@@ -22,6 +22,11 @@ const staticRoutes: Array<{
   { path: "/private-course", changeFrequency: "monthly", priority: 0.5 },
   { path: "/request-access", changeFrequency: "monthly", priority: 0.5 },
   { path: "/register", changeFrequency: "yearly", priority: 0.5 },
+  {
+    path: "/student/certificate/verify",
+    changeFrequency: "yearly",
+    priority: 0.4,
+  },
   { path: "/legal", changeFrequency: "yearly", priority: 0.3 },
   { path: "/privacy-policy", changeFrequency: "yearly", priority: 0.3 },
   { path: "/terms-of-service", changeFrequency: "yearly", priority: 0.3 },

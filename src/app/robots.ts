@@ -23,6 +23,10 @@ export default function robots(): MetadataRoute.Robots {
         "/playground/console",
         "/playground/editor",
         "/verify-email",
+        // Individual verification results carry a student's name. The
+        // landing page at /student/certificate/verify stays crawlable;
+        // only the dynamic result pages below it are blocked.
+        "/student/certificate/verify/",
         "/test",
         "/users",
         "/function",
