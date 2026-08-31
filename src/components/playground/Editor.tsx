@@ -2188,7 +2188,7 @@ export default function Editor() {
             <Button
               type="button"
               variant="outline"
-              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
               onClick={() => void handleFormatCode()}
               title={
                 activeLabel === "Java"
@@ -2209,7 +2209,7 @@ export default function Editor() {
             <Button
               type="button"
               variant="outline"
-              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
               onClick={handleCopy}
             >
               {copyStatus === "copied" ? (
@@ -2225,7 +2225,7 @@ export default function Editor() {
             <Button
               type="button"
               variant="outline"
-              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
               onClick={handleDownload}
             >
               <Download className="h-4 w-4 text-gray-600" />
@@ -2237,7 +2237,7 @@ export default function Editor() {
             <Button
               type="button"
               variant="outline"
-              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
               onClick={handleReset}
             >
               <RotateCcw className="h-4 w-4 text-gray-600" />
@@ -2249,7 +2249,7 @@ export default function Editor() {
             <Button
               type="button"
               variant="outline"
-              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
               onClick={handleClearEditor}
             >
               <Trash2 className="h-4 w-4 text-gray-600" />
@@ -2262,7 +2262,7 @@ export default function Editor() {
               <Button
                 type="button"
                 variant="outline"
-                className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+                className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
                 onClick={handleClearOutput}
               >
                 <Eraser className="h-4 w-4 text-gray-600" />
