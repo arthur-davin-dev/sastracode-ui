@@ -31,7 +31,8 @@ export async function requireVerifiedUser(
   }
 
   if (session.emailVerified === false) {
-    redirect("/verify-email");
+    // Keycloak owns the "verify your email" screen; send the user back there.
+    redirect("/api/auth/login/keycloak");
   }
 
   return session;

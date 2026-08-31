@@ -45,8 +45,9 @@ Key decisions (agreed):
 | Frontend client type | **Public** client, Authorization Code + PKCE. The confidential secret in `.env` is used **server-side only** by Auth.js for the code exchange — acceptable because the browser never receives it. |
 | Session | Auth.js encrypted JWT cookie. Access token refreshed silently via the Keycloak `refresh_token` grant in the `jwt` callback. |
 | Route protection | `src/proxy.ts` (Next 16's renamed middleware) as the first gate + `requireVerifiedUser()` in Server Components + backend JWT validation. Defense in depth. |
-| Auto-login after registration | **Never.** Registration ends on `/verify-email`. |
-| Auto-login after verification | **Never.** On success `/verify-email/callback` immediately hands off to `signIn("keycloak")` (Keycloak's hosted login) — no session is created by the app itself. |
+| Auto-login after registration | **Never.** `/register` swaps to an inline "registration successful, check your email" message on the same page — no redirect, no `signIn`, no session, no frontend verification page. |
+| Verification UI owner | **Keycloak.** The verification link in the email, the verification result page, and the login form that follows are all Keycloak-hosted. The frontend has **no** `/check-email`, `/verify-email`, or `/verify-email-success` route. |
+| Auto-login after verification | **Never.** Keycloak's `VERIFY_EMAIL` action `redirect_uri` is `<AUTH_URL>/api/auth/login/keycloak` — the app's existing login route, which renders nothing and 302s to Keycloak's hosted login form. The user still has to enter credentials there; no session is created by verification. |
 
 ### 1.1 Existing-user login (sequence)
 
@@ -80,27 +81,38 @@ hosted login. The frontend never renders email/password fields.
    │                                                   ▼
    │                                            202 Accepted
    ▼
-sessionStorage["pendingVerificationEmail"] = email
-router.replace("/verify-email")   ← "check your inbox" + Resend
+RegisterForm swaps to an inline message on /register:
+"Registration successful. Please check your email and click 'Verify Email'."
+ + a "Go to Gmail" link (https://mail.google.com, new tab) and a
+ "Already verified? Continue to login" → signIn("keycloak").
+(no redirect, no frontend verification page)
 ```
 
-### 1.3 Email verification + after (sequence)
+### 1.3 Email verification + after (sequence)  — all Keycloak-hosted
 
 ```
-Email link ──▶ Keycloak "Verify Email" action page ──▶ marks emailVerified=true
-                        │
-                        ▼ (Keycloak action-token redirect_uri)
-              /verify-email/callback
-                        │  success: no UI, useEffect → signIn("keycloak")
-                        │  ?error=expired|invalid: message + link to /verify-email
-                        ▼
-              Keycloak hosted login ──▶ /api/auth/callback/keycloak ──▶ session ──▶ "/"
+Email "Verify Email" link  ──▶  Keycloak verification URL
+   ▼
+Keycloak verification page  (token generation / validation / expiry: all Keycloak)
+   ▼  emailVerified = true
+   ▼  (VERIFY_EMAIL action redirect_uri = APP_VERIFY_EMAIL_REDIRECT_URI
+   ▼   = <AUTH_URL>/api/auth/login/keycloak)
+GET /api/auth/login/keycloak   ← app route, renders NOTHING, 302 → signIn("keycloak")
+   ▼
+Keycloak hosted login form   ← user types username/email + password
+   ▼
+/api/auth/callback/keycloak ──▶ Auth.js code exchange (PKCE) ──▶ session ──▶ "/"
 ```
 
-Configure the backend's `send-verify-email` / `execute-actions-email` call with
-`redirect_uri = {APP_VERIFY_EMAIL_REDIRECT_URI}` (`…/verify-email/callback`) and
-`client_id = {AUTH_KEYCLOAK_ID}` so Keycloak redirects here after the action
-instead of showing its own "Back to Application" page.
+Backend `send-verify-email` / `execute-actions-email` call:
+`redirect_uri = {APP_VERIFY_EMAIL_REDIRECT_URI}` (= `<AUTH_URL>/api/auth/login/keycloak`)
+and `client_id = {AUTH_KEYCLOAK_ID}`. After the action Keycloak redirects to
+that route, which immediately `signIn("keycloak")`s → the Keycloak login form.
+The redirect target is not a frontend page (it has no UI); it exists only to
+turn "verified" into "now on the Keycloak login form" without Keycloak's default
+"Back to Application" dead-end. The app never auto-logs-in. If `redirect_uri` is
+omitted, Keycloak instead shows its own "email verified" page with a link back
+to the app — also acceptable, just one extra click.
 
 ---
 
@@ -111,13 +123,12 @@ instead of showing its own "Back to Application" page.
 | Keycloak login core | `src/auth.ts` *(pre-existing; +`email_verified` claim propagation only)* | Auth Code + PKCE via Auth.js Keycloak provider, JWT strategy, silent refresh, `RefreshAccessTokenError` handling. |
 | Login trigger (client) | `src/components/auth/Login.tsx` *(pre-existing)* | Button → `signIn("keycloak", { redirectTo: "/" })`. No intermediate page. Used in navbar, profile, players, instructor-application. |
 | Login trigger (server) | `src/app/api/auth/login/keycloak/route.ts` *(pre-existing)* | `GET` → `signIn("keycloak")`, validates `callbackUrl` is app-relative. Target of `proxy.ts` / `requireVerifiedUser()` redirects. |
-| **/register page** | `src/app/register/page.tsx`, `src/components/auth/RegisterForm.tsx` *(pre-existing)* | zod validation: name, email, username, password (≥8, upper, symbol), confirm. "Already have an account" → `signIn("keycloak")`. No auto-login. |
-| **/verify-email** | `src/app/verify-email/page.tsx` *(pre-existing)* | "Check your inbox" + Resend (`useResendVerificationEmailMutation`). |
-| **/verify-email/callback** | `src/app/verify-email/callback/page.tsx` | Post-verification landing. Success → `useEffect` immediately calls `signIn("keycloak")` (spinner only, no button). `?error=expired\|invalid` → message + link back to `/verify-email` for resend. Never renders a login form, never auto-authenticates. |
+| **/register page** | `src/app/register/page.tsx`, `src/components/auth/RegisterForm.tsx` | zod validation: name, email, username, password (≥8, upper, symbol), confirm → `POST /api/backend/v1/auth/register`. On success the form is replaced **in place** with an informational message ("Registration successful. Check your email and click Verify Email."). No redirect, no `sessionStorage`, no `signIn`. "Already have an account" / the message's "Continue" → `signIn("keycloak")`. This is the **only** auth page the frontend owns besides `/forgot-password`. |
+| ~~/check-email, /verify-email, /verify-email-success~~ | *(none — deleted)* | The frontend owns no verification page. Keycloak hosts the verification link target, the verification result page, and the login form. |
 | **/forgot-password** | `src/app/forgot-password/page.tsx`, `src/components/auth/ForgotPasswordForm.tsx` | `useForgotPasswordMutation` → `POST /api/backend/v1/auth/forgot-password`. Always shows a generic "if an account exists…" result (no account enumeration). |
-| RTK auth endpoints | `src/redux/api/auth-api.ts` | `register`, `resendVerificationEmail`, `forgotPassword`. Base URL `/api/backend` → server proxy attaches the bearer token. |
+| RTK auth endpoints | `src/redux/api/auth-api.ts` | `register` + `forgotPassword` are called; `resendVerificationEmail` is still defined but **unused** (its only caller, `/check-email`, was removed — resends happen on Keycloak's own verify-email page now). Base URL `/api/backend`. |
 | Session propagation | `src/auth.ts`, `src/types/next-auth.d.ts` | `session.emailVerified?: boolean` from the OIDC `email_verified` claim (on the session root — `User.emailVerified` is typed `Date` and would clash). |
-| **Route protection** | `src/proxy.ts` | Matches protected prefixes; unauthenticated → Keycloak login with `callbackUrl`; `emailVerified === false` → `/verify-email`; unknown (`undefined`) is allowed through so legacy sessions aren't locked out; token-decode failure fails **closed**. |
+| **Route protection** | `src/proxy.ts` | Matches protected prefixes; unauthenticated → Keycloak login with `callbackUrl`; `emailVerified === false` → `/api/auth/login/keycloak` (Keycloak owns the "verify your email" screen); unknown (`undefined`) is allowed through so legacy sessions aren't locked out; token-decode failure fails **closed**. |
 | Server-page guard | `src/lib/auth/guard.ts` | `requireVerifiedUser(callbackPath)` — same rules as the proxy, returns a non-null typed `Session` for Server Components. |
 | Backend proxy | `src/app/api/backend/[...path]/route.ts` *(pre-existing)* | Adds `Authorization: Bearer <access_token>` server-side; browser never holds it. |
 | Logout | `src/lib/auth/logout.ts`, `src/app/api/session/logout/route.ts` *(pre-existing)* | Backend `/api/v1/auth/logout` (refresh-token revoke) → Keycloak RP-initiated logout (`id_token_hint`) → Auth.js `signOut()`. |
@@ -160,7 +171,7 @@ Backend (Spring Boot) — for reference:
 | `KEYCLOAK_REALM` | `sastra-code-app` |
 | `KEYCLOAK_ADMIN_CLIENT_ID` | `sastra-code-backend` (confidential, service account) |
 | `KEYCLOAK_ADMIN_CLIENT_SECRET` | *(secret)* |
-| `APP_VERIFY_EMAIL_REDIRECT_URI` | `https://www.sastracode.tech/verify-email/callback` |
+| `APP_VERIFY_EMAIL_REDIRECT_URI` | `https://www.sastracode.tech/api/auth/login/keycloak` (app login route — renders nothing, 302s to the Keycloak login form; must be a registered redirect URI on the web client). Omit entirely to let Keycloak show its own "email verified" page. |
 | `APP_RESET_PASSWORD_REDIRECT_URI` | `https://www.sastracode.tech/` (Keycloak shows its own login after the reset) |
 
 ---
@@ -203,7 +214,7 @@ Backend (Spring Boot) — for reference:
 | Direct access grants (password grant) | **Disabled** |
 | Implicit flow | Disabled |
 | PKCE (`Advanced → Proof Key for Code Exchange`) | `S256` |
-| Valid redirect URIs | `https://www.sastracode.tech/api/auth/callback/keycloak`, `http://localhost:3000/api/auth/callback/keycloak` |
+| Valid redirect URIs | `https://www.sastracode.tech/api/auth/callback/keycloak`, `http://localhost:3000/api/auth/callback/keycloak`, **and** `https://www.sastracode.tech/api/auth/login/keycloak`, `http://localhost:3000/api/auth/login/keycloak` (the `VERIFY_EMAIL` `redirect_uri`) — or the pattern `.../api/auth/*` |
 | Valid post-logout redirect URIs | `https://www.sastracode.tech/`, `http://localhost:3000/` |
 | Web origins | `https://www.sastracode.tech`, `http://localhost:3000` (**not** `*`) |
 | Default client scopes | `openid`, `profile`, `email` (so `email_verified` is issued) |
@@ -347,9 +358,10 @@ the frontend proceeds to Keycloak logout + `signOut()` regardless.
 
 Keycloak owns the token: it is generated by Keycloak, is single-use, expires per
 the `Verify Email` action-token lifespan, carries no PII beyond an opaque nonce,
-and is invalidated on use. There is **no** `POST /verify-email` in this design.
-`/verify-email/callback` is only Keycloak's `redirect_uri` after the action
-completes. (If you ever move to backend-owned tokens: 32+ bytes from a CSPRNG,
+and is invalidated on use. There is **no** `POST /verify-email` and **no
+frontend verification page** in this design. Keycloak's `redirect_uri` after the
+action is `/api/auth/login/keycloak`, an app route with no UI. (If you ever move
+to backend-owned tokens: 32+ bytes from a CSPRNG,
 store only a SHA-256 hash, `expires_at` ≤ 24h, `used_at` nulled until consumed,
 delete/expire on success.)
 
@@ -395,10 +407,10 @@ fallback.
 | --- | --- | --- |
 | Email already exists | backend `409` → `RegisterForm` toast | "មិនអាចបង្កើតគណនីបាន" + backend message |
 | Invalid email / weak password / mismatch | zod (client) + backend `422` `data.errors` | inline field errors |
-| Verification email failed to send | backend still `202`; user uses Resend on `/verify-email` | "ផ្ញើអ៊ីមែលម្ដងទៀត" |
-| Invalid / used verification link | Keycloak → `/verify-email/callback?error=invalid` | "តំណ…មិនត្រឹមត្រូវ ឬត្រូវបានប្រើរួចហើយ" + Resend |
-| Expired verification link | `/verify-email/callback?error=expired` | "…បានផុតកំណត់ហើយ" + Resend |
-| Already-verified user hits verify link | Keycloak completes → callback success (idempotent) | success screen |
+| Verification email failed to send | backend still `202`; the inline `/register` message tells the user to check their inbox; a resend can be done from Keycloak's own verify-email page | inline "check your email" message |
+| Invalid / used verification link | Keycloak's own error page | Keycloak "link is invalid / already used — log in for a new one" |
+| Expired verification link | Keycloak's own error page | Keycloak "link expired" + its resend/login prompt |
+| Already-verified user hits verify link | Keycloak completes idempotently → `redirect_uri` (`/api/auth/login/keycloak`) | Keycloak login form |
 | Keycloak auth failure (bad credentials) | handled on the Keycloak hosted login page itself; on Auth.js error → `/api/auth/error?error=` (default Auth.js error page) | Keycloak's own inline error, then Auth.js error page |
 | Keycloak unavailable | Auth.js `signIn` throws / `?error=Configuration` | "ការកំណត់រចនាសម្ព័ន្ធការចូលមានបញ្ហា…" |
 | Backend unavailable | proxy returns `502`/`FETCH_ERROR` | "មិនអាចភ្ជាប់ទៅ server បានទេ" (per surface) |
@@ -426,8 +438,9 @@ fallback.
   validates the JWT signature (`jwk-set-uri`), `iss`, `aud`, `exp`, and
   `email_verified` for protected endpoints. Hiding UI is never the control.
 - **Unverified users**: blocked at Keycloak (cannot finish login), at the proxy
-  (`emailVerified === false` → `/verify-email`), and should be rejected by the
-  backend (`status = UNVERIFIED` or JWT `email_verified=false` → `403`).
+  (`emailVerified === false` → `/api/auth/login/keycloak` → Keycloak's own
+  verify-email screen), and should be rejected by the backend
+  (`status = UNVERIFIED` or JWT `email_verified=false` → `403`).
 - **No account enumeration**: register returns a distinct `409` only for a
   genuine duplicate (unavoidable UX); resend and forgot-password always return
   the same generic `200`.
@@ -458,23 +471,27 @@ fallback.
 | 5. Verified user can log in | Keycloak |
 | 6. Invalid credentials → login error | Keycloak hosted login page (inline error); Auth.js default error page on provider failure |
 | 7. Duplicate email rejected | backend `409` + Keycloak "Duplicate emails" OFF |
-| 8. Expired verification token → resend | Keycloak action-token lifespan → `/verify-email/callback?error=expired` → `/verify-email` Resend |
-| 9. Used verification token rejected | Keycloak single-use action token → `?error=invalid` |
+| 8. Expired verification token → resend | Keycloak action-token lifespan; Keycloak's own "link expired" page offers the resend |
+| 9. Used verification token rejected | Keycloak single-use action token; Keycloak's own "invalid link" page |
 | 10. Logout invalidates app session + Keycloak | `session/logout` route (refresh revoke) + RP-initiated logout + `signOut()` |
 
 ---
 
 ## 10. Manual test checklist
 
-1. Register with a fresh email → lands on `/verify-email`, **not** logged in
-   (no session cookie). Keycloak user exists with `emailVerified=false`.
+1. Register with a fresh email → `/register` shows the inline "registration
+   successful, check your email" message (URL stays `/register`), **not** logged
+   in (no session cookie). Keycloak user exists with `emailVerified=false`.
 2. Visit `/profile` while unauthenticated → redirected to Keycloak login,
    return to `/profile` after login.
 3. Register with an existing email → `409`, inline error, no Keycloak user
    created.
-4. Click the emailed link → Keycloak verifies → `/verify-email/callback` success
-   → auto-forwards to Keycloak hosted login (no click) → `/` with a session.
-5. Reuse the same link → `/verify-email/callback?error=invalid` → Resend works.
+4. Open the email → click "Verify Email" → **Keycloak** verification page (URL is
+   `auth.…/realms/…`) → Keycloak redirects to `/api/auth/login/keycloak` →
+   Keycloak hosted login form → sign in → `/` with a session. No frontend page
+   in between.
+5. Reuse the same link → Keycloak's own "invalid / already used" page; the user
+   logs in normally (or uses Keycloak's resend).
 6. Let the access token expire (>5m idle) → next navigation still works (silent
    refresh); revoke the session in Keycloak → app signs you out.
 7. Logout → back on `/`, `/profile` again requires login, Keycloak SSO session

@@ -8,12 +8,13 @@ import {
   Code2,
   Eye,
   EyeOff,
+  Mail,
+  MailCheck,
   Map,
   Trophy,
 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -77,13 +78,18 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 const REGISTER_FAILED_MESSAGE = "មិនអាចបង្កើតគណនីបាន។ សូមព្យាយាមម្ដងទៀត។";
 
 export default function RegisterForm() {
-  const router = useRouter();
-
   const [registerUser, { isLoading }] = useRegisterMutation();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState(false);
+
+  // Set once the backend has accepted the registration and Keycloak has been
+  // asked to send its VERIFY_EMAIL email. From here the frontend does nothing
+  // else — Keycloak owns the verification link, page and the login that follows.
+  const [registeredEmail, setRegisteredEmail] = useState<string | null>(
+    null,
+  );
 
   const {
     register,
@@ -121,24 +127,15 @@ export default function RegisterForm() {
         return;
       }
 
-      // Store email temporarily for verification screen
-      sessionStorage.setItem(
-        "pendingVerificationEmail",
-        values.email.trim(),
-      );
-
       toast.success(
         result.message ||
           "បង្កើតគណនីបានជោគជ័យ។ សូមផ្ទៀងផ្ទាត់អ៊ីមែល។",
       );
 
-      // IMPORTANT:
-      // Do NOT call signIn("keycloak") here.
-      //
-      // Calling signIn here will open Keycloak login first
-      // because there is no Keycloak browser session yet.
-
-      router.replace("/verify-email");
+      // Show the informational message inline. No redirect, no custom
+      // verification page — the next step is the "Verify Email" link in the
+      // Keycloak email, which opens Keycloak's own verification page.
+      setRegisteredEmail(values.email.trim());
     } catch (error) {
       toast.error(getApiErrorMessage(error, REGISTER_FAILED_MESSAGE));
     }
@@ -336,6 +333,52 @@ export default function RegisterForm() {
             </Link>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-9">
+              {registeredEmail ? (
+                <div className="py-2 text-center">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50">
+                    <MailCheck className="h-7 w-7 text-emerald-500" />
+                  </div>
+
+                  <h2 className="mt-6 text-2xl font-extrabold text-[#13235B]">
+                    ចុះឈ្មោះបានជោគជ័យ
+                  </h2>
+
+                  <p className="mt-3 text-sm leading-7 text-slate-500">
+                    សូមពិនិត្យអ៊ីមែលរបស់អ្នក{" "}
+                    <span className="break-all font-semibold text-[#13235B]">
+                      {registeredEmail}
+                    </span>{" "}
+                    ហើយចុចប៊ូតុង &laquo;Verify Email&raquo;
+                    ដើម្បីធ្វើឱ្យគណនីរបស់អ្នកសកម្ម។
+                  </p>
+
+                  <p className="mt-3 text-xs leading-6 text-slate-400">
+                    តំណផ្ទៀងផ្ទាត់ ទំព័រផ្ទៀងផ្ទាត់ និងទំព័រចូលគណនី
+                    ត្រូវបានគ្រប់គ្រងទាំងស្រុងដោយ Keycloak។
+                  </p>
+
+                  <a
+                    href="https://mail.google.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-7 flex h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-[#13235B] px-5 text-sm font-bold text-white shadow-lg shadow-[#13235B]/20 transition hover:brightness-110"
+                  >
+                    <Mail className="h-4 w-4" />
+                    បើក Gmail
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      signIn("keycloak", { redirectTo: "/" })
+                    }
+                    className="mt-3 inline-block text-sm font-medium text-slate-500 transition hover:text-[#13235B] hover:underline"
+                  >
+                    បានផ្ទៀងផ្ទាត់រួចហើយ? បន្តទៅការចូលគណនី
+                  </button>
+                </div>
+              ) : (
+              <>
               <div className="mb-7">
                 <h2 className="text-3xl font-extrabold tracking-tight text-[#13235B]">
                   បង្កើតគណនី
@@ -548,6 +591,8 @@ export default function RegisterForm() {
                   </button>
                 </p>
               </form>
+              </>
+              )}
             </div>
           </div>
         </section>

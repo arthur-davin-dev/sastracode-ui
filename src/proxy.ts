@@ -68,11 +68,15 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  // Signed in but the email is explicitly unverified: bounce to the
-  // "check your inbox" screen. `undefined` (unknown) is allowed through so a
+  // Signed in but the email is explicitly unverified: hand back to Keycloak,
+  // which owns the "verify your email" screen (realm VERIFY_EMAIL action).
+  // With that realm action on, such a session should not normally exist — this
+  // is defence in depth. `undefined` (unknown) is allowed through so a
   // pre-existing session is never locked out by a claim that was not recorded.
   if (token.emailVerified === false) {
-    return NextResponse.redirect(new URL("/verify-email", request.url));
+    return NextResponse.redirect(
+      new URL("/api/auth/login/keycloak", request.url),
+    );
   }
 
   return NextResponse.next();
