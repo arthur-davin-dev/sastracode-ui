@@ -18,7 +18,12 @@ export interface DataChangeEvent {
   id: string;
 }
 
-/** Entities this frontend version reacts to. */
+/**
+ * Entity families this frontend version reacts to. The backend also broadcasts
+ * finer-grained rows (sections, subsections, content blocks, quizzes, quiz
+ * questions, flashcards, course chapters/lessons/videos); `tagsForDataChange`
+ * routes those to the same caches by substring, so they don't need a name here.
+ */
 export type KnownDataChangeEntity = "COURSE" | "TUTORIAL";
 
 /** Actions the backend can report. */

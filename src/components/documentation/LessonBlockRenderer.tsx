@@ -797,7 +797,15 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
   const quizContext = useContext(QuizContext);
   const [selected, setSelected] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
-  const question = stringValue(data, "question", "text", "title");
+  const question = stringValue(
+    data,
+    "question",
+    "text",
+    "title",
+    "prompt",
+    "quizTitle",
+    "quizDescription",
+  );
   const options = quizOptionsValue(data);
   const correctAnswer = answerTokenValue(
     data,

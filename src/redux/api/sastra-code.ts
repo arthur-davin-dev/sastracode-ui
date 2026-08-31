@@ -107,5 +107,12 @@ export const sastraApi = createApi({
     "Notification",
     "Tutorial",
   ],
+  // Realtime cache invalidation (see src/lib/realtime) is the primary way an
+  // open page picks up admin edits without a refresh. These two are the
+  // fallback for when the WebSocket is down or an event is missed: coming back
+  // to the tab, or a network reconnect, refetches every mounted query.
+  // Requires `setupListeners(store.dispatch)` — wired in src/app/StoreProvider.tsx.
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
   endpoints: () => ({}),
 });
