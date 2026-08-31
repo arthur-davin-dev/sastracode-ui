@@ -119,12 +119,7 @@ import { Bell, CheckCheck } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
-import {
-  useGetMyNotificationsQuery,
-  useGetUnreadNotificationCountQuery,
-  useMarkAllNotificationsReadMutation,
-  useMarkNotificationReadMutation,
-} from "@/redux/service/notificationApi";
+import { useNotifications } from "@/hooks/useNotifications";
 
 function relativeTime(value: string) {
   const timestamp = new Date(value).getTime();
@@ -140,22 +135,25 @@ export default function NotificationBell() {
   const [open, setOpen] = useState(false);
   const enabled = status === "authenticated";
 
-  // Realtime notification delivery is handled once, app-wide, by
-  // <RealtimeProvider> over the shared STOMP connection.
-  const { data: unreadCount = 0 } = useGetUnreadNotificationCountQuery(
-    undefined,
-    {
-      skip: !enabled,
-      pollingInterval: 60_000,
-    },
-  );
-  const { data, isLoading } = useGetMyNotificationsQuery(
-    { isRead: false, size: 5 },
-    { skip: !enabled },
-  );
-  const [markRead] = useMarkNotificationReadMutation();
-  const [markAllRead, { isLoading: markingAll }] =
-    useMarkAllNotificationsReadMutation();
+  // Realtime delivery, dedupe, and cache refresh are handled once, app-wide,
+  // by <RealtimeProvider>; `useNotifications` just reads the shared state.
+  const {
+    notifications,
+    unreadCount,
+    isLoading,
+    markAsRead,
+    markAllAsRead,
+  } = useNotifications({ isRead: false, size: 5, pollUnreadCountMs: 60_000 });
+  const [markingAll, setMarkingAll] = useState(false);
+
+  const handleMarkAllRead = async () => {
+    setMarkingAll(true);
+    try {
+      await markAllAsRead();
+    } finally {
+      setMarkingAll(false);
+    }
+  };
 
   if (!enabled) return null;
 
@@ -206,7 +204,7 @@ export default function NotificationBell() {
                 <button
                   type="button"
                   disabled={markingAll}
-                  onClick={() => markAllRead()}
+                  onClick={handleMarkAllRead}
                   className="flex shrink-0 items-center gap-1 text-xs font-semibold text-primary-color disabled:opacity-50"
                 >
                   <CheckCheck className="h-4 w-4" /> Mark all read
@@ -224,17 +222,17 @@ export default function NotificationBell() {
                     />
                   ))}
                 </div>
-              ) : !data?.content.length ? (
+              ) : !notifications.length ? (
                 <p className="p-8 text-center text-sm text-slate-500 dark:text-slate-400">
                   You are all caught up.
                 </p>
               ) : (
-                data.content.map((item) => (
+                notifications.map((item) => (
                   <Link
                     key={item.notificationReceiverId}
                     href={item.deepLink || "/notifications"}
                     onClick={() => {
-                      markRead(item.notificationReceiverId);
+                      if (!item.isRead) markAsRead(item.notificationReceiverId);
                       setOpen(false);
                     }}
                     className="block rounded-xl border-l-4 border-red-500 px-3 py-3 hover:bg-slate-50 dark:hover:bg-slate-800"

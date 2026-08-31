@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import OrbitImages from "@/components/animation/tech-stack";
 
 const techIcons = [
@@ -15,17 +14,6 @@ const techIcons = [
 ];
 
 export default function StackPage() {
-  const [isDark, setIsDark] = useState(true);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    if (isDark) {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
-  }, [isDark]);
-
   return (
     <main className="min-h-screen w-full bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col items-center justify-center p-8 transition-colors duration-300">
       <div className="w-full max-w-6xl">

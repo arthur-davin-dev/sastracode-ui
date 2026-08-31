@@ -27,7 +27,27 @@ export type ApiNotificationType =
   | "BADGE"
   | "LEADERBOARD"
   | "PROGRESS"
-  | "SYSTEM";
+  | "SYSTEM"
+  | "COURSE_ENROLLED"
+  | "COURSE_LECTURE_ADDED"
+  | "COURSE_UPDATED"
+  | "COURSE_COMPLETED"
+  | "QUESTION_ASKED"
+  | "QUESTION_ANSWERED"
+  | "REVIEW_REPLIED"
+  | "PAYMENT_SUCCEEDED"
+  | "PAYMENT_FAILED";
+
+export type ApiNotificationReferenceType =
+  | "COURSE"
+  | "VIDEO"
+  | "SECTION"
+  | "CERTIFICATE"
+  | "QUESTION"
+  | "ANSWER"
+  | "REVIEW"
+  | "PAYMENT"
+  | "NONE";
 
 export interface ApiNotification {
   notificationReceiverId: string;
@@ -36,8 +56,10 @@ export interface ApiNotification {
   title: string;
   content: string;
   deepLink?: string;
+  referenceType?: ApiNotificationReferenceType;
+  referenceId?: string;
   isRead: boolean;
-  readAt?: string;
+  readAt?: string | null;
   deliveredAt: string;
   createdAt?: string;
 }

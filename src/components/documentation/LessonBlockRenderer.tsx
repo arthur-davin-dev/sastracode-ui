@@ -415,6 +415,13 @@ function stringArrayValue(data: BlockData, ...keys: string[]): string[] {
   return [];
 }
 
+function splitLines(value: string): string[] {
+  return value
+    .split(/\r?\n/)
+    .map((line) => line.replace(/^\s*(?:[-*•·]|\d+[.)])\s+/, "").trim())
+    .filter((line) => line.length > 0);
+}
+
 function normalizeType(type: string): string {
   return type.trim().toUpperCase();
 }
@@ -981,7 +988,23 @@ function ListBlock({
   data: BlockData;
   ordered?: boolean;
 }) {
-  const items = stringArrayValue(data, "items", "values", "list");
+  // POINT / bullet blocks authored in the admin content builder store their
+  // content as a single multi-line string (one bullet per line), not an array.
+  // Fall back to splitting that string so those blocks preview on the reader.
+  const arrayItems = stringArrayValue(
+    data,
+    "items",
+    "values",
+    "list",
+    "points",
+    "bullets",
+  );
+  const items =
+    arrayItems.length > 0
+      ? arrayItems
+      : splitLines(
+          stringValue(data, "text", "content", "value", "body", "items", "list"),
+        );
 
   if (items.length === 0) return null;
 

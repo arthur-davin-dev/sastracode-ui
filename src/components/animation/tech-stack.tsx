@@ -145,12 +145,12 @@ function OrbitItem({
     <>
       <style>{`
         @keyframes orbit-move-normal {
-          0% { offset-distance: 0%; -webkit-offset-distance: 0%; }
-          100% { offset-distance: 100%; -webkit-offset-distance: 100%; }
+          0% { offset-distance: 0%; }
+          100% { offset-distance: 100%; }
         }
         @keyframes orbit-move-reverse {
-          0% { offset-distance: 100%; -webkit-offset-distance: 100%; }
-          100% { offset-distance: 0%; -webkit-offset-distance: 0%; }
+          0% { offset-distance: 100%; }
+          100% { offset-distance: 0%; }
         }
       `}</style>
       <div
@@ -159,9 +159,7 @@ function OrbitItem({
           width: itemSize,
           height: itemSize,
           offsetPath: `path("${path}")`,
-          WebkitOffsetPath: `path("${path}")`,
           offsetRotate: rotateMode,
-          WebkitOffsetRotate: rotateMode,
           offsetAnchor: 'center center',
           animation: `${animName} ${duration}s linear infinite`,
           animationPlayState: paused ? 'paused' : 'running',

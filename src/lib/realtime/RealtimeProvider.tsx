@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, useCallback, useEffect, useMemo, useRef } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Client, type IMessage, type StompSubscription } from "@stomp/stompjs";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
@@ -55,6 +62,33 @@ export interface RealtimeContextValue {
    * automatically on every (re)connect. Returns an unsubscribe function.
    */
   subscribe: (destination: string, handler: MessageHandler) => () => void;
+  /** `true` while the shared STOMP connection is live (STOMP CONNECTED frame received). */
+  isConnected: boolean;
+}
+
+/**
+ * The backend delivers each realtime notification either as the bare
+ * `NotificationResponse` DTO or wrapped in the standard `{ success, data }`
+ * envelope used by every REST endpoint. Accept both.
+ */
+function unwrapNotification(body: string): ApiNotification | null {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(body);
+  } catch {
+    return null;
+  }
+  if (!parsed || typeof parsed !== "object") return null;
+
+  const maybeEnvelope = parsed as { data?: unknown };
+  const candidate =
+    maybeEnvelope.data && typeof maybeEnvelope.data === "object"
+      ? maybeEnvelope.data
+      : parsed;
+
+  const notification = candidate as Partial<ApiNotification>;
+  if (!notification.notificationReceiverId || !notification.title) return null;
+  return notification as ApiNotification;
 }
 
 export const RealtimeContext = createContext<RealtimeContextValue | null>(null);
@@ -67,6 +101,7 @@ export function RealtimeProvider({ children }: { children: React.ReactNode }) {
   /** All desired subscriptions (built-in + consumer), keyed by a unique id. */
   const registryRef = useRef<Map<string, RegistryEntry>>(new Map());
   const subCounterRef = useRef(0);
+  const [isConnected, setIsConnected] = useState(false);
 
   /**
    * Register a subscription and, if already connected, apply it immediately.
@@ -164,21 +199,31 @@ export function RealtimeProvider({ children }: { children: React.ReactNode }) {
         "builtin:notifications",
         NOTIFICATIONS_DESTINATION,
         (message) => {
+          const notification = unwrapNotification(message.body);
+
+          if (notification) {
+            // Instant badge feedback — `getUnreadNotificationCount` takes no
+            // args, so the cache entry is always addressable. The invalidation
+            // below reconciles it against the server a moment later.
+            dispatch(
+              notificationApi.util.updateQueryData(
+                "getUnreadNotificationCount",
+                undefined,
+                (count) => count + 1,
+              ),
+            );
+
+            toast(notification.title, { description: notification.content });
+          }
+
+          // Refetch every mounted notification list + the count so the new
+          // item appears without a page refresh and pagination stays exact.
           dispatch(
             notificationApi.util.invalidateTags([
               { type: "Notification", id: "LIST" },
               { type: "Notification", id: "COUNT" },
             ]),
           );
-
-          try {
-            const payload = JSON.parse(message.body) as ApiNotification;
-            if (payload?.title) {
-              toast(payload.title, { description: payload.content });
-            }
-          } catch {
-            // Non-JSON payload — cache invalidation above already refreshed UI.
-          }
         },
       );
     }
@@ -196,6 +241,7 @@ export function RealtimeProvider({ children }: { children: React.ReactNode }) {
     };
 
     client.onConnect = () => {
+      setIsConnected(true);
       // (Re)apply every desired subscription. `@stomp/stompjs` does not
       // resubscribe automatically after a reconnect.
       for (const entry of registry.values()) {
@@ -206,6 +252,7 @@ export function RealtimeProvider({ children }: { children: React.ReactNode }) {
     };
 
     const handleDrop = () => {
+      setIsConnected(false);
       // Subscriptions from the dropped connection are dead; clear the handles
       // so `onConnect` recreates them on the next successful connect.
       for (const entry of registry.values()) {
@@ -234,13 +281,14 @@ export function RealtimeProvider({ children }: { children: React.ReactNode }) {
         entry.sub = undefined;
       }
       clientRef.current = null;
+      setIsConnected(false);
       void client.deactivate();
     };
   }, [status, dispatch, register]);
 
   const value = useMemo<RealtimeContextValue>(
-    () => ({ subscribe }),
-    [subscribe],
+    () => ({ subscribe, isConnected }),
+    [subscribe, isConnected],
   );
 
   return (
