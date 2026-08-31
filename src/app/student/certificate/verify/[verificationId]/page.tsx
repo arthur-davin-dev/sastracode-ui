@@ -32,10 +32,10 @@ export default async function PublicCertificateVerifyPage({
   return (
     <div className="space-y-8">
       <div className="space-y-2">
-        <h1 className="text-2xl font-extrabold text-primary-color dark:text-white">
+        <h1 className="text-3xl font-extrabold text-primary-color dark:text-white sm:text-4xl">
           ការផ្ទៀងផ្ទាត់វិញ្ញាបនបត្រ
         </h1>
-        <p className="text-base leading-relaxed text-primary-color/70 dark:text-white/70">
+        <p className="text-lg leading-relaxed text-primary-color/70 dark:text-white/70">
           លទ្ធផលខាងក្រោមបានមកពី SastraCode ដោយផ្ទាល់នៅពេលនេះ។
         </p>
       </div>

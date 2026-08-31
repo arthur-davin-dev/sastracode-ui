@@ -34,6 +34,10 @@ export interface ResendVerificationRequest {
   email: string;
 }
 
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
 export const authApi = sastraApi.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation<
@@ -58,6 +62,20 @@ export const authApi = sastraApi.injectEndpoints({
         body,
       }),
     }),
+
+    // Backend uses the Keycloak Admin API to send a reset-password email.
+    // Always resolves to a generic message — it must not reveal whether the
+    // address is registered.
+    forgotPassword: builder.mutation<
+      ApiResponse<void>,
+      ForgotPasswordRequest
+    >({
+      query: (body) => ({
+        url: "/v1/auth/forgot-password",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 
   overrideExisting: false,
@@ -66,4 +84,5 @@ export const authApi = sastraApi.injectEndpoints({
 export const {
   useRegisterMutation,
   useResendVerificationEmailMutation,
+  useForgotPasswordMutation,
 } = authApi;

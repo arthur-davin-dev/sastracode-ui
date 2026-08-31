@@ -120,11 +120,11 @@ export function PublicVerifyResult({
     : null;
 
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:items-start lg:gap-6">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-start lg:gap-8">
       {/* LEFT COLUMN: Large Certificate Preview */}
-      <div className="space-y-3 rounded-2xl border border-slate-200/80 bg-white p-2 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-3 lg:col-span-7">
+      <div className="space-y-3 rounded-2xl border border-slate-200/80 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-4 lg:col-span-7">
         <div className="flex items-center justify-between px-1">
-          <h3 className="flex items-center gap-2 text-base font-bold text-slate-900 dark:text-white">
+          <h3 className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white">
             <FileText className="h-5 w-5" />
             មើលវិញ្ញាបនបត្រ (Preview)
           </h3>
@@ -187,11 +187,11 @@ export function PublicVerifyResult({
             </div>
           </div>
         ) : (
-          <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/70 p-4 dark:border-emerald-900/50 dark:bg-emerald-950/20">
+          <div className="rounded-2xl border border-emerald-200/80 bg-emerald-50/70 p-5 dark:border-emerald-900/50 dark:bg-emerald-950/20">
             <div className="flex items-start gap-3">
               <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0 text-emerald-600 dark:text-emerald-400" />
               <div className="space-y-1">
-                <h2 className="text-base font-bold text-emerald-950 dark:text-emerald-200">
+                <h2 className="text-lg font-bold text-emerald-950 dark:text-emerald-200">
                   វិញ្ញាបនបត្រនេះត្រឹមត្រូវ
                 </h2>
                 <p className="text-sm leading-relaxed text-emerald-800/90 dark:text-emerald-300/90">
