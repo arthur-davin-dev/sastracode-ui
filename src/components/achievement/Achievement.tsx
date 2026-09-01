@@ -17,6 +17,7 @@ import {
   useGetMyXpTransactionsQuery,
   useGetMyBadgesQuery,
 } from "@/redux/service/achievementApi";
+import { useGetMyCertificatesQuery } from "@/redux/features/certificate/certificateApi";
 
 const fallbackUserData: UserSummary = {
   name: "ឆាយ​ ដាវីន",
@@ -62,6 +63,15 @@ export default function Achievement() {
     skip: !authenticated,
   });
   const badgesQuery = useGetMyBadgesQuery(undefined, { skip: !authenticated });
+  // Only the running total is needed here — ask for a single row.
+  const certificatesQuery = useGetMyCertificatesQuery(
+    { page: 0, size: 1 },
+    { skip: !authenticated },
+  );
+  const certificateCount =
+    certificatesQuery.data?.data?.totalElements ??
+    certificatesQuery.data?.data?.content?.length ??
+    0;
   const badges: AchievementBadge[] =
     badgesQuery.data?.map(({ badge, earned, currentValue, targetValue, progressPercentage }) => ({
       id: badge.id,
@@ -97,8 +107,17 @@ export default function Achievement() {
         nextLevel: currentLevel + 1,
         badges: badges.filter((badge) => !badge.locked).length,
         score: xpQuery.data?.totalScore ?? 0,
-        certificates: paths.filter((path) => path.progressPercent === 100).length,
+        certificates: certificateCount,
+        username: profileQuery.data?.username,
+        institution: profileQuery.data?.institutionName,
       };
+
+  const summaryLoading =
+    authenticated &&
+    (profileQuery.isLoading ||
+      xpQuery.isLoading ||
+      badgesQuery.isLoading ||
+      certificatesQuery.isLoading);
 
   const apiActivities: Activity[] =
     transactionsQuery.data?.content.map((transaction) => ({
@@ -138,7 +157,7 @@ export default function Achievement() {
         </div>
 
         {/* User Summary Section */}
-        <ProfileSummaryCard user={userData} />
+        <ProfileSummaryCard user={userData} loading={summaryLoading} />
 
         {/* XP Progress Card */}
         <XpLevelCard

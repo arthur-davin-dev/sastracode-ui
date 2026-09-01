@@ -2,137 +2,198 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Award, TrendingUp, FileBadge, Zap } from "lucide-react";
+import {
+  Award,
+  TrendingUp,
+  FileBadge,
+  Zap,
+  AtSign,
+  Building2,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { UserSummary } from "@/types/achievement";
 
-export function ProfileSummaryCard({ user }: { user: UserSummary }) {
-  return (
-    <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900
-    hover:border-primary-color/25 hover:-translate-y-1.5 transition-all duration-300">
-      
-      {/* Background Decorative Ambient Glows */}
-      <div className="absolute -top-16 -left-16 h-40 w-40 rounded-full bg-blue-600/10 blur-3xl" />
-      <div className="absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-primary-color/10 blur-3xl" />
+const STAT_TINTS = {
+  amber: "bg-amber-400/15 text-amber-600 dark:text-amber-400",
+  blue: "bg-blue-500/10 text-primary-color dark:text-blue-400",
+  rose: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+} as const;
 
-      <CardContent className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 p-8">
-        
-        {/* Left Section: User Avatar & Main Info */}
-        <div className="flex flex-col sm:flex-row items-center gap-6 w-full lg:w-auto text-center sm:text-left">
-          
-          {/* Avatar with Ring & Level Badge Overlay */}
+export function ProfileSummaryCard({
+  user,
+  loading = false,
+}: {
+  user: UserSummary;
+  loading?: boolean;
+}) {
+  if (loading) {
+    return <ProfileSummaryCardSkeleton />;
+  }
+
+  const progress = Math.min(Math.max(user.levelProgressPercent, 0), 100);
+  const currentLevel = user.nextLevel - 1;
+  const remainingXp = Math.max(user.nextLevelXp - user.currentXp, 0);
+  const scoreValue =
+    user.score >= 1000 ? `${(user.score / 1000).toFixed(1)}k` : user.score;
+
+  return (
+    <Card
+      className="relative overflow-hidden rounded-3xl border-2 border-slate-200 dark:border-slate-800
+      bg-white dark:bg-slate-900 transition-all duration-300 hover:border-primary-color/25"
+    >
+      {/* Decorative ambient glows */}
+      <div className="pointer-events-none absolute -top-20 -left-20 h-48 w-48 rounded-full bg-blue-600/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-20 -right-20 h-48 w-48 rounded-full bg-primary-color/10 blur-3xl" />
+
+      <CardContent className="relative z-10 space-y-8 p-6 sm:p-8">
+        {/* Identity Row */}
+        <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
           <div className="relative shrink-0">
-            <Avatar className="h-24 w-24 ring-4 ring-primary-color/20 ring-offset-4 ring-offset-white dark:ring-offset-slate-900 shadow-lg">
+            <Avatar className="h-24 w-24 shadow-lg ring-4 ring-primary-color/20 ring-offset-4 ring-offset-white dark:ring-offset-slate-900">
               <AvatarImage src={user.avatarUrl} alt={user.name} />
-              <AvatarFallback className="bg-primary-color text-white font-bold text-2xl">
-                {user.name[0]}
+              <AvatarFallback className="bg-primary-color text-2xl font-bold text-white">
+                {user.name.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
-            
-            {/* Level Tag Overlay (Red Secondary Accent) */}
-            <div className="absolute -bottom-2 -right-2 bg-secondary-color text-white text-base font-bold px-3 py-0.5 rounded-full border-2 border-white dark:border-slate-900 shadow-md flex items-center gap-1">
-              <Zap className="h-4 w-4 fill-init-color text-yellow-400" />
-              <span>{user.nextLevel - 1} Lv</span>
+
+            {/* Level tag */}
+            <div
+              className="absolute -bottom-2 left-1/2 flex -translate-x-1/2 items-center gap-1 whitespace-nowrap
+              rounded-full border-2 border-white bg-secondary-color px-3 py-0.5 text-sm font-bold text-white
+              shadow-md dark:border-slate-900"
+            >
+              <Zap className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
+              <span>Lv {currentLevel}</span>
             </div>
           </div>
 
-          {/* Name & Sub-details */}
-          <div className="min-w-0 space-y-3">
-            <h2 className="font-bold text-2xl text-primary-color dark:text-white leading-tight break-words">
-              {user.name}
-            </h2>
-            <p className="flex flex-wrap items-center justify-center gap-x-2 sm:justify-start text-lg text-slate-600 dark:text-slate-300 font-medium">
-              <span>Bonus Booster</span>
-              <span className="text-slate-400 dark:text-slate-500">•</span>
-              <span className="text-primary-color dark:text-white font-semibold">
-                កម្រិតទី {user.nextLevel - 1}
+          <div className="min-w-0 flex-1 space-y-2">
+            <div className="flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
+              <h2 className="text-2xl font-bold leading-tight text-primary-color dark:text-white">
+                {user.name}
+              </h2>
+              <span
+                className="inline-flex shrink-0 items-center rounded-full bg-primary-color/10 px-3 py-1
+                text-sm font-bold text-primary-color dark:bg-primary-color/20 dark:text-blue-300"
+              >
+                កម្រិតទី {currentLevel}
               </span>
-            </p>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm font-medium text-slate-500 dark:text-slate-400 sm:justify-start">
+              {user.username ? (
+                <span className="inline-flex items-center gap-1">
+                  <AtSign className="h-4 w-4" />
+                  {user.username}
+                </span>
+              ) : null}
+              {user.institution ? (
+                <span className="inline-flex items-center gap-1">
+                  <Building2 className="h-4 w-4" />
+                  {user.institution}
+                </span>
+              ) : null}
+            </div>
           </div>
         </div>
 
-        {/* Center Section: XP Progress Bar */}
-        <div className="w-full lg:max-w-md space-y-3 bg-slate-50 dark:bg-slate-800/50 p-5 
-        rounded-2xl border border-slate-100 dark:border-slate-800">
-          <div className="flex justify-between items-center text-lg font-bold">
-            <span className="text-primary-color dark:text-white">
+        {/* XP Progress */}
+        <div className="space-y-3 rounded-2xl border border-slate-100 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-800/50">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <span className="text-base font-bold text-primary-color dark:text-white">
               វឌ្ឍនភាពទៅ Level {user.nextLevel}
             </span>
-            <span className="text-secondary-color dark:text-red-400">
-              {user.currentXp.toLocaleString()} / {user.nextLevelXp.toLocaleString()} XP
+            <span className="text-base font-bold text-secondary-color dark:text-red-400">
+              {user.currentXp.toLocaleString()} /{" "}
+              {user.nextLevelXp.toLocaleString()} XP
             </span>
           </div>
 
-          {/* Custom Styled Progress Bar (Blue Primary Fill with Yellow Accent Track) */}
-          <div className="relative h-4 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden p-0.5">
+          <div className="relative h-3 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
             <div
-              className="h-full bg-gradient-to-r from-primary-color to-blue-200 rounded-full 
-              transition-all duration-500 shadow-inner"
-              style={{ width: `${Math.min(user.levelProgressPercent, 100)}%` }}
+              className="h-full rounded-full bg-gradient-to-r from-primary-color to-blue-400 transition-all duration-500"
+              style={{ width: `${progress}%` }}
             />
           </div>
 
-          <p className="text-lg text-right font-medium text-slate-600 dark:text-slate-300">
-            {user.levelProgressPercent}% បានបន្ត
+          <p className="text-right text-sm font-medium text-slate-500 dark:text-slate-400">
+            នៅសល់ {remainingXp.toLocaleString()} XP ទៀត • {progress}%
           </p>
         </div>
 
-        {/* Right Section: Statistics Counter Grid */}
-        <div className="flex items-center gap-4 sm:gap-6 pt-6 lg:pt-0 
-        border-t-2 lg:border-t-0 border-slate-100 dark:border-slate-800 w-full lg:w-auto justify-around"> 
-          <Stat 
-            icon={Award} 
-            value={user.badges} 
-            label="BADGES" 
-            bgColor="bg-yellow-400/20 text-yellow-600 dark:text-yellow-400"
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-3 sm:gap-4">
+          <Stat icon={Award} value={user.badges} label="BADGES" tint="amber" />
+          <Stat
+            icon={TrendingUp}
+            value={scoreValue}
+            label="SCORE"
+            tint="blue"
           />
-          <Stat 
-            icon={TrendingUp} 
-            value={`${(user.score / 1000).toFixed(1)}k`} 
-            label="SCORE" 
-            bgColor="bg-blue-50 dark:bg-blue-950/50 text-primary-color dark:text-blue-400"
-          />
-          <Stat 
-            icon={FileBadge} 
-            value={user.certificates} 
-            label="CERTIFICATES" 
-            bgColor="bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400"
+          <Stat
+            icon={FileBadge}
+            value={user.certificates}
+            label="CERTIFICATES"
+            tint="rose"
           />
         </div>
-
       </CardContent>
     </Card>
   );
 }
 
-function Stat({ 
-  icon: Icon, 
-  value, 
-  label, 
-  bgColor 
-}: { 
+function Stat({
+  icon: Icon,
+  value,
+  label,
+  tint,
+}: {
   icon: LucideIcon;
-  value: number | string; 
+  value: number | string;
   label: string;
-  bgColor: string;
+  tint: keyof typeof STAT_TINTS;
 }) {
   return (
-    <div className="flex flex-col items-center min-w-[90px] group">
-      {/* Icon Housing Container */}
-      <div className={`h-14 w-14 rounded-2xl ${bgColor} flex items-center justify-center mb-2
-       shadow-xs group-hover:scale-110 transition-transform duration-300`}>
-        <Icon className="h-7 w-7" />
+    <div
+      className="flex flex-col items-center gap-2 rounded-2xl border border-slate-100 bg-white p-4 text-center
+      shadow-xs transition-transform duration-300 hover:-translate-y-0.5 dark:border-slate-800 dark:bg-slate-900"
+    >
+      <div
+        className={`flex h-12 w-12 items-center justify-center rounded-xl ${STAT_TINTS[tint]}`}
+      >
+        <Icon className="h-6 w-6" />
       </div>
-
-      {/* Number Value */}
-      <p className="font-bold text-2xl text-primary-color dark:text-white leading-snug">
+      <p className="text-xl font-bold leading-none text-primary-color dark:text-white">
         {value}
       </p>
-
-      {/* Label Text */}
-      <p className="text-lg font-semibold text-slate-500 dark:text-slate-400">
+      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
         {label}
       </p>
     </div>
+  );
+}
+
+function ProfileSummaryCardSkeleton() {
+  return (
+    <Card className="rounded-3xl border-2 border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+      <CardContent className="space-y-8 p-6 sm:p-8">
+        <div className="flex flex-col items-center gap-6 sm:flex-row">
+          <div className="h-24 w-24 shrink-0 animate-pulse rounded-full bg-slate-200 dark:bg-slate-800" />
+          <div className="w-full space-y-3">
+            <div className="h-7 w-48 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+            <div className="h-4 w-32 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
+          </div>
+        </div>
+        <div className="h-28 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-800/60" />
+        <div className="grid grid-cols-3 gap-4">
+          {[0, 1, 2].map((i) => (
+            <div
+              key={i}
+              className="h-32 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-800/60"
+            />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 }
