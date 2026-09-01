@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { getApiErrorMessage } from "@/lib/api/error";
 import type { Course } from "@/lib/course/courses";
 
 import { PaymentForm } from "./PaymentForm";
@@ -77,7 +78,9 @@ export function PaymentModal({
 
       setPaymentStatus("idle");
 
-      toast.error("មិនអាចទិញវគ្គសិក្សាបាន។ សូមព្យាយាមម្ដងទៀត។");
+      toast.error(
+        getApiErrorMessage(error, "មិនអាចទិញវគ្គសិក្សាបាន។ សូមព្យាយាមម្ដងទៀត។"),
+      );
     }
   };
 

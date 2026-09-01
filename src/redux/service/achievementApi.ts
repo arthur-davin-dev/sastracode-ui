@@ -49,6 +49,13 @@ export interface UserBadgeProgress {
   progressPercentage: number;
 }
 
+// What GET /v1/users/{userId}/badges returns for another player: only
+// already-earned badges, no progress-toward-unearned-badge internals.
+export interface EarnedBadgeResponse {
+  badge: BadgeResponse;
+  earnedAt?: string;
+}
+
 interface XpTransactionPage {
   content: XpTransaction[];
   totalElements: number;
@@ -75,6 +82,13 @@ export const achievementApi = sastraApi.injectEndpoints({
       transformResponse: (response: ApiResponse<UserBadgeProgress[]>) => response.data,
       providesTags: [{ type: "Achievement", id: "BADGES" }],
     }),
+    getUserBadges: builder.query<EarnedBadgeResponse[], string>({
+      query: (userId) => `/v1/users/${encodeURIComponent(userId)}/badges`,
+      transformResponse: (response: ApiResponse<EarnedBadgeResponse[]>) => response.data,
+      providesTags: (_result, _error, userId) => [
+        { type: "Achievement", id: `BADGES-${userId}` },
+      ],
+    }),
   }),
   overrideExisting: false,
 });
@@ -83,4 +97,5 @@ export const {
   useGetMyXpQuery,
   useGetMyXpTransactionsQuery,
   useGetMyBadgesQuery,
+  useGetUserBadgesQuery,
 } = achievementApi;

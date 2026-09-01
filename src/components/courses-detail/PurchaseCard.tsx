@@ -6,6 +6,7 @@ import { signIn, useSession } from "next-auth/react";
 import { BookOpen, Clock, CreditCard, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 
+import { getApiErrorMessage } from "@/lib/api/error";
 import type { Course } from "@/lib/course/courses";
 import { useEnrollCourseMutation } from "@/redux/api/course-api";
 import { getCoursePricing } from "./payment/payment-prcie";
@@ -87,7 +88,7 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
       router.refresh();
     } catch (error) {
       console.error("Free enrollment error:", error);
-      toast.error("មិនអាចចុះឈ្មោះវគ្គសិក្សាបាន");
+      toast.error(getApiErrorMessage(error, "មិនអាចចុះឈ្មោះវគ្គសិក្សាបាន"));
       throw error;
     }
   };

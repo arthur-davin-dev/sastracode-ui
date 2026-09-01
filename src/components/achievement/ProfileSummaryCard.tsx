@@ -37,46 +37,42 @@ export function ProfileSummaryCard({
     user.score >= 1000 ? `${(user.score / 1000).toFixed(1)}k` : user.score;
 
   return (
-    <Card
-      className="relative overflow-hidden rounded-3xl border-2 border-slate-200 dark:border-slate-800
-      bg-white dark:bg-slate-900 transition-all duration-300 hover:border-primary-color/25"
-    >
-      {/* Decorative ambient glows */}
-      <div className="pointer-events-none absolute -top-20 -left-20 h-48 w-48 rounded-full bg-blue-600/10 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-20 -right-20 h-48 w-48 rounded-full bg-primary-color/10 blur-3xl" />
+    <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-primary-color/25 hover:-translate-y-1.5 transition-all duration-300">
+      
+      {/* Background Decorative Ambient Glows */}
+      <div className="absolute -top-16 -left-16 h-40 w-40 rounded-full bg-blue-600/10 blur-3xl" />
+      <div className="absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-primary-color/10 blur-3xl" />
 
-      <CardContent className="relative z-10 space-y-8 p-6 sm:p-8">
-        {/* Identity Row */}
-        <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
+      <CardContent className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 p-6 sm:p-8">
+        
+        {/* Left Section: Fully Centered Avatar + Name Info */}
+        <div className="flex flex-col items-center text-center shrink-0 gap-3 w-full lg:w-auto">
+          
+          {/* Avatar with Level Badge Overlay */}
           <div className="relative shrink-0">
-            <Avatar className="h-24 w-24 shadow-lg ring-4 ring-primary-color/20 ring-offset-4 ring-offset-white dark:ring-offset-slate-900">
+            <Avatar className="h-28 w-28 ring-4 ring-primary-color/20 ring-offset-4 ring-offset-white dark:ring-offset-slate-900 shadow-lg">
               <AvatarImage src={user.avatarUrl} alt={user.name} />
-              <AvatarFallback className="bg-primary-color text-2xl font-bold text-white">
-                {user.name.charAt(0).toUpperCase()}
+              <AvatarFallback className="bg-primary-color text-white font-bold text-3xl">
+                {user.name[0]}
               </AvatarFallback>
             </Avatar>
-
-            {/* Level tag */}
-            <div
-              className="absolute -bottom-2 left-1/2 flex -translate-x-1/2 items-center gap-1 whitespace-nowrap
-              rounded-full border-2 border-white bg-secondary-color px-3 py-0.5 text-sm font-bold text-white
-              shadow-md dark:border-slate-900"
-            >
-              <Zap className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
-              <span>Lv {currentLevel}</span>
+            
+            <div className="absolute -bottom-2 -right-1 bg-secondary-color text-white text-xs font-bold px-2.5 py-0.5 rounded-full border-2 border-white dark:border-slate-900 shadow-md flex items-center gap-1">
+              <Zap className="h-3.5 w-3.5 fill-init-color text-yellow-400" />
+              <span>{user.nextLevel - 1} Lv</span>
             </div>
           </div>
 
-          <div className="min-w-0 flex-1 space-y-2">
-            <div className="flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
-              <h2 className="text-2xl font-bold leading-tight text-primary-color dark:text-white">
-                {user.name}
-              </h2>
-              <span
-                className="inline-flex shrink-0 items-center rounded-full bg-primary-color/10 px-3 py-1
-                text-sm font-bold text-primary-color dark:bg-primary-color/20 dark:text-blue-300"
-              >
-                កម្រិតទី {currentLevel}
+          {/* Name & Sub-details (Centered) */}
+          <div className="min-w-0 space-y-1 mt-1">
+            <h2 className="font-bold text-2xl text-primary-color dark:text-white leading-tight break-words">
+              {user.name}
+            </h2>
+            <p className="flex flex-wrap items-center justify-center gap-x-2 text-base text-slate-600 dark:text-slate-300 font-medium whitespace-nowrap">
+              <span>Bonus Booster</span>
+              <span className="text-slate-400 dark:text-slate-500">•</span>
+              <span className="text-primary-color dark:text-white font-semibold">
+                កម្រិតទី {user.nextLevel - 1}
               </span>
             </div>
 
@@ -97,45 +93,54 @@ export function ProfileSummaryCard({
           </div>
         </div>
 
-        {/* XP Progress */}
-        <div className="space-y-3 rounded-2xl border border-slate-100 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-800/50">
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <span className="text-base font-bold text-primary-color dark:text-white">
-              វឌ្ឍនភាពទៅ Level {user.nextLevel}
-            </span>
-            <span className="text-base font-bold text-secondary-color dark:text-red-400">
-              {user.currentXp.toLocaleString()} /{" "}
-              {user.nextLevelXp.toLocaleString()} XP
-            </span>
+        {/* Right Section: XP Progress Bar & Metric Counters */}
+        <div className="flex flex-col justify-between gap-6 w-full lg:flex-1">
+          
+          {/* XP Progress Bar */}
+          <div className="space-y-3 bg-slate-50 dark:bg-slate-800/50 p-5 rounded-2xl border border-slate-100 dark:border-slate-800">
+            <div className="flex justify-between items-center text-base font-bold">
+              <span className="text-primary-color dark:text-white">
+                វឌ្ឍនភាពទៅ Level {user.nextLevel}
+              </span>
+              <span className="text-secondary-color dark:text-red-400">
+                {user.currentXp.toLocaleString()} / {user.nextLevelXp.toLocaleString()} XP
+              </span>
+            </div>
+
+            <div className="relative h-4 w-full bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden p-0.5">
+              <div
+                className="h-full bg-gradient-to-r from-primary-color to-blue-200 rounded-full transition-all duration-500 shadow-inner"
+                style={{ width: `${Math.min(user.levelProgressPercent, 100)}%` }}
+              />
+            </div>
+
+            <p className="text-sm text-right font-medium text-slate-600 dark:text-slate-300">
+              {user.levelProgressPercent}% បានបន្ត
+            </p>
           </div>
 
-          <div className="relative h-3 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-primary-color to-blue-400 transition-all duration-500"
-              style={{ width: `${progress}%` }}
+          {/* Metric Counters Grid */}
+          <div className="grid grid-cols-3 gap-3 sm:gap-4">
+            <Stat 
+              icon={Award} 
+              value={user.badges} 
+              label="BADGES" 
+              bgColor="bg-yellow-400/20 text-yellow-600 dark:text-yellow-400"
+            />
+            <Stat 
+              icon={TrendingUp} 
+              value={`${(user.score / 1000).toFixed(1)}k`} 
+              label="SCORE" 
+              bgColor="bg-blue-50 dark:bg-blue-950/50 text-primary-color dark:text-blue-400"
+            />
+            <Stat 
+              icon={FileBadge} 
+              value={user.certificates} 
+              label="CERTIFICATES" 
+              bgColor="bg-red-50 dark:bg-red-950/50 text-red-600 dark:text-red-400"
             />
           </div>
 
-          <p className="text-right text-sm font-medium text-slate-500 dark:text-slate-400">
-            នៅសល់ {remainingXp.toLocaleString()} XP ទៀត • {progress}%
-          </p>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-3 sm:gap-4">
-          <Stat icon={Award} value={user.badges} label="BADGES" tint="amber" />
-          <Stat
-            icon={TrendingUp}
-            value={scoreValue}
-            label="SCORE"
-            tint="blue"
-          />
-          <Stat
-            icon={FileBadge}
-            value={user.certificates}
-            label="CERTIFICATES"
-            tint="rose"
-          />
         </div>
       </CardContent>
     </Card>
@@ -154,46 +159,16 @@ function Stat({
   tint: keyof typeof STAT_TINTS;
 }) {
   return (
-    <div
-      className="flex flex-col items-center gap-2 rounded-2xl border border-slate-100 bg-white p-4 text-center
-      shadow-xs transition-transform duration-300 hover:-translate-y-0.5 dark:border-slate-800 dark:bg-slate-900"
-    >
-      <div
-        className={`flex h-12 w-12 items-center justify-center rounded-xl ${STAT_TINTS[tint]}`}
-      >
-        <Icon className="h-6 w-6" />
+    <div className="flex flex-col items-center justify-center p-3 sm:p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/80 group">
+      <div className={`h-10 w-10 sm:h-12 sm:w-12 rounded-xl ${bgColor} flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300`}>
+        <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
       </div>
-      <p className="text-xl font-bold leading-none text-primary-color dark:text-white">
+      <p className="font-bold text-lg sm:text-2xl text-primary-color dark:text-white leading-snug">
         {value}
       </p>
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+      <p className="text-xs sm:text-sm font-semibold text-slate-500 dark:text-slate-400">
         {label}
       </p>
     </div>
-  );
-}
-
-function ProfileSummaryCardSkeleton() {
-  return (
-    <Card className="rounded-3xl border-2 border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-      <CardContent className="space-y-8 p-6 sm:p-8">
-        <div className="flex flex-col items-center gap-6 sm:flex-row">
-          <div className="h-24 w-24 shrink-0 animate-pulse rounded-full bg-slate-200 dark:bg-slate-800" />
-          <div className="w-full space-y-3">
-            <div className="h-7 w-48 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-            <div className="h-4 w-32 animate-pulse rounded bg-slate-200 dark:bg-slate-800" />
-          </div>
-        </div>
-        <div className="h-28 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-800/60" />
-        <div className="grid grid-cols-3 gap-4">
-          {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              className="h-32 animate-pulse rounded-2xl bg-slate-100 dark:bg-slate-800/60"
-            />
-          ))}
-        </div>
-      </CardContent>
-    </Card>
   );
 }

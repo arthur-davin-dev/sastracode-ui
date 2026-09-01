@@ -51,6 +51,7 @@ import {
 } from "@/redux/service/coding-task-player-api";
 
 import CodeCoach from "@/components/playground/CodeCoach";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { useIsDarkMode } from "@/hooks/use-dark-mode";
 import { getChallengeUIConfig } from "@/utils/coding-task-ui";
 import { highlightCode } from "@/utils/highlight-code";
@@ -74,19 +75,7 @@ interface Props {
 }
 
 function errorMessage(error: unknown): string {
-  if (error && typeof error === "object" && "data" in error) {
-    const data = (error as { data?: unknown }).data;
-    if (typeof data === "string") return data;
-    if (
-      data &&
-      typeof data === "object" &&
-      "message" in data &&
-      typeof (data as { message?: unknown }).message === "string"
-    ) {
-      return (data as { message: string }).message;
-    }
-  }
-  return "Unable to check this coding challenge.";
+  return getApiErrorMessage(error, "Unable to check this coding challenge.");
 }
 
 function editorLanguage(language: unknown): string {
@@ -132,13 +121,22 @@ function editorLanguage(language: unknown): string {
 function normalizeCode(raw: string): string {
   if (!raw) return raw;
   const looksDoubleEscaped = raw.includes("\\n") && !raw.includes("\n");
-  if (!looksDoubleEscaped) return raw;
-  return raw
-    .replace(/\\r\\n/g, "\n")
-    .replace(/\\n/g, "\n")
-    .replace(/\\t/g, "\t")
-    .replace(/\\"/g, '"')
-    .replace(/\\\\/g, "\\");
+  if (looksDoubleEscaped) {
+    return raw
+      .replace(/\\r\\n/g, "\n")
+      .replace(/\\n/g, "\n")
+      .replace(/\\t/g, "\t")
+      .replace(/\\"/g, '"')
+      .replace(/\\\\/g, "\\");
+  }
+  // Some sources escape quotes only (e.g. `class=\"foo\"`) while leaving
+  // real newlines intact, so the double-escaped check above never fires.
+  // Left alone, those literal backslash-quote pairs corrupt HTML attributes
+  // and break the live preview iframe, so unescape them independently.
+  if (raw.includes('\\"')) {
+    return raw.replace(/\\"/g, '"');
+  }
+  return raw;
 }
 
 /**
@@ -159,17 +157,6 @@ function shuffleLines<T>(items: T[]): T[] {
   return isSameOrder ? shuffleLines(items) : shuffled;
 }
 
-/**
- * Splits starter code into one draggable block per non-blank line, folding
- * any surrounding blank lines into the neighboring block instead of
- * discarding them. Rejoining the blocks with "\n" in their original order
- * reproduces the starter code byte-for-byte — including blank lines —
- * which matters because the backend grades an arrange-blocks submission by
- * comparing the reassembled text against that exact starter code. Simply
- * dropping blank lines (the previous behavior) permanently lost that
- * whitespace, so a learner could arrange every visible line correctly and
- * still get marked wrong because the reconstructed code no longer matched.
- */
 function splitIntoArrangeBlocks(raw: string): string[] {
   const lines = raw.split("\n");
   const groups: string[] = [];
@@ -236,15 +223,17 @@ export function CodingTaskPlayer({
     setAttempt(0);
     setShowHints(false);
     setIsFullscreen(false);
-  }, [task]);
+  }, [task?.id]);
 
   async function run(codeToRun = code) {
     if (!task || !codeToRun.trim()) return;
+    console.log("[CodingTask] run - user answer:", codeToRun);
     try {
       const result = await runTask({
         id: task.id,
         code: codeToRun,
       }).unwrap();
+      console.log("[CodingTask] run - result:", result);
       setRunResult(result);
       setSubmitResult(null);
       setAttempt((value) => value + 1);
@@ -255,11 +244,13 @@ export function CodingTaskPlayer({
 
   async function submit(codeToSubmit = code) {
     if (!task || !codeToSubmit.trim()) return;
+    console.log("[CodingTask] submit - user answer:", codeToSubmit);
     try {
       const result = await submitTask({
         id: task.id,
         code: codeToSubmit,
       }).unwrap();
+      console.log("[CodingTask] submit - result:", result);
 
       setSubmitResult(result);
       setRunResult(null);
@@ -268,6 +259,10 @@ export function CodingTaskPlayer({
     } catch (error) {
       toast.error(errorMessage(error));
     }
+  }
+
+  function tryAgain() {
+    setSubmitResult(null);
   }
 
   if (isLoading) {
@@ -390,7 +385,15 @@ export function CodingTaskPlayer({
           )}
         </header>
 
-        {blankMode ? (
+        {submitResult ? (
+          <FullResultPanel
+            result={submitResult}
+            task={task}
+            hasNext={hasNext}
+            onNext={onNext}
+            onTryAgain={tryAgain}
+          />
+        ) : blankMode ? (
           <BlankPlayer
             task={task}
             token={token}
@@ -453,6 +456,106 @@ export function CodingTaskPlayer({
             {index + 1} / {total}
           </span>
         </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Takes over the whole exercise area on submit — replacing the editor,
+ * blanks, or arrange blocks entirely with a single pass/fail card — instead
+ * of appending a small inline banner underneath the still-visible editor.
+ * Only submit results show this (see the `submitResult` check in
+ * CodingTaskPlayer); a Run keeps its lightweight inline feedback so the
+ * learner can iterate without losing their code from view.
+ */
+function FullResultPanel({
+  result,
+  task,
+  hasNext,
+  onNext,
+  onTryAgain,
+}: {
+  result: CodeSubmitResult;
+  task: CodingTaskDetail;
+  hasNext: boolean;
+  onNext: () => void;
+  onTryAgain: () => void;
+}) {
+  const { passed } = result;
+  const total = result.testsTotal ?? 0;
+  const passedCount = Math.min(
+    result.testsPassed ?? 0,
+    total || (result.testsPassed ?? 0),
+  );
+  const xpEarned = result.xpEarned;
+
+  return (
+    <div
+      role="status"
+      className={`relative overflow-hidden rounded-[28px] px-6 py-16 text-center shadow-lg sm:py-20 ${
+        passed ? "bg-emerald-500" : "bg-rose-500"
+      }`}
+    >
+      {passed && (
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+          <PartyPopper className="absolute left-8 top-8 h-8 w-8 -rotate-12 text-white/70 animate-bounce" />
+          <Sparkles className="absolute right-10 top-10 h-6 w-6 text-white/80 animate-ping" />
+          <Sparkles className="absolute right-20 top-24 h-5 w-5 text-white/60 animate-pulse" />
+        </div>
+      )}
+
+      <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/20 text-white">
+        {passed ? (
+          <CheckCircle2 className="h-9 w-9" />
+        ) : (
+          <XCircle className="h-9 w-9" />
+        )}
+      </span>
+
+      <h3 className="mt-5 text-2xl font-bold text-white sm:text-3xl">
+        {passed ? "Correct Answer!" : "Wrong Answer!"}
+      </h3>
+
+      {total > 0 && (
+        <p className="mt-2 text-sm font-semibold text-white/85">
+          {passedCount}/{total} checks passed
+        </p>
+      )}
+
+      {passed && !!xpEarned && (
+        <span className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3.5 py-1.5 text-sm font-bold text-white">
+          <Sparkles className="h-4 w-4" />+{xpEarned} XP
+        </span>
+      )}
+
+      <p className="sr-only">{task.title}</p>
+
+      <div className="mt-6">
+        {passed ? (
+          hasNext ? (
+            <button
+              type="button"
+              onClick={onNext}
+              className="rounded-xl bg-[#002455] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#00346f]"
+            >
+              Next Question »
+            </button>
+          ) : (
+            <span className="inline-block rounded-xl bg-white/20 px-6 py-3 text-sm font-bold text-white">
+              All coding challenges completed
+            </span>
+          )
+        ) : (
+          <button
+            type="button"
+            onClick={onTryAgain}
+            className="inline-flex items-center gap-2 rounded-xl bg-[#002455] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#00346f]"
+          >
+            <RotateCcw className="h-4 w-4" />
+            Try Again
+          </button>
+        )}
       </div>
     </div>
   );

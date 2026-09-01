@@ -30,12 +30,20 @@ export default function InteractiveBackground({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (prefersReducedMotion) return;
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     let width = window.innerWidth;
     let height = window.innerHeight;
-    let animationFrameId: number;
+    let animationFrameId: number | null = null;
+    // Smaller viewports are usually lower-powered devices too, so cut the
+    // particle count (and the O(n^2) constellation-line cost) accordingly.
+    let currentDensity = width < 768 ? Math.min(density, 40) : density;
 
     const mouse = { x: -9999, y: -9999, active: false };
 
@@ -84,7 +92,7 @@ export default function InteractiveBackground({
 
     const initParticles = () => {
       particles.length = 0;
-      for (let i = 0; i < density; i++) {
+      for (let i = 0; i < currentDensity; i++) {
         particles.push({
           x: Math.random() * width,
           y: Math.random() * height,
@@ -100,6 +108,7 @@ export default function InteractiveBackground({
       height = window.innerHeight;
       canvas.width = width;
       canvas.height = height;
+      currentDensity = width < 768 ? Math.min(density, 40) : density;
       initParticles();
     };
 
@@ -172,34 +181,48 @@ export default function InteractiveBackground({
         ctx.fill();
       }
 
-      // Constellation lines
+      // Constellation lines. Compare squared distances first so the
+      // (much more common) far-apart pairs skip the sqrt entirely.
+      const maxLinkDistSq = MAX_LINK_DIST * MAX_LINK_DIST;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const a = particles[i];
           const b = particles[j];
           const dx = a.x - b.x;
           const dy = a.y - b.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
+          const distSq = dx * dx + dy * dy;
+          if (distSq >= maxLinkDistSq) continue;
 
-          if (dist < MAX_LINK_DIST) {
-            const opacity = 1 - dist / MAX_LINK_DIST;
-            ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = palette.line(opacity);
-            ctx.lineWidth = 0.6;
-            ctx.stroke();
-          }
+          const dist = Math.sqrt(distSq);
+          const opacity = 1 - dist / MAX_LINK_DIST;
+          ctx.beginPath();
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.strokeStyle = palette.line(opacity);
+          ctx.lineWidth = 0.6;
+          ctx.stroke();
         }
       }
 
       animationFrameId = requestAnimationFrame(draw);
     };
 
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        if (animationFrameId !== null) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
+        }
+      } else if (animationFrameId === null) {
+        animationFrameId = requestAnimationFrame(draw);
+      }
+    };
+
     resize();
     window.addEventListener("resize", resize);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     animationFrameId = requestAnimationFrame(draw);
 
@@ -207,7 +230,8 @@ export default function InteractiveBackground({
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseleave", handleMouseLeave);
-      cancelAnimationFrame(animationFrameId);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      if (animationFrameId !== null) cancelAnimationFrame(animationFrameId);
       themeObserver.disconnect();
     };
   }, [speed, density, enableMouseGlow]);

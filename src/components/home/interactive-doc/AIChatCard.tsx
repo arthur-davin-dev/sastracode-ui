@@ -27,6 +27,8 @@ function AiCoachWidget() {
           <img
             src="/home/image/aiCoachRobot.png"
             alt="AI Coach robot"
+            loading="lazy"
+            decoding="async"
             className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 animate-float object-contain"
           />
         </div>
@@ -94,11 +96,11 @@ function ChatCard({ currentT }: { currentT: any }) {
 
       {/* AI Response */}
       <div className="flex items-start gap-3.5 px-5 sm:px-7 md:px-8 pt-5 pb-6">
-        <div className="w-8 h-8 shrink-0 rounded-full bg-violet-500 dark:bg-violet-600 flex items-center justify-center transition-colors duration-300">
+        <div className="w-8 h-8 shrink-0 rounded-full bg-primary-color dark:bg-primary-color flex items-center justify-center transition-colors duration-300">
           <SparkleIcon className="w-4.5 h-4.5 text-white" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-xs md:text-sm font-semibold text-violet-600 dark:text-violet-400 mb-2.5 transition-colors duration-300">
+          <p className="text-xs md:text-sm font-semibold text-primary-color dark:text-primary-color mb-2.5 transition-colors duration-300">
             {t.aiRole}
           </p>
 

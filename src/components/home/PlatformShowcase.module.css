@@ -1,0 +1,533 @@
+:root {
+  --ps-bg-dark: #020817;
+  --ps-navy-card: rgba(5, 18, 45, 0.88);
+  --ps-navy-card-hover: rgba(8, 26, 62, 0.95);
+  --ps-border-blue: rgba(40, 130, 255, 0.65);
+  --ps-border-bright: rgba(59, 140, 255, 0.95);
+  --ps-electric-blue: #3b8cff;
+  --ps-light-blue: #9fc4ff;
+  --ps-white: #f4f8ff;
+
+  /* LIGHT MODE - Fade from outer (faint) to inner (solid) */
+  --ps-tier1-fill: url(#tier1LightGrad);
+  --ps-tier1-stroke: rgba(59, 140, 255, 0.2);
+
+  --ps-tier2-fill: url(#tier2LightGrad);
+  --ps-tier2-stroke: rgba(59, 140, 255, 0.4);
+
+  --ps-tier3-fill: url(#tier3LightGrad);
+
+  --ps-stage-glow-start: rgba(59, 140, 255, 0.3);
+  --ps-stage-glow-mid: rgba(59, 140, 255, 0.1);
+
+  --ps-tier1-filter: none;
+  --ps-tier2-filter: none;
+  --ps-tier3-filter: none;
+}
+
+:global(.dark) {
+  /* DARK MODE - Restores original setup */
+  --ps-tier1-fill: url(#tier1Top);
+  --ps-tier1-shadow-dark: #000000;
+  --ps-tier1-shadow-light: #0b39b3;
+  --ps-tier1-stop1: #1248d6;
+  --ps-tier1-stop2: #03123d;
+  --ps-tier1-stroke: #529dff;
+
+  --ps-tier2-fill: url(#tier2Top);
+  --ps-tier2-stop1: #287bff;
+  --ps-tier2-stop2: #0838a8;
+  --ps-tier2-stroke: #a3ceff;
+
+  --ps-tier3-fill: none;
+  --ps-tier3-shadow-dark: rgba(2, 10, 36, 0.6);
+  --ps-tier3-shadow-light: rgba(59, 140, 255, 0.35);
+
+  --ps-stage-glow-start: #1d72ff;
+  --ps-stage-glow-mid: #0757ff;
+
+  --ps-tier1-filter: url(#tier1Shadow);
+  --ps-tier2-filter: url(#tier2Shadow);
+  --ps-tier3-filter: url(#tier3Shadow);
+}
+
+.tier1Group {
+  filter: var(--ps-tier1-filter);
+}
+
+.tier1ShadowOnly {
+  opacity: 0.32;
+}
+
+:global(.dark) .tier1ShadowOnly {
+  opacity: 0;
+}
+
+.tier2Group {
+  filter: var(--ps-tier2-filter);
+}
+
+.tier3Group {
+  filter: var(--ps-tier3-filter);
+}
+
+.stageContainer {
+  container-type: inline-size;
+  aspect-ratio: 1280 / 820;
+  border-radius: 1.5cqw;
+  background: transparent;
+  box-shadow: none;
+}
+
+:global(.dark) .stageContainer {
+  background: transparent;
+  box-shadow: none;
+}
+
+.stageSection {
+  aspect-ratio: 1280 / 760;
+}
+
+.heroHeader {
+  padding: 0 4cqw;
+}
+
+/* Feature Cards */
+.featureCard {
+  gap: 1.15cqw;
+  padding: 1.35cqw 1.7cqw;
+  border-radius: 1.2cqw;
+  /* Light mode frosted glass panel base */
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.75) 0%,
+      rgba(240, 246, 255, 0.45) 100%);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+
+  /* Vibrant electric blue border frame */
+  border: 1.5px solid rgba(59, 140, 255, 0.55);
+
+  /* Dual inner/outer reflection highlights for glass edge depth */
+  box-shadow:
+    0 10px 30px -4px rgba(7, 87, 255, 0.15),
+    0 4px 12px 0 rgba(15, 23, 42, 0.04),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8),
+    inset 0 1.5px 2px 0 rgba(59, 140, 255, 0.15);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.featureCard:hover {
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(240, 246, 255, 0.65) 100%);
+  border-color: rgba(59, 140, 255, 0.85);
+  transform: translateY(-4px);
+  box-shadow:
+    0 16px 36px -6px rgba(7, 87, 255, 0.25),
+    0 6px 16px 0 rgba(15, 23, 42, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 1),
+    inset 0 2px 6px 0 rgba(59, 140, 255, 0.25);
+}
+
+:global(.dark) .featureCard {
+  background: rgba(5, 18, 45, 0.45);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1.5px solid rgba(59, 140, 255, 0.35);
+  box-shadow:
+    0 8px 32px 0 rgba(2, 8, 23, 0.6),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+:global(.dark) .featureCard:hover {
+  background: rgba(8, 26, 62, 0.65);
+  border-color: var(--ps-border-bright);
+  box-shadow:
+    0 12px 40px 0 rgba(59, 140, 255, 0.35),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.25);
+}
+
+.stageSection .featureCard {
+  justify-content: flex-start;
+  gap: 1.4cqw;
+  padding: 1.5cqw 1.8cqw;
+}
+
+.stageSection .cardTitle {
+  font-size: 2.05cqw;
+  line-height: 1.25;
+  margin-bottom: 0.4cqw;
+}
+
+.stageSection .cardDescription {
+  font-size: 1.7cqw;
+  line-height: 1.4;
+}
+
+.stageSection .cardIconCircle {
+  width: 5.4cqw;
+  height: 5.4cqw;
+}
+
+.stageSection .cardIconCircle svg {
+  width: 2.7cqw;
+  height: 2.7cqw;
+}
+
+.cardTitle {
+  color: #0f172a;
+  font-size: 2.4cqw;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.35cqw;
+}
+
+:global(.dark) .cardTitle {
+  color: var(--ps-white);
+}
+
+.cardDescription {
+  color: #334155;
+  font-size: 1.9cqw;
+  font-weight: 400;
+  line-height: 1.42;
+}
+
+:global(.dark) .cardDescription {
+  color: var(--ps-light-blue);
+}
+
+.cardIconCircle {
+  width: 5.8cqw;
+  height: 5.8cqw;
+  background: linear-gradient(135deg, #1677ff 0%, #0757ff 100%);
+  border: 1px solid rgba(244, 248, 255, 0.4);
+  box-shadow:
+    0 0 16px rgba(22, 119, 255, 0.45),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.cardIconCircle svg {
+  width: 2.9cqw;
+  height: 2.9cqw;
+}
+
+/* Connectors */
+.connectorLine {
+  fill: none;
+  stroke: rgba(59, 140, 255, 0.7);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+:global(.dark) .connectorLine {
+  stroke: rgba(59, 140, 255, 0.85);
+}
+
+.connectorGlow {
+  fill: none;
+  stroke: #0757ff;
+  stroke-width: 6;
+  opacity: 0.28;
+  filter: blur(3px);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Base Line */
+.connectorLine {
+  fill: none;
+  stroke: rgba(59, 140, 255, 0.25);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+:global(.dark) .connectorLine {
+  stroke: rgba(59, 140, 255, 0.35);
+}
+
+/* Ambient Base Glow */
+.connectorGlow {
+  fill: none;
+  stroke: #0757ff;
+  stroke-width: 6;
+  opacity: 0.15;
+  filter: blur(3px);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Moving Intense Light Flash */
+/* Moving Light Flash - Crisp & Soft Glow Beam */
+.connectorFlash {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+  /* Thinner line prevents the heavy "worm" thickness */
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 40 640;
+  /* Shortened beam length (40px) to look like a light streak */
+  stroke-dashoffset: 680;
+  opacity: 0.5;
+  /* Multi-layered bright drop shadow for a clean electric glow */
+  filter:
+    drop-shadow(0 0 8px #ffffff) drop-shadow(0 0 10px var(--ps-electric-blue)) drop-shadow(0 0 14px #3b8cff);
+  animation: flashFlow 2.5s linear infinite;
+  /* Keeps the smooth, slower speed */
+}
+
+@keyframes flashFlow {
+  0% {
+    stroke-dashoffset: 680;
+  }
+
+  100% {
+    stroke-dashoffset: -680;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .connectorFlash {
+    animation: none;
+    display: none;
+  }
+}
+
+/* Central Platform & Emblem */
+.domeGlowSvg {
+  width: 82cqw;
+  height: 55cqw;
+}
+
+.centerEmblem {
+  width: 9.8cqw;
+  height: 9.8cqw;
+  border-radius: 22%;
+  /* Muted dark navy blue gradient base */
+  background: linear-gradient(180deg, #0e45bd 0%, #082ca3 100%);
+  border: 1px solid rgba(46, 130, 255, 0.5);
+
+  /* Controlled dark drop-shadow with tight radius */
+  box-shadow:
+    0 6px 16px -2px rgba(2, 8, 23, 0.5),
+    0 2px 8px -1px rgba(8, 44, 163, 0.35),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    inset 0 -2px 6px rgba(0, 15, 60, 0.5);
+  transition: all 0.3s ease;
+}
+
+.centerEmblem svg {
+  width: 4.4cqw;
+  height: 4.4cqw;
+  color: #e2ecff;
+  filter: drop-shadow(0 2px 4px rgba(2, 8, 23, 0.5));
+}
+
+/* =====================================================
+   MOBILE TIMELINE LAYOUT & SEQUENCED WORMS
+   ===================================================== */
+.mobileTimelineContainer {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* Base Central Vertical Track Line (Thicker: 3px) */
+.mobileStemLine {
+  position: absolute;
+  left: 22.5px; /* Centered under 48px node: 24px - 1.5px */
+  top: 24px;
+  bottom: 24px;
+  width: 3px; /* Increased from 2px */
+  background: rgba(59, 140, 255, 0.45);
+  z-index: 1;
+}
+
+/* Vertical Worm Animation Track (Thicker: 3px) */
+.mobileVerticalWormTrack {
+  position: absolute;
+  left: 22.5px;
+  top: 24px;
+  bottom: 24px;
+  width: 3px; /* Increased from 2px */
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.mobileVerticalWorm {
+  width: 100%;
+  height: 48px; /* Slightly longer head for thicker line */
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 50%, #3b8cff 100%);
+  border-radius: 3px;
+  box-shadow: 0 0 10px #ffffff, 0 0 14px #3b8cff;
+  animation: verticalWormFlow 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Top Icon Node */
+.mobileTopNode {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #3b8cff 0%, #2563eb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 0 24px rgba(59, 140, 255, 0.7),
+    inset 0 1px 2px rgba(255, 255, 255, 0.6);
+  z-index: 4;
+}
+
+/* Timeline Row */
+.mobileTimelineRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 56px;
+  z-index: 2;
+}
+
+/* Horizontal Base Branch Line (Thicker: 3px) */
+.mobileBranchLine {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  width: 32px;
+  height: 3px; /* Increased from 2px */
+  background: rgba(59, 140, 255, 0.45);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+/* Horizontal Shoot-out Worm (Thicker: 3px) */
+.mobileBranchWorm {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  height: 3px; /* Increased from 2px */
+  width: 32px;
+  background: linear-gradient(90deg, #3b8cff 0%, #ffffff 100%);
+  box-shadow: 0 0 8px #ffffff, 0 0 12px #3b8cff;
+  transform: translateY(-50%);
+  transform-origin: left center;
+  z-index: 2;
+  opacity: 0;
+  animation: branchWormTrigger 2.8s ease-out infinite;
+}
+
+/* Junction Dot */
+.mobileTimelineDot {
+  position: absolute;
+  left: 19px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #3b8cff;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 10px rgba(59, 140, 255, 0.9);
+  z-index: 3;
+}
+
+/* Mobile Feature Card Base */
+.mobileFeatureCard {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1.5px solid rgba(59, 140, 255, 0.25);
+  box-shadow:
+    0 10px 30px -5px rgba(59, 140, 255, 0.15),
+    0 4px 12px 0 rgba(15, 23, 42, 0.03);
+  z-index: 5;
+}
+
+:global(.dark) .mobileFeatureCard {
+  background: rgba(5, 18, 45, 0.92);
+  border-color: rgba(59, 140, 255, 0.35);
+  box-shadow: 0 8px 28px rgba(2, 8, 23, 0.6);
+}
+
+.mobileIconCircle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b8cff 0%, #1d4ed8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+}
+
+.mobileCardTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+:global(.dark) .mobileCardTitle {
+  color: var(--ps-white);
+}
+
+.mobileCardDesc {
+  display: block;
+  font-size: 12px;
+  color: #475569;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+:global(.dark) .mobileCardDesc {
+  color: var(--ps-light-blue);
+}
+
+/* Keyframe Animations */
+@keyframes verticalWormFlow {
+  0% {
+    transform: translateY(-40px);
+  }
+  100% {
+    transform: translateY(420px);
+  }
+}
+
+@keyframes branchWormTrigger {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  2% {
+    opacity: 1;
+  }
+  12% {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+  85% {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+  95%, 100% {
+    clip-path: inset(0 0% 0 0);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobileVerticalWorm,
+  .mobileBranchWorm {
+    animation: none;
+    display: none;
+  }
+}

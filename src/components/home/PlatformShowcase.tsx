@@ -1,978 +1,286 @@
-import React from "react";
+"use client";
 
-export default function PlatformShowcase() {
+import React from "react";
+import { Bot, FileText, Gamepad2, Trophy, FlaskConical } from "lucide-react";
+
+import styles from "./PlatformShowcase.module.css";
+import { useTranslation } from "@/hooks/useTranslations";
+
+const FEATURE_ICONS = [FileText, Bot, Gamepad2, Trophy];
+
+const DESKTOP_POSITIONS = [
+  { left: "5.63%", top: "19.5%", width: "32.3%", height: "22%" },
+  { left: "61.88%", top: "19.5%", width: "32.3%", height: "22%" },
+  { left: "4.45%", top: "46.3%", width: "31.3%", height: "22%" },
+  { left: "64.06%", top: "46.3%", width: "31.3%", height: "22%" },
+];
+
+const SECTION_POSITIONS = [
+  { left: "5.63%", top: "16.5%", width: "32.3%", height: "28%" },
+  { left: "61.88%", top: "16.5%", width: "32.3%", height: "28%" },
+  { left: "4.45%", top: "43.3%", width: "31.3%", height: "28%" },
+  { left: "64.06%", top: "43.3%", width: "31.3%", height: "28%" },
+];
+
+const CONNECTOR_PATHS = [
+  "M485,250 L510,250 Q610,250 610,350 L610,525", // Path 1 (100px huge curve radius)
+  "M792,250 L770,250 Q670,250 670,350 L670,525", // Path 2 (100px huge curve radius)
+  // "M458,470 L558,470 Q570,470 570,485 L570,586",
+  // "M820,470 L722,470 Q710,470 710,485 L710,586",
+  "M458,470 L520,470 Q570,470 570,520 L570,586", // Path 3 (Increased curve radius)
+  "M820,470 L760,470 Q710,470 710,520 L710,586", // Path 4 (Increased curve radius)
+];
+
+type ShowcaseFeature = { title: string; description: string };
+
+export default function PlatformShowcase({
+  features: featuresProp,
+  variant = "banner",
+}: {
+  features?: ShowcaseFeature[];
+  variant?: "banner" | "section";
+} = {}) {
+  const t = useTranslation();
+  const features = featuresProp ?? t.platformShowcase.features;
+
+  const desktopWrapperClass =
+    variant === "section"
+      ? "hidden sm:block bg-transparent w-full max-w-[840px] mx-auto"
+      : "hidden sm:block bg-transparent scale-100 lg:scale-[1.15] lg:origin-center mt-8 lg:-mt-24";
+
+  const cardPositions = variant === "section" ? SECTION_POSITIONS : DESKTOP_POSITIONS;
+
   return (
     <>
-      <style>{`
-        /* =========================================================
-           DESKTOP / TABLET
-           ========================================================= */
-
-        .stage-container {
-          container-type: inline-size;
-          aspect-ratio: 1280 / 720;
-          border-radius: 1.2cqw;
-        }
-
-        .hero-header {
-          padding: 0 4cqw;
-        }
-
-        .feature-card {
-          gap: 1.15cqw;
-          padding: 1.55cqw 1.7cqw;
-          border-radius: 1.15cqw;
-
-          box-shadow:
-            0 0.6cqw 2cqw rgba(0, 0, 0, 0.35),
-            inset 0 1px 0 rgba(255, 255, 255, 0.03);
-        }
-
-        .card-icon-circle {
-          width: 6.5cqw;
-          height: 6.5cqw;
-
-          background: radial-gradient(
-            circle at 32% 28%,
-            #4c86ff,
-            #2a56d6 65%,
-            #1c3fa8
-          );
-
-          box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.06) inset,
-            0 0.5cqw 1.4cqw rgba(45, 100, 240, 0.45);
-        }
-
-        .card-icon-circle svg {
-          width: 3.2cqw;
-          height: 3.2cqw;
-        }
-
-        .connector-line {
-          fill: none;
-          stroke: rgba(110, 163, 255, 0.55);
-          stroke-width: 2;
-          stroke-linecap: round;
-          stroke-linejoin: round;
-        }
-
-        .connector-glow {
-          fill: none;
-          stroke: rgba(90, 140, 255, 0.9);
-          stroke-width: 5;
-          opacity: 0.18;
-          filter: blur(2px);
-          stroke-linecap: round;
-          stroke-linejoin: round;
-        }
-
-        .dome-glow-svg {
-          width: 78cqw;
-          height: 29.3cqw;
-        }
-
-        .center-emblem {
-          width: 10.2cqw;
-          height: 10.2cqw;
-          border-radius: 22%;
-
-          background: linear-gradient(
-            160deg,
-            #4c82fb 0%,
-            #2f66e6 55%,
-            #1e46b8 100%
-          );
-
-          box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-            0 0.4cqw 0.6cqw rgba(255, 255, 255, 0.12) inset,
-            0 1.2cqw 3cqw rgba(45, 100, 240, 0.55),
-            0 0 8cqw rgba(63, 125, 251, 0.35);
-        }
-
-        .center-emblem svg {
-          width: 4.6cqw;
-          height: 4.6cqw;
-        }
-
-
-        /* =========================================================
-           MOBILE
-           Layout:
-           
-           [ <> ]
-              |
-              |------ [ Feature 1 ]
-              |
-              |------ [ Feature 2 ]
-              |
-              |------ [ Feature 3 ]
-              |
-              |------ [ Feature 4 ]
-           ========================================================= */
-
-        .mobile-flow {
-          position: relative;
-
-          width: 100%;
-          max-width: 430px;
-
-          margin-left: auto;
-          margin-right: auto;
-
-          padding-top: 8px;
-          padding-bottom: 8px;
-        }
-
-
-        /* Main vertical connector line */
-        .mobile-flow::before {
-          content: "";
-
-          position: absolute;
-
-          left: 27px;
-          top: 36px;
-          bottom: 44px;
-
-          width: 2px;
-
-          border-radius: 999px;
-
-          background: linear-gradient(
-            to bottom,
-            rgba(75, 132, 255, 0.95),
-            rgba(75, 132, 255, 0.55),
-            rgba(75, 132, 255, 0.25)
-          );
-
-          box-shadow:
-            0 0 4px rgba(62, 121, 255, 0.55),
-            0 0 10px rgba(62, 121, 255, 0.2);
-
-          z-index: 0;
-        }
-
-
-        /* =========================================================
-           MOBILE HUB
-           ========================================================= */
-
-        .mobile-hub-wrapper {
-          position: relative;
-
-          width: 56px;
-          height: 56px;
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          z-index: 4;
-        }
-
-        .mobile-hub-glow {
-          position: absolute;
-
-          left: 50%;
-          top: 50%;
-
-          transform: translate(-50%, -50%);
-
-          width: 95px;
-          height: 95px;
-
-          border-radius: 9999px;
-
-          background: rgba(59, 130, 246, 0.2);
-
-          filter: blur(18px);
-
-          pointer-events: none;
-        }
-
-        .mobile-center-emblem {
-          position: relative;
-
-          width: 56px;
-          height: 56px;
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          border-radius: 14px;
-
-          background: linear-gradient(
-            160deg,
-            #4c82fb 0%,
-            #2f66e6 55%,
-            #1e46b8 100%
-          );
-
-          box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.1) inset,
-            0 2px 4px rgba(255, 255, 255, 0.14) inset,
-            0 8px 22px rgba(45, 100, 240, 0.5),
-            0 0 30px rgba(63, 125, 251, 0.38);
-
-          z-index: 5;
-        }
-
-        .mobile-center-emblem svg {
-          width: 24px;
-          height: 24px;
-        }
-
-
-        /* =========================================================
-           MOBILE FEATURE ROW
-           ========================================================= */
-
-        .mobile-flow-row {
-          position: relative;
-
-          display: grid;
-
-          grid-template-columns:
-            56px
-            minmax(0, 1fr);
-
-          column-gap: 10px;
-
-          align-items: center;
-
-          min-height: 92px;
-
-          z-index: 1;
-        }
-
-
-        /* Horizontal branch */
-        .mobile-flow-row::before {
-          content: "";
-
-          position: absolute;
-
-          left: 27px;
-          top: 50%;
-
-          width: 40px;
-          height: 2px;
-
-          transform: translateY(-50%);
-
-          border-radius: 999px;
-
-          background: rgba(83, 137, 255, 0.68);
-
-          box-shadow:
-            0 0 4px rgba(60, 120, 255, 0.5),
-            0 0 8px rgba(60, 120, 255, 0.2);
-
-          z-index: 0;
-        }
-
-
-        /* Small glowing junction circle */
-        .mobile-junction {
-          position: absolute;
-
-          left: 23px;
-          top: 50%;
-
-          width: 10px;
-          height: 10px;
-
-          transform: translateY(-50%);
-
-          border-radius: 50%;
-
-          background: #3972ef;
-
-          border: 2px solid rgba(214, 228, 255, 0.95);
-
-          box-shadow:
-            0 0 6px rgba(59, 130, 246, 0.8),
-            0 0 12px rgba(59, 130, 246, 0.45);
-
-          z-index: 2;
-        }
-
-
-        /* =========================================================
-           MOBILE CARD
-           ========================================================= */
-
-        .mobile-feature-card {
-          position: relative;
-
-          width: 100%;
-          min-width: 0;
-          min-height: 76px;
-
-          display: flex;
-          align-items: center;
-
-          gap: 12px;
-
-          padding: 11px 13px;
-
-          border-radius: 14px;
-
-          box-shadow:
-            0 5px 14px rgba(0, 0, 0, 0.13),
-            0 12px 28px rgba(0, 0, 0, 0.05),
-            inset 0 1px 0 rgba(255, 255, 255, 0.08);
-
-          z-index: 3;
-
-          transition:
-            transform 200ms ease,
-            box-shadow 200ms ease;
-        }
-
-        .mobile-feature-card:active {
-          transform: scale(0.98);
-        }
-
-
-        /* =========================================================
-           MOBILE CARD ICON
-           ========================================================= */
-
-        .mobile-icon-circle {
-          width: 42px;
-          height: 42px;
-
-          flex: 0 0 42px;
-
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          border-radius: 50%;
-
-          background: radial-gradient(
-            circle at 32% 28%,
-            #4c86ff,
-            #2a56d6 65%,
-            #1c3fa8
-          );
-
-          box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-            0 4px 10px rgba(45, 100, 240, 0.45);
-        }
-
-        .mobile-icon-circle svg {
-          width: 20px;
-          height: 20px;
-        }
-
-
-        /* =========================================================
-           SMALL MOBILE
-           ========================================================= */
-
-        @media (max-width: 359px) {
-          .mobile-flow::before {
-            left: 23px;
-          }
-
-          .mobile-hub-wrapper {
-            width: 48px;
-            height: 48px;
-          }
-
-          .mobile-center-emblem {
-            width: 48px;
-            height: 48px;
-
-            border-radius: 12px;
-          }
-
-          .mobile-center-emblem svg {
-            width: 21px;
-            height: 21px;
-          }
-
-          .mobile-flow-row {
-            grid-template-columns:
-              48px
-              minmax(0, 1fr);
-
-            column-gap: 8px;
-
-            min-height: 86px;
-          }
-
-          .mobile-flow-row::before {
-            left: 23px;
-            width: 34px;
-          }
-
-          .mobile-junction {
-            left: 19px;
-          }
-
-          .mobile-feature-card {
-            gap: 8px;
-
-            min-height: 72px;
-
-            padding: 9px 10px;
-
-            border-radius: 12px;
-          }
-
-          .mobile-icon-circle {
-            width: 36px;
-            height: 36px;
-
-            flex-basis: 36px;
-          }
-
-          .mobile-icon-circle svg {
-            width: 17px;
-            height: 17px;
-          }
-        }
-
-
-        /* =========================================================
-           LARGE MOBILE
-           ========================================================= */
-
-        @media (min-width: 400px) and (max-width: 639px) {
-          .mobile-feature-card {
-            min-height: 82px;
-
-            padding: 13px 15px;
-
-            gap: 13px;
-          }
-
-          .mobile-icon-circle {
-            width: 44px;
-            height: 44px;
-
-            flex-basis: 44px;
-          }
-
-          .mobile-icon-circle svg {
-            width: 21px;
-            height: 21px;
-          }
-
-          .mobile-flow-row {
-            min-height: 96px;
-          }
-        }
-      `}</style>
-
-
-      {/* =========================================================
-          DESKTOP / TABLET
-          ========================================================= */}
-
-      <div className="hidden sm:block bg-transparent scale-100 lg:scale-[1.15] lg:origin-center mt-8 lg:-mt-24">
-        <div className="stage-container relative w-full mx-auto overflow-hidden">
-
-          <header className="hero-header absolute top-[3.6%] left-0 right-0 text-center" />
-
+      {/* DESKTOP LAYOUT */}
+      <div className={desktopWrapperClass}>
+        <div
+          className={`${styles.stageContainer} ${variant === "section" ? styles.stageSection : ""
+            } relative w-full mx-auto overflow-hidden`}
+        >
+          <header className={`${styles.heroHeader} absolute top-[3.2%] left-0 right-0 text-center`} />
 
           {/* Connector lines */}
           <svg
             className="absolute inset-0 w-full h-full pointer-events-none z-[1]"
-            viewBox="0 0 1280 720"
+            viewBox="0 0 1280 820"
             preserveAspectRatio="none"
           >
-            {/* Glow */}
+            {/* Base background line */}
             <g>
-              <path
-                className="connector-glow"
-                d="M485,247 L595,247 Q610,247 610,262 L610,430"
-              />
-
-              <path
-                className="connector-glow"
-                d="M792,247 L685,247 Q670,247 670,262 L670,430"
-              />
-
-              <path
-                className="connector-glow"
-                d="M458,417 L558,417 Q570,417 570,432 L570,530"
-              />
-
-              <path
-                className="connector-glow"
-                d="M820,417 L722,417 Q710,417 710,432 L710,530"
-              />
+              {CONNECTOR_PATHS.map((d) => (
+                <path key={d} className={styles.connectorLine} d={d} />
+              ))}
             </g>
 
-
-            {/* Normal line */}
+            {/* Outer glow background */}
             <g>
-              <path
-                className="connector-line"
-                d="M485,247 L595,247 Q610,247 610,262 L610,430"
-              />
+              {CONNECTOR_PATHS.map((d) => (
+                <path key={d} className={styles.connectorGlow} d={d} />
+              ))}
+            </g>
 
-              <path
-                className="connector-line"
-                d="M792,247 L685,247 Q670,247 670,262 L670,430"
-              />
-
-              <path
-                className="connector-line"
-                d="M458,417 L558,417 Q570,417 570,432 L570,530"
-              />
-
-              <path
-                className="connector-line"
-                d="M820,417 L722,417 Q710,417 710,432 L710,530"
-              />
+            {/* Moving Light Flash / Pulse along the path */}
+            <g>
+              {CONNECTOR_PATHS.map((d, i) => (
+                <path
+                  key={d}
+                  className={styles.connectorFlash}
+                  style={{ animationDelay: `${i * 0.45}s` }}
+                  d={d}
+                />
+              ))}
             </g>
           </svg>
 
+          {/* Desktop Feature Cards */}
+          {features.map((feature, i) => {
+            const Icon = FEATURE_ICONS[i];
 
-          {/* =====================================================
-              CARD 1
-              ===================================================== */}
-
-          <div
-            className="
-              feature-card
-              absolute
-              left-[5.63%]
-              top-[24.3%]
-              w-[32.3%]
-              h-[20.1%]
-              flex
-              items-center
-              justify-center
-              bg-white/70
-              border
-              border-slate-200
-              dark:bg-[rgba(13,19,38,0.55)]
-              dark:border-[rgba(94,148,255,0.20)]
-              backdrop-blur-[6px]
-              z-[2]
-              transition-all
-              duration-250
-              ease-in-out
-              hover:bg-slate-50
-              hover:border-slate-300
-              dark:hover:border-[rgba(110,160,255,0.45)]
-              dark:hover:bg-[rgba(16,23,46,0.75)]
-              hover:-translate-y-0.5
-            "
-          >
-            <div className="card-icon-circle shrink-0 rounded-full flex items-center justify-center">
-
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-[#eaf1ff]"
+            return (
+              <div
+                key={feature.title}
+                style={cardPositions[i]}
+                className={`
+                  ${styles.featureCard}
+                  absolute
+                  overflow-hidden
+                  flex
+                  items-center
+                  z-[2]
+                  transition-all
+                  duration-300
+                  ease-in-out
+                `}
               >
-                <circle cx="12" cy="12" r="10" />
+                <div className={`${styles.cardIconCircle} shrink-0 rounded-full flex items-center justify-center`}>
+                  <Icon className="text-white" strokeWidth={2} />
+                </div>
 
-                <polygon points="10 8 16 12 10 16 10 8" />
-              </svg>
+                <div className="min-w-0 flex-1">
+                  <h3 className={`${styles.cardTitle} text-balance ${variant === "section" ? "" : "line-clamp-1"}`}>
+                    {feature.title}
+                  </h3>
 
-            </div>
+                  <span className={`${styles.cardDescription} text-balance ${variant === "section" ? "line-clamp-3" : "line-clamp-2"}`}>
+                    {feature.description}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
 
-            <div>
-              <h3 className="text-sm lg:text-base font-normal text-slate-600 dark:text-slate-300 text-balance line-clamp-2">
-                រៀនតាមរយៈមេរៀនវីដេអូ
-              </h3>
-            </div>
-          </div>
-
-
-          {/* =====================================================
-              CARD 2
-              ===================================================== */}
-
-          <div
-            className="
-              feature-card
-              absolute
-              left-[61.88%]
-              top-[24.3%]
-              w-[32.3%]
-              h-[20.1%]
-              flex
-              items-center
-              justify-center
-              bg-white/70
-              border
-              border-slate-200
-              dark:bg-[rgba(13,19,38,0.55)]
-              dark:border-[rgba(94,148,255,0.20)]
-              backdrop-blur-[6px]
-              z-[2]
-              transition-all
-              duration-250
-              ease-in-out
-              hover:bg-slate-50
-              hover:border-slate-300
-              dark:hover:border-[rgba(110,160,255,0.45)]
-              dark:hover:bg-[rgba(16,23,46,0.75)]
-              hover:-translate-y-0.5
-            "
-          >
-            <div className="card-icon-circle shrink-0 rounded-full flex items-center justify-center">
-
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-[#eaf1ff]"
-              >
-                <circle cx="12" cy="8" r="6" />
-
-                <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
-              </svg>
-
-            </div>
-
-            <div>
-              <h3 className="text-sm lg:text-base font-normal text-slate-600 dark:text-slate-300 text-balance line-clamp-2">
-                ទទួលបានស្លាកជំនាញ
-              </h3>
-            </div>
-          </div>
-
-
-          {/* =====================================================
-              CARD 3
-              ===================================================== */}
-
-          <div
-            className="
-              feature-card
-              absolute
-              left-[4.45%]
-              top-[47.9%]
-              w-[31.3%]
-              h-[20.1%]
-              flex
-              items-center
-              justify-center
-              bg-white/70
-              border
-              border-slate-200
-              dark:bg-[rgba(13,19,38,0.55)]
-              dark:border-[rgba(94,148,255,0.20)]
-              backdrop-blur-[6px]
-              z-[2]
-              transition-all
-              duration-250
-              ease-in-out
-              hover:bg-slate-50
-              hover:border-slate-300
-              dark:hover:border-[rgba(110,160,255,0.45)]
-              dark:hover:bg-[rgba(16,23,46,0.75)]
-              hover:-translate-y-0.5
-            "
-          >
-            <div className="card-icon-circle shrink-0 rounded-full flex items-center justify-center">
-
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-[#eaf1ff]"
-              >
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-              </svg>
-
-            </div>
-
-            <div>
-              <h3 className="text-sm lg:text-base font-normal text-slate-600 dark:text-slate-300 text-balance line-clamp-2">
-                ជជែក និងទំនាក់ទំនង
-              </h3>
-            </div>
-          </div>
-
-
-          {/* =====================================================
-              CARD 4
-              ===================================================== */}
-
-          <div
-            className="
-              feature-card
-              absolute
-              left-[64.06%]
-              top-[47.9%]
-              w-[31.3%]
-              h-[20.1%]
-              flex
-              items-center
-              justify-center
-              bg-white/70
-              border
-              border-slate-200
-              dark:bg-[rgba(13,19,38,0.55)]
-              dark:border-[rgba(94,148,255,0.20)]
-              backdrop-blur-[6px]
-              z-[2]
-              transition-all
-              duration-250
-              ease-in-out
-              hover:bg-slate-50
-              hover:border-slate-300
-              dark:hover:border-[rgba(110,160,255,0.45)]
-              dark:hover:bg-[rgba(16,23,46,0.75)]
-              hover:-translate-y-0.5
-            "
-          >
-            <div className="card-icon-circle shrink-0 rounded-full flex items-center justify-center">
-
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-[#eaf1ff]"
-              >
-                <path d="M8 21h8" />
-
-                <path d="M12 17v4" />
-
-                <path d="M7 4h10v5a5 5 0 0 1-10 0z" />
-
-                <path d="M17 5h3a2 2 0 0 1 2 2v1a4 4 0 0 1-4 4" />
-
-                <path d="M7 5H4a2 2 0 0 0-2 2v1a4 4 0 0 0 4 4" />
-              </svg>
-
-            </div>
-
-            <div>
-              <h3 className="text-sm lg:text-base font-normal text-slate-600 dark:text-slate-300 text-balance line-clamp-2">
-                ទទួលបានវិញ្ញាបនបត្របញ្ជាក់
-              </h3>
-            </div>
-          </div>
-
-
-          {/* =====================================================
-              DESKTOP BOTTOM GLOW
-              ===================================================== */}
-
+          {/* 3D CONCENTRIC ENERGY STAGE PLATFORM */}
           <svg
-            className="
-              dome-glow-svg
-              absolute
-              left-1/2
-              top-[76.5%]
-              -translate-x-1/2
-              -translate-y-1/2
-              z-[1]
-              pointer-events-none
-              overflow-visible
-            "
-            viewBox="0 0 800 300"
+            className={`
+            ${styles.domeGlowSvg}
+            absolute
+            left-1/2
+            top-[80%]
+            -translate-x-1/2
+            -translate-y-1/2
+            z-[1]
+            pointer-events-none
+            overflow-visible
+          `}
+            viewBox="0 0 1000 450"
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
+              {/* Light Mode Radial Gradients (Fade outer-to-inner / less visible to visible) */}
+              <radialGradient id="tier1LightGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#3b8cff" stopOpacity="0.45" />
+                <stop offset="70%" stopColor="#3b8cff" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#3b8cff" stopOpacity="0.15" />
+              </radialGradient>
 
-              <filter
-                id="b18"
-                x="-50%"
-                y="-50%"
-                width="200%"
-                height="200%"
-              >
-                <feGaussianBlur stdDeviation="18" />
+              <radialGradient id="tier2LightGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#2563eb" stopOpacity="0.8" />
+                <stop offset="80%" stopColor="#2563eb" stopOpacity="0.45" />
+                <stop offset="100%" stopColor="#2563eb" stopOpacity="0.2" />
+              </radialGradient>
+
+              <radialGradient id="tier3LightGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="#1d4ed8" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="#1d4ed8" stopOpacity="0.3" />
+              </radialGradient>
+
+              {/* Dark Mode Linear Gradients */}
+              <linearGradient id="tier1Top" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="var(--ps-tier1-stop1)" stopOpacity="0.95" />
+                <stop offset="100%" stopColor="var(--ps-tier1-stop2)" stopOpacity="0.98" />
+              </linearGradient>
+
+              <linearGradient id="tier2Top" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="var(--ps-tier2-stop1)" stopOpacity="0.98" />
+                <stop offset="100%" stopColor="var(--ps-tier2-stop2)" stopOpacity="1" />
+              </linearGradient>
+
+              <radialGradient id="baseGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stopColor="var(--ps-stage-glow-start)" stopOpacity="0.55" />
+                <stop offset="50%" stopColor="var(--ps-stage-glow-mid)" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="#0757ff" stopOpacity="0" />
+              </radialGradient>
+
+              {/* Light Mode Shadow Filter (tier1 only) — plain blur, applied to a
+                  dedicated solid shape below, since feDropShadow reads the source's
+                  alpha and tier1's light-mode fill/stroke are too translucent for
+                  a drop-shadow to read from directly. */}
+              <filter id="tier1ShadowBlurLight" x="-50%" y="-50%" width="200%" height="220%">
+                <feGaussianBlur stdDeviation="11" />
               </filter>
 
-
-              <filter
-                id="b9"
-                x="-50%"
-                y="-50%"
-                width="200%"
-                height="200%"
-              >
-                <feGaussianBlur stdDeviation="9" />
+              {/* Dark Mode Shadow Filters */}
+              <filter id="tier1Shadow" x="-50%" y="-50%" width="200%" height="220%">
+                <feDropShadow dx="0" dy="22" stdDeviation="12" floodColor="var(--ps-tier1-shadow-dark)" floodOpacity="0.85" />
+                <feDropShadow dx="0" dy="-12" stdDeviation="14" floodColor="var(--ps-tier1-shadow-light)" floodOpacity="1" />
               </filter>
 
-
-              <filter
-                id="b6"
-                x="-50%"
-                y="-50%"
-                width="200%"
-                height="200%"
-              >
-                <feGaussianBlur stdDeviation="6" />
+              <filter id="tier2Shadow" x="-30%" y="-30%" width="160%" height="180%">
+                <feDropShadow dx="0" dy="6" stdDeviation="4" floodColor="#000000" floodOpacity="0.75" />
+                <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#020a24" floodOpacity="0.6" />
               </filter>
 
-
-              <filter
-                id="b3"
-                x="-50%"
-                y="-50%"
-                width="200%"
-                height="200%"
-              >
-                <feGaussianBlur stdDeviation="3" />
+              <filter id="tier3Shadow" x="-30%" y="-40%" width="160%" height="200%">
+                <feDropShadow dx="0" dy="8" stdDeviation="5" floodColor="var(--ps-tier3-shadow-dark)" />
+                <feDropShadow dx="0" dy="-5" stdDeviation="6" floodColor="var(--ps-tier3-shadow-light)" />
               </filter>
-
             </defs>
 
+            {/* Outer Glow Ellipse */}
+            <ellipse cx="500" cy="225" rx="460" ry="120" fill="url(#baseGlow)" />
 
+            {/* Tier 1 dedicated shadow shape — solid fill so the blur is actually
+                visible; only shown in light mode (hidden in dark mode via CSS,
+                since dark mode gets its shadow from tier1Group's own filter). */}
             <ellipse
-              cx="400"
-              cy="150"
-              rx="390"
-              ry="98"
-              fill="#1e46b0"
-              opacity="0.28"
-              filter="url(#b18)"
+              className={styles.tier1ShadowOnly}
+              cx="500"
+              cy="241"
+              rx="380"
+              ry="88"
+              fill="#1d4ed8"
+              filter="url(#tier1ShadowBlurLight)"
             />
 
+            {/* Tier 1 (Outer Ring - Softest visibility with shadow) */}
+            <g id="3d-tier-1" className={styles.tier1Group}>
+              <ellipse cx="500" cy="225" rx="390" ry="95" fill="var(--ps-tier1-fill)" />
+              <ellipse
+                cx="500"
+                cy="225"
+                rx="390"
+                ry="95"
+                fill="none"
+                stroke="var(--ps-tier1-stroke)"
+                strokeWidth="2.5"
+                strokeOpacity="0.85"
+              />
+            </g>
 
-            <ellipse
-              cx="400"
-              cy="150"
-              rx="335"
-              ry="84"
-              fill="#193c96"
-              opacity="0.55"
-              filter="url(#b9)"
-            />
+            {/* Tier 2 (Middle Ring - Medium visibility) */}
+            <g id="3d-tier-2" className={styles.tier2Group}>
+              <ellipse cx="500" cy="210" rx="270" ry="66" fill="var(--ps-tier2-fill)" />
+              <ellipse
+                cx="500"
+                cy="210"
+                rx="270"
+                ry="66"
+                fill="none"
+                stroke="var(--ps-tier2-stroke)"
+                strokeWidth="2"
+                strokeOpacity="0.95"
+              />
+            </g>
 
-
-            <ellipse
-              cx="400"
-              cy="150"
-              rx="335"
-              ry="84"
-              fill="none"
-              stroke="#4d7cf0"
-              strokeOpacity={0.3}
-              strokeWidth={2.5}
-              filter="url(#b3)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="147"
-              rx="258"
-              ry="64"
-              fill="#2450c6"
-              opacity="0.62"
-              filter="url(#b9)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="147"
-              rx="258"
-              ry="64"
-              fill="none"
-              stroke="#6b98ff"
-              strokeOpacity={0.42}
-              strokeWidth={2.5}
-              filter="url(#b3)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="144"
-              rx="182"
-              ry="45"
-              fill="#3468e0"
-              opacity="0.72"
-              filter="url(#b6)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="144"
-              rx="182"
-              ry="45"
-              fill="none"
-              stroke="#9db9ff"
-              strokeOpacity={0.55}
-              strokeWidth={2.5}
-              filter="url(#b3)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="140"
-              rx="112"
-              ry="28"
-              fill="#5f8bf8"
-              opacity="0.85"
-              filter="url(#b6)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="140"
-              rx="112"
-              ry="28"
-              fill="none"
-              stroke="#cfe0ff"
-              strokeOpacity={0.6}
-              strokeWidth={2}
-              filter="url(#b3)"
-            />
-
-
-            <ellipse
-              cx="400"
-              cy="132"
-              rx="58"
-              ry="15"
-              fill="#e4edff"
-              opacity="0.9"
-              filter="url(#b6)"
-            />
+            {/* Tier 3 (Inner Ring - Highest visibility) */}
+            <g id="3d-tier-3" className={styles.tier3Group}>
+              <ellipse cx="500" cy="195" rx="150" ry="37" fill="var(--ps-tier3-fill)" />
+              <ellipse
+                cx="500"
+                cy="195"
+                rx="150"
+                ry="37"
+                fill="none"
+                stroke="rgba(244, 248, 255, 0.9)"
+                strokeWidth="2"
+                strokeOpacity="0.95"
+              />
+            </g>
           </svg>
-
-
-          {/* Desktop center hub */}
           <div
-            className="
-              center-emblem
+            className={`
+              ${styles.centerEmblem}
               absolute
               left-1/2
-              top-[59.7%]
+              top-[70%] /* Shifted down from top-[62.5%] */
               -translate-x-1/2
+              -translate-y-1/2
               flex
               items-center
               justify-center
               z-[3]
-            "
+            `}
           >
             <svg
               viewBox="0 0 24 24"
@@ -984,300 +292,74 @@ export default function PlatformShowcase() {
               className="text-[#f4f8ff]"
             >
               <polyline points="16 18 22 12 16 6" />
+              <polyline points="8 6 2 12 8 18" />
+            </svg>
+          </div>
+        </div>
+      </div>
 
+      {/* MOBILE LAYOUT */}
+      {/* MOBILE LAYOUT */}
+      <div className="sm:hidden w-full px-4 py-6">
+        <div className={styles.mobileTimelineContainer}>
+          {/* Central Vertical Track Line */}
+          <div className={styles.mobileStemLine} />
+
+          {/* Top Main Emblem Node */}
+          <div className={styles.mobileTopNode}>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-6 h-6 text-white"
+            >
+              <polyline points="16 18 22 12 16 6" />
               <polyline points="8 6 2 12 8 18" />
             </svg>
           </div>
 
-        </div>
-      </div>
-
-
-      {/* =========================================================
-          MOBILE
-          ========================================================= */}
-
-      <div className="sm:hidden w-full px-3 min-[380px]:px-4 pt-6 pb-10">
-
-        <div className="mobile-flow">
-
-
-          {/* =====================================================
-              MOBILE HUB
-              ===================================================== */}
-
-          <div className="mobile-hub-wrapper">
-
-            <div className="mobile-hub-glow" />
-
-            <div className="mobile-center-emblem">
-
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2.5}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-[#f4f8ff]"
-              >
-                <polyline points="16 18 22 12 16 6" />
-
-                <polyline points="8 6 2 12 8 18" />
-              </svg>
-
-            </div>
-
+          {/* Vertical Worm animation container */}
+          <div className={styles.mobileVerticalWormTrack}>
+            <div className={styles.mobileVerticalWorm} />
           </div>
 
+          {/* Feature Card Rows */}
+          <div className="space-y-5 pt-6">
+            {features.map((feature, i) => {
+              const Icon = FEATURE_ICONS[i];
 
-          {/* =====================================================
-              MOBILE FEATURE 1
-              ===================================================== */}
+              return (
+                <div key={feature.title} className={styles.mobileTimelineRow}>
+                  {/* Junction Dot */}
+                  <div className={styles.mobileTimelineDot} />
 
-          <div className="mobile-flow-row">
+                  {/* Horizontal Branch Base Line */}
+                  <div className={styles.mobileBranchLine} />
 
-            <span className="mobile-junction" />
+                  {/* Horizontal Shoot Worm */}
+                  <div
+                    className={styles.mobileBranchWorm}
+                    style={{ animationDelay: `${0.55 + i * 0.55}s` }}
+                  />
 
-            <div />
+                  {/* Feature Card */}
+                  <div className={styles.mobileFeatureCard}>
+                    <div className={`${styles.mobileIconCircle} shrink-0`}>
+                      <Icon className="text-white w-5 h-5" strokeWidth={2} />
+                    </div>
 
-            <div
-              className="
-                mobile-feature-card
-                bg-white/85
-                border
-                border-slate-200
-                dark:bg-[rgba(13,19,38,0.68)]
-                dark:border-[rgba(94,148,255,0.20)]
-                backdrop-blur-[8px]
-              "
-            >
-
-              <div className="mobile-icon-circle">
-
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-[#eaf1ff]"
-                >
-                  <circle cx="12" cy="12" r="10" />
-
-                  <polygon points="10 8 16 12 10 16 10 8" />
-                </svg>
-
-              </div>
-
-
-              <h3
-                className="
-                  min-w-0
-                  text-[12px]
-                  min-[375px]:text-[13px]
-                  font-normal
-                  leading-[1.7]
-                  text-slate-600
-                  dark:text-slate-300
-                  break-words
-                "
-              >
-                រៀនតាមរយៈមេរៀនវីដេអូ
-              </h3>
-
-            </div>
-
+                    <div className="min-w-0 flex-1">
+                      <h3 className={styles.mobileCardTitle}>{feature.title}</h3>
+                      <span className={styles.mobileCardDesc}>{feature.description}</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-
-
-          {/* =====================================================
-              MOBILE FEATURE 2
-              ===================================================== */}
-
-          <div className="mobile-flow-row">
-
-            <span className="mobile-junction" />
-
-            <div />
-
-            <div
-              className="
-                mobile-feature-card
-                bg-white/85
-                border
-                border-slate-200
-                dark:bg-[rgba(13,19,38,0.68)]
-                dark:border-[rgba(94,148,255,0.20)]
-                backdrop-blur-[8px]
-              "
-            >
-
-              <div className="mobile-icon-circle">
-
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-[#eaf1ff]"
-                >
-                  <circle cx="12" cy="8" r="6" />
-
-                  <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
-                </svg>
-
-              </div>
-
-
-              <h3
-                className="
-                  min-w-0
-                  text-[12px]
-                  min-[375px]:text-[13px]
-                  font-normal
-                  leading-[1.7]
-                  text-slate-600
-                  dark:text-slate-300
-                  break-words
-                "
-              >
-                ទទួលបានស្លាកជំនាញ
-              </h3>
-
-            </div>
-
-          </div>
-
-
-          {/* =====================================================
-              MOBILE FEATURE 3
-              ===================================================== */}
-
-          <div className="mobile-flow-row">
-
-            <span className="mobile-junction" />
-
-            <div />
-
-            <div
-              className="
-                mobile-feature-card
-                bg-white/85
-                border
-                border-slate-200
-                dark:bg-[rgba(13,19,38,0.68)]
-                dark:border-[rgba(94,148,255,0.20)]
-                backdrop-blur-[8px]
-              "
-            >
-
-              <div className="mobile-icon-circle">
-
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-[#eaf1ff]"
-                >
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                </svg>
-
-              </div>
-
-
-              <h3
-                className="
-                  min-w-0
-                  text-[12px]
-                  min-[375px]:text-[13px]
-                  font-normal
-                  leading-[1.7]
-                  text-slate-600
-                  dark:text-slate-300
-                  break-words
-                "
-              >
-                ជជែក និងទំនាក់ទំនង
-              </h3>
-
-            </div>
-
-          </div>
-
-
-          {/* =====================================================
-              MOBILE FEATURE 4
-              ===================================================== */}
-
-          <div className="mobile-flow-row">
-
-            <span className="mobile-junction" />
-
-            <div />
-
-            <div
-              className="
-                mobile-feature-card
-                bg-white/85
-                border
-                border-slate-200
-                dark:bg-[rgba(13,19,38,0.68)]
-                dark:border-[rgba(94,148,255,0.20)]
-                backdrop-blur-[8px]
-              "
-            >
-
-              <div className="mobile-icon-circle">
-
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-[#eaf1ff]"
-                >
-                  <path d="M8 21h8" />
-
-                  <path d="M12 17v4" />
-
-                  <path d="M7 4h10v5a5 5 0 0 1-10 0z" />
-
-                  <path d="M17 5h3a2 2 0 0 1 2 2v1a4 4 0 0 1-4 4" />
-
-                  <path d="M7 5H4a2 2 0 0 0-2 2v1a4 4 0 0 0 4 4" />
-                </svg>
-
-              </div>
-
-
-              <h3
-                className="
-                  min-w-0
-                  text-[12px]
-                  min-[375px]:text-[13px]
-                  font-normal
-                  leading-[1.7]
-                  text-slate-600
-                  dark:text-slate-300
-                  break-words
-                "
-              >
-                ទទួលបានវិញ្ញាបនបត្របញ្ជាក់
-              </h3>
-
-            </div>
-
-          </div>
-
         </div>
       </div>
     </>

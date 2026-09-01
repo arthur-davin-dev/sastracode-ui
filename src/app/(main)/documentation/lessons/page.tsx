@@ -22,7 +22,7 @@ export default async function AllLessonsPage({
   const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
 
   return (
-    <main className="min-h-screen bg-slate-50 transition-colors duration-300 dark:bg-slate-950">
+    <main className="min-h-screen bg-transparent transition-colors duration-300 dark:bg-transparent">
       <div className="mx-auto max-w-7xl px-4 pb-16 pt-8 sm:px-6 lg:px-8">
         <div className="grid items-start gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
           <aside className="space-y-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900 lg:sticky lg:top-24">

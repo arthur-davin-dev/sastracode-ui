@@ -62,6 +62,8 @@ export function InProgressCertificateCard({
           <img
             src={mapped.image}
             alt={mapped.title}
+            loading="lazy"
+            decoding="async"
             className="aspect-[16/10] w-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-slate-900/20 group-hover:bg-slate-900/10 transition-colors" />

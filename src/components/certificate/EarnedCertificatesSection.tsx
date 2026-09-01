@@ -612,7 +612,7 @@ export function EarnedCertificatesSection() {
     <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
       {/* Header */}
       <CardHeader className="flex flex-row items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
-        <CardTitle className="text-[18px] font-semibold flex items-center gap-2.5 text-slate-900 dark:text-slate-100">
+        <CardTitle className="text-[18px] font-semibold flex items-center gap-2.5 text-primary-color22 dark:text-slate-100">
           <span className="h-7 w-7 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800/40 flex items-center justify-center shrink-0">
             <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
           </span>

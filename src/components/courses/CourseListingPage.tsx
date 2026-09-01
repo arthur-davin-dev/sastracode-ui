@@ -249,9 +249,8 @@ export default function CourseListingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100">
+    <div className="min-h-screen bg-transparent text-slate-900 transition-colors duration-300 dark:bg-transparent dark:text-slate-100">
       <CourseBanner />
-
       <main className="mx-auto max-w-7xl px-6 pb-16 pt-10">
         <div className="mb-10 flex items-center gap-3">
           <SearchBar
@@ -259,12 +258,19 @@ export default function CourseListingPage() {
             onChange={setSearch}
             placeholder={t.courses.search.placeholder}
           />
-          <CategoryFilter
-            categories={categories}
-            active={activeCategories}
-            counts={categoryCounts}
-            onToggle={handleCategoryToggle}
-          />
+          {isLoading && categories.length <= 3 ? (
+            <div className="flex items-center gap-2" aria-hidden="true">
+              <Skeleton className="h-10 w-24 rounded-xl bg-slate-200 dark:bg-slate-800" />
+              <Skeleton className="h-10 w-28 rounded-xl bg-slate-200 dark:bg-slate-800" />
+            </div>
+          ) : (
+            <CategoryFilter
+              categories={categories}
+              active={activeCategories}
+              counts={categoryCounts}
+              onToggle={handleCategoryToggle}
+            />
+          )}
         </div>
 
         {isLoading && allCourses.length === 0 ? (

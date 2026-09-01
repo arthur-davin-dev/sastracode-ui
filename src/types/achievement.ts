@@ -118,6 +118,7 @@ export interface LearningPathProgressProps {
   paths: LearningPath[];
   completedCount: number;
   totalCount: number;
+  continueHref: string;
 }
 
 export interface BadgeDetail {

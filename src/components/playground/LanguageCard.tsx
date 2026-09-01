@@ -1,100 +1,183 @@
 "use client";
 
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { useLanguage } from "@/lib/language-context";
-import { Code2, Layout, FileCode2, Terminal, Cpu } from "lucide-react";
+import { en } from "@/locale/en";
+import { km } from "@/locale/km";
+import {
+  ArrowRight,
+  Code2,
+  FileCode2,
+  Layout,
+  Terminal,
+  Cpu,
+  Sparkles,
+} from "lucide-react";
 
 const languagesData = [
   {
+    id: "html",
     name: "HTML",
-    desc: {
-      en: "Structure & Markup",
-      km: "រចនាសម្ព័ន្ធ និង ម៉ាកអាប់",
-    },
+    query: "html",
+    number: "01",
     icon: Layout,
-    color: "text-orange-600 dark:text-orange-400",
-    bg: "bg-orange-500/10 dark:bg-orange-500/15 border-orange-200 dark:border-orange-500/30",
+    topics: ["Semantic HTML", "Forms & Inputs", "Accessibility"],
+    learners: "3.2k",
+    rotate: "-rotate-2",
+    brandBg: "bg-orange-600 dark:bg-orange-500",
+    brandShadow: "shadow-orange-500/25",
   },
   {
-    name: "CSS",
-    desc: {
-      en: "Styles & Layouts",
-      km: "រចនាប័ទ្ម និង ប្លង់ទំព័រ",
-    },
-    icon: FileCode2,
-    color: "text-blue-600 dark:text-blue-400",
-    bg: "bg-blue-500/10 dark:bg-blue-500/15 border-blue-200 dark:border-blue-500/30",
-  },
-  {
+    id: "javascript",
     name: "JavaScript",
-    desc: {
-      en: "Logic & Interactivity",
-      km: "លូជិក និង អន្តរកម្ម",
-    },
+    query: "javascript",
+    number: "03",
     icon: Code2,
-    color: "text-amber-600 dark:text-amber-400",
-    bg: "bg-amber-500/10 dark:bg-amber-500/15 border-amber-200 dark:border-amber-500/30",
+    topics: ["Variables", "Functions", "Async"],
+    learners: "4.1k",
+    rotate: "-rotate-1",
+    brandBg: "bg-amber-500 dark:bg-amber-400",
+    brandShadow: "shadow-amber-500/25",
   },
   {
-    name: "Python",
-    desc: {
-      en: "Data & Automation",
-      km: "ទិន្នន័យ និង អូតូម៉ាតកម្ម",
-    },
+    id: "nodejs",
+    name: "Node.js",
+    query: "nodejs",
+    number: "04",
     icon: Terminal,
-    color: "text-emerald-600 dark:text-emerald-400",
-    bg: "bg-emerald-500/10 dark:bg-emerald-500/15 border-emerald-200 dark:border-emerald-500/30",
+    topics: ["Servers", "APIs", "Runtime"],
+    learners: "1.6k",
+    rotate: "rotate-2",
+    brandBg: "bg-emerald-600 dark:bg-emerald-500",
+    brandShadow: "shadow-emerald-500/25",
   },
   {
+    id: "python",
+    name: "Python",
+    query: "python",
+    number: "05",
+    icon: Terminal,
+    topics: ["Syntax", "Functions", "Automation"],
+    learners: "5.4k",
+    rotate: "-rotate-2",
+    brandBg: "bg-sky-600 dark:bg-sky-500",
+    brandShadow: "shadow-sky-500/25",
+  },
+  {
+    id: "java",
     name: "Java",
-    desc: {
-      en: "Enterprise & Backend",
-      km: "ប្រព័ន្ធសហគ្រាស និង Backend",
-    },
+    query: "java",
+    number: "06",
     icon: Cpu,
-    color: "text-rose-600 dark:text-rose-400",
-    bg: "bg-rose-500/10 dark:bg-rose-500/15 border-rose-200 dark:border-rose-500/30",
+    topics: ["Classes", "OOP", "Concurrency"],
+    learners: "2.1k",
+    rotate: "rotate-1",
+    brandBg: "bg-red-600 dark:bg-red-500",
+    brandShadow: "shadow-red-500/25",
+  },
+  {
+    id: "tailwind",
+    name: "Tailwind CSS",
+    query: "tailwind%20css",
+    number: "07",
+    icon: Layout,
+    topics: ["Utilities", "Components", "Responsive UI"],
+    learners: "3.9k",
+    rotate: "-rotate-1",
+    brandBg: "bg-cyan-500 dark:bg-cyan-400",
+    brandShadow: "shadow-cyan-500/25",
   },
 ];
 
 export default function LanguageCards() {
   const { lang } = useLanguage();
+  const t = lang === "km" ? km : en;
 
   return (
-    <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 transition-colors duration-300">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        {languagesData.map((langItem) => {
-          const Icon = langItem.icon;
-          return (
-            <Card
-              key={langItem.name}
-              className="group relative p-5 flex flex-col justify-between rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 hover:-translate-y-1 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-300 cursor-pointer overflow-hidden"
-            >
-              {/* Ambient Hover Glow */}
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+    <section className="relative mx-auto max-w-6xl overflow-hidden px-4 py-8 sm:px-6 lg:py-10">
+      {/* Background ambient lights */}
+      <div className="pointer-events-none absolute -left-10 top-0 -z-10 size-56 rounded-full bg-primary/10 blur-3xl" />
+      <div className="pointer-events-none absolute -right-10 top-20 -z-10 size-64 rounded-full bg-primary/10 blur-3xl" />
 
-              <div>
-                {/* Icon Container */}
-                <div
-                  className={`h-12 w-12 rounded-xl border flex items-center justify-center ${langItem.bg} mb-4 transition-transform duration-300 group-hover:scale-110`}
-                >
-                  <Icon className={`h-6 w-6 ${langItem.color}`} />
+      {/* Header */}
+      <div className="mb-10 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+        <div>
+          <div className="mb-2.5 flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 w-fit">
+            <Sparkles className="size-3 text-primary" />
+            <span className="text-[11px] font-black uppercase tracking-[0.2em] text-primary">
+              {languagesData.length.toString().padStart(2, "0")}{" "}
+              {t.languageCards.badge}
+            </span>
+          </div>
+
+          <h2 className="max-w-2xl text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
+            {t.languageCards.titlePrefix}{" "}
+            <span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              {t.languageCards.titleHighlight}
+            </span>
+          </h2>
+
+          <p className="mt-1.5 max-w-xl text-sm font-medium leading-relaxed text-slate-500 sm:text-base dark:text-slate-400">
+            {t.languageCards.description}
+          </p>
+        </div>
+      </div>
+
+      {/* Tilted Card Grid */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {languagesData.map((language) => {
+          const Icon = language.icon;
+          const description =
+            t.languageCards.items[
+              language.id as keyof typeof t.languageCards.items
+            ];
+
+          return (
+            <Link
+              key={language.name}
+              href={`/playground/editor?language=${language.query}`}
+              className={`group block focus:outline-none transition-transform duration-300 ease-out hover:z-10 hover:scale-105 ${language.rotate} hover:rotate-0`}
+            >
+              <Card className="relative flex min-h-55 w-full flex-col justify-between rounded-2xl border border-slate-200/80 bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.04)] transition-all duration-300 ease-out hover:border-primary/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] dark:border-slate-800 dark:bg-slate-900/90 dark:shadow-none dark:hover:border-primary/40">
+                <div>
+                  {/* Technology Brand Color Rounded Container */}
+                  <div
+                    className={`flex size-12 items-center justify-center rounded-2xl text-white shadow-md transition-transform duration-300 group-hover:scale-110 ${language.brandBg} ${language.brandShadow}`}
+                  >
+                    <Icon className="size-6 stroke-[2.2]" />
+                  </div>
+
+                  {/* Title & Description */}
+                  <div className="mt-5">
+                    <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+                      {language.name}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-500 line-clamp-2 dark:text-slate-400">
+                      {description}
+                    </p>
+                  </div>
                 </div>
 
-                {/* Language Title */}
-                <h3 className="font-bold text-xl text-slate-900 dark:text-slate-100 transition-colors duration-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">
-                  {langItem.name}
-                </h3>
+                {/* Topics & Metadata */}
+                <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 dark:border-slate-800">
+                  <div className="flex flex-wrap gap-1">
+                    {language.topics.slice(0, 2).map((topic) => (
+                      <span
+                        key={topic}
+                        className="rounded-md bg-slate-50 px-2 py-0.5 text-[10px] font-semibold text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+                      >
+                        {topic}
+                      </span>
+                    ))}
+                  </div>
 
-                {/* Description - Updated to 18px */}
-                <p className="text-[18px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed transition-colors duration-300">
-                  {langItem.desc[lang] || langItem.desc.en}
-                </p>
-              </div>
-
-              {/* Bottom Subtle Indicator Bar */}
-              <div className="w-full h-0.5 mt-5 rounded-full bg-slate-100 dark:bg-slate-800 group-hover:bg-indigo-500/50 transition-colors duration-300" />
-            </Card>
+                  <span className="text-[11px] font-medium text-slate-400">
+                    {language.learners} learners
+                  </span>
+                </div>
+              </Card>
+            </Link>
           );
         })}
       </div>

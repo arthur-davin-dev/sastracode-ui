@@ -25,7 +25,7 @@ export default function LessonPageClient({ lesson }: LessonPageClientProps) {
   if (!lesson) return null;
 
   return (
-    <div className="relative min-h-screen bg-slate-50 text-slate-900 transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100">
+    <div className="relative min-h-screen bg-transparent text-slate-900 transition-colors duration-200 dark:bg-transparent dark:text-slate-100">
       
       {/* ========================================================== */}
       {/* MOBILE TOP BAR (W3Schools Style Nav Strip)                 */}

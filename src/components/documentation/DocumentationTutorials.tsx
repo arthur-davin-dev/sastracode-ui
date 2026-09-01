@@ -4,42 +4,16 @@ import Link from "next/link";
 import CourseGrid from "@/components/documentation/CourseGrid";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslation } from "@/hooks/useTranslations";
-import {
-  type TutorialSummary,
-  useListTutorialsQuery,
-} from "@/redux/api/tutorial-api";
-import type { Course, TechTag } from "@/types/course";
+import { useListTutorialsQuery } from "@/redux/api/tutorial-api";
+import { getTechTag, toCourse } from "@/lib/documentation/tutorial-to-course";
+import type { Course } from "@/types/course";
+
+export { getTechTag, toCourse };
 
 interface DocumentationTutorialsProps {
   showSections?: boolean;
   category?: "all" | "latest" | "recommended" | "popular";
   page?: number;
-}
-
-export function getTechTag(tutorial: TutorialSummary): TechTag {
-  const value = `${tutorial.title} ${tutorial.slug}`.toLowerCase();
-
-  if (value.includes("python")) return "Python";
-  if (value.includes("javascript") || value.includes("js")) return "JavaScript";
-  if (value.includes("java")) return "Java";
-  if (value.includes("css")) return "CSS";
-  return "HTML";
-}
-
-export function toCourse(tutorial: TutorialSummary, ctaLabel = "រៀនឥឡូវ"): Course {
-  return {
-    id: tutorial.id,
-    title: tutorial.title,
-    titleKm: tutorial.title,
-    description: tutorial.summary || "Open this tutorial to start learning.",
-    tag: getTechTag(tutorial),
-    href: `/documentation/lessons/${tutorial.id}`,
-    coverImage: tutorial.coverFileId
-      ? `/api/v1/files/${encodeURIComponent(tutorial.coverFileId)}`
-      : "/images/doc-hero.png",
-    viewCount: tutorial.viewCount ?? 0,
-    ctaLabel,
-  };
 }
 
 function DocumentationCardSkeleton() {
@@ -199,7 +173,7 @@ export default function DocumentationTutorials({
               className={`flex h-10 w-10 items-center justify-center rounded-full border text-lg transition-colors ${
                 currentPage === 1
                   ? "pointer-events-none border-slate-200 text-slate-300 dark:border-slate-800 dark:text-slate-700"
-                  : "border-slate-300 text-slate-600 hover:border-blue-600 hover:text-blue-600 dark:border-slate-700 dark:text-slate-300"
+                  : "border-slate-300 text-slate-600 hover:border-primary-color/70 hover:text-primary-color/70 dark:border-slate-700 dark:text-slate-300"
               }`}
             >
               <span aria-hidden="true">‹</span>
@@ -213,8 +187,8 @@ export default function DocumentationTutorials({
                 aria-current={pageNumber === currentPage ? "page" : undefined}
                 className={`flex h-10 w-10 items-center justify-center rounded-full border text-base font-semibold transition-colors ${
                   pageNumber === currentPage
-                    ? "border-primary-color bg-primary-color text-white dark:border-blue-600 dark:bg-blue-600"
-                    : "border-slate-300 bg-white text-slate-600 hover:border-blue-600 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+                    ? "border-primary-color bg-primary-color text-white dark:border-primary-color/70 dark:bg-primary-color/70"
+                    : "border-slate-300 bg-white text-slate-600 hover:border-primary-color/70 hover:text-primary-color dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
                 }`}
               >
                 {pageNumber}

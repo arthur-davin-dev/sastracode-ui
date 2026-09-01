@@ -32,7 +32,7 @@ export default function Profile() {
         <div className="flex flex-col items-center gap-3">
           <Loader2 className="h-9 w-9 animate-spin text-primary-color" />
 
-          <p className="text-sm font-medium text-slate-500">
+          <p className="text-lg font-medium text-slate-500">
             កំពុងទាញយកព័ត៌មាន...
           </p>
         </div>
@@ -48,7 +48,7 @@ export default function Profile() {
             សូមចូលគណនីជាមុនសិន
           </h2>
 
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-lg text-slate-500">
             អ្នកត្រូវចូលគណនីដើម្បីមើលព័ត៌មានប្រវត្តិរូប។
           </p>
 
@@ -70,14 +70,14 @@ export default function Profile() {
             មិនអាចទាញយកព័ត៌មានបាន
           </h2>
 
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-lg text-slate-500">
             សូមព្យាយាមម្ដងទៀត។
           </p>
 
           <button
             type="button"
             onClick={() => void refetch()}
-            className="mt-5 inline-flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-violet-700"
+            className="mt-5 inline-flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-2.5 text-lg font-semibold text-white transition hover:bg-violet-700"
           >
             <RefreshCw className="h-4 w-4" />
             ព្យាយាមម្ដងទៀត
@@ -90,7 +90,7 @@ export default function Profile() {
   if (!profile) {
     return (
       <div className="flex min-h-[600px] items-center justify-center">
-        <p className="text-sm font-medium text-slate-500">
+        <p className="text-lg font-medium text-slate-500">
           រកមិនឃើញព័ត៌មានប្រវត្តិរូប។
         </p>
       </div>
@@ -122,7 +122,7 @@ export default function Profile() {
 
         {isFetching && !isLoading && (
           <div className="flex justify-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-medium text-slate-400 shadow-sm dark:bg-slate-900">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-lg font-medium text-slate-400 shadow-sm dark:bg-slate-900">
               <Loader2 className="h-3.5 w-3.5 animate-spin" />
               កំពុងធ្វើបច្ចុប្បន្នភាព...
             </div>

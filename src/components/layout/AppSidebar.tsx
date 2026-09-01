@@ -260,6 +260,7 @@ export default function AppSidebar({
   closeMobile,
 }: SidebarProps) {
   const pathname = usePathname();
+  const isAchievementPage = pathname.startsWith("/achivement");
 
   const [openMenu, setOpenMenu] = useState<string | null>("ការសិក្ស");
 
@@ -322,11 +323,16 @@ export default function AppSidebar({
       className={`
         relative flex h-full flex-col
         border-r border-slate-200
-        bg-white py-6
+        py-6
         shadow-lg
         transition-all duration-300
         dark:border-slate-800
-        dark:bg-slate-900
+
+        ${
+          isAchievementPage
+            ? "bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950"
+            : "bg-white dark:bg-slate-900"
+        }
 
         ${isCollapsed ? "w-20" : "w-70"}
       `}
@@ -418,7 +424,7 @@ export default function AppSidebar({
       {/* Navigation */}
       {/* ================================= */}
 
-      <nav className="flex flex-1 flex-col gap-2 overflow-y-auto px-4">
+      <nav className="no-scrollbar flex flex-1 flex-col gap-2 overflow-y-auto px-4">
         {userNavItems.map((item) => {
           const hasSubItems = !!item.subItems?.length;
 
@@ -449,12 +455,13 @@ export default function AppSidebar({
                     text-lg
                     font-bold
                     text-primary-color
+                    dark:text-white
                     transition-colors
                     duration-150
 
                     ${
                       isActive
-                        ? "bg-init-color/20"
+                        ? "bg-primary-color/20"
                         : "hover:bg-slate-100 dark:hover:bg-slate-800"
                     }
                   `}
@@ -462,7 +469,7 @@ export default function AppSidebar({
                   <div className="flex min-w-0 items-center gap-3.5">
                     <item.icon
                       size={24}
-                      className="shrink-0 text-primary-color"
+                      className="shrink-0 text-primary-color dark:text-white"
                     />
 
                     {!isCollapsed && (
@@ -514,19 +521,20 @@ export default function AppSidebar({
                                 text-lg
                                 font-semibold
                                 text-primary-color
+                                dark:text-white
                                 transition-colors
                                 duration-150
 
                                 ${
                                   isSubActive
-                                    ? "bg-init-color/20"
+                                    ? "bg-primary-color/20"
                                     : "hover:bg-slate-100 dark:hover:bg-slate-800"
                                 }
                               `}
                         >
                           <subItem.icon
                             size={18}
-                            className="shrink-0 text-primary-color"
+                            className="shrink-0 text-primary-color dark:text-white"
                           />
 
                           <span className="truncate">{subItem.label}</span>
@@ -575,17 +583,21 @@ export default function AppSidebar({
                 text-lg
                 font-bold
                 text-primary-color
+                dark:text-white
                 transition-colors
                 duration-150
 
                 ${
                   isActive
-                    ? "bg-init-color/20"
+                    ? "bg-primary-color/20"
                     : "hover:bg-slate-100 dark:hover:bg-slate-800"
                 }
               `}
             >
-              <item.icon size={24} className="shrink-0 text-primary-color" />
+              <item.icon
+                size={24}
+                className="shrink-0 text-primary-color dark:text-white"
+              />
 
               {!isCollapsed && <span className="truncate">{item.label}</span>}
             </Link>

@@ -15,8 +15,8 @@ export function XpLevelCard({ level, currentXp, nextLevelXp, progressPercent }: 
   const xpRemaining = nextLevelXp - currentXp;
 
   return (
-    <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-200 dark:border-slate-800 bg-white
-     dark:bg-slate-900 hover:border-primary-color/25 hover:-translate-y-0.5 transition-all duration-300">
+    <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-200 shadow-none dark:border-white/10 bg-white
+     dark:bg-slate-900/30 dark:backdrop-blur-sm hover:border-primary-color/25 hover:-translate-y-0.5 transition-all duration-300">
       
       {/* Background Decorative Ambient Glows */}
       <div className="absolute -top-12 -right-12 h-36 w-36 rounded-full bg-blue-400/40 blur-3xl" />
@@ -46,7 +46,7 @@ export function XpLevelCard({ level, currentXp, nextLevelXp, progressPercent }: 
         <div className="flex flex-col md:flex-row items-center gap-6">
           
           {/* XP Level Badge Icon Container */}
-          <div className="shrink-0 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 shadow-inner">
+          <div className="shrink-0 p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-white/10 shadow-inner">
             <XpLevelBadge level={level} size={84} /> 
           </div>
 

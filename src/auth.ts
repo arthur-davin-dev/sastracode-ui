@@ -287,6 +287,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           name?: string;
           preferred_username?: string;
           email?: string;
+          email_verified?: boolean;
         };
 
         token.name =
@@ -295,6 +296,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           token.name;
 
         token.email = keycloakProfile.email ?? token.email;
+
+        // Standard OIDC claim (returned with the `email` scope). Keycloak only
+        // completes the login once its "Verify Email" required action is done,
+        // so this is normally `true` here — the flag is defense in depth for
+        // the route guard when that realm setting is off.
+        if (typeof keycloakProfile.email_verified === "boolean") {
+          token.emailVerified = keycloakProfile.email_verified;
+        }
       }
 
       if (account) {
@@ -316,6 +325,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         typeof token.accessToken === "string" ? token.accessToken : undefined;
 
       session.error = token.error;
+
+      session.emailVerified =
+        typeof token.emailVerified === "boolean"
+          ? token.emailVerified
+          : undefined;
 
       if (session.user) {
         session.user.name =

@@ -46,8 +46,13 @@ function createLessons(sections: TutorialSection[]): TutorialLesson[] {
 
     const isDirect =
       section.contentMode === "DIRECT" || subsections.length === 0;
+    // Blocks (a quiz, an intro paragraph, …) can be attached straight to a
+    // section even when it also has subsections. Those must still get a
+    // lesson of their own, otherwise anything the admin adds at the section
+    // level is unreachable in the reader.
+    const hasOwnBlocks = (section.blocks ?? []).length > 0;
 
-    if (isDirect) {
+    if (isDirect || hasOwnBlocks) {
       lessons.push({
         id: section.id,
         sectionId: section.id,
@@ -344,6 +349,11 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
 
               {lessonBlocks.length > 0 ? (
                 <QuizResultsProvider
+                  // Remount per lesson so quiz state (active question, quiz
+                  // ids, attempt id, results) never leaks from the previously
+                  // viewed lesson — a stale activeQuizId hides every quiz on
+                  // the next lesson.
+                  key={activeLesson.id}
                   total={
                     lessonBlocks.filter(
                       (block) => block.type.trim().toUpperCase() === "QUIZ",

@@ -58,9 +58,14 @@ export default function Leaderboard() {
   const { data: myProfile } = useGetMyProfileQuery(undefined, {
     skip: !isAuthenticated,
   });
-  const { data: profiles } = useGetLeaderboardUserProfilesQuery(undefined, {
-    skip: !data?.content.length,
-  });
+  const leaderboardUserIds = useMemo(
+    () => (data?.content ?? []).map((entry) => entry.userId),
+    [data?.content],
+  );
+  const { data: profiles } = useGetLeaderboardUserProfilesQuery(
+    leaderboardUserIds,
+    { skip: leaderboardUserIds.length === 0 },
+  );
 
   const profilesByUserId = useMemo(
     () => new Map(profiles?.content.map((profile) => [profile.userId, profile]) ?? []),
@@ -73,6 +78,7 @@ export default function Leaderboard() {
         const profile = profilesByUserId.get(entry.userId);
         return {
         id: entry.id || entry.userId,
+        userId: entry.userId,
         rank: entry.rank,
         name: learnerName(entry, profile),
         avatarUrl: learnerAvatar(entry, profile),
@@ -85,6 +91,7 @@ export default function Leaderboard() {
   const currentUser: LeaderboardEntry | undefined = myRank
     ? {
         id: myRank.id || myRank.userId,
+        userId: myRank.userId,
         rank: myRank.rank,
         name:
           [myProfile?.firstName, myProfile?.lastName].filter(Boolean).join(" ") ||
@@ -101,11 +108,12 @@ export default function Leaderboard() {
     { icon: "chart", value: myRank?.rank ? `#${myRank.rank}` : "—", label: "Your rank", color: "" },
   ];
 
-  const topPerformers = entries.slice(0, 3).map(({ rank, name, xp, avatarUrl }) => ({
+  const topPerformers = entries.slice(0, 3).map(({ rank, name, xp, avatarUrl, userId }) => ({
     rank,
     name,
     xp,
     avatarUrl,
+    userId,
   }));
 
   const filteredEntries = useMemo(() => {
@@ -119,14 +127,14 @@ export default function Leaderboard() {
   }, [entries, searchQuery]);
 
   return (
-    <div className="relative min-h-full w-full overflow-hidden rounded-3xl bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] px-4 py-6 transition-colors duration-300 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 sm:px-6 sm:py-8">
+    <div className="relative min-h-full w-full overflow-hidden rounded-3xl px-4 py-6 transition-colors duration-300 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 sm:px-6 sm:py-8">
       <div className="max-w-6xl mx-auto space-y-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col  sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-lg font-bold uppercase tracking-wider text-primary-color dark:text-white">
               Community ranking
             </p>
-            <h1 className="mt-1 text-2xl font-extrabold text-indigo-950 transition-colors duration-300 dark:text-white sm:text-3xl">
+            <h1 className="mt-1 text-2xl font-extrabold text-indigo-950 transition-colors duration-300 dark:text-white">
               តារាងចំណាត់ថ្នាក់
             </h1>
           </div>
@@ -148,6 +156,8 @@ export default function Leaderboard() {
           activeTab={activeTab}
           onTabChange={(tab) => setActiveTab(tab as SupportedPeriod)}
         />
+
+        {topPerformers.length > 0 && <TopPerformersCard performers={topPerformers} />}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
@@ -173,7 +183,6 @@ export default function Leaderboard() {
 
           <div className="space-y-4">
             <YourStatsCard stats={userStats} />
-            {topPerformers.length > 0 && <TopPerformersCard performers={topPerformers} />}
           </div>
         </div>
       </div>

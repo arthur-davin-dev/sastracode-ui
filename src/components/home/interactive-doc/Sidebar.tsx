@@ -66,12 +66,12 @@ export default function Sidebar({ activeSection, setActiveSection }: SidebarProp
                             onClick={() => setActiveSection(item.key)}
                             className={`flex items-center justify-between rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 transition-colors duration-300 cursor-pointer ${
                                 isActive
-                                    ? "bg-indigo-50 dark:bg-indigo-950/50 text-indigo-700 dark:text-indigo-400 border-r-4 border-indigo-600 dark:border-indigo-400"
+                                    ? "bg-indigo-50 dark:bg-indigo-950/50 text-primary-color dark:text-primary-color border-r-4 border-primary-color dark:border-primary-color"
                                     : "hover:bg-slate-50 dark:hover:bg-gray-700"
                             }`}
                         >
                             <span className="truncate">{item.label}</span>
-                            <span className={isActive ? "text-indigo-600 dark:text-indigo-400" : "text-slate-400 dark:text-gray-500"}>
+                            <span className={isActive ? "text-primary-color dark:text-primary-color" : "text-slate-400 dark:text-gray-500"}>
                                 ›
                             </span>
                         </div>

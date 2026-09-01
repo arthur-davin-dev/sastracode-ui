@@ -5,6 +5,7 @@ import Timeline from "./timeline";
 import Mentor from "./mentor";
 import TeamLeader from "./team-leader";
 import TeamMember from "./team-member";
+import Stack from "../animation/stack";
 
 
 export default function AboutUs() {
@@ -14,7 +15,7 @@ export default function AboutUs() {
         <HeroSection />
         <Mission />
         <Timeline />
-
+        <Stack></Stack>
         {/* Grouping related team sections for better document outline  */}
         <section aria-labelledby="team-section-heading">
           <Mentor />

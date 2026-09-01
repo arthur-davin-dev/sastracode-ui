@@ -42,6 +42,8 @@ const NodeIcon = ({ src, label }: { src?: string; label: string }) => {
     <img
       src={src}
       alt=""
+      loading="lazy"
+      decoding="async"
       onError={() => setHasError(true)}
       className="h-full w-full object-contain p-0.5 sm:p-1"
     />
@@ -157,7 +159,7 @@ const OrbitingNode = ({
           aspectRatio: "1 / 1",
           borderColor: node.ring ?? "#2f4fd6",
           zIndex: 10,
-          cursor: "pointer",
+          // cursor: "pointer",
         }}
         whileHover={{
           scale: 1.25,

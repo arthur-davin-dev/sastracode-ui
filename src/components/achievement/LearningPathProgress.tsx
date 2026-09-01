@@ -8,17 +8,18 @@ interface LearningPathProgressProps {
   paths: LearningPath[];
   completedCount: number;
   totalCount: number;
+  continueHref: string;
 }
 
-export function LearningPathProgress({ paths, completedCount, totalCount }: LearningPathProgressProps) {
+export function LearningPathProgress({ paths, completedCount, totalCount, continueHref }: LearningPathProgressProps) {
   return (
     <div className="space-y-6">
       
       {/* Top Header & Main Progress Overview */}
-      <div className="flex flex-col md:flex-row items-center gap-8 p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
+      <div className="flex flex-col md:flex-row items-center gap-8 p-6 rounded-3xl bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-white/10">
         
         {/* Left Side: Completion Badge Container */}
-        <div className="flex flex-col items-center justify-center shrink-0 p-4 rounded-2xl bg-white dark:bg-slate-900 border-2 border-slate-200 dark:border-slate-700 shadow-sm text-center min-w-[120px]">
+        <div className="flex flex-col items-center justify-center shrink-0 p-4 rounded-2xl bg-white dark:bg-slate-900/25 border-2 border-slate-200 dark:border-white/10 text-center min-w-[120px]">
           <XpLevelBadge level={completedCount} size={76} />
           <div className="mt-2 flex items-center gap-1 text-lg font-bold text-primary-color dark:text-white">
             <Award className="h-5 w-5 text-init-color" />
@@ -31,13 +32,18 @@ export function LearningPathProgress({ paths, completedCount, totalCount }: Lear
 
         {/* Right Side: Learning Paths List */}
         <div className="flex-1 space-y-5 w-full">
+          {paths.length === 0 && (
+            <p className="rounded-2xl border border-dashed border-slate-300 p-6 text-center text-lg text-slate-500 dark:border-slate-700 dark:text-slate-400">
+              អ្នកមិនទាន់បានចុះឈ្មោះក្នុងវគ្គសិក្សាណាមួយនៅឡើយទេ
+            </p>
+          )}
           {paths.map((path) => {
             const isCompleted = path.progressPercent === 100;
 
             return (
               <div 
                 key={path.id} 
-                className="space-y-2 p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-xs hover:border-blue-100 transition-all duration-300 group"
+                className="space-y-2 p-4 rounded-2xl bg-white dark:bg-slate-900/25 border border-slate-100 dark:border-white/10 hover:border-blue-100 transition-all duration-300 group"
               >
                 {/* Title & Status Bar */}
                 <div className="flex justify-between items-center gap-2">
@@ -80,8 +86,8 @@ export function LearningPathProgress({ paths, completedCount, totalCount }: Lear
 
       {/* Action Footer (Continue Learning Link) */}
       <div className="flex justify-end pt-2">
-        <a 
-          href="/documentation" 
+        <a
+          href={continueHref}
           className="group inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary-color hover:bg-primary-color/70
            text-white text-lg font-bold shadow-md hover:shadow-lg transition-all duration-300"
         >

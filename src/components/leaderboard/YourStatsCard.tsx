@@ -12,13 +12,12 @@ const iconMap: Record<string, LucideIcon> = {
 export function YourStatsCard({ stats }: { stats: UserStat[] }) {
   return (
     <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-      
       {/* Top Accent Ribbon */}
       <div className="w-full" />
 
-      <CardHeader className="flex flex-row items-center justify-between pb-3 pt-5 px-5 border-b border-slate-100 dark:border-slate-800">
+      <CardHeader className="flex flex-row items-center justify-between border-b border-slate-100 dark:border-slate-800">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 bg-primary-color/10 text-amber-600 dark:text-white rounded-xl">
+          <div className="p-2 rounded-xl bg-primary-color/10 text-primary-color dark:text-white">
             <BarChart3 size={22} />
           </div>
           <CardTitle className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">
@@ -31,7 +30,7 @@ export function YourStatsCard({ stats }: { stats: UserStat[] }) {
         </span>
       </CardHeader>
 
-      <CardContent className="p-5 space-y-3">
+      <CardContent className="space-y-3">
         {stats.map((stat, i) => {
           const Icon = iconMap[stat.icon] || BarChart3;
 
@@ -41,7 +40,7 @@ export function YourStatsCard({ stats }: { stats: UserStat[] }) {
               className="flex items-center gap-3.5 p-3 rounded-2xl bg-slate-50/80 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800 hover:bg-slate-100/80 dark:hover:bg-slate-800/80 transition-all duration-200"
             >
               {/* Icon Container */}
-              <div className="h-10 w-10 rounded-xl flex items-center justify-center bg-slate-200 text-amber-600 dark:text-white shrink-0">
+              <div className="h-10 w-10 rounded-xl flex items-center justify-center bg-slate-200 dark:bg-slate-700 text-amber-600 dark:text-white shrink-0">
                 <Icon size={20} className="stroke-[2.5]" />
               </div>
 
@@ -50,7 +49,7 @@ export function YourStatsCard({ stats }: { stats: UserStat[] }) {
                 <p className="text-lg font-black text-slate-900 dark:text-white leading-tight">
                   {stat.value}
                 </p>
-                <p className="text-lg font-bold text-slate-500 dark:text-slate-400 truncate">
+                <p className="text-lg font-bold text-slate-700 dark:text-slate-400 truncate">
                   {stat.label}
                 </p>
               </div>

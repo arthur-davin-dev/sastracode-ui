@@ -24,7 +24,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { CertificateImageView } from "@/components/certificate/CertificateImageView";
+// import { CertificateImageView } from "@/components/certificate/CertificateImageView";
 import { VerificationCard } from "@/components/certificate/VerificationCard";
 import { useGetCertificateByIdQuery } from "@/redux/features/certificate/certificateApi";
 import {
@@ -358,7 +358,7 @@ export default function CertificateViewPage({
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4, delay: 0.1 }}
         >
-          {resolveCertificateFileUrl(certificate.certificateFileId) ? (
+          {/* {resolveCertificateFileUrl(certificate.certificateFileId) ? ( */}
             <Card className="relative overflow-hidden rounded-3xl border-4 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 sm:p-4 shadow-2xl transition-all duration-300">
               {/* PDF content is rendered via the browser's native PDF viewer;
                   an <img> tag cannot display PDF bytes. The PDF's real page
@@ -383,13 +383,13 @@ export default function CertificateViewPage({
                 />
               </div>
             </Card>
-          ) : (
+          {/* ) : (
             <CertificateImageView
               studentName={certificate.studentName}
               courseDescription={`សម្រាប់ការបញ្ចប់វគ្គសិក្សា "${certificate.courseTitle}" ដោយជោគជ័យ`}
               qrCodeUrl={FALLBACK_QR}
             />
-          )}
+          )} */}
         </motion.div>
 
         <motion.div

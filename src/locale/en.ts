@@ -1,11 +1,11 @@
 export const en = {
   banner: {
-    badge: "LEARN. CODE. BUILD THE FUTURE.",
+    badge: "LEARN. CODE. NOW",
     title1: "Start Learning ",
-    title2: "Coding",
-    title3: "New Skills ",
-    title4: "for",
-    title5: "Code",
+    title2: "Coding & ",
+    title3: "Building Skills ",
+    title4: "for ",
+    title5: "the Future",
     description:
       "Learn programming and develop new skills with AI Assistant, Coding Exercises, Interactive Lessons, and an Online Compiler.",
     start: "Start Learning",
@@ -21,10 +21,65 @@ export const en = {
     startLearning: "Start Learning",
   }, platformShowcase: {
     features: [
-      { title: "Learn with Interactive Docs" },
-      { title: "Get AI-Powered Help" },
-      { title: "Practice & Test Your Skills" },
-      { title: "Track Progress & Earn Rewards" },
+      {
+        title: "Interactive Docs",
+        description:
+          "Browse structured docs with examples and code snippets.",
+      },
+      {
+        title: "AI-Powered Help",
+        description:
+          "Ask questions and get smart, instant code explanations.",
+      },
+      {
+        title: "Practice & Test Skills",
+        description:
+          "Solve tasks, take quizzes, and test yourself live.",
+      },
+      {
+        title: "Progress & Rewards",
+        description:
+          "Earn XP, unlock badges, and climb the leaderboard.",
+      },
+    ],
+  },
+
+  learningShowcase: {
+    titleLead: "Learning Code. ",
+    titleHighlight: "Building Future.",
+    subtitleLine1:
+      "SastraCode is your all-in-one documentation and learning platform.",
+    subtitleLine2:
+      "Learn, practice, and level up with interactive docs, AI coaching, quizzes, and more.",
+    cards: [
+      {
+        title: "Learn with Interactive Docs",
+        description:
+          "Structured docs with examples, explanations, and ready-to-use code snippets.",
+      },
+      {
+        title: "Get AI-Powered Help",
+        description:
+          "Ask questions and get instant code explanations and smart hints when stuck.",
+      },
+      {
+        title: "Practice & Test Your Skills",
+        description:
+          "Solve coding tasks, take quizzes, and tackle real-world problems.",
+      },
+      {
+        title: "Track Progress & Earn Rewards",
+        description:
+          "Earn XP, unlock badges, and climb the leaderboard as you grow.",
+      },
+    ],
+    capabilities: [
+      { line1: "Multi-language", line2: "Playground" },
+      { line1: "Video Lessons", line2: "& Courses" },
+      { line1: "Coding Games", line2: "& Challenges" },
+      { line1: "Badges &", line2: "Certificates" },
+      { line1: "Leaderboard", line2: "& Community" },
+      { line1: "Powerful Search", line2: "& Navigation" },
     ],
   },
 
@@ -99,49 +154,49 @@ export const en = {
   },
 
   interactiveDoc: {
-  title: "Interactive Documentation",
-  description: "Learn web development interactively with examples and previews.",
-  link: "Explore Documentation",
-  
-  sections: {
-    introduction: {
-      label: "Introduction",
-      title: "Interactive Documentation",
-      description: "Learn web development interactively with examples, code previews, and AI assistance.",
-      linkText: "Explore Documentation"
-    },
-    elements: {
-      label: "HTML Elements",
-      title: "HTML Elements",
-      description: "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag.",
-      linkText: "Explore HTML Elements"
-    },
-    attributes: {
-      label: "Attributes",
-      title: "HTML Attributes",
-      description: "Provide additional information about elements, such as classes, IDs, sources, and alternative text.",
-      linkText: "Learn about Attributes"
-    },
-    semantic: {
-      label: "Semantic HTML",
-      title: "Semantic HTML",
-      description: "Use meaningful tags like <article>, <section>, and <nav> to improve accessibility and SEO.",
-      linkText: "Discover Semantic Tags"
-    },
-    forms: {
-      label: "Forms",
-      title: "HTML Forms",
-      description: "Collect user input with interactive elements like text fields, checkboxes, radios, and submit buttons.",
-      linkText: "Build Forms"
-    },
-    tables: {
-      label: "Tables",
-      title: "HTML Tables",
-      description: "Organize data into rows and columns efficiently using <table>, <tr>, <th>, and <td> tags.",
-      linkText: "View Table Guides"
+    title: "Interactive Documentation",
+    description: "Learn web development interactively with examples and previews.",
+    link: "Explore Documentation",
+
+    sections: {
+      introduction: {
+        label: "Introduction",
+        title: "Interactive Documentation",
+        description: "Learn web development interactively with examples, code previews, and AI assistance.",
+        linkText: "Explore Documentation"
+      },
+      elements: {
+        label: "HTML Elements",
+        title: "HTML Elements",
+        description: "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag.",
+        linkText: "Explore HTML Elements"
+      },
+      attributes: {
+        label: "Attributes",
+        title: "HTML Attributes",
+        description: "Provide additional information about elements, such as classes, IDs, sources, and alternative text.",
+        linkText: "Learn about Attributes"
+      },
+      semantic: {
+        label: "Semantic HTML",
+        title: "Semantic HTML",
+        description: "Use meaningful tags like <article>, <section>, and <nav> to improve accessibility and SEO.",
+        linkText: "Discover Semantic Tags"
+      },
+      forms: {
+        label: "Forms",
+        title: "HTML Forms",
+        description: "Collect user input with interactive elements like text fields, checkboxes, radios, and submit buttons.",
+        linkText: "Build Forms"
+      },
+      tables: {
+        label: "Tables",
+        title: "HTML Tables",
+        description: "Organize data into rows and columns efficiently using <table>, <tr>, <th>, and <td> tags.",
+        linkText: "View Table Guides"
+      }
     }
-  }
-},
+  },
 
   "aiChatCard": {
     "aiChat": "AI Coach helps you analyze code errors and provides hints instantly.",
@@ -154,7 +209,7 @@ export const en = {
     "hint2TextPrefix": "Make sure the button is inside the",
     "hint2TextSuffix": "tag.",
     "successText": "Looks good! Try running again."
-  }, 
+  },
 
   featureSection: {
     features: [
@@ -256,7 +311,7 @@ export const en = {
   courses: {
     banner: {
       welcomeText: "Welcome to Sastra Code",
-      titleFirstLine: "Learn to Code",
+      titleFirstLine: "Learn to Code in khmer",
       titleSecondLine: "From Basics to Real Projects",
       description:
         "SastraCode helps you build coding skills step by step through video lessons, documentation, hands-on exercises, and real projects designed for Cambodian learners.",
@@ -281,6 +336,11 @@ export const en = {
     card: {
       viewCourse: "View Course",
       privateCourse: "Private Course",
+      level: {
+        BEGINNER: "Beginner",
+        INTERMEDIATE: "Intermediate",
+        ADVANCED: "Advanced",
+      },
     },
     states: {
       loading: "Loading courses",
@@ -577,12 +637,16 @@ export const en = {
     previous: "Previous review",
     next: "Next review",
     items: [
-      { name: "John Doe", role: "Software Engineer at Google", text: "This platform completely changed my coding journey. The courses were well-structured, the instructors were skilled, and within six months I landed my dream job." },
-      { name: "Sarah Michelle", role: "Full Stack Developer", text: "The hands-on projects and real-world examples made learning different. I finally understood concepts that had confused me for years." },
-      { name: "Alex Kumar", role: "Data Scientist at Amazon", text: "I was hesitant at first, but the community support and expert guidance made it the best career investment I've made." },
-      { name: "Maria Rodriguez", role: "Senior Developer at Microsoft", text: "The DSA course changed how I prepared for interviews. Complex topics were broken down into simple, understandable lessons." },
-      { name: "Tom Lee", role: "Backend Engineer at Stripe", text: "I loved the practice-focused teaching. Career guidance and code reviews helped me land interview opportunities." },
-      { name: "Emily Wang", role: "Product Manager at Meta", text: "The best part is the community. Discussions and feedback from fellow learners strengthened my understanding and confidence." },
+      { name: "Chhay Davin", role: "Software Engineer at Google", text: "This platform completely changed my coding journey. The courses were well-structured, the instructors were skilled, and within six months I landed my dream job." },
+      { name: "Chhay Kongkea", role: "Full Stack Developer", text: "The hands-on projects and real-world examples made learning different. I finally understood concepts that had confused me for years." },
+      { name: "Ben Thona", role: "Data Scientist at Amazon", text: "I was hesitant at first, but the community support and expert guidance made it the best career investment I've made." },
+      { name: "Meng Kimleap", role: "Senior Developer at Microsoft", text: "The DSA course changed how I prepared for interviews. Complex topics were broken down into simple, understandable lessons." },
+      { name: "Vel Sothoun", role: "Backend Engineer at Stripe", text: "I loved the practice-focused teaching. Career guidance and code reviews helped me land interview opportunities." },
+      { name: "Vuth Vatana", role: "Product Manager at Meta", text: "The best part is the community. Discussions and feedback from fellow learners strengthened my understanding and confidence." },
+      { name: "Mon Narea", role: "Frontend Developer", text: "The practical lessons and exercises made learning fast and easy to understand for beginners.", },
+      { name: "Soeurt Bomnorng", role: "Mobile Developer", text: "Clear lesson structure and step-by-step guidance helped me sharpen my coding skills very quickly." },
+      { name: "Lot Los", role: "DevOps Engineer", text: "The techniques and real-world examples provided in this course are 100% applicable to actual software projects." },
+      { name: "Chhat Sovanney", role: "Full Stack Developer", text: "I was hesitant at first, but the community support and expert guidance made it the best career investment I've made." },
     ],
   },
 
@@ -592,34 +656,109 @@ export const en = {
   },
 
   docs: {
-  searchPlaceholder: "Search topics...",
-  sections: {
-    introduction: {
-      title: "Introduction",
-      description: "Get started with the basics of web development and HTML structure."
-    },
-    elements: {
-      title: "HTML Elements",
-      description: "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag."
-    },
-    attributes: {
-      title: "HTML Attributes",
-      description: "Provide additional information about elements, such as classes, IDs, sources, and alternative text."
-    },
-    semantic: {
-      title: "Semantic HTML",
-      description: "Use meaningful tags like <article>, <section>, and <nav> to improve accessibility and SEO."
-    },
-    forms: {
-      title: "Forms",
-      description: "Learn how to collect user input using input fields, buttons, and select dropdowns."
-    },
-    tables: {
-      title: "Tables",
-      description: "Organize data into structured rows and columns using standard table tags."
+    searchPlaceholder: "Search topics...",
+    sections: {
+      introduction: {
+        title: "Introduction",
+        description: "Get started with the basics of web development and HTML structure."
+      },
+      elements: {
+        title: "HTML Elements",
+        description: "Learn about the foundation of web pages. Elements consist of a start tag, content, and an end tag."
+      },
+      attributes: {
+        title: "HTML Attributes",
+        description: "Provide additional information about elements, such as classes, IDs, sources, and alternative text."
+      },
+      semantic: {
+        title: "Semantic HTML",
+        description: "Use meaningful tags like <article>, <section>, and <nav> to improve accessibility and SEO."
+      },
+      forms: {
+        title: "Forms",
+        description: "Learn how to collect user input using input fields, buttons, and select dropdowns."
+      },
+      tables: {
+        title: "Tables",
+        description: "Organize data into structured rows and columns using standard table tags."
+      }
     }
-  }
-},
+  }, languageCards: {
+    badge: "Languages",
+    titlePrefix: "Built for how you ",
+    titleHighlight: "write code.",
+    description: "Learn the languages that power the modern web, applications, backend systems, and more.",
+    viewAll: "View all languages",
+    startHere: "Start here",
+    beginner: "Beginner",
+    outputPreview: "Output Preview",
+    rendered: "Rendered",
+    exploreLessons: "Explore lessons",
+    items: {
+      html: "Build the structure and foundation of modern web pages.",
+      css: "Create beautiful layouts, animations, and visual experiences.",
+      javascript: "Add logic, functionality, and interactivity to your websites.",
+      nodejs: "Build fast, scalable servers and APIs with a JavaScript runtime.",
+      python: "Learn programming through data, automation, and applications.",
+      java: "Build powerful backend and enterprise applications.",
+      tailwind: "Style modern interfaces fast with utility-first CSS classes.",
+    },
+  },
+
+  featuresProcess: {
+    header: {
+      title: "Our Proven 4-Step Learning Pathway",
+      subtitle:
+        "From your very first lesson to earning an official credential, follow our structured path to master new tech skills.",
+    },
+    steps: [
+      {
+        id: 1,
+        stepLabel: "1",
+        title: "Video-Led Courses",
+        description: "Expert-led HD video lessons with step-by-step guidance.",
+        badge: "24/7 Access",
+        buttonText: "Explore Courses",
+      },
+      {
+        id: 2,
+        stepLabel: "2",
+        title: "Flexible Learning Paths",
+        description: "Learn at your own pace across all devices.",
+        badge: "Self-Paced",
+        buttonText: "Plan My Path",
+      },
+      {
+        id: 3,
+        stepLabel: "3",
+        title: "Real-World Assessments",
+        description: "Validate skills with quizzes and real code challenges.",
+        badge: "Hands-on",
+        buttonText: "Practice Skills",
+      },
+      {
+        id: 4,
+        stepLabel: "4",
+        title: "Earn Certification",
+        description: "Get official credentials upon completing every course.",
+        badge: "Official Credential",
+        buttonText: "Start Certification",
+      },
+    ],
+  },
+
+  heros: {
+    startBusiness: "Start Online Business",
+    caseStudies: "College Case Studies",
+    learnAnywhere: "Learn Anywhere",
+    anytime: "Anytime",
+    liveCoding: "Live Coding",
+    progressValue: "28 / 35",
+    progress: "Progress",
+    aiAssistTitle: "AI Assistant",
+    aiAssistDesc: "AI supports your learning journey up to",
+    availability: "24 hours",
+  },
 
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.
   footer: {

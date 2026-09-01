@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
+import { getApiErrorMessage } from "@/lib/api/error";
 import type { Course } from "@/lib/course/courses";
 import {
   useAddBookmarkMutation,
@@ -27,6 +28,7 @@ interface CourseCardProps {
 }
 
 const FALLBACK_IMAGE = "/assets/images/HTML & CSS.jpg";
+const FALLBACK_AVATAR = "/images/sastra_code_logo.png";
 
 function accessLabel(course: Course) {
   if (course.accessType === "PRIVATE") {
@@ -105,8 +107,13 @@ export function CourseCard({ course }: CourseCardProps) {
         await addBookmark({ itemType: "COURSE", itemId: course.id }).unwrap();
         toast.success("Course saved to bookmarks.");
       }
-    } catch {
-      toast.error("Unable to update this bookmark. Please try again.");
+    } catch (error) {
+      toast.error(
+        getApiErrorMessage(
+          error,
+          "Unable to update this bookmark. Please try again.",
+        ),
+      );
     }
   }
 
@@ -120,6 +127,10 @@ export function CourseCard({ course }: CourseCardProps) {
     : (course.href ?? `/courses/${course.id}`);
 
   const imageSrc = resolveCourseImage(course.image);
+
+  const levelLabel = course.level
+    ? t.courses.card.level[course.level]
+    : null;
 
   return (
     <article className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900">
@@ -155,7 +166,7 @@ export function CourseCard({ course }: CourseCardProps) {
 
           {/* Access Badge */}
           <span
-            className={`absolute left-3 top-3 rounded-full px-3 py-1 text-[11px] font-semibold shadow-sm backdrop-blur-sm ${isPrivate
+            className={`absolute left-3 top-3 rounded-full px-3.5 py-1.5 text-sm font-semibold shadow-sm backdrop-blur-sm ${isPrivate
               ? "bg-slate-950/85 text-white"
               : isPremium
                 ? "bg-amber-400 text-slate-950"
@@ -186,7 +197,7 @@ export function CourseCard({ course }: CourseCardProps) {
             {course.category}
           </Badge>
 
-          <h3 className="mb-2 line-clamp-1 text-[22px] font-bold leading-snug text-slate-800 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
+          <h3 className="mb-2 line-clamp-2 text-[22px] font-bold leading-snug text-slate-800 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
             {course.title}
           </h3>
 
@@ -217,15 +228,33 @@ export function CourseCard({ course }: CourseCardProps) {
           <Separator className="my-4 bg-slate-200/80 dark:bg-slate-800" />
 
           {/* Footer */}
-          <div className="flex items-center justify-end text-sm font-semibold">
+          <div className="flex items-center gap-3">
+            <div className="flex min-w-0 flex-1 items-center gap-2">
+              <img
+                src={course.instructor?.avatar || FALLBACK_AVATAR}
+                alt={course.instructor?.name || "Instructor"}
+                loading="lazy"
+                className="h-8 w-8 shrink-0 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700"
+                onError={(event) => {
+                  event.currentTarget.onerror = null;
+                  event.currentTarget.src = FALLBACK_AVATAR;
+                }}
+              />
+              <span className="truncate text-sm font-medium text-slate-600 dark:text-slate-300">
+                {course.instructor?.name || "SastraCode Instructor"}
+              </span>
+            </div>
+
             {course.locked ? (
-              <span className="text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
+              <span className="shrink-0 text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
                 {t.courses.card.privateCourse}
               </span>
             ) : (
-              <span className="text-[#002455] transition-transform group-hover:translate-x-0.5 dark:text-blue-300">
-                {t.courses.card.viewCourse} →
-              </span>
+              levelLabel && (
+                <span className="shrink-0 rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                  {levelLabel}
+                </span>
+              )
             )}
           </div>
         </div>
