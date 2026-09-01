@@ -25,6 +25,26 @@ export const certificateApi = sastraApi.injectEndpoints({
           size,
         },
       }),
+      // Intercept 404 and transform it into a valid empty structure
+      transformResponse: (response: ApiResponse<PageResponse<Certificate>>) =>
+        response,
+      transformErrorResponse: (response: { status: number | string }) => {
+        if (response.status === 404) {
+          return {
+            success: true,
+            message: "មិនទាន់មានវិញ្ញាបនបត្រ",
+            data: {
+              content: [],
+              page: 0,
+              size: 10,
+              totalElements: 0,
+              totalPages: 0,
+              last: true,
+            },
+          };
+        }
+        return response;
+      },
       providesTags: ["Certificate"],
     }),
 
@@ -43,8 +63,6 @@ export const certificateApi = sastraApi.injectEndpoints({
         url: `/v1/courses/${encodeURIComponent(courseId)}/certificate`,
         method: "POST",
       }),
-      // Issuing a certificate can also flip the enrollment to COMPLETED
-      // server-side, so refresh the enrollment lists alongside certificates.
       invalidatesTags: [
         "Certificate",
         { type: "Course", id: "MY_ENROLLMENTS" },
@@ -68,16 +86,7 @@ export const certificateApi = sastraApi.injectEndpoints({
       }),
     }),
 
-    // GET /api/v1/certificates/verify?verificationId={id}  (public)
-    //
-    // This was previously modelled as a POST with a JSON body. Per the
-    // OpenAPI spec it is a GET with a required `verificationId` query
-    // parameter, and there is no lookup by certificateNumber at all.
-    //
-    // Note: the public verify page does NOT use this hook. It calls the
-    // backend directly from a Server Component, because this slice's
-    // baseQuery points at `/api/backend`, which resolves a NextAuth session
-    // on every request — pointless work for an anonymous visitor.
+    // GET /api/v1/certificates/verify?verificationId={id} (public)
     verifyCertificate: builder.query<
       ApiResponse<CertificateVerificationResponse>,
       string
@@ -89,11 +98,7 @@ export const certificateApi = sastraApi.injectEndpoints({
       }),
     }),
 
-    // GET /api/v1/certificates/verify/qr/{hash}  (public)
-    //
-    // Kept for completeness. Certificates now encode `verificationId` in their
-    // QR codes, so this hash-based path is unused by the frontend. It also
-    // returns CertificateResponse, a different shape from the endpoint above.
+    // GET /api/v1/certificates/verify/qr/{hash} (public)
     verifyCertificateByQr: builder.query<ApiResponse<Certificate>, string>({
       query: (hash) => ({
         url: `/v1/certificates/verify/qr/${encodeURIComponent(hash)}`,

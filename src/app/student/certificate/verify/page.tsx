@@ -42,7 +42,7 @@ export default function CertificateVerifyLandingPage() {
       <section className="flex items-start gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-5 dark:border-slate-800 dark:bg-slate-800/50">
         <QrCode className="mt-0.5 h-6 w-6 shrink-0 text-primary-color dark:text-white" />
         <p className="text-base leading-relaxed text-primary-color/80 dark:text-white/80">
-          បើអ្នកមាន QR Code សូម scan វាដោយកាមេរ៉ាទូរស័ព្ទ។ វានឹងនាំអ្នកទៅកាន់
+          មាន QR Code នៅលើវិញ្ញាបនបត្រ សូម scan វា។ វានឹងនាំអ្នកទៅកាន់
           ទំព័រលទ្ធផលផ្ទៀងផ្ទាត់ដោយស្វ័យប្រវត្តិ។
         </p>
       </section>

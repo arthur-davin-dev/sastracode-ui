@@ -7,23 +7,6 @@ import type {
 } from "@/types/certificate";
 import { VERIFICATION_ID_PATTERN } from "./format";
 
-/**
- * Server-only module: reads BACKEND_API_URL and talks to the backend directly.
- * The `server-only` import above makes an accidental Client Component import a
- * build-time error instead of a silent env-var leak into the browser bundle.
- *
- * Backend contract (OpenAPI, api.sastracode.tech):
- *   GET /api/v1/certificates/verify?verificationId={id}
- *     -> 200 ApiResponse<CertificateVerificationResponse>
- *     -> no `security` block: public, no Authorization header needed.
- *
- * IMPORTANT: the spec documents ONLY the 200 response. What the backend returns
- * for an unknown verificationId is undefined by contract — it could be 404, 400,
- * a 500 from an unmapped `orElseThrow`, or an HTML error page. So the status
- * code alone is not enough to classify the outcome; `classifyFailure` below
- * reads the body too.
- */
-
 export type VerificationState =
   | { status: "valid"; certificate: CertificateVerificationResponse }
   | { status: "revoked"; certificate: CertificateVerificationResponse }
@@ -42,11 +25,6 @@ function getBackendBaseUrl(): string | null {
 /* Diagnostics                                                                */
 /* -------------------------------------------------------------------------- */
 
-/**
- * Diagnostics are attached to the state (and rendered in a collapsed block) in
- * development, or in any environment where VERIFY_DEBUG=1 is set. Never on by
- * default in production: the messages can echo backend internals.
- */
 const DIAGNOSTICS_ENABLED =
   process.env.NODE_ENV !== "production" || process.env.VERIFY_DEBUG === "1";
 
@@ -57,14 +35,6 @@ function debugInfo(message: string): string | undefined {
 /* -------------------------------------------------------------------------- */
 /* Rate limiting                                                              */
 /* -------------------------------------------------------------------------- */
-
-/**
- * The verify endpoint is public and returns a student's name, so an unthrottled
- * page is a certificate-enumeration and PII-scraping endpoint. This is a
- * best-effort in-process limiter: it resets on deploy and is per-instance, so
- * put a real limiter (Redis, or the CDN/WAF) in front of
- * `/student/certificate/verify/*` before this sees serious traffic.
- */
 const RATE_LIMIT_MAX = 20;
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const hits = new Map<string, { count: number; resetAt: number }>();
@@ -116,33 +86,12 @@ function parseEnvelope(raw: string): Envelope | null {
   }
 }
 
-/**
- * Does this body look like the application's own ApiResponse envelope?
- *
- * This is the signal that separates "the service considered the request and
- * said no" from "something upstream fell over". A Spring `@ControllerAdvice`
- * that renders the standard envelope means the app handled the case
- * deliberately, whatever HTTP status it chose to pair with it. A Whitelabel
- * error page or a proxy's HTML means nobody handled anything.
- */
 function looksLikeAppEnvelope(body: Envelope | null): boolean {
   return (
     body !== null && (typeof body.success === "boolean" || "message" in body)
   );
 }
 
-/**
- * Map a non-2xx response to a state.
- *
- * The only user-controlled input is the verificationId, so the 4xx family here
- * means "that identifier is no good", not "the system is broken" — Spring
- * commonly answers 400 (bad UUID format) or 404 (no such row) for exactly this.
- *
- * 5xx is deliberately NOT folded into not_found by status alone: a real outage
- * must never render as "this certificate does not exist". The one exception is
- * a 5xx that still carries the app's own envelope, which indicates a handled
- * lookup failure rather than a crash.
- */
 function classifyFailure(
   status: number,
   body: Envelope | null,
@@ -191,18 +140,6 @@ function classifyFailure(
 /* -------------------------------------------------------------------------- */
 /* Verification                                                               */
 /* -------------------------------------------------------------------------- */
-
-/**
- * Unauthenticated, server-side lookup against the public verify endpoint, with
- * a hard timeout, mapping every outcome to one explicit state.
- *
- * Two rules drive the mapping:
- *   1. A transport-level or unhandled failure MUST surface as `service_error`,
- *      never `not_found` — an outage is not a verdict on the certificate.
- *   2. A missing `revoked` flag MUST NOT be read as "not revoked". Failing open
- *      would show a revoked certificate as valid, so an absent flag is treated
- *      as a broken contract and surfaces as `service_error`.
- */
 export async function verifyByVerificationId(
   verificationId: string,
 ): Promise<VerificationState> {
@@ -255,9 +192,6 @@ export async function verifyByVerificationId(
     };
   }
 
-  // Read as text first. The endpoint advertises `*/*`, so a failure can arrive
-  // as an HTML error page — calling response.json() straight away would throw
-  // and lose the information needed to classify what happened.
   const raw = await response.text().catch(() => "");
   const body = parseEnvelope(raw);
 

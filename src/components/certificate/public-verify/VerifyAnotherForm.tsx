@@ -1,24 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Search } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import { VERIFICATION_ID_PATTERN } from "./format";
 
-/**
- * Manual fallback for a visitor holding a printed certificate whose QR code
- * will not scan.
- *
- * This navigates to `/student/certificate/verify/{verificationId}` rather than
- * calling a Server Action. Two reasons: the backend's only public lookup key is
- * `verificationId` (there is no verify-by-certificate-number endpoint), and a
- * navigation produces a shareable, bookmarkable result URL — the same one the
- * QR code points at — instead of a result that exists only in component state.
- */
 export function VerifyAnotherForm() {
   const router = useRouter();
   const [value, setValue] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -43,7 +34,7 @@ export function VerifyAnotherForm() {
     <form onSubmit={handleSubmit} className="space-y-3">
       <label
         htmlFor="verification-id"
-        className="block text-base font-medium text-primary-color/80 dark:text-white/80"
+        className="block text-[18px] font-medium text-primary-color/80 dark:text-white/80"
       >
         មានវិញ្ញាបនបត្របោះពុម្ព តែ scan QR មិនបាន? បញ្ចូល Verification ID
       </label>
@@ -65,14 +56,18 @@ export function VerifyAnotherForm() {
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? "verification-id-error" : undefined}
           placeholder="8ea627978bce4741a8905ae28a641410"
-          className="h-12 flex-1 rounded-2xl border-2 border-slate-200 bg-white px-4 font-mono text-base text-primary-color outline-none transition-colors focus:border-primary-color dark:border-slate-800 dark:bg-slate-900 dark:text-white"
+          className="min-h-12 sm:h-12 flex-1 rounded-2xl border-2 border-slate-200 bg-white px-4 font-mono text-[18px] text-primary-color outline-none transition-colors focus:border-primary-color dark:border-slate-800 dark:bg-slate-900 dark:text-white"
         />
         <button
           type="submit"
-          disabled={value.trim().length === 0}
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-primary-color px-6 text-base font-bold text-white shadow-md transition-opacity hover:opacity-90 disabled:opacity-60"
+          disabled={value.trim().length === 0 || isPending}
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-primary-color px-6 text-[18px] font-bold text-white shadow-md transition-opacity hover:opacity-90 disabled:opacity-60"
         >
-          <Search className="h-5 w-5" />
+          {isPending ? (
+            <Loader2 className="h-5 w-5 animate-spin" />
+          ) : (
+            <Search className="h-5 w-5" />
+          )}
           ផ្ទៀងផ្ទាត់
         </button>
       </div>
@@ -81,7 +76,7 @@ export function VerifyAnotherForm() {
         <p
           id="verification-id-error"
           role="alert"
-          className="text-base font-medium text-red-600 dark:text-red-400"
+          className="text-[18px] font-medium text-red-600 dark:text-red-400"
         >
           {error}
         </p>

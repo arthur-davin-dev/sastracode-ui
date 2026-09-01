@@ -3,12 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ClaimCertificateCard } from "@/components/certificate/ClaimCertificateCard";
 import { CourseCompletionProbe } from "@/components/certificate/CourseCompletionProbe";
