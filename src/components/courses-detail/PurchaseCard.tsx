@@ -54,14 +54,16 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
    * =========================
    */
   const handleAction = async () => {
+    const courseSlug = course.slug || course.id;
+
     if (status !== "authenticated") {
-      await signIn("keycloak", { redirectTo: `/courses/${course.id}` });
+      await signIn("keycloak", { redirectTo: `/courses/${courseSlug}` });
       return;
     }
 
     if (course.hasFullAccess) {
       if (firstAvailableLesson) {
-        router.push(`/courses/${course.id}/learn/${firstAvailableLesson.id}`);
+        router.push(`/courses/${courseSlug}/learn/${firstAvailableLesson.id}`);
         return;
       }
       toast.info("វគ្គសិក្សានេះមិនទាន់មានមេរៀនដែលអាចចូលរៀនបាន។");

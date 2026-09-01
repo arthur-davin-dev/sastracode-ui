@@ -76,9 +76,22 @@ async function proxyRequest(
       headers: responseHeaders,
     });
   } catch (error) {
-    console.error("Backend proxy request failed:", error);
+    // Surface *why* the upstream fetch failed (DNS, connection refused, TLS,
+    // timeout, …) and which URL was attempted, instead of a bare 502 — the
+    // generic message alone gives no way to tell a bad BACKEND_API_URL apart
+    // from a genuinely unreachable/down backend.
+    const reason = error instanceof Error ? error.message : String(error);
+    console.error(
+      `Backend proxy request failed: ${request.method} ${target} — ${reason}`,
+    );
     return Response.json(
-      { success: false, message: "Unable to reach backend API.", data: null },
+      {
+        success: false,
+        message: "Unable to reach backend API.",
+        data: null,
+        target: target.toString(),
+        reason,
+      },
       { status: 502 },
     );
   }

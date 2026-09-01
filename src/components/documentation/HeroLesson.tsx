@@ -1,4 +1,5 @@
 import type { LessonDocument } from "@/types/documentation";
+import { TranslatedText } from "@/components/i18n/TranslatedText";
 
 export default function HeroLesson({
   lesson,
@@ -13,13 +14,16 @@ export default function HeroLesson({
             {lesson.lessonIndexLabel}
           </span>
 
-          <h1 className="mt-4 text-2xl font-bold">
+          <TranslatedText as="h1" className="mt-4 text-2xl font-bold">
             {lesson.title}
-          </h1>
+          </TranslatedText>
 
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/80">
+          <TranslatedText
+            as="p"
+            className="mt-2 max-w-2xl text-sm leading-relaxed text-white/80"
+          >
             {lesson.intro}
-          </p>
+          </TranslatedText>
         </div>
 
         <div className="shrink-0 text-right text-sm font-semibold">

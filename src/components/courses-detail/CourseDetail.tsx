@@ -11,18 +11,21 @@ import { PurchaseCard } from "./PurchaseCard";
 import { RelatedCourses } from "./RelatedCourses";
 import { mapApiCourseToCourse, mergeCourseSections } from "@/lib/course/course-adapter";
 import {
-  useGetCourseByIdQuery,
+  useGetCourseBySlugQuery,
   useGetCourseSectionsQuery,
   useGetPublicCoursesQuery,
 } from "@/redux/api/course-api";
 
 interface CourseDetailPageProps {
-  courseId: string;
+  slug: string;
 }
 
-export default function CourseDetailPage({ courseId }: CourseDetailPageProps) {
-  const courseQuery = useGetCourseByIdQuery(courseId);
-  const sectionsQuery = useGetCourseSectionsQuery(courseId, {
+export default function CourseDetailPage({ slug }: CourseDetailPageProps) {
+  const courseQuery = useGetCourseBySlugQuery(slug);
+  // Sections are still fetched by the course's real UUID (backend
+  // /v1/courses/{courseId}/sections is unchanged), which only exists once
+  // the by-slug lookup above has resolved.
+  const sectionsQuery = useGetCourseSectionsQuery(courseQuery.data?.id ?? "", {
     skip:
       !courseQuery.data ||
       (courseQuery.data.accessType === "PRIVATE" &&
@@ -70,7 +73,7 @@ export default function CourseDetailPage({ courseId }: CourseDetailPageProps) {
   const instructorId = rawCourse.instructorId?.id;
   const relatedCourses = [...(relatedQuery.data ?? [])]
     .filter((item) => {
-      if (item.id === courseId || item.accessType === "PRIVATE") return false;
+      if (item.id === rawCourse.id || item.accessType === "PRIVATE") return false;
 
       const sharesCategory = item.categories?.some((category) => categoryIds.has(category.id));
       const sharesInstructor = Boolean(

@@ -24,7 +24,7 @@ export function CurriculumSection({ course }: CurriculumSectionProps) {
       ) : (
         <div className="space-y-3">
           {chapters.map((chapter, index) => (
-            <ChapterAccordion key={chapter.id} chapter={chapter} defaultOpen={index === 0} courseId={course.id} />
+            <ChapterAccordion key={chapter.id} chapter={chapter} defaultOpen={index === 0} courseSlug={course.slug || course.id} />
           ))}
         </div>
       )}

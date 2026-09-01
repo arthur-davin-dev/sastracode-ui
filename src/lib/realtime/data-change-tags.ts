@@ -8,7 +8,7 @@ import type { DataChangeEvent } from "./types";
  *
  *   src/redux/api/course-api.ts
  *     getPublicCourses       -> { type: "Course", id: "PUBLIC_LIST" } + { type: "Course", id }
- *     getCourseById          -> { type: "Course", id: courseId }
+ *     getCourseBySlug        -> { type: "Course", id: slug } + { type: "Course", id: course.id }
  *     getCourseSections      -> { type: "Course", id: courseId }
  *     getMyPrivateCourses    -> { type: "Course", id: "MY_PRIVATE" } + { type: "Course", id }
  *     getMyEnrollments       -> { type: "Course", id: "MY_ENROLLMENTS" }

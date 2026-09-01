@@ -13,7 +13,7 @@ import {
   Loader2,
 } from "lucide-react";
 import {
-  useGetCourseByIdQuery,
+  useGetCourseBySlugQuery,
   useGetCourseProgressQuery,
 } from "@/redux/api";
 import {
@@ -28,12 +28,15 @@ import { RequirementChecklistItem } from "@/types/certificate";
 const ISSUE_ELIGIBLE_PERCENT = 80;
 
 interface ClaimCertificateCardProps {
+  /** Real course UUID — progress/certificate calls are still by id, not slug. */
   courseId: string;
+  /** Course slug (backend GET /v1/courses/{slug}) — from enrollment.courseSlug. */
+  slug: string;
 }
 
-export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
+export function ClaimCertificateCard({ courseId, slug }: ClaimCertificateCardProps) {
   const { data: course, isFetching: isFetchingCourse } =
-    useGetCourseByIdQuery(courseId);
+    useGetCourseBySlugQuery(slug);
   const { data: progress, isFetching: isFetchingProgress } =
     useGetCourseProgressQuery(courseId);
   const { data: existingCertificate, isFetching: isFetchingCertificate } =

@@ -27,14 +27,16 @@ export function CheckoutCard({ course }: CheckoutCardProps) {
         : `${currency} ${finalPrice.toFixed(2)}`;
 
   const handleEnroll = async () => {
+    const courseSlug = course.slug || course.id;
+
     if (status !== "authenticated") {
-      await signIn("keycloak", { redirectTo: `/courses/${course.id}/enroll` });
+      await signIn("keycloak", { redirectTo: `/courses/${courseSlug}/enroll` });
       return;
     }
     try {
       await enroll(course.id).unwrap();
       toast.success("ចុះឈ្មោះវគ្គសិក្សាបានជោគជ័យ");
-      window.location.href = `/courses/${course.id}`;
+      window.location.href = `/courses/${courseSlug}`;
     } catch (error) {
       console.error(error);
       toast.error(getApiErrorMessage(error, "មិនអាចចុះឈ្មោះវគ្គសិក្សាបាន"));

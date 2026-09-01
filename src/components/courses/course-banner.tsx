@@ -209,16 +209,16 @@ export default function CourseBanner() {
                 gap-2
                 rounded-full
                 border
-                border-[#002455]/10
-                bg-[#002455]/5
+                border-primary-color/10
+                bg-primary-color/5
                 px-4
                 py-1.5
                 text-sm
                 font-semibold
-                text-[#002455]
-                dark:border-blue-400/20
-                dark:bg-blue-400/10
-                dark:text-blue-300
+                text-primary-color
+                dark:border-primary-color/20
+                dark:bg-primary-color/10
+                dark:text-primary-color
               "
             >
               <Sparkles className="h-5 w-5 shrink-0" />
@@ -273,10 +273,10 @@ export default function CourseBanner() {
                       items-center
                       justify-center
                       rounded-xl
-                      bg-[#002455]/5
-                      text-[#002455]
-                      dark:bg-blue-400/10
-                      dark:text-blue-300
+                      bg-primary-color/5
+                      text-primary-color
+                      dark:bg-primary-color/10
+                      dark:text-primary-color
                     "
                   >
                     <Icon className="h-5 w-5" />

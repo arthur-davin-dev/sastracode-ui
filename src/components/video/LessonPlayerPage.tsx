@@ -125,6 +125,7 @@ export default function LessonPlayerPage({
               sections={sections}
               totalLessons={totalLessons}
               courseId={course.id}
+              courseSlug={course.slug || course.id}
             />
             <UpNextCard
               thumbnail={course.image}
@@ -138,7 +139,7 @@ export default function LessonPlayerPage({
               onAutoplayChange={setAutoplay}
               href={
                 nextLesson
-                  ? `/courses/${course.id}/learn/${nextLesson.id}`
+                  ? `/courses/${course.slug || course.id}/learn/${nextLesson.id}`
                   : undefined
               }
             />

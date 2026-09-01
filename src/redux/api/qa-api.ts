@@ -262,6 +262,24 @@ export const qaApi = sastraApi.injectEndpoints({
         method: "PUT",
         body: { completed },
       }),
+      // Flip the cached `completed` flag as soon as the request leaves, so the
+      // "mark as done" button is immediately replaced by the static "done"
+      // badge. Without this the button stays clickable during the round-trip
+      // and a second/third click fires another PUT — the backend then holds
+      // several progress rows for the same (user, video) and every later
+      // GET/PUT for that video fails.
+      async onQueryStarted({ videoId, completed }, { dispatch, queryFulfilled }) {
+        const patch = dispatch(
+          qaApi.util.updateQueryData("getVideoProgress", videoId, (draft) => {
+            if (draft) draft.completed = completed;
+          }),
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patch.undo();
+        }
+      },
       // Completing a video changes course progress and, server-side, the
       // user's XP / badge progress. Refresh only those, not the whole cache.
       invalidatesTags: (_result, _error, { videoId, courseId }) => [

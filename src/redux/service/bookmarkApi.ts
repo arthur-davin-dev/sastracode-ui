@@ -48,6 +48,13 @@ export const bookmarkApi = sastraApi.injectEndpoints({
 
         const bookmarkPage = bookmarksResult.data as ApiResponse<BookmarkPage>;
         const bookmarks = bookmarkPage.data?.content ?? [];
+        // KNOWN GAP: GET /v1/courses/{x} now expects the course SLUG, but
+        // BookmarkResponse.itemId is a UUID (confirmed against the backend
+        // OpenAPI schema — no slug anywhere on the bookmark response, and no
+        // batch "courses by id" endpoint exists to resolve it client-side).
+        // This call will 404 for every bookmarked course until the backend
+        // either accepts an id here too or returns the course slug on the
+        // bookmark. Left unchanged rather than guessing a workaround.
         const courseResults = await Promise.all(
           bookmarks.map((bookmark) =>
             baseQuery(`/v1/courses/${encodeURIComponent(bookmark.itemId)}`),

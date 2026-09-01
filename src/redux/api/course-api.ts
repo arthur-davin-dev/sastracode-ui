@@ -10,6 +10,7 @@ import type {
   PagedResponseCourseDetailResponse,
   PagedResponseEnrollmentResponse,
   PublicCourseQueryArgs,
+  UpdateCourseRequest,
 } from "@/types/api/course";
 
 const ALL_PAGE_SIZE = 100;
@@ -105,9 +106,45 @@ export const courseApi = sastraApi.injectEndpoints({
       ],
     }),
 
-    getCourseById: builder.query<CourseDetailResponse, string>({
-      query: (courseId) => `/v1/courses/${encodeURIComponent(courseId)}`,
-      providesTags: (_result, _error, courseId) => [courseTag(courseId)],
+    // Backend GET/PATCH/DELETE /v1/courses/{slug} now take the course SLUG,
+    // not its UUID (sections/progress/enroll/etc. below are unaffected and
+    // still take the UUID). Tagged by both slug and the response's real id
+    // so invalidation from either identifier — callers elsewhere in the app
+    // still only have the UUID (enrollments, video progress) — busts this
+    // cache entry too.
+    getCourseBySlug: builder.query<CourseDetailResponse, string>({
+      query: (slug) => `/v1/courses/${encodeURIComponent(slug)}`,
+      providesTags: (result, _error, slug) => [
+        courseTag(slug),
+        ...(result?.id ? [courseTag(result.id)] : []),
+      ],
+    }),
+
+    updateCourseBySlug: builder.mutation<
+      CourseDetailResponse,
+      { slug: string; body: UpdateCourseRequest }
+    >({
+      query: ({ slug, body }) => ({
+        url: `/v1/courses/${encodeURIComponent(slug)}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: (result, _error, { slug }) => [
+        courseTag(slug),
+        ...(result?.id ? [courseTag(result.id)] : []),
+        { type: "Course", id: "PUBLIC_LIST" },
+      ],
+    }),
+
+    deleteCourseBySlug: builder.mutation<void, string>({
+      query: (slug) => ({
+        url: `/v1/courses/${encodeURIComponent(slug)}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (_result, _error, slug) => [
+        courseTag(slug),
+        { type: "Course", id: "PUBLIC_LIST" },
+      ],
     }),
 
     getCourseSections: builder.query<CourseSectionResponse[], string>({
@@ -247,7 +284,9 @@ export const courseApi = sastraApi.injectEndpoints({
 
 export const {
   useGetPublicCoursesQuery,
-  useGetCourseByIdQuery,
+  useGetCourseBySlugQuery,
+  useUpdateCourseBySlugMutation,
+  useDeleteCourseBySlugMutation,
   useGetCourseSectionsQuery,
   useGetMyPrivateCoursesQuery,
   useGetMyEnrollmentsQuery,

@@ -341,6 +341,23 @@ export const en = {
         INTERMEDIATE: "Intermediate",
         ADVANCED: "Advanced",
       },
+      access: {
+        free: "Free",
+        premium: "Premium",
+        private: "Private",
+      },
+      lessonsUnit: "lessons",
+      noDescription: "No description yet",
+      defaultInstructor: "SastraCode Instructor",
+      instructorAlt: "Instructor",
+      bookmark: {
+        add: "Bookmark course",
+        remove: "Remove course bookmark",
+        signInRequired: "Please sign in to bookmark this course.",
+        added: "Course saved to bookmarks.",
+        removed: "Course removed from bookmarks.",
+        error: "Unable to update this bookmark. Please try again.",
+      },
     },
     states: {
       loading: "Loading courses",

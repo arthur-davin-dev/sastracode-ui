@@ -18,11 +18,15 @@ import {
 import { useGetCourseProgressQuery } from "@/redux/api";
 import { useGetVideoProgressQuery } from "@/redux/api/qa-api";
 import { useGetMyXpQuery } from "@/redux/service/achievementApi";
+import { TranslatedText } from "@/components/i18n/TranslatedText";
 
 interface CourseContentSidebarProps {
   sections: CourseSection[];
   totalLessons: number;
+  /** Real course UUID — course progress is still fetched by id, not slug. */
   courseId: string;
+  /** Course slug, used for the `/courses/{slug}/learn/...` lesson links. */
+  courseSlug: string;
 }
 
 // The backend returns every section video inside the sections payload (no
@@ -37,11 +41,11 @@ const LESSONS_PER_PAGE = 8;
  */
 function LessonRow({
   lesson,
-  courseId,
+  courseSlug,
   canQueryProgress,
 }: {
   lesson: LessonItem;
-  courseId: string;
+  courseSlug: string;
   canQueryProgress: boolean;
 }) {
   const { data: progress } = useGetVideoProgressQuery(lesson.id, {
@@ -53,7 +57,7 @@ function LessonRow({
 
   return (
     <Link
-      href={`/courses/${courseId}/learn/${lesson.id}`}
+      href={`/courses/${courseSlug}/learn/${lesson.id}`}
       className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left transition-colors ${
         isCurrent
           ? "bg-indigo-50 ring-1 ring-inset ring-indigo-100 dark:bg-indigo-500/10 dark:ring-indigo-500/20"
@@ -67,7 +71,8 @@ function LessonRow({
       ) : (
         <Circle className="h-4 w-4 shrink-0 text-slate-300 dark:text-slate-600" />
       )}
-      <span
+      <TranslatedText
+        as="span"
         className={`min-w-0 flex-1 whitespace-normal break-words text-lg leading-7 ${
           isCurrent
             ? "font-semibold text-indigo-600 dark:text-indigo-300"
@@ -75,7 +80,7 @@ function LessonRow({
         }`}
       >
         {lesson.title}
-      </span>
+      </TranslatedText>
       <span className="shrink-0 text-xs text-slate-400 dark:text-slate-500">
         {lesson.duration}
       </span>
@@ -87,6 +92,7 @@ export function CourseContentSidebar({
   sections,
   totalLessons,
   courseId,
+  courseSlug,
 }: CourseContentSidebarProps) {
   const { status } = useSession();
   const isAuthenticated = status === "authenticated";
@@ -186,9 +192,12 @@ export function CourseContentSidebar({
                 onClick={() => toggleSection(section.id)}
                 className="flex w-full items-center justify-between px-5 py-3.5 text-left transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
               >
-                <span className="min-w-0 whitespace-normal break-words pr-3 text-xl leading-8 font-semibold text-slate-800 dark:text-slate-200">
+                <TranslatedText
+                  as="span"
+                  className="min-w-0 whitespace-normal break-words pr-3 text-xl leading-8 font-semibold text-slate-800 dark:text-slate-200"
+                >
                   {section.title}
-                </span>
+                </TranslatedText>
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-slate-400 dark:text-slate-500">
                     {toKhmerNumerals(section.lessons.length)} មេរៀន
@@ -208,7 +217,7 @@ export function CourseContentSidebar({
                     <LessonRow
                       key={lesson.id}
                       lesson={lesson}
-                      courseId={courseId}
+                      courseSlug={courseSlug}
                       canQueryProgress={isAuthenticated}
                     />
                   ))}

@@ -499,6 +499,8 @@ import type {
   Lesson,
 } from "@/lib/course/courses";
 
+import { stripEmojiFrom } from "@/utils/strip-emoji";
+
 /*
  * ============================================
  * FALLBACKS
@@ -711,8 +713,13 @@ function mapSection(
         return {
           id: video.id,
 
+          /*
+           * Emoji are stripped for display only; the stored title is
+           * untouched. Falls back to a numbered label if a title was
+           * nothing but emoji.
+           */
           title:
-            video.title ||
+            stripEmojiFrom(video.title) ||
             `មេរៀនទី ${
               videoIndex + 1
             }`,
@@ -990,7 +997,7 @@ export function mapApiCourseToCourse(
      */
 
     href:
-      `/courses/${course.id}`,
+      `/courses/${course.slug || course.id}`,
 
     /*
      * =====================

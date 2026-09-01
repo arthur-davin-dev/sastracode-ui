@@ -8,6 +8,22 @@ export type CourseStatus =
   | "ARCHIVED";
 export type CourseSort = "NEWEST" | "POPULAR" | "RECOMMEND";
 
+/** Backend PATCH /v1/courses/{slug} body — all fields optional (partial update). */
+export interface UpdateCourseRequest {
+  title?: string;
+  /** lowercase, `^[a-z0-9]+(?:-[a-z0-9]+)*$`, max 220 chars. */
+  slug?: string;
+  description?: string;
+  level?: CourseLevel;
+  accessType?: CourseAccessType;
+  price?: number;
+  discount?: number;
+  currency?: string;
+  thumbnailFileId?: string;
+  categoryIds?: string[];
+  tagIds?: string[];
+}
+
 export interface FileSummaryResponse {
   id?: string;
   url?: string;

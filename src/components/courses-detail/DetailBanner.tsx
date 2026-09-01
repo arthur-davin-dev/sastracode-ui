@@ -1,4 +1,5 @@
 import type { Course } from "@/lib/course/courses";
+import { TranslatedText } from "@/components/i18n/TranslatedText";
 
 interface DetailBannerProps {
   course: Course;
@@ -16,8 +17,8 @@ export function DetailBanner({ course }: DetailBannerProps) {
           {course.category && <span className="rounded-full border border-indigo-400/30 bg-indigo-500/20 px-3.5 py-1 text-xs font-semibold text-indigo-100 backdrop-blur-md">{course.category}</span>}
           {course.accessType && <span className="rounded-full border border-white/20 bg-white/10 px-3.5 py-1 text-xs font-semibold text-white">{course.accessType}</span>}
         </div>
-        <h1 className="max-w-2xl text-2xl font-bold leading-snug text-white sm:text-4xl lg:text-5xl">{course.title}</h1>
-        {course.description && <p className="mt-4 max-w-2xl line-clamp-3 text-sm leading-6 text-slate-200 sm:text-base">{course.description}</p>}
+        <TranslatedText as="h1" className="max-w-2xl text-2xl font-bold leading-snug text-white sm:text-4xl lg:text-5xl">{course.title}</TranslatedText>
+        {course.description && <TranslatedText as="p" className="mt-4 max-w-2xl line-clamp-3 text-sm leading-6 text-slate-200 sm:text-base">{course.description}</TranslatedText>}
       </div>
     </div>
   );

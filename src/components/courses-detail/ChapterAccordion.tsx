@@ -5,17 +5,19 @@ import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 import { Play, Lock, ChevronDown, ChevronUp } from "lucide-react";
 import { Chapter } from "@/lib/course/courses";
+import { TranslatedText } from "@/components/i18n/TranslatedText";
 
 interface ChapterAccordionProps {
   chapter: Chapter;
   defaultOpen?: boolean;
-  courseId: string;
+  /** Course slug — the learn route is /courses/{slug}/learn/{lessonId}. */
+  courseSlug: string;
 }
 
 export function ChapterAccordion({
   chapter,
   defaultOpen,
-  courseId,
+  courseSlug,
 }: ChapterAccordionProps) {
   const [open, setOpen] = useState(!!defaultOpen);
   const { status } = useSession();
@@ -28,7 +30,7 @@ export function ChapterAccordion({
 
     event.preventDefault();
     await signIn("keycloak", {
-      redirectTo: `/courses/${courseId}/learn/${lessonId}`,
+      redirectTo: `/courses/${courseSlug}/learn/${lessonId}`,
     });
   }
 
@@ -44,9 +46,12 @@ export function ChapterAccordion({
           <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-indigo-50 dark:bg-indigo-950/60 text-xs font-bold text-indigo-700 dark:text-indigo-300">
             {chapter.number}
           </span>
-          <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+          <TranslatedText
+            as="span"
+            className="text-sm font-semibold text-slate-900 dark:text-slate-100"
+          >
             {chapter.title}
-          </span>
+          </TranslatedText>
         </div>
         <div className="flex items-center gap-3">
           <span className="hidden text-xs text-slate-500 dark:text-slate-400 sm:inline">
@@ -71,9 +76,12 @@ export function ChapterAccordion({
               >
                 <div className="flex items-center gap-2.5">
                   <Lock className="h-3.5 w-3.5 text-slate-400 dark:text-slate-500" />
-                  <span className="text-sm text-slate-500 dark:text-slate-400">
+                  <TranslatedText
+                    as="span"
+                    className="text-sm text-slate-500 dark:text-slate-400"
+                  >
                     {lesson.title}
-                  </span>
+                  </TranslatedText>
                 </div>
                 <span className="text-xs text-slate-400 dark:text-slate-500">
                   {lesson.duration}
@@ -82,15 +90,18 @@ export function ChapterAccordion({
             ) : (
               <Link
                 key={lesson.id}
-                href={`/courses/${courseId}/learn/${lesson.id}`}
+                href={`/courses/${courseSlug}/learn/${lesson.id}`}
                 onClick={(event) => handleLessonClick(event, lesson.id)}
                 className="flex items-center justify-between px-4 py-3 pl-14 transition-colors hover:bg-indigo-50/70 dark:hover:bg-indigo-950/40"
               >
                 <div className="flex items-center gap-2.5">
                   <Play className="h-3.5 w-3.5 fill-indigo-600 text-indigo-600 dark:fill-indigo-400 dark:text-indigo-400" />
-                  <span className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                  <TranslatedText
+                    as="span"
+                    className="text-sm font-medium text-indigo-600 dark:text-indigo-400"
+                  >
                     {lesson.title}
-                  </span>
+                  </TranslatedText>
                 </div>
                 <span className="text-xs text-slate-500 dark:text-slate-400">
                   {lesson.duration}
