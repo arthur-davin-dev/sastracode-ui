@@ -27,7 +27,7 @@ export default function PublicVerifyLayout({
       {/* <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 sm:py-10">
         {children}
       </main> */}
-      <main className="mx-auto w-full max-w-[1600px] flex-1 px-4 py-6 sm:px-8 sm:py-10 lg:px-16 xl:px-24">
+      <main className="mx-auto w-full max-w-[1600px] flex-1 px-5 py-6 sm:px-4 sm:py-10 lg:px-16">
         {children}
       </main>
 

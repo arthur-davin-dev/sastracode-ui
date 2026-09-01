@@ -49,7 +49,10 @@ export function CertificateDownload({
         await downloadCertificatePng(certificateFileId, certificateNumber);
       }
     } catch (error) {
-      console.error(`Certificate ${format.toUpperCase()} download failed:`, error);
+      console.error(
+        `Certificate ${format.toUpperCase()} download failed:`,
+        error,
+      );
       setFailed(true);
     } finally {
       setBusy(null);
@@ -71,38 +74,41 @@ export function CertificateDownload({
             <button
               type="button"
               disabled={busy !== null}
-              className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#03204c] px-4 text-sm font-bold text-white shadow transition-opacity hover:opacity-90 disabled:opacity-60 dark:bg-blue-600"
+              className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#03204c] px-4 text-[18px] font-bold text-white shadow transition-opacity hover:opacity-90 disabled:opacity-60 dark:bg-blue-600"
             />
           }
         >
           {busy ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2 className="h-5 w-5 animate-spin" />
           ) : (
-            <Download className="h-4 w-4" />
+            <Download className="h-5 w-5" />
           )}
           {label}
-          <ChevronDown className="h-4 w-4" />
+          <ChevronDown className="h-5 w-5" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-(--anchor-width) min-w-48">
+        <DropdownMenuContent
+          align="end"
+          className="w-(--anchor-width) min-w-48"
+        >
           <DropdownMenuItem
             onClick={() => run("pdf")}
             disabled={busy !== null}
-            className="gap-2 py-2 text-sm"
+            className="gap-2 py-2 text-[18px]"
           >
-            <FileText className="h-4 w-4" /> ទាញយកជា PDF
+            <FileText className="h-5 w-5" /> ទាញយកជា PDF
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => run("png")}
             disabled={busy !== null}
-            className="gap-2 py-2 text-sm"
+            className="gap-2 py-2 text-[18px]"
           >
-            <ImageIcon className="h-4 w-4" /> ទាញយកជា PNG
+            <ImageIcon className="h-5 w-5" /> ទាញយកជា PNG
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
       {failed ? (
-        <p className="text-xs font-medium text-red-600 dark:text-red-400">
+        <p className="text-[18px] font-medium text-red-600 dark:text-red-400">
           ការទាញយកមិនបានសម្រេចទេ។ សូមព្យាយាមម្តងទៀត។
         </p>
       ) : null}

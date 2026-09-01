@@ -70,7 +70,7 @@
 //         <span className="text-base font-[18px] text-primary-color/70 dark:text-white/70">
 //           Verification ID
 //         </span>
-//         <span className="block break-all rounded-xl border border-slate-200 bg-white px-3 py-2 font-mono text-sm text-primary-color dark:border-slate-700 dark:bg-slate-900 dark:text-white">
+//         <span className="block break-all rounded-xl border border-slate-200 bg-white px-3 py-2 font-mono text-[18px] text-primary-color dark:border-slate-700 dark:bg-slate-900 dark:text-white">
 //           {verificationId}
 //         </span>
 //       </div>
@@ -124,7 +124,7 @@
 //               href={pdfUrl}
 //               target="_blank"
 //               rel="noopener noreferrer"
-//               className="inline-flex items-center gap-1.5 text-sm font-[18px] text-primary-color hover:underline dark:text-white"
+//               className="inline-flex items-center gap-1.5 text-[18px] font-[18px] text-primary-color hover:underline dark:text-white"
 //             >
 //               ពង្រីកពេញអេក្រង់ <ExternalLink className="h-4 w-4" />
 //             </a>
@@ -143,7 +143,7 @@
 //             <a
 //               href={pdfUrl}
 //               download
-//               className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary-color px-4 text-sm font-bold text-white shadow transition-opacity hover:opacity-90"
+//               className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary-color px-4 text-[18px] font-bold text-white shadow transition-opacity hover:opacity-90"
 //             >
 //               <Download className="h-4 w-4" />
 //               ទាញយកវិញ្ញាបនបត្រ (Download PDF)
@@ -190,7 +190,7 @@
 //           <span className="text-base font-[18px] text-primary-color/70 dark:text-white/70">
 //             Verification ID
 //           </span>
-//           <span className="block break-all rounded-xl border border-slate-200 bg-white px-3 py-2 font-mono text-sm text-primary-color dark:border-slate-700 dark:bg-slate-900 dark:text-white">
+//           <span className="block break-all rounded-xl border border-slate-200 bg-white px-3 py-2 font-mono text-[18px] text-primary-color dark:border-slate-700 dark:bg-slate-900 dark:text-white">
 //             {verificationId}
 //           </span>
 //         </div>
@@ -242,11 +242,11 @@ export function VerifyDetails({
                 : ""
             }`}
           >
-            <dt className="shrink-0 whitespace-nowrap text-sm font-[18px] text-slate-500 dark:text-slate-400">
+            <dt className="shrink-0 whitespace-nowrap text-[18px] font-[18px] text-slate-500 dark:text-slate-400">
               {row.label}
             </dt>
             <dd
-              className={`min-w-0 text-sm font-bold text-slate-900 dark:text-white sm:text-right ${
+              className={`min-w-0 text-[18px] font-bold text-slate-900 dark:text-white sm:text-right ${
                 row.mono ? "font-mono break-all" : ""
               }`}
             >
@@ -257,10 +257,10 @@ export function VerifyDetails({
       </dl>
 
       <div className="flex flex-col gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-        <span className="text-sm font-[18px] text-slate-500 dark:text-slate-400">
+        <span className="text-[18px] font-[18px] text-slate-500 dark:text-slate-400">
           Verification ID
         </span>
-        <span className="block break-all rounded-xl border border-slate-200/80 bg-slate-50 px-3 py-2 font-mono text-xs text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
+        <span className="block break-all rounded-xl border border-slate-200/80 bg-slate-50 px-3 py-2 font-mono text-[14px] text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200">
           {verificationId}
         </span>
       </div>
