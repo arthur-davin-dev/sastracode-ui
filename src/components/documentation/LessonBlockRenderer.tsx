@@ -40,7 +40,10 @@ type BlockData = Record<string, unknown>;
 type CalloutTone = "INFO" | "TIP" | "WARNING" | "SUCCESS" | "DANGER" | "NOTE";
 
 interface QuizResult {
-  correct: boolean;
+  // null = answer recorded but not yet graded (the lesson content payload
+  // doesn't include the answer key — grading only happens once the whole
+  // attempt is submitted to the backend).
+  correct: boolean | null;
 }
 
 function displayAnswer(value: unknown): string {
@@ -89,7 +92,7 @@ interface QuizContextValue {
   results: Record<string, QuizResult>;
   activeQuizId: string | null;
   register: (id: string) => void;
-  submit: (id: string, answer: number, localCorrect?: boolean) => void;
+  submit: (id: string, answer: number, localCorrect?: boolean | null) => void;
   advance: (id: string) => void;
   isLast: (id: string) => boolean;
   position: (id: string) => number;
@@ -131,7 +134,7 @@ export function QuizResultsProvider({
   async function submitAnswer(
     id: string,
     answer: number,
-    localCorrect = false,
+    localCorrect: boolean | null = null,
   ) {
     const nextAnswers = { ...answers, [id]: answer };
     setAnswers(nextAnswers);
@@ -840,7 +843,7 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
       ? (options[correctIndex] ?? options[correctIndex - 1])
       : undefined) ??
     (correctAnswerNumber !== undefined
-      ? (options[correctAnswerNumber] ?? options[correctAnswerNumber - 1])
+      ? (options[correctAnswerNumber - 1] ?? options[correctAnswerNumber])
       : undefined) ??
     options.find(
       (option) =>
@@ -863,7 +866,7 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
         options.findIndex((option) => option.id === correctOption.id) ||
       (correctIndex !== undefined && selectedOptionIndex === correctIndex) ||
       (correctAnswerNumber !== undefined &&
-        selectedOptionIndex === correctAnswerNumber)),
+        selectedOptionIndex === correctAnswerNumber - 1)),
   );
 
   useEffect(() => {
@@ -877,14 +880,13 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
 
   function submitAnswer() {
     if (!selected) return;
-    if (!resolvedCorrectAnswer) {
-      setSubmitted(true);
-      quizContext?.submit(blockId, selectedOptionIndex, false);
-      return;
-    }
-    const isCorrect = isCorrectSelection;
     setSubmitted(true);
-    quizContext?.submit(blockId, selectedOptionIndex, isCorrect);
+    // The lesson content payload usually doesn't include the answer key (the
+    // backend withholds it until the attempt is graded), so only report a
+    // verdict when we actually resolved one — otherwise leave it pending
+    // rather than falsely showing "incorrect".
+    const verdict = resolvedCorrectAnswer ? isCorrectSelection : null;
+    quizContext?.submit(blockId, selectedOptionIndex, verdict);
   }
 
   function goToNextQuestion() {
@@ -923,10 +925,10 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
               key={option.id}
               onClick={() => selectOption(option.id)}
               className={`font-khmer flex w-full items-start gap-3 rounded-xl border px-4 py-3 text-left text-lg leading-7 transition ${
-                backendResult?.correct && option.id === resolvedCorrectAnswer
+                backendResult?.correct === true &&
+                option.id === resolvedCorrectAnswer
                   ? "border-emerald-500 bg-emerald-50 text-emerald-800 dark:bg-emerald-950/30 dark:text-emerald-300"
-                  : backendResult &&
-                      !backendResult.correct &&
+                  : backendResult?.correct === false &&
                       option.id === selected
                     ? "border-red-500 bg-red-50 text-red-800 dark:bg-red-950/30 dark:text-red-300"
                     : selected === option.id
@@ -952,24 +954,34 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
           ) : backendResult ? (
             <div
               className={`mt-2 flex flex-wrap items-center justify-between gap-3 rounded-xl border p-4 ${
-                backendResult.correct
+                backendResult.correct === true
                   ? "border-emerald-200 bg-emerald-50/70 dark:border-emerald-900/60 dark:bg-emerald-950/25"
-                  : "border-rose-200 bg-rose-50/70 dark:border-rose-900/60 dark:bg-rose-950/25"
+                  : backendResult.correct === false
+                    ? "border-rose-200 bg-rose-50/70 dark:border-rose-900/60 dark:bg-rose-950/25"
+                    : "border-slate-200 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-900/40"
               }`}
             >
               <p
                 className={`font-khmer flex items-center gap-2 text-lg font-bold ${
-                  backendResult.correct
+                  backendResult.correct === true
                     ? "text-emerald-700 dark:text-emerald-300"
-                    : "text-rose-700 dark:text-rose-300"
+                    : backendResult.correct === false
+                      ? "text-rose-700 dark:text-rose-300"
+                      : "text-slate-600 dark:text-slate-300"
                 }`}
               >
-                {backendResult.correct ? (
+                {backendResult.correct === true ? (
                   <CircleCheck className="h-5 w-5 shrink-0" />
-                ) : (
+                ) : backendResult.correct === false ? (
                   <CircleAlert className="h-5 w-5 shrink-0" />
+                ) : (
+                  <CircleHelp className="h-5 w-5 shrink-0" />
                 )}
-                {backendResult.correct ? "ចម្លើយត្រឹមត្រូវ!" : "ចម្លើយមិនត្រឹមត្រូវទេ។"}
+                {backendResult.correct === true
+                  ? "ចម្លើយត្រឹមត្រូវ!"
+                  : backendResult.correct === false
+                    ? "ចម្លើយមិនត្រឹមត្រូវទេ។"
+                    : "ចម្លើយត្រូវបានកត់ត្រា។ លទ្ធផលនឹងបង្ហាញនៅចុងបញ្ចប់។"}
               </p>
 
               {!quizContext?.isLast(blockId) && (
