@@ -23,6 +23,7 @@ import { getToken } from "next-auth/jwt";
 const PROTECTED_PREFIXES = [
   "/profile",
   "/achivement",
+  "/leaderboard",
   "/certificate",
   "/notifications",
   "/instructor-application",
@@ -86,6 +87,7 @@ export const config = {
   matcher: [
     "/profile/:path*",
     "/achivement/:path*",
+    "/leaderboard/:path*",
     "/certificate/:path*",
     "/notifications/:path*",
     "/instructor-application/:path*",
