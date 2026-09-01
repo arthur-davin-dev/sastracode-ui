@@ -3,9 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  Tv,
-  Wrench,
-  Target,
   Zap,
   GraduationCap,
   Award,
@@ -36,42 +33,7 @@ import {
   useGetMyLearningProgressQuery,
   useGetContinueLearningQuery,
 } from "@/redux/api/course-api";
-
-const fallbackUserData: UserSummary = {
-  name: "ឆាយ​ ដាវីន",
-  avatarUrl: "/images/mysql.jpg",
-  currentXp: 12450,
-  nextLevelXp: 15000,
-  levelProgressPercent: 83,
-  nextLevel: 13,
-  badges: 48,
-  score: 14200,
-  certificates: 12,
-};
-
-const activities: Activity[] = [
-  {
-    id: "1",
-    icon: <Tv className="h-5 w-5" />,
-    title: "បញ្ចប់មូលដ្ឋានគ្រឹះ JavaScript",
-    subtitle: "រៀនមេរៀនមូលដ្ឋានទាំងអស់នៃ JS",
-    xp: 500,
-  },
-  {
-    id: "2",
-    icon: <Wrench className="h-5 w-5" />,
-    title: "បន្ថែមកម្មវិធីដំបូងរបស់អ្នក",
-    subtitle: "បង្កើត និងដាក់ឲ្យប្រើប្រាស់កម្មវិធី",
-    xp: 800,
-  },
-  {
-    id: "3",
-    icon: <Target className="h-5 w-5" />,
-    title: "ដោះស្រាយបញ្ហាប្រឈម",
-    subtitle: "ដោះស្រាយ ២៥ លំហាត់កូដ",
-    xp: 600,
-  },
-];
+import { useGetMyCertificatesQuery } from "@/redux/features/certificate/certificateApi";
 
 function activityTitle(sourceType?: string) {
   if (!sourceType) return "XP activity";
@@ -128,6 +90,16 @@ export default function Achievement() {
   const continueLearningQuery = useGetContinueLearningQuery(undefined, {
     skip: !authenticated,
   });
+  // Only the running total is needed here — ask for a single row.
+  const certificatesQuery = useGetMyCertificatesQuery(
+    { page: 0, size: 1 },
+    { skip: !authenticated },
+  );
+  const certificateCount =
+    certificatesQuery.data?.data?.totalElements ??
+    certificatesQuery.data?.data?.content?.length ??
+    0;
+
   const badges: AchievementBadge[] =
     badgesQuery.data?.map(
       ({ badge, earned, currentValue, targetValue, progressPercentage }) => ({
@@ -197,7 +169,7 @@ export default function Achievement() {
   const apiActivities: Activity[] =
     transactionsQuery.data?.content.map((transaction) => ({
       id: String(transaction.id),
-      icon: <Zap className="h-5 w-5" />,
+      icon: activityIcon(transaction.sourceType),
       // Descriptions can include source UUIDs. Keep internal IDs out of the learner UI.
       title: activityTitle(transaction.sourceType),
       subtitle: transaction.createdAt

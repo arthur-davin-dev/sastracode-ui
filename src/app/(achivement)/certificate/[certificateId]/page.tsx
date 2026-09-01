@@ -24,7 +24,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-// import { CertificateImageView } from "@/components/certificate/CertificateImageView";
 import { VerificationCard } from "@/components/certificate/VerificationCard";
 import { useGetCertificateByIdQuery } from "@/redux/features/certificate/certificateApi";
 import {
@@ -35,8 +34,6 @@ import {
   downloadCertificatePdf,
   downloadCertificatePng,
 } from "@/lib/certificate/download-certificate";
-
-const FALLBACK_QR = "/images/qr-code.png";
 
 // lucide-react dropped its brand glyphs, so the social marks are inlined here.
 function FacebookIcon({ className }: { className?: string }) {
