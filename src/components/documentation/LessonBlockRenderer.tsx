@@ -9,10 +9,12 @@ import {
   Code2,
   ImageIcon,
   Info,
+  Layers,
   Lightbulb,
   ListChecks,
   Play,
   Quote,
+  RefreshCw,
   TriangleAlert,
 } from "lucide-react";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -429,19 +431,141 @@ function normalizeType(type: string): string {
   return type.trim().toUpperCase();
 }
 
+// The admin content builder stores rich-text fields as HTML fragments — the
+// B / I / <> toolbar wraps selections in <strong>/<em>/<code>. Render that small,
+// fixed set of inline tags as real elements instead of leaking the literal tags
+// into the page. Everything else is treated as plain text.
+type InlineTag = "strong" | "em" | "code" | "u" | "s" | "mark";
+
+const INLINE_TAGS: Record<string, InlineTag> = {
+  strong: "strong",
+  b: "strong",
+  em: "em",
+  i: "em",
+  code: "code",
+  u: "u",
+  s: "s",
+  strike: "s",
+  del: "s",
+  mark: "mark",
+};
+
+function decodeEntities(text: string): string {
+  return text
+    .replace(/&nbsp;/g, " ")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#0?39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&amp;/g, "&");
+}
+
+function wrapInline(
+  tag: InlineTag,
+  children: React.ReactNode,
+  key: string,
+): React.ReactNode {
+  if (tag === "code") {
+    return (
+      <code
+        key={key}
+        className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[0.9em] text-slate-800 dark:bg-slate-800 dark:text-slate-100"
+      >
+        {children}
+      </code>
+    );
+  }
+
+  const Tag = tag;
+  return <Tag key={key}>{children}</Tag>;
+}
+
+function renderRichText(input: string): React.ReactNode {
+  if (!input) return null;
+  if (!input.includes("<") && !input.includes("&")) return input;
+
+  const tagPattern = /<(\/?)([a-zA-Z][a-zA-Z0-9]*)[^>]*?(\/?)>/g;
+  type Frame = { tag: InlineTag | null; children: React.ReactNode[] };
+  const root: Frame = { tag: null, children: [] };
+  const stack: Frame[] = [root];
+  let cursor = 0;
+  let key = 0;
+  let match: RegExpExecArray | null;
+
+  const pushText = (text: string) => {
+    if (text) stack[stack.length - 1].children.push(decodeEntities(text));
+  };
+
+  const closeFrame = (frame: Frame) => {
+    stack[stack.length - 1].children.push(
+      wrapInline(frame.tag as InlineTag, frame.children, `rt-${key++}`),
+    );
+  };
+
+  while ((match = tagPattern.exec(input)) !== null) {
+    pushText(input.slice(cursor, match.index));
+    cursor = tagPattern.lastIndex;
+
+    const rawTag = match[2].toLowerCase();
+    const closing = match[1] === "/";
+    const selfClosing = match[3] === "/" || rawTag === "br";
+
+    if (rawTag === "br") {
+      stack[stack.length - 1].children.push(<br key={`br-${key++}`} />);
+      continue;
+    }
+
+    const tag = INLINE_TAGS[rawTag];
+    if (!tag || selfClosing) continue; // drop unknown tags, keep their text
+
+    if (!closing) {
+      stack.push({ tag, children: [] });
+      continue;
+    }
+
+    let target = -1;
+    for (let i = stack.length - 1; i > 0; i--) {
+      if (stack[i].tag === tag) {
+        target = i;
+        break;
+      }
+    }
+    if (target === -1) continue; // stray closing tag
+
+    // Close any still-open inner tags first, then the matched one — each
+    // frame renders into what becomes its parent once popped.
+    while (stack.length - 1 >= target) {
+      closeFrame(stack.pop() as Frame);
+    }
+  }
+
+  pushText(input.slice(cursor));
+
+  while (stack.length > 1) {
+    closeFrame(stack.pop() as Frame);
+  }
+
+  return root.children;
+}
+
 function HeadingBlock({ data, type }: { data: BlockData; type: string }) {
   const text = stringValue(data, "text", "content", "title", "heading");
   const requestedLevel = numberValue(data, "level", "headingLevel");
   const level =
     requestedLevel ??
-    (type === "H1" ? 1 : type === "H3" ? 3 : type === "H2" ? 2 : 2);
+    (type === "H1" || type === "TITLE"
+      ? 1
+      : type === "H3" || type === "SUBHEADER" || type === "SUBHEADING"
+        ? 3
+        : 2);
 
   if (!text) return null;
 
   if (level === 1) {
     return (
       <h2 className="font-khmer text-balance text-3xl font-bold tracking-tight text-blue-600 sm:text-[2rem] dark:text-blue-400">
-        {text}
+        {renderRichText(text)}
       </h2>
     );
   }
@@ -449,7 +573,7 @@ function HeadingBlock({ data, type }: { data: BlockData; type: string }) {
   if (level >= 3) {
     return (
       <h3 className="font-khmer text-balance text-xl font-bold leading-8 text-blue-600 sm:text-2xl dark:text-blue-400">
-        {text}
+        {renderRichText(text)}
       </h3>
     );
   }
@@ -458,7 +582,7 @@ function HeadingBlock({ data, type }: { data: BlockData; type: string }) {
     <div className="pt-2">
       <div className="mb-3 h-1 w-9 rounded-full bg-[#002455]/90 dark:bg-blue-400" />
       <h2 className="font-khmer text-balance text-2xl font-bold leading-tight tracking-tight text-blue-600 sm:text-[1.75rem] dark:text-blue-400">
-        {text}
+        {renderRichText(text)}
       </h2>
     </div>
   );
@@ -471,7 +595,7 @@ function ParagraphBlock({ data }: { data: BlockData }) {
 
   return (
     <p className="font-khmer whitespace-pre-line text-lg leading-9 text-slate-800 dark:text-slate-200">
-      {text}
+      {renderRichText(text)}
     </p>
   );
 }
@@ -656,7 +780,7 @@ function CalloutBlock({
           <Quote className="mt-0.5 h-5 w-5 shrink-0 text-[#002455]/70 dark:text-blue-400" />
           <div>
             <p className="font-khmer whitespace-pre-line text-[16px] leading-8 text-slate-700 dark:text-slate-300">
-              {text}
+              {renderRichText(text)}
             </p>
             {author && (
               <footer className="font-khmer mt-3 text-sm font-semibold text-slate-500 dark:text-slate-400">
@@ -689,7 +813,7 @@ function CalloutBlock({
             {customTitle || config.label}
           </p>
           <p className="font-khmer mt-1 whitespace-pre-line text-[15px] leading-7 text-slate-700 dark:text-slate-300">
-            {text}
+            {renderRichText(text)}
           </p>
         </div>
       </div>
@@ -1046,7 +1170,7 @@ function ListBlock({
             key={`${item}-${index}`}
             className="pl-1 marker:text-[#002455] dark:marker:text-blue-400"
           >
-            {item}
+            {renderRichText(item)}
           </li>
         ))}
       </ListTag>
@@ -1054,12 +1178,198 @@ function ListBlock({
   );
 }
 
+interface Flashcard {
+  front: string;
+  back: string;
+}
+
+const FLASHCARD_FRONT_KEYS = [
+  "front",
+  "question",
+  "term",
+  "prompt",
+  "title",
+  "heading",
+  "text",
+  "content",
+  "value",
+  "html",
+  "body",
+  "markdown",
+];
+
+const FLASHCARD_BACK_KEYS = [
+  "back",
+  "answer",
+  "definition",
+  "explanation",
+  "description",
+  "detail",
+  "details",
+  "content",
+  "value",
+  "html",
+  "body",
+];
+
+function collectStrings(value: unknown, depth = 0): string[] {
+  if (typeof value === "string") return value.trim() ? [value.trim()] : [];
+  if (depth > 2 || !value || typeof value !== "object") return [];
+  if (Array.isArray(value)) {
+    return value.flatMap((entry) => collectStrings(entry, depth + 1));
+  }
+  return Object.values(value as Record<string, unknown>).flatMap((entry) =>
+    collectStrings(entry, depth + 1),
+  );
+}
+
+function cardFromRecord(record: BlockData): Flashcard | null {
+  const front = stringValue(record, ...FLASHCARD_FRONT_KEYS);
+  const back = stringValue(record, ...FLASHCARD_BACK_KEYS);
+  // `content`/`value` appear in both key lists — don't show the same string on
+  // both sides.
+  const cleanBack = back && back !== front ? back : "";
+  if (front || cleanBack) return { front, back: cleanBack };
+
+  // Last resort: any strings we can find inside this entry.
+  const strings = collectStrings(record);
+  if (strings.length === 0) return null;
+  return { front: strings[0], back: strings[1] ?? "" };
+}
+
+function flashcardsValue(data: BlockData): Flashcard[] {
+  for (const key of [
+    "cards",
+    "flashcards",
+    "flashCards",
+    "items",
+    "pairs",
+    "list",
+    "entries",
+  ]) {
+    const value = data[key];
+    if (!Array.isArray(value)) continue;
+
+    const cards = value.flatMap((entry) => {
+      if (typeof entry === "string") {
+        return entry.trim() ? [{ front: entry.trim(), back: "" }] : [];
+      }
+      if (!entry || typeof entry !== "object") return [];
+      const card = cardFromRecord(entry as BlockData);
+      return card ? [card] : [];
+    });
+
+    if (cards.length > 0) return cards;
+  }
+
+  // A single flashcard stored as flat keys on the block itself.
+  const single = cardFromRecord(data);
+  return single ? [single] : [];
+}
+
+function FlashcardBlock({ data }: { data: BlockData }) {
+  const parsed = flashcardsValue(data);
+  const cards: Flashcard[] =
+    parsed.length > 0
+      ? parsed
+      : collectStrings(data).slice(0, 1).map((text) => ({ front: text, back: "" }));
+  const [index, setIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+
+  if (cards.length === 0) return null;
+
+  const total = cards.length;
+  const card = cards[Math.min(index, total - 1)];
+  const multiple = total > 1;
+  const twoSided = Boolean(card.front && card.back);
+  const showingBack = twoSided && flipped;
+  const bodyText = showingBack ? card.back : card.front || card.back;
+
+  function goTo(next: number) {
+    setFlipped(false);
+    setIndex(((next % total) + total) % total);
+  }
+
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 dark:border-slate-800 dark:bg-slate-900/40">
+      <div className="mb-3 flex items-center justify-between gap-2 text-sm font-bold text-[#002455] dark:text-blue-300">
+        <span className="flex items-center gap-2">
+          <Layers className="h-4 w-4" />
+          <span className="font-khmer">កាតរំលឹក</span>
+        </span>
+        {multiple && (
+          <span className="font-khmer text-xs font-semibold text-slate-500 dark:text-slate-400">
+            {index + 1} / {total}
+          </span>
+        )}
+      </div>
+
+      <button
+        type="button"
+        onClick={() => twoSided && setFlipped((value) => !value)}
+        className="flex min-h-48 w-full flex-col items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-6 py-10 text-center shadow-sm transition hover:border-blue-400 dark:border-slate-800 dark:bg-slate-950/50"
+        aria-label={twoSided ? "Flip flashcard" : undefined}
+      >
+        {twoSided && (
+          <span className="font-khmer text-xs font-semibold uppercase tracking-wide text-slate-400">
+            {showingBack ? "ចម្លើយ" : "សំណួរ"}
+          </span>
+        )}
+        <span className="font-khmer text-balance whitespace-pre-line text-2xl font-bold leading-tight tracking-tight text-slate-900 sm:text-3xl dark:text-slate-50">
+          {renderRichText(bodyText) || "—"}
+        </span>
+        {twoSided && (
+          <span className="font-khmer inline-flex items-center gap-1.5 text-xs text-slate-400">
+            <RefreshCw className="h-3.5 w-3.5" />
+            ចុចដើម្បីត្រឡប់
+          </span>
+        )}
+      </button>
+
+      {multiple && (
+        <div className="mt-3 flex items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={() => goTo(index - 1)}
+            className="font-khmer rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-blue-400 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950/50 dark:text-slate-300"
+          >
+            « មុន
+          </button>
+          <button
+            type="button"
+            onClick={() => goTo(index + 1)}
+            className="font-khmer rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-blue-400 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950/50 dark:text-slate-300"
+          >
+            បន្ទាប់ »
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function UnknownBlock({ block }: { block: TutorialBlock }) {
   const data = block.data ?? {};
-  const text = stringValue(data, "text", "content", "title", "description");
+  const normalized = normalizeType(block.type);
 
+  if (normalized.includes("FLASH") || flashcardsValue(data).length > 0) {
+    return <FlashcardBlock data={data} />;
+  }
+
+  const text = stringValue(data, "text", "content", "title", "description");
   if (text) {
     return <ParagraphBlock data={data} />;
+  }
+
+  // Whatever this block is, if it carries readable text, show it rather than
+  // rendering nothing.
+  const strings = collectStrings(data);
+  if (strings.length > 0) {
+    return (
+      <p className="font-khmer whitespace-pre-line text-lg leading-9 text-slate-800 dark:text-slate-200">
+        {renderRichText(strings.join("\n\n"))}
+      </p>
+    );
   }
 
   return null;
@@ -1077,6 +1387,10 @@ export default function LessonBlockRenderer({
     case "H1":
     case "H2":
     case "H3":
+    case "HEADER":
+    case "SUBHEADER":
+    case "SUBHEADING":
+    case "SECTION_HEADING":
       return <HeadingBlock data={data} type={type} />;
 
     case "PARAGRAPH":
@@ -1105,6 +1419,12 @@ export default function LessonBlockRenderer({
 
     case "QUIZ":
       return <QuizBlock data={data} blockId={block.id} />;
+
+    case "FLASHCARD":
+    case "FLASH_CARD":
+    case "FLASHCARDS":
+    case "FLASH_CARDS":
+      return <FlashcardBlock data={data} />;
 
     case "LIST":
     case "BULLET_LIST":
