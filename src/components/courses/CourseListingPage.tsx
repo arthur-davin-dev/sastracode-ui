@@ -292,7 +292,7 @@ export default function CourseListingPage() {
             <button
               type="button"
               onClick={handleRetry}
-              className="mt-4 rounded-xl bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+              className="mt-4 rounded-xl bg-primary-color px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
             >
               {t.courses.states.retry}
             </button>

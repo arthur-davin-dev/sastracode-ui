@@ -149,8 +149,8 @@ export function HomePopularCourse() {
     });
   }, [isLoading, courses.length]);
 
-  const handleViewCourse = (courseId: string) => {
-    router.push(`/courses/${courseId}`);
+  const handleViewCourse = (href: string) => {
+    router.push(href);
   }
 
   return (
@@ -182,7 +182,7 @@ export function HomePopularCourse() {
                   description={course.description}
                   badge={course.accessType === "PREMIUM" ? "Premium" : course.category}
                   buttonText="មើលវគ្គសិក្សា"
-                  onView={() => handleViewCourse(course.id)}
+                  onView={() => handleViewCourse(course.href ?? `/courses/${course.id}`)}
                 />
               </div>
             ))}

@@ -15,6 +15,7 @@ import LessonBlockRenderer, {
   QuizResultsProvider,
 } from "@/components/documentation/LessonBlockRenderer";
 import ScrollReveal from "@/components/home/ScrollReveal";
+import { TranslatedText } from "@/components/i18n/TranslatedText";
 import SidebarLeftLesson from "@/components/documentation/SidebarLeftLesson";
 import { CodingTaskLessonSection } from "@/components/coding-task-player/CodingTaskLessonSection";
 import { getBlockAnchor } from "@/components/documentation/SidebarRightLesson";
@@ -341,9 +342,12 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
             <section id="lesson-content" className="scroll-mt-28">
               <ScrollReveal>
                 <header className="mb-6">
-                  <h1 className="font-khmer text-[28px] font-bold leading-[1.45] text-blue-600 sm:text-[32px] dark:text-blue-400">
+                  <TranslatedText
+                    as="h1"
+                    className="font-khmer text-[28px] font-bold leading-[1.45] text-blue-600 sm:text-[32px] dark:text-blue-400"
+                  >
                     {activeLesson.title}
-                  </h1>
+                  </TranslatedText>
                 </header>
               </ScrollReveal>
 

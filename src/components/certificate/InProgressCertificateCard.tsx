@@ -6,20 +6,24 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { PlayCircle, Hourglass, Film, CheckCircle2 } from "lucide-react";
 import {
-  useGetCourseByIdQuery,
+  useGetCourseBySlugQuery,
   useGetCourseProgressQuery,
 } from "@/redux/api";
 import { mapApiCourseToCourse } from "@/lib/course/course-adapter";
 
 export function InProgressCertificateCard({
   courseId,
+  slug,
   completed: completedProp = false,
 }: {
+  /** Real course UUID — course progress is still fetched by id, not slug. */
   courseId: string;
+  /** Course slug (backend GET /v1/courses/{slug}) — from enrollment.courseSlug. */
+  slug: string;
   completed?: boolean;
 }) {
   const { data: course, isFetching: isFetchingCourse } =
-    useGetCourseByIdQuery(courseId);
+    useGetCourseBySlugQuery(slug);
   const { data: progress, isFetching: isFetchingProgress } =
     useGetCourseProgressQuery(courseId);
 
@@ -126,7 +130,7 @@ export function InProgressCertificateCard({
         {!completed && (
           <Button
             size="lg"
-            render={<Link href={mapped.href ?? `/courses/${courseId}`} />}
+            render={<Link href={mapped.href ?? `/courses/${slug}`} />}
             className="w-full md:w-auto h-14 px-6 rounded-2xl text-lg font-bold text-white bg-primary-color hover:bg-blue-400 hover:text-slate-950  transition-all duration-300 gap-2 shrink-0 flex items-center justify-center group/btn"
           >
             <PlayCircle className="h-6 w-6 transition-transform duration-300 group-hover/btn:scale-110" />

@@ -316,8 +316,8 @@ export const km = {
     },
     categories: {
       all: "ទាំងអស់",
-      free: "Free Course",
-      premium: "Premium",
+      free: "វគ្គសិក្សាឥតគិតថ្លៃ",
+      premium: "វគ្គសិក្សាបង់ថ្លៃ",
     },
     sections: {
       latest: "វគ្គសិក្សាថ្មីបំផុត",
@@ -333,6 +333,23 @@ export const km = {
         BEGINNER: "កម្រិតដំបូង",
         INTERMEDIATE: "កម្រិតមធ្យម",
         ADVANCED: "កម្រិតខ្ពស់",
+      },
+      access: {
+        free: "ឥតគិតថ្លៃ",
+        premium: "បង់ថ្លៃ",
+        private: "ឯកជន",
+      },
+      lessonsUnit: "មេរៀន",
+      noDescription: "មិនទាន់មានសេចក្ដីពិពណ៌នា",
+      defaultInstructor: "គ្រូបង្រៀន SastraCode",
+      instructorAlt: "គ្រូបង្រៀន",
+      bookmark: {
+        add: "រក្សាទុកវគ្គសិក្សា",
+        remove: "ដកវគ្គសិក្សាពីបញ្ជីរក្សាទុក",
+        signInRequired: "សូមចូលគណនីជាមុន ដើម្បីរក្សាទុកវគ្គសិក្សានេះ។",
+        added: "បានរក្សាទុកវគ្គសិក្សាដោយជោគជ័យ។",
+        removed: "បានដកវគ្គសិក្សាចេញពីបញ្ជីរក្សាទុក។",
+        error: "មិនអាចធ្វើបច្ចុប្បន្នភាពការរក្សាទុកបានទេ។ សូមសាកល្បងម្ដងទៀត។",
       },
     },
     states: {

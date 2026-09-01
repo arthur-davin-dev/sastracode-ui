@@ -55,7 +55,10 @@ function ClaimList({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.1, duration: 0.4 }}
         >
-          <ClaimCertificateCard courseId={enrollment.courseId} />
+          <ClaimCertificateCard
+            courseId={enrollment.courseId}
+            slug={enrollment.courseSlug ?? enrollment.courseId}
+          />
         </motion.div>
       ))}
     </div>

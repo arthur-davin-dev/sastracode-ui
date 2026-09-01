@@ -8,12 +8,12 @@ import {
   mergeCourseSections,
 } from "@/lib/course/course-adapter";
 import {
-  useGetCourseByIdQuery,
+  useGetCourseBySlugQuery,
   useGetCourseSectionsQuery,
 } from "@/redux/api/course-api";
 
 interface LessonCourseLoaderProps {
-  courseId: string;
+  slug: string;
   lessonId: string;
 }
 
@@ -50,12 +50,14 @@ function LessonState({ icon, title, description, href, action }: LessonStateProp
 }
 
 export default function LessonCourseLoader({
-  courseId,
+  slug,
   lessonId,
 }: LessonCourseLoaderProps) {
-  const courseQuery = useGetCourseByIdQuery(courseId);
+  const courseQuery = useGetCourseBySlugQuery(slug);
   const embeddedSections = courseQuery.data?.sections;
-  const sectionsQuery = useGetCourseSectionsQuery(courseId, {
+  // Sections are still fetched by the course's real UUID (backend
+  // /v1/courses/{courseId}/sections is unchanged).
+  const sectionsQuery = useGetCourseSectionsQuery(courseQuery.data?.id ?? "", {
     skip:
       !courseQuery.data ||
       (courseQuery.data.accessType === "PRIVATE" &&
@@ -81,7 +83,7 @@ export default function LessonCourseLoader({
         icon={<AlertCircle className="h-7 w-7" />}
         title="មិនអាចបើកវគ្គសិក្សាបាន"
         description="សូមពិនិត្យការតភ្ជាប់របស់អ្នក ឬសាកល្បងម្ដងទៀតនៅពេលក្រោយ។"
-        href={`/courses/${courseId}`}
+        href={`/courses/${slug}`}
         action="ត្រឡប់ទៅវគ្គសិក្សា"
       />
     );
@@ -95,7 +97,7 @@ export default function LessonCourseLoader({
         icon={<AlertCircle className="h-7 w-7" />}
         title="មិនអាចទាញយកមាតិកាមេរៀនបាន"
         description="មាតិកាវគ្គសិក្សាមិនទាន់អាចប្រើបានទេ។ សូមសាកល្បងម្ដងទៀត។"
-        href={`/courses/${courseId}`}
+        href={`/courses/${slug}`}
         action="មើលព័ត៌មានវគ្គសិក្សា"
       />
     );
@@ -126,7 +128,7 @@ export default function LessonCourseLoader({
         icon={<BookOpen className="h-7 w-7" />}
         title="រកមិនឃើញមេរៀននេះ"
         description="មេរៀនអាចត្រូវបានផ្លាស់ទី ឬដកចេញពីវគ្គសិក្សានេះ។"
-        href={`/courses/${courseId}`}
+        href={`/courses/${slug}`}
         action="មើលមាតិកាវគ្គសិក្សា"
       />
     );
@@ -138,7 +140,7 @@ export default function LessonCourseLoader({
         icon={<LockKeyhole className="h-7 w-7" />}
         title="មេរៀននេះត្រូវបានចាក់សោ"
         description="សូមចុះឈ្មោះក្នុងវគ្គសិក្សា ដើម្បីទទួលបានសិទ្ធិមើលមេរៀនពេញលេញ។"
-        href={`/courses/${courseId}`}
+        href={`/courses/${slug}`}
         action="មើលព័ត៌មានចុះឈ្មោះ"
       />
     );

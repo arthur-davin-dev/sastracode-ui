@@ -51,6 +51,7 @@ function EnrollmentList({
         >
           <InProgressCertificateCard
             courseId={enrollment.courseId}
+            slug={enrollment.courseSlug ?? enrollment.courseId}
             completed={completed}
           />
         </motion.div>

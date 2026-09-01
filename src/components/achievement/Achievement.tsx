@@ -127,7 +127,7 @@ export default function Achievement() {
 
   const continueHref =
     continueLearningQuery.data?.courseId && continueLearningQuery.data?.videoId
-      ? `/courses/${continueLearningQuery.data.courseId}/learn/${continueLearningQuery.data.videoId}`
+      ? `/courses/${continueLearningQuery.data.courseSlug || continueLearningQuery.data.courseId}/learn/${continueLearningQuery.data.videoId}`
       : "/courses";
 
   const totalXp = xpQuery.data?.totalXp ?? 0;
