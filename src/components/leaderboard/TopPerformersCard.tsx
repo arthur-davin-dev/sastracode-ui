@@ -25,16 +25,21 @@ const podiumStyles: Record<number, { card: string; avatar: string; trophy: strin
   },
 };
 
-// Visual podium order: 2nd on the left, 1st elevated in the middle, 3rd on the right.
 const podiumOrder = [2, 1, 3];
 
-// Busts stale browser-cached avatar thumbnails (e.g. after a user updates their
-// profile picture but the file URL stays the same) by tagging each page load.
 const CACHE_BUST = typeof window !== "undefined" ? Date.now() : 0;
 
 function withCacheBust(url?: string) {
   if (!url) return url;
   return `${url}${url.includes("?") ? "&" : "?"}v=${CACHE_BUST}`;
+}
+
+// Formats XP into compact notation (e.g., 3.4k)
+function formatXP(xp: number) {
+  return Intl.NumberFormat("en-US", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(xp).toLowerCase();
 }
 
 export function TopPerformersCard({ performers }: { performers: TopPerformer[] }) {
@@ -47,10 +52,9 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
   return (
     <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
       
-      {/* Top Gradient Ribbon Accent */}
-      <div className=" w-full" />
+      <div className="w-full" />
 
-      <CardHeader className="flex flex-row items-center justify-between pb-2  border-b border-slate-100 dark:border-slate-800">
+      <CardHeader className="flex flex-row items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
         <div className="flex items-center gap-2">
           <div className="p-2 bg-primary-color/10 text-amber-600 dark:text-amber-400 rounded-xl">
             <Crown size={22} className="fill-amber-400" />
@@ -68,7 +72,7 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
         </a>
       </CardHeader>
 
-      <CardContent className="grid grid-cols-3 items-end gap-2 pt-6 sm:gap-3">
+      <CardContent className="grid grid-cols-3 items-end gap-1.5 pt-6 sm:gap-3">
         {display.map((p) => {
           const style = podiumStyles[p.rank] ?? podiumStyles[3];
           const isFirst = p.rank === 1;
@@ -90,7 +94,7 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
               onClick={(event) => {
                 if (!profileHref) event.preventDefault();
               }}
-              className={`relative flex flex-col items-center rounded-2xl border p-3 text-center transition-all duration-200 hover:-translate-y-0.5 ${style.card} ${
+              className={`relative flex flex-col items-center rounded-2xl border p-2 sm:p-3 text-center transition-all duration-200 hover:-translate-y-0.5 ${style.card} ${
                 isFirst ? "-translate-y-3 pb-4 pt-4" : "pt-3"
               }`}
             >
@@ -98,11 +102,11 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
               <span
                 className={`absolute flex items-center justify-center rounded-full shadow-sm ${style.trophy} ${
                   isFirst
-                    ? "-top-4 right-2 h-10 w-10 shadow-lg ring-2 ring-amber-300/70"
-                    : "-top-3 right-3 h-8 w-8"
+                    ? "-top-4 right-1 sm:right-2 h-8 w-8 sm:h-10 sm:w-10 shadow-lg ring-2 ring-amber-300/70"
+                    : "-top-3 right-1 sm:right-3 h-6 w-6 sm:h-8 sm:w-8"
                 }`}
               >
-                <Trophy size={isFirst ? 20 : 16} />
+                <Trophy size={isFirst ? 18 : 14} className="sm:w-5 sm:h-5" />
               </span>
 
               {/* Avatar */}
@@ -113,24 +117,24 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
                 </AvatarFallback>
               </Avatar>
 
-              {/* Name */}
-              <p className="mt-2 w-full truncate text-sm font-bold text-slate-900 dark:text-white">
+              {/* Name - Removed truncate, added wrapping and responsive text sizes */}
+              <p className="mt-2 w-full break-words text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-tight">
                 {p.name}
               </p>
 
               {/* Rank */}
-              <p className={`text-2xl font-black leading-none ${style.rankText}`}>#{p.rank}</p>
-              <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+              <p className={`text-xl sm:text-2xl font-black leading-none mt-1 sm:mt-0 ${style.rankText}`}>#{p.rank}</p>
+              <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                 សកល
               </p>
 
-              {/* XP Badge */}
+              {/* XP Badge - Removed truncate, adjusted mobile padding & font size */}
               <span
-                className={`mt-2 w-full truncate rounded-lg border border-slate-200 bg-white font-extrabold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white ${
-                  isFirst ? "px-2.5 py-1.5 text-lg" : "px-2 py-1 text-base"
+                className={`mt-2 w-full rounded-lg border border-slate-200 bg-white font-extrabold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white break-words ${
+                  isFirst ? "px-1 py-1 sm:px-2.5 sm:py-1.5 text-xs sm:text-lg" : "px-1 py-1 sm:px-2 sm:py-1 text-[10px] sm:text-base"
                 }`}
               >
-                {p.xp.toLocaleString()} <span className="text-red-600 dark:text-red-400">XP</span>
+                {formatXP(p.xp)} <span className="text-red-600 dark:text-red-400">XP</span>
               </span>
             </Link>
           );
