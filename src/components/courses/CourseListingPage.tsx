@@ -258,12 +258,19 @@ export default function CourseListingPage() {
             onChange={setSearch}
             placeholder={t.courses.search.placeholder}
           />
-          <CategoryFilter
-            categories={categories}
-            active={activeCategories}
-            counts={categoryCounts}
-            onToggle={handleCategoryToggle}
-          />
+          {isLoading && categories.length <= 3 ? (
+            <div className="flex items-center gap-2" aria-hidden="true">
+              <Skeleton className="h-10 w-24 rounded-xl bg-slate-200 dark:bg-slate-800" />
+              <Skeleton className="h-10 w-28 rounded-xl bg-slate-200 dark:bg-slate-800" />
+            </div>
+          ) : (
+            <CategoryFilter
+              categories={categories}
+              active={activeCategories}
+              counts={categoryCounts}
+              onToggle={handleCategoryToggle}
+            />
+          )}
         </div>
 
         {isLoading && allCourses.length === 0 ? (
@@ -285,7 +292,7 @@ export default function CourseListingPage() {
             <button
               type="button"
               onClick={handleRetry}
-              className="mt-4 rounded-xl bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
+              className="mt-4 rounded-xl bg-primary-color px-5 py-2.5 text-sm font-semibold text-white transition hover:opacity-90"
             >
               {t.courses.states.retry}
             </button>

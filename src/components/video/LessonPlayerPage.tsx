@@ -13,6 +13,7 @@ import {
   findLessonById,
 } from "@/lib/videoplayer/videoplayer";
 import { Course } from "@/lib/course/courses";
+import { toKhmerNumerals } from "@/lib/khmer-numerals";
 
 interface LessonPlayerPageProps {
   course: Course;
@@ -21,6 +22,16 @@ interface LessonPlayerPageProps {
 
 const fallbackVideoUrl =
   "https://youtu.be/6Gwxa9_qjJw?si=2ln0xHCwZu_khIqq";
+
+const LEVEL_LABELS_KM: Record<string, string> = {
+  BEGINNER: "កម្រិតដំបូង",
+  INTERMEDIATE: "កម្រិតមធ្យម",
+  ADVANCED: "កម្រិតខ្ពស់",
+};
+
+function lessonPositionLabel(index: number, total: number) {
+  return `មេរៀនទី ${toKhmerNumerals(index)} ក្នុងចំណោម ${toKhmerNumerals(total)}`;
+}
 
 export default function LessonPlayerPage({
   course,
@@ -59,11 +70,12 @@ export default function LessonPlayerPage({
   const lessonTitle =
     found?.lesson.title ??
     sectionLesson?.lesson.title.replace(/^\d+\.\s*/, "") ??
-    "Introduction to HTML";
+    "មេរៀន";
   const sectionLabel =
-    found?.chapter.title ?? sectionLesson?.section.title ?? "Section 1";
+    found?.chapter.title ?? sectionLesson?.section.title ?? "ជំពូក";
+  const levelLabel = LEVEL_LABELS_KM[course.level ?? ""] ?? "កម្រិតដំបូង";
 
-  // find the lesson's position (e.g. "Lesson 6 of 12") across all chapters
+  // find the lesson's position (e.g. "មេរៀនទី ៦ ក្នុងចំណោម ១២") across all chapters
   const flatLessons =
     chapters.length > 0
       ? chapters.flatMap((chapter) => chapter.lessons)
@@ -73,10 +85,10 @@ export default function LessonPlayerPage({
     lessonIndex >= 0 ? flatLessons[lessonIndex + 1] : undefined;
   const lessonPosition =
     lessonIndex >= 0
-      ? `Lesson ${lessonIndex + 1} of ${flatLessons.length}`
-      : "Lesson 1 of 12";
+      ? lessonPositionLabel(lessonIndex + 1, flatLessons.length)
+      : lessonPositionLabel(1, Math.max(flatLessons.length, 1));
   const nextLessonPosition = nextLesson
-    ? `Lesson ${lessonIndex + 2} of ${flatLessons.length}`
+    ? lessonPositionLabel(lessonIndex + 2, flatLessons.length)
     : lessonPosition;
 
   return (
@@ -95,10 +107,11 @@ export default function LessonPlayerPage({
             <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
               <LessonHeader
                 videoId={lessonId}
+                courseId={course.id}
                 title={lessonTitle}
                 sectionLabel={sectionLabel}
                 lessonPosition={lessonPosition}
-                level="Beginner"
+                level={levelLabel}
                 likeCount={128}
               />
             </div>
@@ -112,6 +125,7 @@ export default function LessonPlayerPage({
               sections={sections}
               totalLessons={totalLessons}
               courseId={course.id}
+              courseSlug={course.slug || course.id}
             />
             <UpNextCard
               thumbnail={course.image}
@@ -125,7 +139,7 @@ export default function LessonPlayerPage({
               onAutoplayChange={setAutoplay}
               href={
                 nextLesson
-                  ? `/courses/${course.id}/learn/${nextLesson.id}`
+                  ? `/courses/${course.slug || course.id}/learn/${nextLesson.id}`
                   : undefined
               }
             />

@@ -1,0 +1,14 @@
+▲ Next.js 16.2.10 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 8.0min
+  Running TypeScript ...
+  Finished TypeScript in 3.9min ...
+  Collecting page data using 3 workers ...
+uncaughtException Error: write EPIPE
+    at ignore-listed frames {
+  errno: -4047,
+  code: 'EPIPE',
+  syscall: 'write'
+}

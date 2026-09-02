@@ -7,12 +7,19 @@ interface VerificationCardProps {
   revoked: boolean;
   issuedDate: string;
   verificationId: string;
+  /**
+   * The 32-char verification hash encoded in the certificate QR code.
+   * Optional: when provided an extra monospace row is shown. Existing
+   * (authed) call sites that omit it render exactly as before.
+   */
+  certificateHash?: string;
 }
 
 export function VerificationCard({
   revoked,
   issuedDate,
   verificationId,
+  certificateHash,
 }: VerificationCardProps) {
   return (
     <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-100 dark:border-slate-800 shadow-xl bg-white dark:bg-slate-900 transition-all duration-300">
@@ -69,6 +76,16 @@ export function VerificationCard({
               {verificationId}
             </span>
           </div>
+
+          {/* Verification Hash Row (public verify only) */}
+          {certificateHash ? (
+            <div className="flex flex-col gap-2 pt-4 border-t border-slate-200 dark:border-slate-700">
+              <span className="text-lg font-medium text-primary-color dark:text-white opacity-70">Verification Hash</span>
+              <span className="block px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-base font-mono text-primary-color dark:text-white break-all">
+                {certificateHash}
+              </span>
+            </div>
+          ) : null}
 
         </div>
 

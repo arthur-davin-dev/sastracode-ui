@@ -13,13 +13,14 @@ import {
   Loader2,
 } from "lucide-react";
 import {
-  useGetCourseByIdQuery,
+  useGetCourseBySlugQuery,
   useGetCourseProgressQuery,
 } from "@/redux/api";
 import {
   useGetCourseCertificateQuery,
   useIssueCourseCertificateMutation,
 } from "@/redux/features/certificate/certificateApi";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { RequirementChecklistItem } from "@/types/certificate";
 
 // Matches the backend's rule: a certificate can be issued once course
@@ -27,12 +28,15 @@ import { RequirementChecklistItem } from "@/types/certificate";
 const ISSUE_ELIGIBLE_PERCENT = 80;
 
 interface ClaimCertificateCardProps {
+  /** Real course UUID — progress/certificate calls are still by id, not slug. */
   courseId: string;
+  /** Course slug (backend GET /v1/courses/{slug}) — from enrollment.courseSlug. */
+  slug: string;
 }
 
-export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
+export function ClaimCertificateCard({ courseId, slug }: ClaimCertificateCardProps) {
   const { data: course, isFetching: isFetchingCourse } =
-    useGetCourseByIdQuery(courseId);
+    useGetCourseBySlugQuery(slug);
   const { data: progress, isFetching: isFetchingProgress } =
     useGetCourseProgressQuery(courseId);
   const { data: existingCertificate, isFetching: isFetchingCertificate } =
@@ -93,8 +97,12 @@ export function ClaimCertificateCard({ courseId }: ClaimCertificateCardProps) {
       toast.success("ទទួលបានវិញ្ញាបនបត្រដោយជោគជ័យ!");
     } catch (error) {
       console.error("Issue certificate error:", error);
-      setIssueError("មិនអាចទាមទារវិញ្ញាបនបត្របានទេ សូមព្យាយាមម្ដងទៀត");
-      toast.error("មិនអាចទាមទារវិញ្ញាបនបត្របានទេ");
+      const message = getApiErrorMessage(
+        error,
+        "មិនអាចទាមទារវិញ្ញាបនបត្របានទេ សូមព្យាយាមម្ដងទៀត",
+      );
+      setIssueError(message);
+      toast.error(message);
     }
   };
 

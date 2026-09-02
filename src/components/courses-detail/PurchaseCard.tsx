@@ -6,6 +6,7 @@ import { signIn, useSession } from "next-auth/react";
 import { BookOpen, Clock, CreditCard, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 
+import { getApiErrorMessage } from "@/lib/api/error";
 import type { Course } from "@/lib/course/courses";
 import { useEnrollCourseMutation } from "@/redux/api/course-api";
 import { getCoursePricing } from "./payment/payment-prcie";
@@ -53,14 +54,16 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
    * =========================
    */
   const handleAction = async () => {
+    const courseSlug = course.slug || course.id;
+
     if (status !== "authenticated") {
-      await signIn("keycloak", { redirectTo: `/courses/${course.id}` });
+      await signIn("keycloak", { redirectTo: `/courses/${courseSlug}` });
       return;
     }
 
     if (course.hasFullAccess) {
       if (firstAvailableLesson) {
-        router.push(`/courses/${course.id}/learn/${firstAvailableLesson.id}`);
+        router.push(`/courses/${courseSlug}/learn/${firstAvailableLesson.id}`);
         return;
       }
       toast.info("វគ្គសិក្សានេះមិនទាន់មានមេរៀនដែលអាចចូលរៀនបាន។");
@@ -87,7 +90,7 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
       router.refresh();
     } catch (error) {
       console.error("Free enrollment error:", error);
-      toast.error("មិនអាចចុះឈ្មោះវគ្គសិក្សាបាន");
+      toast.error(getApiErrorMessage(error, "មិនអាចចុះឈ្មោះវគ្គសិក្សាបាន"));
       throw error;
     }
   };

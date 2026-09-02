@@ -3,12 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ClaimCertificateCard } from "@/components/certificate/ClaimCertificateCard";
 import { CourseCompletionProbe } from "@/components/certificate/CourseCompletionProbe";
@@ -60,7 +55,10 @@ function ClaimList({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.1, duration: 0.4 }}
         >
-          <ClaimCertificateCard courseId={enrollment.courseId} />
+          <ClaimCertificateCard
+            courseId={enrollment.courseId}
+            slug={enrollment.courseSlug ?? enrollment.courseId}
+          />
         </motion.div>
       ))}
     </div>

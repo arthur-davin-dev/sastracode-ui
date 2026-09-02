@@ -5,7 +5,9 @@ import Link from "next/link";
 import { Bookmark, Eye } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { Course } from "@/types/course";
+import { TranslatedText } from "@/components/i18n/TranslatedText";
 import {
   useAddBookmarkMutation,
   useGetMyBookmarksQuery,
@@ -42,8 +44,13 @@ export default function CourseCard({ course }: CourseCardProps) {
         await addBookmark({ itemType: "TUTORIAL", itemId: course.id }).unwrap();
         toast.success("Tutorial saved to bookmarks.");
       }
-    } catch {
-      toast.error("Unable to update this bookmark. Please try again.");
+    } catch (error) {
+      toast.error(
+        getApiErrorMessage(
+          error,
+          "Unable to update this bookmark. Please try again.",
+        ),
+      );
     }
   }
 
@@ -73,14 +80,20 @@ export default function CourseCard({ course }: CourseCardProps) {
       <div className="flex flex-1 flex-col p-5">
         
         {/* Title */}
-        <h3 className="text-[22px] font-bold text-slate-800 dark:text-slate-100 transition-colors duration-300 group-hover:text-primary-color/70 dark:group-hover:text-primary-color line-clamp-2 mb-2">
+        <TranslatedText
+          as="h3"
+          className="text-[22px] font-bold text-slate-800 dark:text-slate-100 transition-colors duration-300 group-hover:text-primary-color/70 dark:group-hover:text-primary-color line-clamp-2 mb-2"
+        >
           {course.title}
-        </h3>
+        </TranslatedText>
 
         {/* Description */}
-        <p className="mb-5 line-clamp-2 min-h-[3.65rem] flex-1 overflow-hidden text-ellipsis text-lg leading-relaxed text-slate-500 dark:text-slate-400">
+        <TranslatedText
+          as="p"
+          className="mb-5 line-clamp-2 min-h-[3.65rem] flex-1 overflow-hidden text-ellipsis text-lg leading-relaxed text-slate-500 dark:text-slate-400"
+        >
           {course.description}
-        </p>
+        </TranslatedText>
 
         <div className="flex items-center justify-between gap-3">
           <div className="flex min-w-0 items-center gap-1.5 text-sm font-medium text-slate-500 dark:text-slate-400">

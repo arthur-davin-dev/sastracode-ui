@@ -253,14 +253,49 @@ export const qaApi = sastraApi.injectEndpoints({
 
     updateVideoProgress: builder.mutation<
       VideoProgressResponse,
-      { videoId: string } & UpdateVideoProgressRequest
+      { videoId: string; courseId?: string } & UpdateVideoProgressRequest
     >({
-      query: ({ videoId, ...body }) => ({
+      // `courseId` is a client-only hint for cache invalidation and is never
+      // sent to the backend (the request body is just `{ completed }`).
+      query: ({ videoId, completed }) => ({
         url: `/v1/videos/${encodeURIComponent(videoId)}/progress`,
         method: "PUT",
-        body,
+        body: { completed },
       }),
-      invalidatesTags: (_result, _error, { videoId }) => [{ type: "Video", id: videoId }],
+      // Flip the cached `completed` flag as soon as the request leaves, so the
+      // "mark as done" button is immediately replaced by the static "done"
+      // badge. Without this the button stays clickable during the round-trip
+      // and a second/third click fires another PUT — the backend then holds
+      // several progress rows for the same (user, video) and every later
+      // GET/PUT for that video fails.
+      async onQueryStarted({ videoId, completed }, { dispatch, queryFulfilled }) {
+        const patch = dispatch(
+          qaApi.util.updateQueryData("getVideoProgress", videoId, (draft) => {
+            if (draft) draft.completed = completed;
+          }),
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patch.undo();
+        }
+      },
+      // Completing a video changes course progress and, server-side, the
+      // user's XP / badge progress. Refresh only those, not the whole cache.
+      invalidatesTags: (_result, _error, { videoId, courseId }) => [
+        { type: "Video", id: videoId },
+        ...(courseId
+          ? [
+              { type: "Course" as const, id: courseId },
+              { type: "Course" as const, id: "MY_ENROLLMENTS" },
+              { type: "Course" as const, id: "MY_LEARNING_PROGRESS" },
+              { type: "Course" as const, id: "CONTINUE_LEARNING" },
+              { type: "Achievement" as const, id: "XP" },
+              { type: "Achievement" as const, id: "BADGES" },
+              { type: "Achievement" as const, id: "ACTIVITY" },
+            ]
+          : []),
+      ],
     }),
 
     getPlaybackPosition: builder.query<VideoProgressResponse, string>({

@@ -341,6 +341,23 @@ export const en = {
         INTERMEDIATE: "Intermediate",
         ADVANCED: "Advanced",
       },
+      access: {
+        free: "Free",
+        premium: "Premium",
+        private: "Private",
+      },
+      lessonsUnit: "lessons",
+      noDescription: "No description yet",
+      defaultInstructor: "SastraCode Instructor",
+      instructorAlt: "Instructor",
+      bookmark: {
+        add: "Bookmark course",
+        remove: "Remove course bookmark",
+        signInRequired: "Please sign in to bookmark this course.",
+        added: "Course saved to bookmarks.",
+        removed: "Course removed from bookmarks.",
+        error: "Unable to update this bookmark. Please try again.",
+      },
     },
     states: {
       loading: "Loading courses",
@@ -745,6 +762,19 @@ export const en = {
         buttonText: "Start Certification",
       },
     ],
+  },
+
+  heros: {
+    startBusiness: "Start Online Business",
+    caseStudies: "College Case Studies",
+    learnAnywhere: "Learn Anywhere",
+    anytime: "Anytime",
+    liveCoding: "Live Coding",
+    progressValue: "28 / 35",
+    progress: "Progress",
+    aiAssistTitle: "AI Assistant",
+    aiAssistDesc: "AI supports your learning journey up to",
+    availability: "24 hours",
   },
 
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.

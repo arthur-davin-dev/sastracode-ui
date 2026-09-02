@@ -4,8 +4,10 @@ import localFont from "next/font/local";
 import "./globals.css";
 
 import { LanguageProvider } from "@/lib/language-context";
+import LocaleSync from "@/components/i18n/LocaleSync";
 import StoreProvider from "./StoreProvider";
 import AuthProvider from "@/components/AuthProvider";
+import { RealtimeProvider } from "@/lib/realtime/RealtimeProvider";
 import PrelineClient from "./components/PrelineClient";
 import { Toaster } from "@/components/ui/sonner";
 import InteractiveBackground from "@/components/InteractiveBackground";
@@ -140,13 +142,16 @@ export default function RootLayout({
         <div className="relative z-10">
           <AuthProvider>
             <StoreProvider>
-              <LanguageProvider>
-                {children}
+              <RealtimeProvider>
+                <LanguageProvider>
+                  <LocaleSync />
+                  {children}
 
-                {/* <KhmerNumerals /> */}
-                <PrelineClient />
-                <Toaster position="top-right" richColors />
-              </LanguageProvider>
+                  {/* <KhmerNumerals /> */}
+                  <PrelineClient />
+                  <Toaster position="top-right" richColors />
+                </LanguageProvider>
+              </RealtimeProvider>
             </StoreProvider>
           </AuthProvider>
         </div>

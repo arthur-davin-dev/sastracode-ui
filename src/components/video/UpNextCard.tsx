@@ -64,7 +64,7 @@ export function UpNextCard({
 
         <div className="flex items-center gap-2">
           <span className="text-xs text-slate-500 dark:text-slate-400">
-            Autoplay
+            ចាក់ស្វ័យប្រវត្តិ
           </span>
 
           <button
@@ -78,7 +78,7 @@ export function UpNextCard({
                 : "bg-slate-200 dark:bg-slate-700"
             }`}
           >
-            <span className="sr-only">Toggle autoplay</span>
+            <span className="sr-only">បិទ/បើក ការចាក់ស្វ័យប្រវត្តិ</span>
 
             <span
               className={`pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200 ${

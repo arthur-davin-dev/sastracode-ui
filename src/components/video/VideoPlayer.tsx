@@ -46,9 +46,11 @@ export function VideoPlayer({
     return (
       <div className="flex aspect-video items-center justify-center overflow-hidden rounded-2xl border border-slate-800 bg-slate-950 px-6 text-center shadow-sm">
         <div>
-          <p className="text-lg font-semibold text-white">Video unavailable</p>
+          <p className="text-lg font-semibold text-white">
+            វីដេអូមិនអាចប្រើបានទេ
+          </p>
           <p className="mt-2 text-sm text-gray-300">
-            Add a video URL to this lesson to start playing it.
+            សូមបន្ថែម URL វីដេអូទៅមេរៀននេះ ដើម្បីចាប់ផ្ដើមចាក់។
           </p>
         </div>
       </div>
@@ -90,7 +92,7 @@ export function VideoPlayer({
         aria-label={title}
       >
         <source src={src} />
-        Your browser does not support HTML video.
+        កម្មវិធីរុករករបស់អ្នកមិនគាំទ្រការចាក់វីដេអូ HTML ទេ។
       </video>
     </div>
   );

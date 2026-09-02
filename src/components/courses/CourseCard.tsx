@@ -14,7 +14,9 @@ import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { TranslatedText } from "@/components/i18n/TranslatedText";
 
+import { getApiErrorMessage } from "@/lib/api/error";
 import type { Course } from "@/lib/course/courses";
 import {
   useAddBookmarkMutation,
@@ -29,9 +31,19 @@ interface CourseCardProps {
 const FALLBACK_IMAGE = "/assets/images/HTML & CSS.jpg";
 const FALLBACK_AVATAR = "/images/sastra_code_logo.png";
 
-function accessLabel(course: Course) {
+type AccessCopy = {
+  free: string;
+  premium: string;
+  private: string;
+};
+
+/**
+ * Badge copy for a course's access type. A paid course shows its actual price
+ * (a number, so it needs no translation); everything else is localized.
+ */
+function accessLabel(course: Course, copy: AccessCopy) {
   if (course.accessType === "PRIVATE") {
-    return "Private";
+    return copy.private;
   }
 
   if (course.accessType === "PREMIUM") {
@@ -39,10 +51,10 @@ function accessLabel(course: Course) {
       return `${course.currency ?? "USD"} ${course.price?.toFixed(2)}`;
     }
 
-    return "Premium";
+    return copy.premium;
   }
 
-  return "ឥតគិតថ្លៃ";
+  return copy.free;
 }
 
 function isUuid(value: string) {
@@ -92,22 +104,24 @@ export function CourseCard({ course }: CourseCardProps) {
   );
   const bookmarkLoading = addState.isLoading || removeState.isLoading;
 
+  const card = t.courses.card;
+
   async function toggleBookmark() {
     if (status !== "authenticated") {
-      toast.error("Please sign in to bookmark this course.");
+      toast.error(card.bookmark.signInRequired);
       return;
     }
 
     try {
       if (bookmark) {
         await removeBookmark(bookmark.id).unwrap();
-        toast.success("Course removed from bookmarks.");
+        toast.success(card.bookmark.removed);
       } else {
         await addBookmark({ itemType: "COURSE", itemId: course.id }).unwrap();
-        toast.success("Course saved to bookmarks.");
+        toast.success(card.bookmark.added);
       }
-    } catch {
-      toast.error("Unable to update this bookmark. Please try again.");
+    } catch (error) {
+      toast.error(getApiErrorMessage(error, card.bookmark.error));
     }
   }
 
@@ -118,7 +132,7 @@ export function CourseCard({ course }: CourseCardProps) {
   // regardless of the course's own href/id route.
   const href = course.locked
     ? "/private-course"
-    : (course.href ?? `/courses/${course.id}`);
+    : (course.href ?? `/courses/${course.slug || course.id}`);
 
   const imageSrc = resolveCourseImage(course.image);
 
@@ -132,9 +146,9 @@ export function CourseCard({ course }: CourseCardProps) {
         type="button"
         onClick={toggleBookmark}
         disabled={bookmarkLoading}
-        aria-label={bookmark ? "Remove course bookmark" : "Bookmark course"}
+        aria-label={bookmark ? card.bookmark.remove : card.bookmark.add}
         aria-pressed={Boolean(bookmark)}
-        className="absolute right-3 top-3 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-white/60 bg-white/95 text-[#002455] shadow-md backdrop-blur transition hover:scale-105 disabled:cursor-wait disabled:opacity-60 dark:border-slate-700 dark:bg-slate-900/95 dark:text-blue-400"
+        className="absolute right-3 top-3 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-white/60 bg-white/95 text-primary-color shadow-md backdrop-blur transition hover:scale-105 disabled:cursor-wait disabled:opacity-60 dark:border-slate-700 dark:bg-slate-900/95 dark:text-primary-color"
       >
         <Bookmark className="h-5 w-5" fill={bookmark ? "currentColor" : "none"} />
       </button>
@@ -167,7 +181,7 @@ export function CourseCard({ course }: CourseCardProps) {
                 : "bg-emerald-500 text-white"
               }`}
           >
-            {accessLabel(course)}
+            {accessLabel(course, card.access)}
           </span>
 
           {/* Private Course Lock */}
@@ -186,34 +200,41 @@ export function CourseCard({ course }: CourseCardProps) {
         <div className="p-5">
           <Badge
             variant="secondary"
-            className="mb-3 bg-transparent p-0 text-[12px] font-bold uppercase tracking-wider text-pink-600 hover:bg-transparent dark:text-pink-400"
+            className="mb-3 bg-transparent p-0 text-[12px] font-bold uppercase tracking-wider text-primary-color hover:bg-transparent dark:text-primary-color"
           >
             {course.category}
           </Badge>
 
-          <h3 className="mb-2 line-clamp-2 text-[22px] font-bold leading-snug text-slate-800 transition-colors group-hover:text-blue-600 dark:text-slate-100 dark:group-hover:text-blue-400">
+          <TranslatedText
+            as="h3"
+            className="mb-2 line-clamp-2 text-[22px] font-bold leading-snug text-slate-800 transition-colors group-hover:text-primary-color dark:text-slate-100 dark:group-hover:text-primary-color"
+          >
             {course.title}
-          </h3>
+          </TranslatedText>
 
           <p className="line-clamp-2 min-h-[3.65rem] text-lg leading-relaxed text-slate-500 dark:text-slate-400">
-            {course.description || "មិនទាន់មានសេចក្ដីពិពណ៌នា"}
+            {course.description ? (
+              <TranslatedText>{course.description}</TranslatedText>
+            ) : (
+              card.noDescription
+            )}
           </p>
 
           {/* Course Information */}
           <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500 dark:text-slate-400">
             <span className="flex items-center gap-1.5">
-              <BookOpen className="h-3.5 w-3.5 text-indigo-700 dark:text-indigo-400" />
-              {course.lessons} មេរៀន
+              <BookOpen className="h-3.5 w-3.5 text-primary-color dark:text-primary-color" />
+              {course.lessons} {card.lessonsUnit}
             </span>
 
             <span className="flex items-center gap-1.5">
-              <Clock className="h-3.5 w-3.5 text-indigo-700 dark:text-indigo-400" />
+              <Clock className="h-3.5 w-3.5 text-primary-color dark:text-primary-color" />
               {course.duration}
             </span>
 
             {course.enrollmentCount !== undefined && (
               <span className="flex items-center gap-1.5">
-                <Users className="h-3.5 w-3.5 text-indigo-700 dark:text-indigo-400" />
+                <Users className="h-3.5 w-3.5 text-primary-color dark:text-primary-color" />
                 {course.enrollmentCount}
               </span>
             )}
@@ -226,7 +247,7 @@ export function CourseCard({ course }: CourseCardProps) {
             <div className="flex min-w-0 flex-1 items-center gap-2">
               <img
                 src={course.instructor?.avatar || FALLBACK_AVATAR}
-                alt={course.instructor?.name || "Instructor"}
+                alt={course.instructor?.name || card.instructorAlt}
                 loading="lazy"
                 className="h-8 w-8 shrink-0 rounded-full object-cover ring-1 ring-slate-200 dark:ring-slate-700"
                 onError={(event) => {
@@ -235,13 +256,13 @@ export function CourseCard({ course }: CourseCardProps) {
                 }}
               />
               <span className="truncate text-sm font-medium text-slate-600 dark:text-slate-300">
-                {course.instructor?.name || "SastraCode Instructor"}
+                {course.instructor?.name || card.defaultInstructor}
               </span>
             </div>
 
             {course.locked ? (
               <span className="shrink-0 text-xs font-semibold uppercase text-slate-500 dark:text-slate-400">
-                {t.courses.card.privateCourse}
+                {card.privateCourse}
               </span>
             ) : (
               levelLabel && (

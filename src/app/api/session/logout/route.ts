@@ -13,6 +13,7 @@ export async function POST(request: NextRequest) {
     const token = await getToken({
       req: request,
       secret: process.env.AUTH_SECRET,
+      secureCookie: request.nextUrl.protocol === "https:",
     });
 
     if (!token) {

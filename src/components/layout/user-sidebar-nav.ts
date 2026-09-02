@@ -11,6 +11,7 @@ import {
   Users,
   BookOpen,
   Bookmark,
+  UserPlus,
 } from "lucide-react";
 
 export interface UserSidebarSubItem {
@@ -138,6 +139,22 @@ export const userNavItems: UserSidebarItem[] = [
       "user",
       "my profile",
       "ប្រវត្តិរូប",
+    ],
+  },
+
+  {
+    label: "ក្លាយជាគ្រូបង្រៀន",
+    href: "/instructor-application",
+    icon: UserPlus,
+    keywords: [
+      "instructor",
+      "become instructor",
+      "teach",
+      "teacher",
+      "application",
+      "apply",
+      "ក្លាយជាគ្រូបង្រៀន",
+      "គ្រូបង្រៀន",
     ],
   },
 ];

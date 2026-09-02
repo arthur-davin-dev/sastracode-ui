@@ -83,7 +83,12 @@ interface SearchModalProps {
    API RESULT ROUTE
 ========================================================= */
 
-function resultHref(result: { id: string; type: string; deepLink?: string }) {
+function resultHref(result: {
+  id: string;
+  type: string;
+  slug?: string;
+  deepLink?: string;
+}) {
   if (result.deepLink?.startsWith("/")) {
     return result.deepLink;
   }
@@ -93,7 +98,9 @@ function resultHref(result: { id: string; type: string; deepLink?: string }) {
   }
 
   if (result.type === "COURSE") {
-    return `/courses/${result.id}`;
+    // Backend GET /v1/courses/{slug} — fall back to id only if the search
+    // index hasn't backfilled a slug for this course yet.
+    return `/courses/${result.slug || result.id}`;
   }
 
   if (result.type === "CODING_TASK") {

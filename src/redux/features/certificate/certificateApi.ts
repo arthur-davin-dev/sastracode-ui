@@ -3,7 +3,7 @@ import { sastraApi } from "@/redux/api";
 import {
   ApiResponse,
   Certificate,
-  CertificateVerifyResponse,
+  CertificateVerificationResponse,
   PageResponse,
 } from "@/types/certificate";
 
@@ -25,6 +25,26 @@ export const certificateApi = sastraApi.injectEndpoints({
           size,
         },
       }),
+      // Intercept 404 and transform it into a valid empty structure
+      transformResponse: (response: ApiResponse<PageResponse<Certificate>>) =>
+        response,
+      transformErrorResponse: (response: { status: number | string }) => {
+        if (response.status === 404) {
+          return {
+            success: true,
+            message: "មិនទាន់មានវិញ្ញាបនបត្រ",
+            data: {
+              content: [],
+              page: 0,
+              size: 10,
+              totalElements: 0,
+              totalPages: 0,
+              last: true,
+            },
+          };
+        }
+        return response;
+      },
       providesTags: ["Certificate"],
     }),
 
@@ -43,9 +63,10 @@ export const certificateApi = sastraApi.injectEndpoints({
         url: `/v1/courses/${encodeURIComponent(courseId)}/certificate`,
         method: "POST",
       }),
-      // Issuing a certificate can also flip the enrollment to COMPLETED
-      // server-side, so refresh the enrollment lists alongside certificates.
-      invalidatesTags: ["Certificate", { type: "Course", id: "MY_ENROLLMENTS" }],
+      invalidatesTags: [
+        "Certificate",
+        { type: "Course", id: "MY_ENROLLMENTS" },
+      ],
     }),
 
     // GET /api/v1/certificates/{id}
@@ -65,26 +86,20 @@ export const certificateApi = sastraApi.injectEndpoints({
       }),
     }),
 
-    // POST /api/v1/certificates/verify
-    verifyCertificate: builder.mutation<
-      ApiResponse<CertificateVerifyResponse>,
-      {
-        verificationId?: string;
-        certificateNumber?: string;
-      }
+    // GET /api/v1/certificates/verify?verificationId={id} (public)
+    verifyCertificate: builder.query<
+      ApiResponse<CertificateVerificationResponse>,
+      string
     >({
-      query: (body) => ({
+      query: (verificationId) => ({
         url: "/v1/certificates/verify",
-        method: "POST",
-        body,
+        method: "GET",
+        params: { verificationId },
       }),
     }),
 
-    // GET /api/v1/certificates/verify/qr/{hash}
-    verifyCertificateByQr: builder.query<
-      ApiResponse<CertificateVerifyResponse>,
-      string
-    >({
+    // GET /api/v1/certificates/verify/qr/{hash} (public)
+    verifyCertificateByQr: builder.query<ApiResponse<Certificate>, string>({
       query: (hash) => ({
         url: `/v1/certificates/verify/qr/${encodeURIComponent(hash)}`,
         method: "GET",
@@ -99,6 +114,7 @@ export const {
   useIssueCourseCertificateMutation,
   useGetCertificateByIdQuery,
   useLazyGetCertificateDownloadQuery,
-  useVerifyCertificateMutation,
+  useVerifyCertificateQuery,
+  useLazyVerifyCertificateQuery,
   useVerifyCertificateByQrQuery,
 } = certificateApi;

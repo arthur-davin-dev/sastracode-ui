@@ -3,6 +3,7 @@
 import { AtSign, BookOpen, Building2, CalendarDays, Globe2, GraduationCap, KeyRound, Loader2, LockKeyhole, Mail, MapPin, Phone, ShieldCheck, User } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { useResetMyPasswordMutation } from "@/redux/service/profile-api";
 import type { UserProfile } from "@/types/profile";
 
@@ -30,7 +31,12 @@ export function ProfileOverviewCards({ profile }: { profile: UserProfile }) {
       toast.success("Password change instructions have been sent to your email.");
     } catch (error) {
       console.error("Password reset failed:", error);
-      toast.error("Unable to start the password change. Please try again.");
+      toast.error(
+        getApiErrorMessage(
+          error,
+          "Unable to start the password change. Please try again.",
+        ),
+      );
     }
   };
   return (

@@ -316,8 +316,8 @@ export const km = {
     },
     categories: {
       all: "ទាំងអស់",
-      free: "Free Course",
-      premium: "Premium",
+      free: "វគ្គសិក្សាឥតគិតថ្លៃ",
+      premium: "វគ្គសិក្សាបង់ថ្លៃ",
     },
     sections: {
       latest: "វគ្គសិក្សាថ្មីបំផុត",
@@ -333,6 +333,23 @@ export const km = {
         BEGINNER: "កម្រិតដំបូង",
         INTERMEDIATE: "កម្រិតមធ្យម",
         ADVANCED: "កម្រិតខ្ពស់",
+      },
+      access: {
+        free: "ឥតគិតថ្លៃ",
+        premium: "បង់ថ្លៃ",
+        private: "ឯកជន",
+      },
+      lessonsUnit: "មេរៀន",
+      noDescription: "មិនទាន់មានសេចក្ដីពិពណ៌នា",
+      defaultInstructor: "គ្រូបង្រៀន SastraCode",
+      instructorAlt: "គ្រូបង្រៀន",
+      bookmark: {
+        add: "រក្សាទុកវគ្គសិក្សា",
+        remove: "ដកវគ្គសិក្សាពីបញ្ជីរក្សាទុក",
+        signInRequired: "សូមចូលគណនីជាមុន ដើម្បីរក្សាទុកវគ្គសិក្សានេះ។",
+        added: "បានរក្សាទុកវគ្គសិក្សាដោយជោគជ័យ។",
+        removed: "បានដកវគ្គសិក្សាចេញពីបញ្ជីរក្សាទុក។",
+        error: "មិនអាចធ្វើបច្ចុប្បន្នភាពការរក្សាទុកបានទេ។ សូមសាកល្បងម្ដងទៀត។",
       },
     },
     states: {
@@ -611,7 +628,6 @@ export const km = {
     titlePrefix: "បង្កើតឡើងសម្រាប់របៀបដែលអ្នក ",
     titleHighlight: "សរសេរកូដ។",
     description: "រៀនភាសាដែលជួយទ្រទ្រង់គេហទំព័រទំនើប កម្មវិធី ប្រព័ន្ធ Backend និងច្រើនទៀត។",
-    viewAll: "មើលភាសាទាំងអស់",
     startHere: "ចាប់ផ្តើមនៅទីនេះ",
     beginner: "កម្រិតដំបូង",
     outputPreview: "មើលលទ្ធផលគំរូ",
@@ -739,9 +755,22 @@ export const km = {
     ],
   },
 
+  heros: {
+    startBusiness: "ចាប់ផ្តើមអាជីវកម្មអនឡាញ",
+    caseStudies: "សិក្សាករណីជាក់ស្តែង",
+    learnAnywhere: "រៀនគ្រប់ទីកន្លែង",
+    anytime: "បានគ្រប់ពេល",
+    liveCoding: "រៀនកូដផ្ទាល់",
+    progressValue: "២៨ / ៣៥",
+    progress: "លទ្ធផល",
+    aiAssistTitle: "AI ជំនួយ",
+    aiAssistDesc: "AI បានជំនួយជួយដល់ការសិក្សារបស់យើងរហូតទៅដល់",
+    availability: "24 ម៉ោង",
+  },
+
   footer: {
     description:
-      "បង្កើតឡើងដើម្បីលើកកម្ពស់អ្នកអភិវឌ្ឍន៍ តាមរយៈមាតិការបច្ចេកវិទ្យាដែលមានគុណភាព និងងាយយល់។",
+      "បង្កើតឡើងដើម្បីលើកកម្ពស់អ្នកអភិវឌ្ឍន៍។",
 
     quickLinks: {
       title: "តំណភ្ជាប់រហ័ស",
