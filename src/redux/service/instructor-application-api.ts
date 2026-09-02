@@ -104,6 +104,7 @@ export const instructorApplicationApi = sastraApi.injectEndpoints({
 
 export const {
   useGetProfileCompletenessQuery,
+  useLazyGetProfileCompletenessQuery,
   useGetMyInstructorApplicationQuery,
   useUploadInstructorCvMutation,
   useSubmitInstructorApplicationMutation,

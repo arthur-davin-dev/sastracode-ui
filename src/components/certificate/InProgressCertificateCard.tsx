@@ -10,6 +10,7 @@ import {
   useGetCourseProgressQuery,
 } from "@/redux/api";
 import { mapApiCourseToCourse } from "@/lib/course/course-adapter";
+import { COURSE_COMPLETE_PERCENT } from "@/hooks/useCourseCompletionMap";
 
 export function InProgressCertificateCard({
   courseId,
@@ -47,13 +48,11 @@ export function InProgressCertificateCard({
   const mapped = mapApiCourseToCourse(course);
   const totalVideos = progress?.totalVideos ?? 0;
   const completedVideos = Math.min(progress?.completedVideos ?? 0, totalVideos);
-  const progressPercent = Math.round(
+  const progressRaw =
     progress?.percentage ??
-      (totalVideos > 0 ? (completedVideos / totalVideos) * 100 : 0),
-  );
-  // A course is completed once its actual watch progress hits 100%,
-  // regardless of what the enrollment status says (it can lag behind).
-  const completed = completedProp || progressPercent >= 100;
+    (totalVideos > 0 ? (completedVideos / totalVideos) * 100 : 0);
+  const progressPercent = Math.round(progressRaw);
+  const completed = completedProp || progressRaw >= COURSE_COMPLETE_PERCENT;
 
   return (
     <Card className="relative overflow-hidden rounded-3xl  border-slate-100 dark:border-slate-800  bg-white dark:bg-slate-900 transition-all duration-300  hover:-translate-y-0.5 group">
@@ -98,7 +97,9 @@ export function InProgressCertificateCard({
           {/* Progress Percent Text */}
           <div className="flex items-center justify-between text-lg font-bold text-primary-color dark:text-white">
             <span className="opacity-80">វឌ្ឍនភាពសិក្សា</span>
-            <span className={completed ? "text-green-600" : "text-secondary-color"}>
+            <span
+              className={completed ? "text-green-600" : "text-secondary-color"}
+            >
               {progressPercent}%
             </span>
           </div>
@@ -107,9 +108,7 @@ export function InProgressCertificateCard({
           <Progress
             value={progressPercent}
             className={`h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full ${
-              completed
-                ? "[&>div]:bg-green-500"
-                : "[&>div]:bg-secondary-color"
+              completed ? "[&>div]:bg-green-500" : "[&>div]:bg-secondary-color"
             }`}
           />
 
