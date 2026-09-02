@@ -179,7 +179,43 @@ interface RefreshTokenResponse {
 
 const keycloakIssuer = process.env.AUTH_KEYCLOAK_ISSUER!;
 
+// The `jwt` callback below runs independently on every request that touches
+// the session (proxy reads are cheap and don't trigger it, but each
+// `auth()`/`/api/auth/session` call does). When the access token is near
+// expiry, several requests can land at once — e.g. multiple components
+// calling `useSession()`, `refetchOnWindowFocus` firing while a background
+// request is still in flight, or several open tabs for the same user — and
+// each would otherwise fire its own refresh_token grant concurrently.
+// Keycloak rotates (and by default single-uses) refresh tokens, so the
+// losing request(s) get back `invalid_grant`, which this file turns into
+// `RefreshAccessTokenError` — that error forces a full sign-out in
+// `AuthProvider` and a bounce through Keycloak in `proxy.ts`, which is what
+// shows up as random logouts / redirect loops. Dedupe by refresh token so
+// concurrent callers share a single in-flight request instead of racing.
+const inFlightRefreshes = new Map<string, Promise<JWT>>();
+
 async function refreshAccessToken(token: JWT): Promise<JWT> {
+  const refreshToken =
+    typeof token.refreshToken === "string" ? token.refreshToken : undefined;
+
+  if (!refreshToken) {
+    return performTokenRefresh(token);
+  }
+
+  const existing = inFlightRefreshes.get(refreshToken);
+  if (existing) {
+    return existing;
+  }
+
+  const promise = performTokenRefresh(token).finally(() => {
+    inFlightRefreshes.delete(refreshToken);
+  });
+
+  inFlightRefreshes.set(refreshToken, promise);
+  return promise;
+}
+
+async function performTokenRefresh(token: JWT): Promise<JWT> {
   try {
     const issuer = process.env.AUTH_KEYCLOAK_ISSUER;
 
