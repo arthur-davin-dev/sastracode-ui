@@ -80,6 +80,11 @@ export default function SidebarLeftLesson({
             const hasSubsections = subsections.length > 0;
             const isDirect =
               section.contentMode === "DIRECT" || !hasSubsections;
+            // A section can carry its own blocks (e.g. a section-level quiz)
+            // alongside subsections. When it does, its title must open that
+            // section lesson; the chevron still expands the subsections.
+            const hasOwnBlocks = (section.blocks ?? []).length > 0;
+            const isSelectable = isDirect || hasOwnBlocks;
             const sectionActive = activeLessonId === section.id;
             // Progress is tracked per section only — a subsection has no
             // completion state of its own, so a completed section means
@@ -100,7 +105,7 @@ export default function SidebarLeftLesson({
                   <button
                     type="button"
                     onClick={() => {
-                      if (isDirect) {
+                      if (isSelectable) {
                         onSelectLesson(section.id);
                       } else {
                         toggleSection(section.id, isOpen);

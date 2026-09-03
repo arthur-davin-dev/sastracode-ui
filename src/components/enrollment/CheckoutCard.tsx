@@ -3,6 +3,7 @@
 import { BookOpen, Clock, Infinity as InfinityIcon, Lock, Monitor } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 import { toast } from "sonner";
+import { getApiErrorMessage } from "@/lib/api/error";
 import type { Course } from "@/lib/course/courses";
 import { useEnrollCourseMutation } from "@/redux/api/course-api";
 import { getCoursePricing } from "@/components/courses-detail/payment/payment-prcie";
@@ -26,17 +27,19 @@ export function CheckoutCard({ course }: CheckoutCardProps) {
         : `${currency} ${finalPrice.toFixed(2)}`;
 
   const handleEnroll = async () => {
+    const courseSlug = course.slug || course.id;
+
     if (status !== "authenticated") {
-      await signIn("keycloak", { redirectTo: `/courses/${course.id}/enroll` });
+      await signIn("keycloak", { redirectTo: `/courses/${courseSlug}/enroll` });
       return;
     }
     try {
       await enroll(course.id).unwrap();
       toast.success("ចុះឈ្មោះវគ្គសិក្សាបានជោគជ័យ");
-      window.location.href = `/courses/${course.id}`;
+      window.location.href = `/courses/${courseSlug}`;
     } catch (error) {
       console.error(error);
-      toast.error("មិនអាចចុះឈ្មោះវគ្គសិក្សាបាន");
+      toast.error(getApiErrorMessage(error, "មិនអាចចុះឈ្មោះវគ្គសិក្សាបាន"));
     }
   };
 

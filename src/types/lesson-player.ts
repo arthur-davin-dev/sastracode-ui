@@ -3,6 +3,8 @@ export interface LessonItem {
   title: string;
   duration: string;
   status: "completed" | "current" | "upcoming";
+  /** Video thumbnail URL shown in the lesson list sidebar. */
+  thumbnail?: string;
 }
 
 export interface CourseSection {

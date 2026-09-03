@@ -42,6 +42,8 @@ const NodeIcon = ({ src, label }: { src?: string; label: string }) => {
     <img
       src={src}
       alt=""
+      loading="lazy"
+      decoding="async"
       onError={() => setHasError(true)}
       className="h-full w-full object-contain p-0.5 sm:p-1"
     />

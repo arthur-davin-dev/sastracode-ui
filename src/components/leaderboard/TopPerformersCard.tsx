@@ -28,11 +28,8 @@ const podiumStyles: Record<
   },
 };
 
-// Visual podium order: 2nd on the left, 1st elevated in the middle, 3rd on the right.
 const podiumOrder = [2, 1, 3];
 
-// Busts stale browser-cached avatar thumbnails (e.g. after a user updates their
-// profile picture but the file URL stays the same) by tagging each page load.
 const CACHE_BUST = typeof window !== "undefined" ? Date.now() : 0;
 
 function withCacheBust(url?: string) {
@@ -40,11 +37,15 @@ function withCacheBust(url?: string) {
   return `${url}${url.includes("?") ? "&" : "?"}v=${CACHE_BUST}`;
 }
 
-export function TopPerformersCard({
-  performers,
-}: {
-  performers: TopPerformer[];
-}) {
+// Formats XP into compact notation (e.g., 3.4k)
+function formatXP(xp: number) {
+  return Intl.NumberFormat("en-US", {
+    notation: "compact",
+    maximumFractionDigits: 1,
+  }).format(xp).toLowerCase();
+}
+
+export function TopPerformersCard({ performers }: { performers: TopPerformer[] }) {
   const byRank = new Map(performers.map((p) => [p.rank, p]));
   const ordered = podiumOrder
     .map((rank) => byRank.get(rank))
@@ -53,10 +54,10 @@ export function TopPerformersCard({
 
   return (
     <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-      {/* Top Gradient Ribbon Accent */}
-      <div className=" w-full" />
+      
+      <div className="w-full" />
 
-      <CardHeader className="flex flex-row items-center justify-between pb-2  border-b border-slate-100 dark:border-slate-800">
+      <CardHeader className="flex flex-row items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
         <div className="flex items-center gap-2">
           <div className="p-2 bg-primary-color/10 text-init-color dark:text-amber-400 rounded-xl">
             <Crown size={22} className="fill-amber-400" />
@@ -74,7 +75,7 @@ export function TopPerformersCard({
         </a>
       </CardHeader>
 
-      <CardContent className="mx-auto grid w-full max-w-5xl grid-cols-1 items-end gap-x-0 gap-y-24 px-4 pb-6 pt-20 sm:grid-cols-3 sm:px-5 sm:pb-8 sm:pt-28">
+      <CardContent className="grid grid-cols-3 items-end gap-1.5 pt-6 sm:gap-3">
         {display.map((p) => {
           const style = podiumStyles[p.rank] ?? podiumStyles[3];
           const isFirst = p.rank === 1;
@@ -96,22 +97,20 @@ export function TopPerformersCard({
               onClick={(event) => {
                 if (!profileHref) event.preventDefault();
               }}
-              className={`relative flex flex-col items-center rounded-3xl border px-4 pb-6 pt-16 text-center text-white transition-all duration-200 hover:brightness-105 ${style.card} ${
-                isFirst
-                  ? "order-1 min-h-[300px] sm:order-none sm:-translate-y-8 sm:min-h-[330px] sm:rounded-b-3xl sm:rounded-t-[2.5rem]"
-                  : p.rank === 2
-                    ? "order-2 min-h-[255px] sm:order-none sm:rounded-b-3xl sm:rounded-t-[2.5rem]"
-                    : "order-3 min-h-[255px] sm:order-none sm:rounded-b-3xl sm:rounded-t-[2.5rem]"
+              className={`relative flex flex-col items-center rounded-2xl border p-2 sm:p-3 text-center transition-all duration-200 hover:-translate-y-0.5 ${style.card} ${
+                isFirst ? "-translate-y-3 pb-4 pt-4" : "pt-3"
               }`}
             >
-              <div className="absolute -top-20 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1">
-                <span className={`flex items-center justify-center ${style.rankText}`}>
-                  {isFirst ? (
-                    <Crown className="h-8 w-8 fill-current" strokeWidth={2.2} />
-                  ) : (
-                    <Medal className="h-6 w-6" strokeWidth={2.4} />
-                  )}
-                </span>
+              {/* Trophy Badge */}
+              <span
+                className={`absolute flex items-center justify-center rounded-full shadow-sm ${style.trophy} ${
+                  isFirst
+                    ? "-top-4 right-1 sm:right-2 h-8 w-8 sm:h-10 sm:w-10 shadow-lg ring-2 ring-amber-300/70"
+                    : "-top-3 right-1 sm:right-3 h-6 w-6 sm:h-8 sm:w-8"
+                }`}
+              >
+                <Trophy size={isFirst ? 18 : 14} className="sm:w-5 sm:h-5" />
+              </span>
 
                 <div className="relative">
                   <Avatar
@@ -132,23 +131,24 @@ export function TopPerformersCard({
                 </div>
               </div>
 
-              {/* Name */}
-              <p className="mt-2 w-full truncate text-lg font-bold text-white">
+              {/* Name - Removed truncate, added wrapping and responsive text sizes */}
+              <p className="mt-2 w-full break-words text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-tight">
                 {p.name}
               </p>
 
-              <p className="mt-2 text-xs font-semibold uppercase tracking-wider text-white/65">
+              {/* Rank */}
+              <p className={`text-xl sm:text-2xl font-black leading-none mt-1 sm:mt-0 ${style.rankText}`}>#{p.rank}</p>
+              <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
                 សកល
               </p>
 
-              {/* XP Badge */}
+              {/* XP Badge - Removed truncate, adjusted mobile padding & font size */}
               <span
-                className={`mt-5 w-full truncate rounded-xl border border-white/20 bg-white/10 font-extrabold text-white backdrop-blur-sm ${
-                  isFirst ? "px-3 py-2 text-2xl" : "px-3 py-2 text-xl"
+                className={`mt-2 w-full rounded-lg border border-slate-200 bg-white font-extrabold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white break-words ${
+                  isFirst ? "px-1 py-1 sm:px-2.5 sm:py-1.5 text-xs sm:text-lg" : "px-1 py-1 sm:px-2 sm:py-1 text-[10px] sm:text-base"
                 }`}
               >
-                {p.xp.toLocaleString()}{" "}
-                <span className="text-init-color">XP</span>
+                {formatXP(p.xp)} <span className="text-red-600 dark:text-red-400">XP</span>
               </span>
             </Link>
           );

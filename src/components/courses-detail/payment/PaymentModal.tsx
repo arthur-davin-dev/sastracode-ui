@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { getApiErrorMessage } from "@/lib/api/error";
 import type { Course } from "@/lib/course/courses";
+import { useTranslation } from "@/hooks/useTranslations";
 
 import { PaymentForm } from "./PaymentForm";
 import { PaymentSuccess } from "./PaymentSuccess";
@@ -31,6 +33,7 @@ export function PaymentModal({
   onDone,
 }: PaymentModalProps) {
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>("idle");
+  const t = useTranslation();
 
   if (!open) {
     return null;
@@ -77,7 +80,9 @@ export function PaymentModal({
 
       setPaymentStatus("idle");
 
-      toast.error("មិនអាចទិញវគ្គសិក្សាបាន។ សូមព្យាយាមម្ដងទៀត។");
+      toast.error(
+        getApiErrorMessage(error, t.courses.detail.payment.purchaseFailed),
+      );
     }
   };
 

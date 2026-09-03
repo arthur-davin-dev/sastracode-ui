@@ -2,7 +2,29 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode, Dispatch, SetStateAction } from "react";
 
-type Lang = "km" | "en";
+export type Lang = "km" | "en";
+
+/**
+ * Value stored on the user profile's `locale` field. The app language "km" is
+ * persisted as "kh" (backend contract); English stays "en".
+ */
+export type ProfileLocale = "kh" | "en";
+
+/** App language -> the `locale` string stored on the user profile. */
+export function langToLocale(lang: Lang): ProfileLocale {
+  return lang === "km" ? "kh" : "en";
+}
+
+/**
+ * Stored `locale` -> app language. Accepts both "kh" and "km" for Khmer so a
+ * legacy value still resolves. Returns null for anything unrecognised.
+ */
+export function localeToLang(locale?: string | null): Lang | null {
+  const value = locale?.trim().toLowerCase();
+  if (value === "kh" || value === "km") return "km";
+  if (value === "en") return "en";
+  return null;
+}
 
 type LanguageContextType = {
   lang: Lang;

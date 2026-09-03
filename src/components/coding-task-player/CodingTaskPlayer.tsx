@@ -51,6 +51,7 @@ import {
 } from "@/redux/service/coding-task-player-api";
 
 import CodeCoach from "@/components/playground/CodeCoach";
+import { getApiErrorMessage } from "@/lib/api/error";
 import { useIsDarkMode } from "@/hooks/use-dark-mode";
 import { getChallengeUIConfig } from "@/utils/coding-task-ui";
 import { highlightCode } from "@/utils/highlight-code";
@@ -74,19 +75,7 @@ interface Props {
 }
 
 function errorMessage(error: unknown): string {
-  if (error && typeof error === "object" && "data" in error) {
-    const data = (error as { data?: unknown }).data;
-    if (typeof data === "string") return data;
-    if (
-      data &&
-      typeof data === "object" &&
-      "message" in data &&
-      typeof (data as { message?: unknown }).message === "string"
-    ) {
-      return (data as { message: string }).message;
-    }
-  }
-  return "Unable to check this coding challenge.";
+  return getApiErrorMessage(error, "Unable to check this coding challenge.");
 }
 
 function editorLanguage(language: unknown): string {
@@ -238,11 +227,13 @@ export function CodingTaskPlayer({
 
   async function run(codeToRun = code) {
     if (!task || !codeToRun.trim()) return;
+    console.log("[CodingTask] run - user answer:", codeToRun);
     try {
       const result = await runTask({
         id: task.id,
         code: codeToRun,
       }).unwrap();
+      console.log("[CodingTask] run - result:", result);
       setRunResult(result);
       setSubmitResult(null);
       setAttempt((value) => value + 1);
@@ -253,11 +244,13 @@ export function CodingTaskPlayer({
 
   async function submit(codeToSubmit = code) {
     if (!task || !codeToSubmit.trim()) return;
+    console.log("[CodingTask] submit - user answer:", codeToSubmit);
     try {
       const result = await submitTask({
         id: task.id,
         code: codeToSubmit,
       }).unwrap();
+      console.log("[CodingTask] submit - result:", result);
 
       setSubmitResult(result);
       setRunResult(null);

@@ -1,24 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import {
+  Zap,
+  GraduationCap,
   Award,
+  Trophy,
   BookOpen,
   CircleCheck,
-  GraduationCap,
-  Target,
-  Trophy,
-  Tv,
-  Wrench,
-  Zap,
 } from "lucide-react";
 import { ProfileSummaryCard } from "@/components/achievement/ProfileSummaryCard";
 import { BadgeCard } from "@/components/achievement/BadgeCard";
 import { RecentActivityItem } from "@/components/achievement/RecentActivityItem";
 import { LearningPathProgress } from "@/components/achievement/LearningPathProgress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { UserSummary, AchievementBadge, Activity, LearningPath } from "@/types/achievement";
+import {
+  UserSummary,
+  AchievementBadge,
+  Activity,
+  LearningPath,
+} from "@/types/achievement";
 import { XpLevelCard } from "./XpLevelCard";
 import { useSession } from "next-auth/react";
 import { useGetMyProfileQuery } from "@/redux/service/profile-api";
@@ -31,24 +33,7 @@ import {
   useGetMyLearningProgressQuery,
   useGetContinueLearningQuery,
 } from "@/redux/api/course-api";
-
-const fallbackUserData: UserSummary = {
-  name: "ឆាយ​ ដាវីន",
-  avatarUrl: "/images/mysql.jpg",
-  currentXp: 12450,
-  nextLevelXp: 15000,
-  levelProgressPercent: 83,
-  nextLevel: 13,
-  badges: 48,
-  score: 14200,
-  certificates: 12,
-};
-
-const activities: Activity[] = [
-  { id: "1", icon: <Tv className="h-5 w-5" />, title: "បញ្ចប់មូលដ្ឋានគ្រឹះ JavaScript", subtitle: "រៀនមេរៀនមូលដ្ឋានទាំងអស់នៃ JS", xp: 500 },
-  { id: "2", icon: <Wrench className="h-5 w-5" />, title: "បន្ថែមកម្មវិធីដំបូងរបស់អ្នក", subtitle: "បង្កើត និងដាក់ឲ្យប្រើប្រាស់កម្មវិធី", xp: 800 },
-  { id: "3", icon: <Target className="h-5 w-5" />, title: "ដោះស្រាយបញ្ហាប្រឈម", subtitle: "ដោះស្រាយ ២៥ លំហាត់កូដ", xp: 600 },
-];
+import { useGetMyCertificatesQuery } from "@/redux/features/certificate/certificateApi";
 
 function activityTitle(sourceType?: string) {
   if (!sourceType) return "XP activity";
@@ -91,7 +76,9 @@ function activityIcon(sourceType?: string) {
 export default function Achievement() {
   const { status } = useSession();
   const authenticated = status === "authenticated";
-  const profileQuery = useGetMyProfileQuery(undefined, { skip: !authenticated });
+  const profileQuery = useGetMyProfileQuery(undefined, {
+    skip: !authenticated,
+  });
   const xpQuery = useGetMyXpQuery(undefined, { skip: !authenticated });
   const transactionsQuery = useGetMyXpTransactionsQuery(undefined, {
     skip: !authenticated,
@@ -103,18 +90,33 @@ export default function Achievement() {
   const continueLearningQuery = useGetContinueLearningQuery(undefined, {
     skip: !authenticated,
   });
+  // Only the running total is needed here — ask for a single row.
+  const certificatesQuery = useGetMyCertificatesQuery(
+    { page: 0, size: 1 },
+    { skip: !authenticated },
+  );
+  const certificateCount =
+    certificatesQuery.data?.data?.totalElements ??
+    certificatesQuery.data?.data?.content?.length ??
+    0;
+
   const badges: AchievementBadge[] =
-    badgesQuery.data?.map(({ badge, earned, currentValue, targetValue, progressPercentage }) => ({
-      id: badge.id,
-      name: badge.name,
-      iconUrl: badge.iconFileId
-        ? `/api/v1/files/${encodeURIComponent(badge.iconFileId)}`
-        : "",
-      points: badge.xpReward,
-      progressPercent: Math.min(100, Math.max(0, Math.round(progressPercentage))),
-      remaining: Math.max(0, targetValue - currentValue),
-      locked: !earned,
-    })) ?? [];
+    badgesQuery.data?.map(
+      ({ badge, earned, currentValue, targetValue, progressPercentage }) => ({
+        id: badge.id,
+        name: badge.name,
+        iconUrl: badge.iconFileId
+          ? `/api/v1/files/${encodeURIComponent(badge.iconFileId)}`
+          : "",
+        points: badge.xpReward,
+        progressPercent: Math.min(
+          100,
+          Math.max(0, Math.round(progressPercentage)),
+        ),
+        remaining: Math.max(0, targetValue - currentValue),
+        locked: !earned,
+      }),
+    ) ?? [];
 
   const paths: LearningPath[] = (learningProgressQuery.data ?? []).map((p) => ({
     id: p.courseId,
@@ -125,7 +127,7 @@ export default function Achievement() {
 
   const continueHref =
     continueLearningQuery.data?.courseId && continueLearningQuery.data?.videoId
-      ? `/courses/${continueLearningQuery.data.courseId}/learn/${continueLearningQuery.data.videoId}`
+      ? `/courses/${continueLearningQuery.data.courseSlug || continueLearningQuery.data.courseId}/learn/${continueLearningQuery.data.videoId}`
       : "/courses";
 
   const totalXp = xpQuery.data?.totalXp ?? 0;
@@ -136,27 +138,38 @@ export default function Achievement() {
     100,
     Math.round(((totalXp - currentLevelStart) / 1000) * 100),
   );
-  const profileName = [profileQuery.data?.firstName, profileQuery.data?.lastName]
+  const profileName = [
+    profileQuery.data?.firstName,
+    profileQuery.data?.lastName,
+  ]
     .filter(Boolean)
     .join(" ");
 
   const userData: UserSummary = {
-        name: profileName || profileQuery.data?.username || "Learner",
-        avatarUrl:
-          profileQuery.data?.avatarUrl || "/images/sastra_code_logo.png",
-        currentXp: totalXp,
-        nextLevelXp,
-        levelProgressPercent,
-        nextLevel: currentLevel + 1,
-        badges: badges.filter((badge) => !badge.locked).length,
-        score: xpQuery.data?.totalScore ?? 0,
-        certificates: paths.filter((path) => path.progressPercent === 100).length,
-      };
+    name: profileName || profileQuery.data?.username || "Learner",
+    avatarUrl: profileQuery.data?.avatarUrl || "/images/sastra_code_logo.png",
+    currentXp: totalXp,
+    nextLevelXp,
+    levelProgressPercent,
+    nextLevel: currentLevel + 1,
+    badges: badges.filter((badge) => !badge.locked).length,
+    score: xpQuery.data?.totalScore ?? 0,
+    certificates: certificateCount,
+    username: profileQuery.data?.username,
+    institution: profileQuery.data?.institutionName,
+  };
+
+  const summaryLoading =
+    authenticated &&
+    (profileQuery.isLoading ||
+      xpQuery.isLoading ||
+      badgesQuery.isLoading ||
+      certificatesQuery.isLoading);
 
   const apiActivities: Activity[] =
     transactionsQuery.data?.content.map((transaction) => ({
       id: String(transaction.id),
-      icon: <Zap className="h-5 w-5" />,
+      icon: activityIcon(transaction.sourceType),
       // Descriptions can include source UUIDs. Keep internal IDs out of the learner UI.
       title: activityTitle(transaction.sourceType),
       subtitle: transaction.createdAt
@@ -176,10 +189,49 @@ export default function Achievement() {
     ? displayedActivities
     : displayedActivities.slice(0, 4);
 
+  // Arriving from a badge notification (`/achivement#earned-badges`): once the
+  // "មេដាយដែលទទួលបាន" section has rendered, smooth-scroll it into view. Gated on
+  // the badges query so it waits for the real content, with a few re-aims to
+  // absorb the section's entrance animation / layout settling.
+  const scrolledToBadgesRef = useRef(false);
+  useEffect(() => {
+    const HASH = "#earned-badges";
+    let retryTimers: number[] = [];
+
+    const scrollToEarnedBadges = () => {
+      if (scrolledToBadgesRef.current) return;
+      if (window.location.hash !== HASH) return;
+      if (badgesQuery.isLoading) return;
+      if (!document.getElementById("earned-badges")) return;
+
+      scrolledToBadgesRef.current = true;
+      const run = () =>
+        document
+          .getElementById("earned-badges")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      requestAnimationFrame(() => requestAnimationFrame(run));
+      retryTimers = [250, 600, 1000].map((delay) =>
+        window.setTimeout(run, delay),
+      );
+    };
+
+    const onHashChange = () => {
+      scrolledToBadgesRef.current = false;
+      scrollToEarnedBadges();
+    };
+
+    scrollToEarnedBadges();
+    window.addEventListener("hashchange", onHashChange);
+    return () => {
+      window.removeEventListener("hashchange", onHashChange);
+      retryTimers.forEach((id) => window.clearTimeout(id));
+    };
+  }, [badgesQuery.isLoading]);
+
   return (
     <div className="min-h-screen bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 space-y-8 p-4 transition-colors duration-300">
       <div className="max-w-6xl mx-auto space-y-8">
-        
         {/* Page Header */}
         <div className="space-y-2">
           <h1 className="text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
@@ -191,7 +243,7 @@ export default function Achievement() {
         </div>
 
         {/* User Summary Section */}
-        <ProfileSummaryCard user={userData} />
+        <ProfileSummaryCard user={userData} loading={summaryLoading} />
 
         {/* XP Progress Card */}
         <XpLevelCard
@@ -202,7 +254,10 @@ export default function Achievement() {
         />
 
         {/* Badges Section */}
-        <Card className="shadow-none dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
+        <Card
+          id="earned-badges"
+          className="scroll-mt-24 shadow-none dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300"
+        >
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
               មេដាយដែលទទួលបាន
@@ -212,7 +267,8 @@ export default function Achievement() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
               {!badgesQuery.isLoading && badges.length === 0 && (
                 <p className="col-span-full rounded-xl border border-dashed border-slate-300 p-6 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400">
-                  No badges earned yet. Complete lessons and quizzes to earn badges.
+                  No badges earned yet. Complete lessons and quizzes to earn
+                  badges.
                 </p>
               )}
               {visibleBadges.map((b, i) => (
@@ -244,16 +300,17 @@ export default function Achievement() {
         <Card className="shadow-none dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
-               របស់កម្មដែលបានបញ្ចប់
+              របស់កម្មដែលបានបញ្ចប់
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {!transactionsQuery.isLoading && displayedActivities.length === 0 && (
-                <p className="rounded-xl border border-dashed border-slate-300 p-6 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400">
-                  No XP activity yet. Complete a lesson or quiz to earn XP.
-                </p>
-              )}
+              {!transactionsQuery.isLoading &&
+                displayedActivities.length === 0 && (
+                  <p className="rounded-xl border border-dashed border-slate-300 p-6 text-center text-slate-500 dark:border-slate-700 dark:text-slate-400">
+                    No XP activity yet. Complete a lesson or quiz to earn XP.
+                  </p>
+                )}
               {visibleActivities.map((a, i) => (
                 <motion.div
                   key={a.id}
@@ -289,7 +346,9 @@ export default function Achievement() {
           <CardContent className="text-lg text-primary-color">
             <LearningPathProgress
               paths={paths}
-              completedCount={paths.filter((p) => p.progressPercent === 100).length}
+              completedCount={
+                paths.filter((p) => p.progressPercent === 100).length
+              }
               totalCount={paths.length}
               continueHref={continueHref}
             />

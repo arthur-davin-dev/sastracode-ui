@@ -51,6 +51,8 @@ function CourseCard({
         <img
           src={image}
           alt={title}
+          loading="lazy"
+          decoding="async"
           className="relative z-20 aspect-video w-full brightness dark:brightness-60 object-cover transition-transform duration-500 ease-out group-hover:scale-105"
         />
         <CardHeader className="flex-1 flex flex-col">
@@ -147,8 +149,8 @@ export function HomePopularCourse() {
     });
   }, [isLoading, courses.length]);
 
-  const handleViewCourse = (courseId: string) => {
-    router.push(`/courses/${courseId}`);
+  const handleViewCourse = (href: string) => {
+    router.push(href);
   }
 
   return (
@@ -180,7 +182,7 @@ export function HomePopularCourse() {
                   description={course.description}
                   badge={course.accessType === "PREMIUM" ? "Premium" : course.category}
                   buttonText="មើលវគ្គសិក្សា"
-                  onView={() => handleViewCourse(course.id)}
+                  onView={() => handleViewCourse(course.href ?? `/courses/${course.id}`)}
                 />
               </div>
             ))}

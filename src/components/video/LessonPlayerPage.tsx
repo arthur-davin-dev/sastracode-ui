@@ -1,19 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useRouter } from "next/navigation";
 import { VideoPlayer } from "./VideoPlayer";
 import { LessonHeader } from "./LessonHeader";
-import { DiscussionSection } from "./DiscussionSection";
+import { QASection } from "./qa/QASection";
 import { CourseContentSidebar } from "./CourseContentSidebar";
 import { UpNextCard } from "./UpNextCard";
 import {
-  comments,
   defaultSections,
   getTotalLessons,
   buildSectionsFromCurriculum,
   findLessonById,
 } from "@/lib/videoplayer/videoplayer";
 import { Course } from "@/lib/course/courses";
+import { toKhmerNumerals } from "@/lib/khmer-numerals";
+import { useLanguage } from "@/lib/language-context";
+import { useTranslation } from "@/hooks/useTranslations";
 
 interface LessonPlayerPageProps {
   course: Course;
@@ -28,6 +31,14 @@ export default function LessonPlayerPage({
   lessonId,
 }: LessonPlayerPageProps) {
   const [autoplay, setAutoplay] = useState(true);
+  const router = useRouter();
+  const t = useTranslation();
+  const { lang } = useLanguage();
+
+  const num = (value: string | number) =>
+    lang === "km" ? toKhmerNumerals(value) : String(value);
+  const lessonPositionLabel = (index: number, total: number) =>
+    `${t.lessonPlayer.positionPrefix} ${num(index)} ${t.lessonPlayer.positionMiddle} ${num(total)}`;
 
   const chapters = course.curriculum ?? [];
   const found = findLessonById(chapters, lessonId);
@@ -60,9 +71,14 @@ export default function LessonPlayerPage({
   const lessonTitle =
     found?.lesson.title ??
     sectionLesson?.lesson.title.replace(/^\d+\.\s*/, "") ??
-    "Introduction to HTML";
+    t.lessonPlayer.lessonFallback;
   const sectionLabel =
-    found?.chapter.title ?? sectionLesson?.section.title ?? "Section 1";
+    found?.chapter.title ??
+    sectionLesson?.section.title ??
+    t.lessonPlayer.chapterFallback;
+  const levelLabel = course.level
+    ? t.courses.card.level[course.level]
+    : t.courses.card.level.BEGINNER;
 
   // find the lesson's position (e.g. "Lesson 6 of 12") across all chapters
   const flatLessons =
@@ -72,12 +88,24 @@ export default function LessonPlayerPage({
   const lessonIndex = flatLessons.findIndex((l) => l.id === lessonId);
   const nextLesson =
     lessonIndex >= 0 ? flatLessons[lessonIndex + 1] : undefined;
+  const nextLessonHref = nextLesson
+    ? `/courses/${course.slug || course.id}/learn/${nextLesson.id}`
+    : undefined;
+
+  // Autoplay: when the current video ends and the toggle is on, advance to the
+  // next lesson. `autoplay` is read at call time so toggling it mid-video works.
+  const handleVideoEnded = () => {
+    if (autoplay && nextLessonHref) {
+      router.push(nextLessonHref);
+    }
+  };
+
   const lessonPosition =
     lessonIndex >= 0
-      ? `Lesson ${lessonIndex + 1} of ${flatLessons.length}`
-      : "Lesson 1 of 12";
+      ? lessonPositionLabel(lessonIndex + 1, flatLessons.length)
+      : lessonPositionLabel(1, Math.max(flatLessons.length, 1));
   const nextLessonPosition = nextLesson
-    ? `Lesson ${lessonIndex + 2} of ${flatLessons.length}`
+    ? lessonPositionLabel(lessonIndex + 2, flatLessons.length)
     : lessonPosition;
 
   return (
@@ -91,19 +119,23 @@ export default function LessonPlayerPage({
               poster={course.image}
               title={lessonTitle}
               autoplay={autoplay}
+              onEnded={handleVideoEnded}
             />
 
             <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
               <LessonHeader
+                videoId={lessonId}
+                courseId={course.id}
                 title={lessonTitle}
                 sectionLabel={sectionLabel}
                 lessonPosition={lessonPosition}
-                level="Beginner"
-                likeCount={128}
+                level={levelLabel}
               />
             </div>
 
-            <DiscussionSection comments={comments} totalCount={15} />
+            <Suspense fallback={null}>
+              <QASection videoId={lessonId} />
+            </Suspense>
           </div>
 
           {/* Right Sidebar Section */}
@@ -112,6 +144,7 @@ export default function LessonPlayerPage({
               sections={sections}
               totalLessons={totalLessons}
               courseId={course.id}
+              courseSlug={course.slug || course.id}
             />
             <UpNextCard
               thumbnail={course.image}
@@ -123,11 +156,7 @@ export default function LessonPlayerPage({
               duration={nextLesson?.duration ?? "10:00"}
               autoplay={autoplay}
               onAutoplayChange={setAutoplay}
-              href={
-                nextLesson
-                  ? `/courses/${course.id}/learn/${nextLesson.id}`
-                  : undefined
-              }
+              href={nextLessonHref}
             />
           </div>
         </div>

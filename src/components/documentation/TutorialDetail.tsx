@@ -46,8 +46,13 @@ function createLessons(sections: TutorialSection[]): TutorialLesson[] {
 
     const isDirect =
       section.contentMode === "DIRECT" || subsections.length === 0;
+    // Blocks (a quiz, an intro paragraph, …) can be attached straight to a
+    // section even when it also has subsections. Those must still get a
+    // lesson of their own, otherwise anything the admin adds at the section
+    // level is unreachable in the reader.
+    const hasOwnBlocks = (section.blocks ?? []).length > 0;
 
-    if (isDirect) {
+    if (isDirect || hasOwnBlocks) {
       lessons.push({
         id: section.id,
         sectionId: section.id,
@@ -308,9 +313,8 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
 
       <div className="mx-auto grid min-h-screen max-w-[1720px] lg:grid-cols-[340px_minmax(0,1fr)]">
         <aside
-          className={`fixed inset-y-0 left-0 z-50 w-[286px] transform border-r border-slate-200 bg-slate-50/95 shadow-2xl transition-transform duration-300 ease-out lg:sticky lg:top-0 lg:z-20 lg:h-screen lg:w-auto lg:translate-x-0 lg:shadow-none dark:border-slate-800 dark:bg-slate-950 ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className={`fixed inset-y-0 left-0 z-50 w-[286px] transform border-r border-slate-200 bg-slate-50/95 shadow-2xl transition-transform duration-300 ease-out lg:sticky lg:top-0 lg:z-20 lg:h-screen lg:w-auto lg:translate-x-0 lg:shadow-none dark:border-slate-800 dark:bg-slate-950 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
         >
           <button
             type="button"
@@ -321,7 +325,8 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
             <X className="h-4 w-4" />
           </button>
 
-          <div className="h-full overflow-y-auto overscroll-contain">
+          {/* <div className="h-full overflow-y-auto overscroll-contain"> */}
+          <div className="h-full overflow-y-auto overscroll-contain [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-300 dark:[&::-webkit-scrollbar-thumb]:bg-slate-700 hover:[&::-webkit-scrollbar-thumb]:bg-slate-400 dark:hover:[&::-webkit-scrollbar-thumb]:bg-slate-600">
             <SidebarLeftLesson
               sections={sections}
               activeLessonId={activeLesson.id}
@@ -344,6 +349,11 @@ export default function TutorialDetail({ tutorialId }: { tutorialId: string }) {
 
               {lessonBlocks.length > 0 ? (
                 <QuizResultsProvider
+                  // Remount per lesson so quiz state (active question, quiz
+                  // ids, attempt id, results) never leaks from the previously
+                  // viewed lesson — a stale activeQuizId hides every quiz on
+                  // the next lesson.
+                  key={activeLesson.id}
                   total={
                     lessonBlocks.filter(
                       (block) => block.type.trim().toUpperCase() === "QUIZ",

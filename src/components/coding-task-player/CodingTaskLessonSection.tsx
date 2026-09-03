@@ -22,29 +22,10 @@ import {
   useGetAllTutorialCodingTasksQuery,
 } from "@/redux/service/coding-task-player-api";
 import { getChallengeUIConfig } from "@/utils/coding-task-ui";
+import { getApiErrorMessage } from "@/lib/api/error";
 
 function codingTaskErrorMessage(error: unknown): string {
-  if (error && typeof error === "object") {
-    if ("status" in error) {
-      const status = (error as { status?: unknown }).status;
-      if (status === "FETCH_ERROR" || status === "TIMEOUT_ERROR") {
-        return "Could not reach the server. Check your connection and try again.";
-      }
-      if (typeof status === "number") {
-        return `The server responded with an error (status ${status}). Please try again.`;
-      }
-    }
-    const data = (error as { data?: unknown }).data;
-    if (
-      data &&
-      typeof data === "object" &&
-      "message" in data &&
-      typeof (data as { message?: unknown }).message === "string"
-    ) {
-      return (data as { message: string }).message;
-    }
-  }
-  return "Please try again in a moment.";
+  return getApiErrorMessage(error, "Please try again in a moment.");
 }
 
 function isUnauthorizedError(error: unknown): boolean {

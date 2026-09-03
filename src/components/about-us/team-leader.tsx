@@ -122,9 +122,9 @@ export default function dTeamLeader() {
                   {leader.position}
                 </span>
 
-                {/* Description / Bio */}
+                {/* Description / Bio with Clean Inline Quote Wrapping */}
                 <p className="text-[16px] font-khmer text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
-                  " {leader.bio} "
+                  {`"${leader.bio}"`}
                 </p>
 
                 {/* Social Icons */}

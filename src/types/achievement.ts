@@ -85,6 +85,8 @@ export interface UserSummary {
   badges: number;
   score: number;
   certificates: number;
+  username?: string;
+  institution?: string;
 }
 
 export interface AchievementBadge {

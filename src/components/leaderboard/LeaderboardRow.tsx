@@ -25,10 +25,23 @@ const topRankBadges: Record<
 
 export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
   const topRankBadge = topRankBadges[entry.rank];
+  const profileHref = entry.userId
+    ? `/players/${encodeURIComponent(entry.userId)}?${new URLSearchParams({
+        name: entry.name,
+        avatarUrl: entry.avatarUrl,
+        rank: String(entry.rank),
+        xp: String(entry.xp),
+      }).toString()}`
+    : undefined;
 
   return (
-    <div
-      className={`my-1 grid grid-cols-[2.25rem_minmax(0,1fr)_auto] items-center gap-2 rounded-2xl border p-2.5 transition-all duration-300 sm:gap-3 sm:p-2 ${
+    <Link
+      href={profileHref ?? "#"}
+      aria-disabled={!profileHref}
+      onClick={(event) => {
+        if (!profileHref) event.preventDefault();
+      }}
+      className={`my-1 grid grid-cols-[7.5rem_minmax(0,1fr)] items-center gap-2 rounded-2xl border p-3 transition-all duration-300 sm:grid-cols-[8.5rem_minmax(0,1fr)_auto] sm:gap-3 sm:p-2 ${
         entry.isCurrentUser
           ? "bg-primary-color  border-primary-color/60 shadow-md "
           : "bg-white dark:bg-slate-900 border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60"

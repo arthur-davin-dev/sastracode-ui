@@ -3,12 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ClaimCertificateCard } from "@/components/certificate/ClaimCertificateCard";
 import { CourseCompletionProbe } from "@/components/certificate/CourseCompletionProbe";
@@ -18,7 +13,6 @@ import {
   GraduationCap,
   LockKeyhole,
   AlertTriangle,
-  Hourglass,
   CheckCircle2,
 } from "lucide-react";
 import type { EnrollmentResponse } from "@/types/api/course";
@@ -53,7 +47,7 @@ function ClaimList({
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
       {enrollments.map((enrollment, i) => (
         <motion.div
           key={enrollment.id}
@@ -61,7 +55,10 @@ function ClaimList({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.1, duration: 0.4 }}
         >
-          <ClaimCertificateCard courseId={enrollment.courseId} />
+          <ClaimCertificateCard
+            courseId={enrollment.courseId}
+            slug={enrollment.courseSlug ?? enrollment.courseId}
+          />
         </motion.div>
       ))}
     </div>
@@ -160,7 +157,7 @@ export function ClaimCertificateSection() {
             </button>
           </div>
         ) : isLoading ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             {[1, 2].map((i) => (
               <div
                 key={i}

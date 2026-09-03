@@ -8,10 +8,9 @@ import {
   BookOpen,
   Code2,
   PlayCircle,
-  Sparkles,
 } from "lucide-react";
 
-import { buttonVariants } from "@/components/ui/button";
+// import { buttonVariants } from "@/components/ui/button";
 import { useTranslation } from "@/hooks/useTranslations";
 
 function TypingCursor() {
@@ -28,7 +27,9 @@ function TypingWelcome({ text }: { text: string }) {
 
   useEffect(() => {
     setVisibleText("");
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     if (reduceMotion) {
       const welcomeTimer = window.setTimeout(() => setVisibleText(text), 0);
       return () => window.clearTimeout(welcomeTimer);
@@ -76,24 +77,24 @@ function TypingTitle({
   firstLine: string;
   secondLine: string;
 }) {
-  const fullTitle = `${firstLine}\n${secondLine}`;
-  const [visibleTitle, setVisibleTitle] = useState("");
+  const [visibleSecondLine, setVisibleSecondLine] = useState("");
 
   useEffect(() => {
-    setVisibleTitle("");
+    setVisibleSecondLine("");
+
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
     if (reduceMotion) {
-      const showTitleTimer = window.setTimeout(
-        () => setVisibleTitle(fullTitle),
-        0,
-      );
-      return () => window.clearTimeout(showTitleTimer);
+      const timer = window.setTimeout(() => {
+        setVisibleSecondLine(secondLine);
+      }, 0);
+
+      return () => window.clearTimeout(timer);
     }
 
-    const characters = Array.from(fullTitle);
+    const characters = Array.from(secondLine);
 
     let index = 0;
     let deleting = false;
@@ -102,21 +103,30 @@ function TypingTitle({
     const type = () => {
       index += deleting ? -1 : 1;
 
-      setVisibleTitle(characters.slice(0, index).join(""));
+      setVisibleSecondLine(
+        characters.slice(0, index).join(""),
+      );
 
+      // Finished typing
       if (!deleting && index === characters.length) {
         deleting = true;
+
         timer = window.setTimeout(type, 3000);
         return;
       }
 
+      // Finished deleting
       if (deleting && index === 0) {
         deleting = false;
+
         timer = window.setTimeout(type, 700);
         return;
       }
 
-      timer = window.setTimeout(type, deleting ? 30 : 60);
+      timer = window.setTimeout(
+        type,
+        deleting ? 30 : 60,
+      );
     };
 
     timer = window.setTimeout(type, 400);
@@ -126,10 +136,7 @@ function TypingTitle({
         window.clearTimeout(timer);
       }
     };
-  }, [fullTitle]);
-
-  const hasSecondLine = visibleTitle.includes("\n");
-  const [firstVisible = "", secondVisible = ""] = visibleTitle.split("\n");
+  }, [secondLine]);
 
   return (
     <h1
@@ -137,37 +144,25 @@ function TypingTitle({
       className="
         relative
         max-w-3xl
-        text-3xl
+        text-[36px]
         font-bold
         leading-[1.45]
         tracking-tight
-        text-[#002455]
-        dark:text-white
-        sm:text-4xl
-        lg:text-5xl
+        text-primary-color
+        sm:text-3xl
+        lg:text-[48px]
         lg:leading-[1.4]
       "
     >
-      {/* Invisible full title keeps heading height stable */}
-      <span aria-hidden="true" className="invisible">
+      {/* First line - STATIC */}
+      <span className="block">
         {firstLine}
-
-        <span className="block">{secondLine}</span>
       </span>
 
-      {/* Animated text */}
-      <span aria-hidden="true" className="absolute inset-0">
-        <span>
-          {firstVisible}
-
-          {!hasSecondLine && <TypingCursor />}
-        </span>
-
-        <span className="block text-[#F51518]">
-          {secondVisible}
-
-          {hasSecondLine && <TypingCursor />}
-        </span>
+      {/* Second line - TYPING */}
+      <span className="block text-secondary-color">
+        {visibleSecondLine}
+        <TypingCursor />
       </span>
     </h1>
   );
@@ -200,7 +195,6 @@ export default function CourseBanner() {
         lg:py-8
       "
     >
-
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
           {/* ================= LEFT ================= */}
@@ -214,20 +208,18 @@ export default function CourseBanner() {
                 gap-2
                 rounded-full
                 border
-                border-[#002455]/10
-                bg-[#002455]/5
+                border-primary-color/10
+                bg-primary-color/5
                 px-4
-                py-2
-                text-lg
+                py-1.5
+                text-sm
                 font-semibold
-                text-[#002455]
-                dark:border-blue-400/20
-                dark:bg-blue-400/10
-                dark:text-blue-300
+                text-primary-color
+                dark:border-primary-color/20
+                dark:bg-primary-color/10
+                dark:text-primary-color
               "
             >
-              <Sparkles className="h-5 w-5 shrink-0" />
-
               <TypingWelcome text={banner.welcomeText} />
             </div>
 
@@ -242,12 +234,13 @@ export default function CourseBanner() {
               className="
                 mt-6
                 max-w-2xl
-                text-lg
-                leading-8
+                text-base
+                leading-7
                 text-slate-600
                 dark:text-slate-300
-                lg:text-xl
-                lg:leading-9
+                !text-[20px]
+                sm:!text-[24px]
+                sm:leading-8
               "
             >
               {banner.description}
@@ -262,7 +255,7 @@ export default function CourseBanner() {
                     flex
                     items-center
                     gap-3
-                    text-base xl:text-lg
+                    text-sm xl:text-base
                     font-medium
                     text-slate-700
                     dark:text-slate-300
@@ -277,10 +270,10 @@ export default function CourseBanner() {
                       items-center
                       justify-center
                       rounded-xl
-                      bg-[#002455]/5
-                      text-[#002455]
-                      dark:bg-blue-400/10
-                      dark:text-blue-300
+                      bg-primary-color/5
+                      text-primary-color
+                      dark:bg-primary-color/10
+                      dark:text-primary-color
                     "
                   >
                     <Icon className="h-5 w-5" />
@@ -292,42 +285,47 @@ export default function CourseBanner() {
             </div>
 
             {/* CTA */}
+            {/* CTA */}
             <div className="mt-9 flex flex-wrap items-center gap-4">
               <Link
                 href="#latest-courses"
-                className={`
-                  ${buttonVariants({
-                  variant: "default",
-                  size: "lg",
-                })}
-                  group
-                  h-12
-                  rounded-full
-                  bg-[#0B2B66]
-                  px-8
-                  text-lg
-                  font-semibold
-                  text-white
-                  shadow-sm
-                  transition-all
-                  duration-300
-                  hover:bg-blue-900
-                  hover:text-white
-                  dark:hover:bg-blue-700
-                  active:scale-[0.98]
-                `}
+                className="
+      group
+      inline-flex
+      min-w-[12rem]
+      lg:min-w-[16rem]
+      items-center
+      justify-center
+      gap-2
+      rounded-full
+      bg-primary-color
+      px-6
+      sm:px-10
+      py-3
+      sm:py-4
+      text-xs
+      sm:text-base
+      font-semibold
+      text-white
+      shadow-sm
+      transition-all
+      duration-300
+      hover:bg-primary-color/90
+      hover:text-white
+      active:scale-[0.98]
+    "
               >
                 <span className="whitespace-nowrap">{banner.cta}</span>
 
                 <ArrowRight
                   className="
-                    h-5
-                    w-5
-                    shrink-0
-                    transition-transform
-                    duration-300
-                    group-hover:translate-x-1
-                  "
+        h-5
+        w-5
+        shrink-0
+        transition-transform
+        duration-300
+        group-hover:translate-x-1
+      "
                 />
               </Link>
             </div>

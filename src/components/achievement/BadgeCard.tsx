@@ -241,6 +241,8 @@ export function BadgeCard({ badge }: { badge: AchievementBadge }) {
             <img
               src={badge.iconUrl || "/images/Margin3.png"}
               alt={badge.name}
+              loading="lazy"
+              decoding="async"
               onError={(e) => {
                 const img = e.currentTarget;
                 if (img.src.endsWith("/images/Margin3.png")) return;

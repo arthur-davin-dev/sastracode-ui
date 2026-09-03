@@ -12,40 +12,105 @@ export default function Footer() {
   return (
     <footer className="relative z-10 w-full bg-white dark:bg-slate-950 text-primary-color dark:text-slate-300 font-sans text-sm pt-6 pb-6 px-6 md:px-16 border-t border-gray-100 dark:border-slate-800/80 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
-        {/* Upper Footer Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-4 text-center md:text-left">
+        {/* Sponsors Section */}
+        <div className="pb-6 mb-6">
+          <h4 className="text-center text-primary-color dark:text-slate-100 font-bold font-khmer text-[22px] pb-6">
+            {currentT.footer.sponsor}
+          </h4>
+
+          {/* Responsive Sponsors Grid (Moderately tightened gap on mobile) */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-6 items-center justify-items-center">
+            {/* ISTAD Logo */}
+            <Link
+              href="https://istad.co/"
+              className="h-16 sm:h-24 w-full flex items-center justify-center transition-opacity hover:opacity-85"
+            >
+              <Image
+                src="/images/istad_white_logo.png"
+                alt="ISTAD Logo"
+                width={200}
+                height={70}
+                className="object-contain max-h-14 sm:max-h-16 w-auto dark:hidden"
+              />
+              <Image
+                src="/images/istad_dark_logo.png"
+                alt="ISTAD Logo"
+                width={200}
+                height={70}
+                className="object-contain max-h-14 sm:max-h-16 w-auto hidden dark:block"
+              />
+            </Link>
+
+            {/* MPTC Logo */}
+            <Link
+              href="http://mptc.gov.kh/en/"
+              className="h-16 sm:h-24 w-full flex items-center justify-center transition-opacity hover:opacity-85"
+            >
+              <Image
+                src="/images/mptc_white_logo.png"
+                alt="Ministry of Post and Telecommunications Logo"
+                width={320}
+                height={100}
+                className="object-contain max-h-16 sm:max-h-24 w-auto dark:hidden"
+              />
+              <Image
+                src="/images/mptc_dark_logo.png"
+                alt="Ministry of Post and Telecommunications Logo"
+                width={320}
+                height={100}
+                className="object-contain max-h-16 sm:max-h-24 w-auto hidden dark:block"
+              />
+            </Link>
+
+            {/* CBRD FUND Logo */}
+            <Link
+              href="http://mptc.gov.kh/en/"
+              className="h-16 sm:h-24 w-full flex items-center justify-center transition-opacity hover:opacity-85"
+            >
+              <Image
+                src="/images/cbrd_white_logo.png"
+                alt="CBRD Fund Logo"
+                width={200}
+                height={70}
+                className="object-contain max-h-14 sm:max-h-16 w-auto dark:hidden"
+              />
+              <Image
+                src="/images/cbrd_dark_logo.png"
+                alt="CBRD Fund Logo"
+                width={200}
+                height={70}
+                className="object-contain max-h-14 sm:max-h-16 w-auto hidden dark:block"
+              />
+            </Link>
+          </div>
+        </div>
+
+        {/* Links & Brand Info Section */}
+        <div className="pt-6 border-t border-gray-100 dark:border-slate-800/80 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-4 text-center md:text-left">
           {/* Column 1: Brand Info */}
-          <div className="flex flex-col items-center md:items-start text-center md:text-left space-y-2">
-            {/* SastraCode Logo */}
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <Link
               href="/"
               aria-label="Go to home"
-              className="flex items-center"
+              className="inline-block mb-3"
             >
-              {/* Increased size from w-20 h-20 (80px) to w-28 h-28 (112px) */}
-              <div className="w-28 h-28 relative shrink-0">
-                <Image
-                  src="/images/sastraCode.png"
-                  alt="SastraCode Logo"
-                  width={112}
-                  height={112}
-                  className="object-contain cursor-pointer transition-transform duration-200 hover:scale-105"
-                />
-              </div>
+              <Image
+                src="/images/sastraCode.png"
+                alt="SastraCode Logo"
+                width={144}
+                height={144}
+                className="object-contain cursor-pointer transition-transform duration-200 hover:scale-105 h-auto w-36"
+              />
             </Link>
 
-            {/* Description */}
-            <p className="text-xs font-khmer text-primary-color dark:text-slate-300 leading-relaxed max-w-xs text-[18px]">
-              <span className="font-sans text-[18px] text-primary-color dark:text-slate-100 font-semibold">
-                SastraCode
-              </span>{" "}
-              {currentT.footer.description}
-            </p>
+            <h3 className="font-bold text-[22px] text-primary-color dark:text-slate-100 font-sans mb-4">
+              SastraCode
+            </h3>
           </div>
 
           {/* Column 2: Quick Links */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
-            <h3 className="font-bold font-khmer text-primary-color dark:text-slate-100 text-base mb-4 text-[22px]">
+            <h3 className="font-bold font-khmer text-primary-color dark:text-slate-100 mb-4 text-[22px]">
               {currentT.footer.quickLinks.title}
             </h3>
 
@@ -70,7 +135,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/about-us"
+                  href="/contact-us"
                   className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
                   {currentT.footer.quickLinks.contact}
@@ -79,7 +144,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 3: Study / Courses */}
+          {/* Column 3: Study */}
           <div className="flex flex-col items-center md:items-start text-center md:text-left">
             <h3 className="font-bold text-[22px] text-primary-color dark:text-slate-100 mb-4 font-khmer">
               {currentT.footer.study.title}
@@ -89,7 +154,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/documentation"
-                  className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
+                  className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
                   {currentT.footer.study.lesson}
                 </Link>
@@ -98,7 +163,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/playground"
-                  className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
+                  className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
                   {currentT.footer.study.playground}
                 </Link>
@@ -107,7 +172,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/function"
-                  className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-sans text-[18px]"
+                  className="hover:text-secondary-color dark:hover:text-blue-400 transition-colors font-khmer text-[18px]"
                 >
                   {currentT.footer.study.feature}
                 </Link>
@@ -127,13 +192,12 @@ export default function Footer() {
                 <a
                   href="mailto:sastracode.edu@gmail.com"
                   onClick={(e) => {
-                    // Fallback: If user isn't on mobile and might not have a desktop app, open Gmail web directly
                     if (!/Mobi|Android/i.test(navigator.userAgent)) {
                       e.preventDefault();
                       window.open(
                         "https://mail.google.com/mail/?view=cm&fs=1&to=sastracode.edu@gmail.com",
                         "_blank",
-                        "noopener,noreferrer",
+                        "noopener,noreferrer"
                       );
                     }
                   }}
@@ -154,91 +218,12 @@ export default function Footer() {
                 >
                   <MapPin className="w-4 h-4 text-primary-color dark:text-slate-300 group-hover:text-secondary-color dark:group-hover:text-blue-400 shrink-0 mt-1.5 transition-colors" />
 
-                  <span className="text-[18px] leading-snug">
+                  <span className="text-[18px] leading-snug font-khmer">
                     {currentT.footer.contact.address}
                   </span>
                 </a>
               </li>
             </ul>
-          </div>
-        </div>
-
-        {/* Middle Section */}
-        <div className="pt-6 pb-6 border-t border-gray-100 dark:border-slate-800/80">
-          <h4 className="text-center text-primary-color dark:text-slate-100 font-bold font-khmer text-[22px] pb-6">
-            {currentT.footer.sponsor}
-          </h4>
-
-          {/* Responsive Sponsors Grid: 1 col on phone, 2 on tablet, 3 on desktop */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-center justify-items-center">
-            {/* ISTAD Logo with Navigation */}
-            <Link
-              href="https://istad.co/"
-              className="h-16 flex items-center justify-center transition-opacity hover:opacity-85"
-            >
-              {/* Light Mode Logo */}
-              <Image
-                src="/images/istad_white_logo.png"
-                alt="ISTAD Logo"
-                width={180}
-                height={60}
-                className="object-contain max-h-16 w-auto dark:hidden"
-              />
-              {/* Dark Mode Logo */}
-              <Image
-                src="/images/istad_dark_logo.png"
-                alt="ISTAD Logo"
-                width={180}
-                height={60}
-                className="object-contain max-h-16 w-auto hidden dark:block"
-              />
-            </Link>
-
-            {/* MPTC */}
-            <Link
-              href="http://mptc.gov.kh/en/"
-              className="h-18 py-0.5 flex items-center justify-center transition-opacity hover:opacity-85"
-            >
-              {/* Light Mode Logo */}
-              <Image
-                src="/images/mptc_white_logo.png"
-                alt="Ministry of Post and Telecommunications Logo"
-                width={260}
-                height={80}
-                className="object-contain h-full w-auto dark:hidden"
-              />
-              {/* Dark Mode Logo */}
-              <Image
-                src="/images/mptc_dark_logo.png"
-                alt="Ministry of Post and Telecommunications Logo"
-                width={260}
-                height={80}
-                className="object-contain h-full w-auto hidden dark:block"
-              />
-            </Link>
-
-            {/* CBRD FUND */}
-            <Link
-              href="http://mptc.gov.kh/en/"
-              className="h-16 flex items-center justify-center md:col-span-2 lg:col-span-1 transition-opacity hover:opacity-85"
-            >
-              {/* Light Mode Logo */}
-              <Image
-                src="/images/cbrd_white_logo.png"
-                alt="CBRD Fund Logo"
-                width={180}
-                height={60}
-                className="object-contain max-h-16 w-auto dark:hidden"
-              />
-              {/* Dark Mode Logo */}
-              <Image
-                src="/images/cbrd_dark_logo.png"
-                alt="CBRD Fund Logo"
-                width={180}
-                height={60}
-                className="object-contain max-h-16 w-auto hidden dark:block"
-              />
-            </Link>
           </div>
         </div>
 

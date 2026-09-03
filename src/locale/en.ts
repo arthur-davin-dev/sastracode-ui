@@ -1,6 +1,6 @@
 export const en = {
   banner: {
-    badge: "LEARN. CODE. BUILD THE FUTURE.",
+    badge: "LEARN. CODE. NOW",
     title1: "Start Learning ",
     title2: "Coding & ",
     title3: "Building Skills ",
@@ -21,10 +21,65 @@ export const en = {
     startLearning: "Start Learning",
   }, platformShowcase: {
     features: [
-      { title: "Learn with Interactive Docs" },
-      { title: "Get AI-Powered Help" },
-      { title: "Practice & Test Your Skills" },
-      { title: "Track Progress & Earn Rewards" },
+      {
+        title: "Interactive Docs",
+        description:
+          "Browse structured docs with examples and code snippets.",
+      },
+      {
+        title: "AI-Powered Help",
+        description:
+          "Ask questions and get smart, instant code explanations.",
+      },
+      {
+        title: "Practice & Test Skills",
+        description:
+          "Solve tasks, take quizzes, and test yourself live.",
+      },
+      {
+        title: "Progress & Rewards",
+        description:
+          "Earn XP, unlock badges, and climb the leaderboard.",
+      },
+    ],
+  },
+
+  learningShowcase: {
+    titleLead: "Learning Code. ",
+    titleHighlight: "Building Future.",
+    subtitleLine1:
+      "SastraCode is your all-in-one documentation and learning platform.",
+    subtitleLine2:
+      "Learn, practice, and level up with interactive docs, AI coaching, quizzes, and more.",
+    cards: [
+      {
+        title: "Learn with Interactive Docs",
+        description:
+          "Structured docs with examples, explanations, and ready-to-use code snippets.",
+      },
+      {
+        title: "Get AI-Powered Help",
+        description:
+          "Ask questions and get instant code explanations and smart hints when stuck.",
+      },
+      {
+        title: "Practice & Test Your Skills",
+        description:
+          "Solve coding tasks, take quizzes, and tackle real-world problems.",
+      },
+      {
+        title: "Track Progress & Earn Rewards",
+        description:
+          "Earn XP, unlock badges, and climb the leaderboard as you grow.",
+      },
+    ],
+    capabilities: [
+      { line1: "Multi-language", line2: "Playground" },
+      { line1: "Video Lessons", line2: "& Courses" },
+      { line1: "Coding Games", line2: "& Challenges" },
+      { line1: "Badges &", line2: "Certificates" },
+      { line1: "Leaderboard", line2: "& Community" },
+      { line1: "Powerful Search", line2: "& Navigation" },
     ],
   },
 
@@ -281,12 +336,232 @@ export const en = {
     card: {
       viewCourse: "View Course",
       privateCourse: "Private Course",
+      level: {
+        BEGINNER: "Beginner",
+        INTERMEDIATE: "Intermediate",
+        ADVANCED: "Advanced",
+      },
+      access: {
+        free: "Free",
+        premium: "Premium",
+        private: "Private",
+      },
+      lessonsUnit: "lessons",
+      noDescription: "No description yet",
+      defaultInstructor: "SastraCode Instructor",
+      instructorAlt: "Instructor",
+      bookmark: {
+        add: "Bookmark course",
+        remove: "Remove course bookmark",
+        signInRequired: "Please sign in to bookmark this course.",
+        added: "Course saved to bookmarks.",
+        removed: "Course removed from bookmarks.",
+        error: "Unable to update this bookmark. Please try again.",
+      },
     },
     states: {
       loading: "Loading courses",
       error: "Unable to load courses",
       retry: "Try Again",
       empty: "No courses match your search",
+    },
+    detail: {
+      notFound: {
+        title: "Course not found",
+        description: "Unable to load the course information from the API.",
+        back: "Back to Courses",
+      },
+      private: {
+        description:
+          "This course is not shown publicly. Go to your Dashboard to view the PRIVATE courses you have been granted access to.",
+        myPrivateCourses: "My Private Courses",
+      },
+      instructorLabel: "Instructor",
+      summary: {
+        heading: "Course Summary",
+      },
+      curriculum: {
+        heading: "Course Curriculum",
+        chaptersUnit: "chapters",
+        totalLessonsUnit: "total lessons",
+        empty: "This course has no sections or videos to display yet.",
+      },
+      purchase: {
+        freePrice: "Free",
+        privatePrice: "Private access",
+        courseFallback: "Course",
+        checking: "Checking...",
+        processing: "Processing...",
+        startLearning: "Start Learning Now",
+        privateRight: "Private Access",
+        buyCourse: "Buy Course",
+        enrollNow: "Enroll Now",
+        freeCourse: "Free course",
+        premiumNotice: "You must buy this course before you can start learning",
+        privateNotice: "Requires permission from an administrator",
+        noLessonAvailable: "This course has no lessons available to study yet.",
+        privateNeedsPermission:
+          "PRIVATE courses require permission from an administrator.",
+        enrollSuccess: "Successfully enrolled in the course",
+        enrollError: "Unable to enroll in the course",
+        purchaseSuccess: "Course purchased and enrolled successfully",
+      },
+      payment: {
+        title: "Course Payment",
+        subtitle: "Enter your payment details",
+        orderSummary: "Order Summary",
+        originalPrice: "Original price",
+        discount: "Discount",
+        youSave: "You save",
+        total: "Total",
+        method: "Payment Method",
+        cardOption: "Credit / Debit Card",
+        demoPayment: "Demo payment",
+        cardName: "Name on card",
+        cardNamePlaceholder: "SOK DARA",
+        cardNumber: "Card number",
+        expiry: "Expiry",
+        cvv: "CVV",
+        demoNotice:
+          "This is a Demo Payment only. Card details are not sent to the backend.",
+        buying: "Buying...",
+        buyNow: "Buy Now",
+        errorCardName: "Please enter the name on the card",
+        errorCardNumber: "Please enter a valid card number",
+        errorExpiry: "Please enter the card expiry date",
+        errorCvv: "Please enter a valid CVV",
+        purchaseFailed: "Unable to buy the course. Please try again.",
+        successTitle: "Purchase Successful",
+        successDescription: "You have successfully enrolled in the course.",
+        courseLabel: "Course",
+        done: "Done",
+      },
+    },
+  },
+
+  lessonSidebar: {
+    heading: "Course Content",
+    progressTitle: "Learning Progress",
+    completedPrefix: "Completed",
+    completedMiddle: "of",
+    completedSuffix: "videos",
+    previous: "Previous",
+    next: "Next",
+    nowPlaying: "Now playing",
+    watched: "Watched",
+  },
+
+  lessonPlayer: {
+    lessonFallback: "Lesson",
+    chapterFallback: "Chapter",
+    positionPrefix: "Lesson",
+    positionMiddle: "of",
+    markAsDone: "Mark as done",
+    saving: "Saving...",
+    completed: "Completed",
+    completedAria: "This lesson is completed",
+    completeToast: "Congratulations! You completed this lesson",
+    progressError: "Unable to update your progress",
+    video: {
+      unavailableTitle: "Video unavailable",
+      unavailableDescription:
+        "Add a video URL to this lesson to start playback.",
+      notSupported: "Your browser does not support HTML video playback.",
+    },
+    upNext: {
+      heading: "Up Next",
+      autoplay: "Autoplay",
+      autoplayToggleAria: "Toggle autoplay",
+      playNext: "Play next lesson",
+      noNext: "No next lesson",
+    },
+    states: {
+      courseErrorTitle: "Unable to open this course",
+      courseErrorDescription: "Check your connection or try again later.",
+      backToCourse: "Back to Courses",
+      contentErrorTitle: "Unable to load lesson content",
+      contentErrorDescription:
+        "The course content is not available yet. Please try again.",
+      viewCourseInfo: "View course info",
+      noAccessTitle: "You don't have access to this course yet",
+      noAccessDescription:
+        "This private course requires approval before you can view its lessons.",
+      viewMyPrivateCourses: "View my private courses",
+      lessonNotFoundTitle: "Lesson not found",
+      lessonNotFoundDescription:
+        "The lesson may have been moved or removed from this course.",
+      viewCurriculum: "View course curriculum",
+      lockedTitle: "This lesson is locked",
+      lockedDescription:
+        "Enroll in the course to unlock full access to the lessons.",
+      viewEnrollInfo: "View enrollment info",
+    },
+  },
+
+  qa: {
+    heading: "Questions",
+    tabs: {
+      all: "All questions",
+      open: "Unresolved",
+      resolved: "Resolved",
+      upvoted: "Most popular",
+    },
+    defaultUser: "User",
+    titlePlaceholder: "Question title...",
+    descriptionPlaceholder: "Describe your question in detail...",
+    cancel: "Cancel",
+    submit: "Ask question",
+    submitting: "Sending...",
+    submitSuccess: "Your question has been sent",
+    submitError: "Unable to send the question",
+    loading: "Loading questions...",
+    loadError: "Unable to load questions. Please sign in first.",
+    empty: "No questions for this video yet. Ask the first one!",
+    page: "Page",
+    pageOf: "of",
+    previous: "Previous",
+    next: "Next",
+    resolvedBadge: "Resolved",
+    unresolvedBadge: "Unresolved",
+    save: "Save",
+    questionUpdated: "Question updated",
+    questionUpdateError: "Unable to update the question",
+    questionReopened: "This question was reopened",
+    questionResolved: "This question was resolved",
+    moreOptions: "More options",
+    reopenQuestion: "Reopen question",
+    markResolved: "Mark as resolved",
+    editQuestion: "Edit question",
+    hideAnswers: "Hide answers",
+    noAnswersYet: "No answers yet",
+    answersUnit: "answers",
+    answersHeading: "Answers",
+    loadingAnswers: "Loading answers...",
+    answersLoadError: "Unable to load answers",
+    answersEmpty: "No answers for this question yet. Share your answer.",
+    loadMoreAnswers: "View more answers",
+    loadingMore: "Loading...",
+    answerPlaceholder: "Write your answer...",
+    answerSubmit: "Answer",
+    answerSuccess: "Your answer has been sent",
+    answerError: "Unable to send the answer",
+    acceptedBadge: "Accepted answer",
+    acceptAsAnswer: "Accept as answer",
+    edit: "Edit",
+    answerAccepted: "This answer was accepted as correct",
+    acceptError: "Unable to accept the answer",
+    answerUpdated: "Answer updated",
+    answerUpdateError: "Unable to update the answer",
+    voteError: "Unable to vote",
+    retractVoteAria: "Remove vote",
+    upvoteAria: "Upvote",
+    time: {
+      justNow: "Just now",
+      minutesAgo: "{n} min ago",
+      hoursAgo: "{n} hr ago",
+      daysAgo: "{n} days ago",
+      monthsAgo: "{n} months ago",
+      yearsAgo: "{n} years ago",
     },
   },
 
@@ -597,6 +872,7 @@ export const en = {
 
   docs: {
     searchPlaceholder: "Search topics...",
+    viewAllLessons: "View all lessons",
     sections: {
       introduction: {
         title: "Introduction",
@@ -638,9 +914,66 @@ export const en = {
       html: "Build the structure and foundation of modern web pages.",
       css: "Create beautiful layouts, animations, and visual experiences.",
       javascript: "Add logic, functionality, and interactivity to your websites.",
+      nodejs: "Build fast, scalable servers and APIs with a JavaScript runtime.",
       python: "Learn programming through data, automation, and applications.",
       java: "Build powerful backend and enterprise applications.",
+      tailwind: "Style modern interfaces fast with utility-first CSS classes.",
     },
+  },
+
+  featuresProcess: {
+    header: {
+      title: "Our Proven 4-Step Learning Pathway",
+      subtitle:
+        "From your very first lesson to earning an official credential, follow our structured path to master new tech skills.",
+    },
+    steps: [
+      {
+        id: 1,
+        stepLabel: "1",
+        title: "Video-Led Courses",
+        description: "Expert-led HD video lessons with step-by-step guidance.",
+        badge: "24/7 Access",
+        buttonText: "Explore Courses",
+      },
+      {
+        id: 2,
+        stepLabel: "2",
+        title: "Flexible Learning Paths",
+        description: "Learn at your own pace across all devices.",
+        badge: "Self-Paced",
+        buttonText: "Plan My Path",
+      },
+      {
+        id: 3,
+        stepLabel: "3",
+        title: "Real-World Assessments",
+        description: "Validate skills with quizzes and real code challenges.",
+        badge: "Hands-on",
+        buttonText: "Practice Skills",
+      },
+      {
+        id: 4,
+        stepLabel: "4",
+        title: "Earn Certification",
+        description: "Get official credentials upon completing every course.",
+        badge: "Official Credential",
+        buttonText: "Start Certification",
+      },
+    ],
+  },
+
+  heros: {
+    startBusiness: "Start Online Business",
+    caseStudies: "College Case Studies",
+    learnAnywhere: "Learn Anywhere",
+    anytime: "Anytime",
+    liveCoding: "Live Coding",
+    progressValue: "28 / 35",
+    progress: "Progress",
+    aiAssistTitle: "AI Assistant",
+    aiAssistDesc: "AI supports your learning journey up to",
+    availability: "24 hours",
   },
 
   // NOTE: PLACE YOUR SWITCH LANG ABOVE FOOTER!! THANK YOU.

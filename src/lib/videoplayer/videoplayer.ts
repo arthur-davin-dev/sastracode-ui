@@ -5,13 +5,13 @@ import { CourseSection, Comment, LessonItem } from "@/types/lesson-player";
 export const defaultSections: CourseSection[] = [
   {
     id: "s1",
-    title: "Section 1: HTML Basics",
+    title: "ជំពូកទី ១",
     lessons: [
-      { id: "l1", title: "1. Introduction to HTML", duration: "12:15", status: "completed" },
-      { id: "l2", title: "2. Introduction to CSS", duration: "10:32", status: "upcoming" },
-      { id: "l3", title: "3. CSS Selectors", duration: "10:32", status: "upcoming" },
-      { id: "l4", title: "4. Colors and Typography", duration: "10:32", status: "upcoming" },
-      { id: "l5", title: "5. The CSS Box Model", duration: "10:32", status: "upcoming" },
+      { id: "l1", title: "មេរៀនទី ១", duration: "12:15", status: "upcoming" },
+      { id: "l2", title: "មេរៀនទី ២", duration: "10:32", status: "upcoming" },
+      { id: "l3", title: "មេរៀនទី ៣", duration: "10:32", status: "upcoming" },
+      { id: "l4", title: "មេរៀនទី ៤", duration: "10:32", status: "upcoming" },
+      { id: "l5", title: "មេរៀនទី ៥", duration: "10:32", status: "upcoming" },
     ],
   },
 ];
@@ -42,6 +42,9 @@ export function getTotalLessons(sections: CourseSection[]): number {
 /**
  * Converts a course's Chapter[] curriculum into the CourseSection[] shape
  * the sidebar expects, marking the clicked lesson as "current".
+ *
+ * Every other lesson starts as "upcoming". Real completion is resolved from
+ * the backend video-progress API in the sidebar — it is never assumed here.
  */
 export function buildSectionsFromCurriculum(
   chapters: Chapter[],
@@ -54,12 +57,8 @@ export function buildSectionsFromCurriculum(
       id: lesson.id,
       title: lesson.title,
       duration: lesson.duration,
-      status:
-        lesson.id === currentLessonId
-          ? "current"
-          : lesson.locked
-          ? "upcoming"
-          : "completed",
+      status: lesson.id === currentLessonId ? "current" : "upcoming",
+      thumbnail: lesson.thumbnail,
     })),
   }));
 }

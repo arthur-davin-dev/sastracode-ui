@@ -11,7 +11,8 @@ function TypingTitle({
   firstLine: string;
   secondLine: string;
 }) {
-  const [visibleSecondLine, setVisibleSecondLine] = useState("");
+  const FULL_TITLE = `${TITLE_FIRST_LINE}\n${TITLE_SECOND_LINE}`;
+  const [visibleTitle, setVisibleTitle] = useState("");
 
   useEffect(() => {
     const reduceMotion = window.matchMedia(
@@ -19,14 +20,11 @@ function TypingTitle({
     ).matches;
 
     if (reduceMotion) {
-      const titleTimer = window.setTimeout(
-        () => setVisibleSecondLine(TITLE_SECOND_LINE),
-        0,
-      );
+      const titleTimer = window.setTimeout(() => setVisibleTitle(FULL_TITLE), 0);
       return () => window.clearTimeout(titleTimer);
     }
 
-    const characters = Array.from(TITLE_SECOND_LINE);
+    const characters = Array.from(FULL_TITLE);
 
     let index = 0;
     let deleting = false;
@@ -35,7 +33,7 @@ function TypingTitle({
     const type = () => {
       index += deleting ? -1 : 1;
 
-      setVisibleSecondLine(characters.slice(0, index).join(""));
+      setVisibleTitle(characters.slice(0, index).join(""));
 
       if (!deleting && index === characters.length) {
         deleting = true;
@@ -59,7 +57,10 @@ function TypingTitle({
         window.clearTimeout(timer);
       }
     };
-  }, [TITLE_SECOND_LINE]);
+  }, [FULL_TITLE]);
+
+  const hasSecondLine = visibleTitle.includes("\n");
+  const [firstLine = "", secondLine = ""] = visibleTitle.split("\n");
 
   return (
     <div className="relative">
@@ -90,26 +91,42 @@ function TypingTitle({
           tracking-tight
         "
       >
-        <span
-          aria-hidden="true"
-          className="block text-primary-color dark:text-white"
-        >
-          {TITLE_FIRST_LINE}
+        {/* Line 1: Light mode original color, Dark mode White */}
+        <span aria-hidden="true" className="block text-primary-color ">
+          {firstLine}
+          {!hasSecondLine && (
+            <span
+              className="
+                ml-1
+                inline-block
+                h-[0.9em]
+                w-[3px]
+                animate-pulse
+                bg-secondary-color
+                dark:!bg-white
+                align-[-0.06em]
+              "
+            />
+          )}
         </span>
 
+        {/* Line 2: Light mode original blue, Dark mode exact #F51518 Crimson Red */}
         <span aria-hidden="true" className="block text-secondary-color">
-          {visibleSecondLine}
-          <span
-            className="
-              ml-1
-              inline-block
-              h-[0.9em]
-              w-[3px]
-              animate-pulse
-              bg-primary-color
-              align-[-0.06em]
-            "
-          />
+          {secondLine}
+          {hasSecondLine && (
+            <span
+              className="
+                ml-1
+                inline-block
+                h-[0.9em]
+                w-[3px]
+                animate-pulse
+                bg-primary-color
+                dark:!bg-[#F51518]
+                align-[-0.06em]
+              "
+            />
+          )}
         </span>
       </h1>
     </div>

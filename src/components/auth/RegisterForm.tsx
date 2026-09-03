@@ -8,17 +8,19 @@ import {
   Code2,
   Eye,
   EyeOff,
+  Mail,
+  MailCheck,
   Map,
   Trophy,
 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
+import { getApiErrorMessage } from "@/lib/api/error";
 import { useRegisterMutation } from "@/redux/api/auth-api";
 
 const registerSchema = z
@@ -73,34 +75,21 @@ const registerSchema = z
 
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
-function errorMessage(error: unknown) {
-  if (!error || typeof error !== "object") {
-    return "មិនអាចបង្កើតគណនីបាន";
-  }
-
-  if ("data" in error) {
-    const data = (error as { data?: unknown }).data;
-
-    if (data && typeof data === "object" && "message" in data) {
-      const message = (data as { message?: unknown }).message;
-
-      if (typeof message === "string" && message.trim()) {
-        return message;
-      }
-    }
-  }
-
-  return "មិនអាចបង្កើតគណនីបាន។ សូមព្យាយាមម្ដងទៀត។";
-}
+const REGISTER_FAILED_MESSAGE = "មិនអាចបង្កើតគណនីបាន។ សូមព្យាយាមម្ដងទៀត។";
 
 export default function RegisterForm() {
-  const router = useRouter();
-
   const [registerUser, { isLoading }] = useRegisterMutation();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] =
     useState(false);
+
+  // Set once the backend has accepted the registration and Keycloak has been
+  // asked to send its VERIFY_EMAIL email. From here the frontend does nothing
+  // else — Keycloak owns the verification link, page and the login that follows.
+  const [registeredEmail, setRegisteredEmail] = useState<string | null>(
+    null,
+  );
 
   const {
     register,
@@ -138,27 +127,32 @@ export default function RegisterForm() {
         return;
       }
 
-      // Store email temporarily for verification screen
-      sessionStorage.setItem(
-        "pendingVerificationEmail",
-        values.email.trim(),
-      );
-
       toast.success(
         result.message ||
           "បង្កើតគណនីបានជោគជ័យ។ សូមផ្ទៀងផ្ទាត់អ៊ីមែល។",
       );
 
-      // IMPORTANT:
-      // Do NOT call signIn("keycloak") here.
-      //
-      // Calling signIn here will open Keycloak login first
-      // because there is no Keycloak browser session yet.
-
-      router.replace("/verify-email");
+      // Show the informational message inline. No redirect, no custom
+      // verification page — the next step is the "Verify Email" link in the
+      // Keycloak email, which opens Keycloak's own verification page.
+      setRegisteredEmail(values.email.trim());
     } catch (error) {
-      toast.error(errorMessage(error));
+      toast.error(getApiErrorMessage(error, REGISTER_FAILED_MESSAGE));
     }
+  };
+
+  // Social sign-in routes through Keycloak's own login flow so it stays the
+  // single source of truth for identity linking — same providers as your
+  // login.ftl theme (google / github), hinted via kc_idp_hint.
+  const handleSocialSignIn = (idpHint: "google" | "github") => {
+    // `authorizationParams` is signIn's 3rd positional arg in Auth.js v5, not
+    // a field on the options object — nesting it there silently drops
+    // kc_idp_hint and Keycloak falls back to its own login form.
+    signIn(
+      "keycloak",
+      { redirectTo: "/" },
+      { kc_idp_hint: idpHint },
+    );
   };
 
   return (
@@ -169,21 +163,15 @@ export default function RegisterForm() {
           <div>
             <h1 className="text-[46px] font-extrabold leading-[1.35] xl:text-[52px]">
               <span className="text-[#13235B]">
-                ជំនាញកូដ{" "}
+                កសាងជំនាញកូដ{" "}
               </span>
 
               <span className="text-[#F1524A]">
-                សម្រាប់ថ្ងៃស្អែក
-              </span>
-
-              <br />
-
-              <span className="text-[#F1524A]">
-                ដ៏ល្អប្រសើរ
+                សម្រាប់អនាគតរបស់អ្នក
               </span>
             </h1>
 
-            <p className="mt-4 max-w-lg text-sm leading-7 text-slate-500">
+            <p className="mt-4 max-w-lg text-lg leading-7 text-slate-500">
               រៀន សាកល្បង និងអភិវឌ្ឍជំនាញ Programming
               របស់អ្នក តាមរយៈការអនុវត្តជាក់ស្តែង។
             </p>
@@ -200,12 +188,12 @@ export default function RegisterForm() {
                 <span className="h-3 w-3 rounded-full bg-yellow-400" />
                 <span className="h-3 w-3 rounded-full bg-green-400" />
 
-                <span className="ml-3 text-[11px] font-medium text-slate-400">
+                <span className="ml-3 text-lg font-medium text-slate-400">
                   learning.js
                 </span>
               </div>
 
-              <pre className="px-6 py-5 text-[13px] leading-7 text-slate-700">
+              <pre className="px-6 py-5 text-lg leading-7 text-slate-700">
                 <code>
                   <span className="text-slate-400">
                     01{" "}
@@ -300,7 +288,7 @@ export default function RegisterForm() {
             />
 
             <FeatureCard
-              className="-left-6 bottom-14"
+              className="-left-6 -bottom-5"
               icon={
                 <Code2 className="h-5 w-5 text-blue-500" />
               }
@@ -320,7 +308,7 @@ export default function RegisterForm() {
             />
 
             <FeatureCard
-              className="right-2 bottom-6"
+              className="-right-4 -top-5"
               icon={
                 <Map className="h-5 w-5 text-amber-500" />
               }
@@ -341,24 +329,71 @@ export default function RegisterForm() {
           </div>
         </section>
 
-        {/* RIGHT */}
+      
         <section className="flex flex-1 items-center justify-center bg-white px-5 py-10 sm:px-8 lg:px-14 xl:px-20">
           <div className="w-full max-w-[480px]">
             <Link
+            
               href="/"
-              className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-slate-500 lg:hidden"
+              className="mb-8 inline-flex items-center gap-2 text-lg font-medium text-slate-500 lg:hidden"
             >
               <ArrowLeft className="h-4 w-4" />
               ត្រឡប់ក្រោយ
             </Link>
 
             <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-9">
+              {registeredEmail ? (
+                <div className="py-2 text-center">
+                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-50">
+                    <MailCheck className="h-7 w-7 text-emerald-500" />
+                  </div>
+
+                  <h2 className="mt-6 text-2xl font-extrabold text-[#13235B]">
+                    ចុះឈ្មោះបានជោគជ័យ
+                  </h2>
+
+                  <p className="mt-3 text-lg leading-7 text-slate-500">
+                    សូមពិនិត្យអ៊ីមែលរបស់អ្នក{" "}
+                    <span className="break-all font-semibold text-[#13235B]">
+                      {registeredEmail}
+                    </span>{" "}
+                    ហើយចុចប៊ូតុង &laquo;Verify Email&raquo;
+                    ដើម្បីធ្វើឱ្យគណនីរបស់អ្នកសកម្ម។
+                  </p>
+
+                  <p className="mt-3 text-lg leading-6 text-slate-400">
+                    តំណផ្ទៀងផ្ទាត់ ទំព័រផ្ទៀងផ្ទាត់ និងទំព័រចូលគណនី
+                    ត្រូវបានគ្រប់គ្រងទាំងស្រុងដោយ Keycloak។
+                  </p>
+
+                  <a
+                    href="https://mail.google.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-7 flex h-[52px] w-full items-center justify-center gap-2 rounded-xl bg-[#13235B] px-5 text-lg font-bold text-white shadow-lg shadow-[#13235B]/20 transition hover:brightness-110"
+                  >
+                    <Mail className="h-4 w-4" />
+                    បើក Gmail
+                  </a>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      signIn("keycloak", { redirectTo: "/" })
+                    }
+                    className="mt-3 inline-block text-lg font-medium text-slate-500 transition hover:text-[#13235B] hover:underline"
+                  >
+                    បានផ្ទៀងផ្ទាត់រួចហើយ? បន្តទៅការចូលគណនី
+                  </button>
+                </div>
+              ) : (
+              <>
               <div className="mb-7">
                 <h2 className="text-3xl font-extrabold tracking-tight text-[#13235B]">
                   បង្កើតគណនី
                 </h2>
 
-                <p className="mt-2 text-sm leading-6 text-slate-400">
+                <p className="mt-2 text-lg leading-6 text-slate-400">
                   ដោះសោមុខងារពិសេសៗ
                   និងចាប់ផ្តើមរៀននៅថ្ងៃនេះ
                 </p>
@@ -520,7 +555,7 @@ export default function RegisterForm() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="mt-2 flex h-[52px] w-full items-center justify-center rounded-xl bg-[#13235B] px-5 text-sm font-bold text-white shadow-lg shadow-[#13235B]/20 transition hover:brightness-110 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+                  className="mt-2 flex h-[52px] w-full items-center justify-center rounded-xl bg-[#13235B] px-5 text-lg font-bold text-white shadow-lg shadow-[#13235B]/20 transition hover:brightness-110 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {isLoading
                     ? "កំពុងបង្កើតគណនី..."
@@ -530,26 +565,53 @@ export default function RegisterForm() {
                 <div className="flex items-center gap-3 pt-2">
                   <div className="h-px flex-1 bg-slate-200" />
 
-                  <span className="text-xs text-slate-400">
+                  <span className="text-lg text-slate-400">
                     ឬ
                   </span>
 
                   <div className="h-px flex-1 bg-slate-200" />
                 </div>
-{/* 
-                <button
-                  type="button"
-                  onClick={() =>
-                    signIn("keycloak", {
-                      redirectTo: "/",
-                    })
-                  }
-                  className="flex h-[50px] w-full items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:border-[#13235B]/30 hover:bg-slate-50"
-                >
-                  ចូលតាម Keycloak
-                </button> */}
 
-                <p className="pt-1 text-center text-sm text-slate-400">
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => handleSocialSignIn("google")}
+                    className="flex h-[50px] w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24">
+                      <path
+                        fill="#4285F4"
+                        d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.63h6.47c-.28 1.5-1.13 2.77-2.4 3.62v3h3.88c2.27-2.09 3.57-5.17 3.57-8.8z"
+                      />
+                      <path
+                        fill="#34A853"
+                        d="M12 24c3.24 0 5.96-1.07 7.95-2.9l-3.88-3c-1.08.72-2.45 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.27v3.1C3.25 21.3 7.31 24 12 24z"
+                      />
+                      <path
+                        fill="#FBBC05"
+                        d="M5.27 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29v-3.1H1.27A11.95 11.95 0 000 12c0 1.93.47 3.76 1.27 5.39l4-3.1z"
+                      />
+                      <path
+                        fill="#EA4335"
+                        d="M12 4.75c1.77 0 3.35.6 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.31 0 3.25 2.7 1.27 6.61l4 3.1C6.22 6.86 8.87 4.75 12 4.75z"
+                      />
+                    </svg>
+                    Google
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleSocialSignIn("github")}
+                    className="flex h-[50px] w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#181717">
+                      <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.68 0-1.25.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11.1 11.1 0 015.8 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.08 0 4.41-2.7 5.38-5.27 5.67.42.36.78 1.08.78 2.18 0 1.58-.02 2.85-.02 3.24 0 .31.21.67.8.56A10.52 10.52 0 0023.5 12C23.5 5.65 18.35.5 12 .5z" />
+                    </svg>
+                    GitHub
+                  </button>
+                </div>
+
+                <p className="pt-1 text-center text-lg text-slate-400">
                   មានគណនីរួចហើយមែនទេ?{" "}
 
                   <button
@@ -565,6 +627,8 @@ export default function RegisterForm() {
                   </button>
                 </p>
               </form>
+              </>
+              )}
             </div>
           </div>
         </section>
@@ -584,7 +648,7 @@ function FormField({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium text-slate-700">
+      <label className="mb-2 block text-lg font-medium text-slate-700">
         {label}{" "}
         <span className="text-[#F1524A]">
           *
@@ -594,7 +658,7 @@ function FormField({
       {children}
 
       {error && (
-        <p className="mt-1.5 text-xs text-[#F1524A]">
+        <p className="mt-1.5 text-lg text-[#F1524A]">
           {error}
         </p>
       )}
@@ -609,7 +673,7 @@ function inputClass(hasError: boolean) {
     rounded-xl
     border
     px-4
-    text-sm
+    text-lg
     text-slate-900
     outline-none
     transition
@@ -646,11 +710,11 @@ function FeatureCard({
       </div>
 
       <div>
-        <p className="whitespace-nowrap text-sm font-bold text-slate-800">
+        <p className="whitespace-nowrap text-lg font-bold text-slate-800">
           {title}
         </p>
 
-        <p className="whitespace-nowrap text-[11px] text-slate-400">
+        <p className="whitespace-nowrap text-lg text-slate-400">
           {subtitle}
         </p>
       </div>

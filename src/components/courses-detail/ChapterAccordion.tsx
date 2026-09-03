@@ -9,13 +9,14 @@ import { Chapter } from "@/lib/course/courses";
 interface ChapterAccordionProps {
   chapter: Chapter;
   defaultOpen?: boolean;
-  courseId: string;
+  /** Course slug — the learn route is /courses/{slug}/learn/{lessonId}. */
+  courseSlug: string;
 }
 
 export function ChapterAccordion({
   chapter,
   defaultOpen,
-  courseId,
+  courseSlug,
 }: ChapterAccordionProps) {
   const [open, setOpen] = useState(!!defaultOpen);
   const { status } = useSession();
@@ -28,7 +29,7 @@ export function ChapterAccordion({
 
     event.preventDefault();
     await signIn("keycloak", {
-      redirectTo: `/courses/${courseId}/learn/${lessonId}`,
+      redirectTo: `/courses/${courseSlug}/learn/${lessonId}`,
     });
   }
 
@@ -41,7 +42,7 @@ export function ChapterAccordion({
         className="flex w-full items-center justify-between px-4 py-3.5 text-left transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/50"
       >
         <div className="flex items-center gap-3">
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-indigo-50 dark:bg-indigo-950/60 text-xs font-bold text-indigo-700 dark:text-indigo-300">
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-primary-color/10 text-xs font-bold text-primary-color">
             {chapter.number}
           </span>
           <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
@@ -82,13 +83,13 @@ export function ChapterAccordion({
             ) : (
               <Link
                 key={lesson.id}
-                href={`/courses/${courseId}/learn/${lesson.id}`}
+                href={`/courses/${courseSlug}/learn/${lesson.id}`}
                 onClick={(event) => handleLessonClick(event, lesson.id)}
-                className="flex items-center justify-between px-4 py-3 pl-14 transition-colors hover:bg-indigo-50/70 dark:hover:bg-indigo-950/40"
+                className="flex items-center justify-between px-4 py-3 pl-14 transition-colors hover:bg-primary-color/5"
               >
                 <div className="flex items-center gap-2.5">
-                  <Play className="h-3.5 w-3.5 fill-indigo-600 text-indigo-600 dark:fill-indigo-400 dark:text-indigo-400" />
-                  <span className="text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                  <Play className="h-3.5 w-3.5 fill-primary-color text-primary-color" />
+                  <span className="text-sm font-medium text-primary-color">
                     {lesson.title}
                   </span>
                 </div>

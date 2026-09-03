@@ -24,7 +24,6 @@ import {
   Eraser,
   Code2,
   TerminalSquare,
-  Sparkles,
   Columns2,
   Bot,
 } from "lucide-react";
@@ -34,6 +33,7 @@ import CodeCoach from "@/components/playground/CodeCoach";
 
 import MonacoEditor, { type OnMount } from "@monaco-editor/react";
 import { useExecuteCodeMutation } from "@/types/playgroundApi";
+import { getApiErrorMessage } from "@/lib/api/error";
 import {
   defaultLanguage,
   findPlaygroundLanguage,
@@ -784,26 +784,32 @@ root.render(
 // ======================================================
 
 export default function Editor() {
+  const searchParams = useSearchParams();
+
   // ====================================================
   // MAIN STATE
   // ====================================================
 
-  const [code, setCode] = useState(defaultLanguage.starterCode);
+  const requestedLanguageParam = searchParams.get("language");
+  const initialLanguage = requestedLanguageParam
+    ? findPlaygroundLanguage(requestedLanguageParam)
+    : defaultLanguage;
 
-  const [activeLabel, setActiveLabel] = useState(defaultLanguage.label);
+  const [code, setCode] = useState(initialLanguage.starterCode);
 
-  const [activeColor, setActiveColor] = useState(defaultLanguage.color);
+  const [activeLabel, setActiveLabel] = useState(initialLanguage.label);
 
-  const [language, setLanguage] = useState(defaultLanguage.value);
+  const [activeColor, setActiveColor] = useState(initialLanguage.color);
 
-  const [mode, setMode] = useState<PlaygroundMode>(defaultLanguage.mode);
+  const [language, setLanguage] = useState(initialLanguage.value);
+
+  const [mode, setMode] = useState<PlaygroundMode>(initialLanguage.mode);
 
   const [stdin, setStdin] = useState("Khmer Coder");
 
   const [output, setOutput] = useState<string[]>([]);
 
   const [previewHtml, setPreviewHtml] = useState("");
-  const searchParams = useSearchParams();
   const codingTaskId =
     searchParams.get("codingTaskId") ?? searchParams.get("taskId") ?? undefined;
 
@@ -839,6 +845,10 @@ export default function Editor() {
 
   const [isAiCoachOpen, setIsAiCoachOpen] = useState(false);
 
+  const [coachPos, setCoachPos] = useState<{ x: number; y: number } | null>(null);
+
+  const [coachSnapping, setCoachSnapping] = useState(false);
+
   const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "error">(
     "idle",
   );
@@ -865,6 +875,35 @@ export default function Editor() {
   // Monaco keybindings are registered once when the editor mounts, so using
   // a ref prevents the shortcuts from calling an old render's handler.
   const formatCodeActionRef = useRef<() => void>(() => { });
+
+  // Tracks drag state for the floating AI Coach button (not a re-render trigger)
+  const coachDragInfo = useRef({
+    dragging: false,
+    moved: false,
+    offsetX: 0,
+    offsetY: 0,
+    lastX: 0,
+    lastY: 0,
+  });
+
+  // Gap kept between the button and the screen edge when it snaps
+  const COACH_EDGE_MARGIN = 16;
+
+  // Looks up the Scroll-to-Top button's real position on screen right now.
+  // Returns null if it isn't visible (it only shows after scrolling down).
+  const getScrollButtonRect = () => {
+    const el = document.querySelector<HTMLElement>(
+      'button[aria-label="Scroll to top"]',
+    );
+    if (!el) return null;
+
+    const style = window.getComputedStyle(el);
+    if (style.pointerEvents === "none" || parseFloat(style.opacity) < 0.5) {
+      return null;
+    }
+
+    return el.getBoundingClientRect();
+  };
 
   // ====================================================
   // CURRENT LANGUAGE
@@ -1443,19 +1482,7 @@ export default function Editor() {
     } catch (error) {
       console.error("Code execution failed:", error);
 
-      let message = "Unable to execute code.";
-
-      if (typeof error === "object" && error !== null && "data" in error) {
-        const apiError = error as {
-          data?: {
-            message?: string;
-          };
-        };
-
-        if (apiError.data?.message) {
-          message = apiError.data.message;
-        }
-      }
+      const message = getApiErrorMessage(error, "Unable to execute code.");
 
       setOutput(["Execution failed.", "", message]);
     }
@@ -1638,6 +1665,96 @@ export default function Editor() {
   };
 
   // ====================================================
+  // DRAG THE FLOATING AI COACH BUTTON
+  // ====================================================
+
+  const handleCoachPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    coachDragInfo.current = {
+      dragging: true,
+      moved: false,
+      offsetX: e.clientX - rect.left,
+      offsetY: e.clientY - rect.top,
+      lastX: rect.left,
+      lastY: rect.top,
+    };
+    setCoachSnapping(false);
+
+    const handleMove = (moveEvent: PointerEvent) => {
+      if (!coachDragInfo.current.dragging) return;
+      coachDragInfo.current.moved = true;
+
+      const maxX = window.innerWidth - rect.width;
+      const maxY = window.innerHeight - rect.height;
+      const nextX = Math.min(
+        Math.max(moveEvent.clientX - coachDragInfo.current.offsetX, 0),
+        maxX,
+      );
+      const nextY = Math.min(
+        Math.max(moveEvent.clientY - coachDragInfo.current.offsetY, 0),
+        maxY,
+      );
+
+      coachDragInfo.current.lastX = nextX;
+      coachDragInfo.current.lastY = nextY;
+      setCoachPos({ x: nextX, y: nextY });
+    };
+
+    const handleUp = () => {
+      coachDragInfo.current.dragging = false;
+      document.removeEventListener("pointermove", handleMove);
+      document.removeEventListener("pointerup", handleUp);
+
+      if (coachDragInfo.current.moved) {
+        const { lastX, lastY } = coachDragInfo.current;
+
+        const distLeft = lastX;
+        const distRight = window.innerWidth - (lastX + rect.width);
+        const distTop = lastY;
+        const distBottom = window.innerHeight - (lastY + rect.height);
+        const closest = Math.min(distLeft, distRight, distTop, distBottom);
+
+        let snappedX = lastX;
+        let snappedY = lastY;
+
+        if (closest === distLeft) {
+          snappedX = COACH_EDGE_MARGIN;
+        } else if (closest === distRight) {
+          snappedX = window.innerWidth - rect.width - COACH_EDGE_MARGIN;
+        } else if (closest === distTop) {
+          snappedY = COACH_EDGE_MARGIN;
+        } else {
+          snappedY = window.innerHeight - rect.height - COACH_EDGE_MARGIN;
+        }
+
+        // Step over the Scroll-to-Top button if they would land on each other
+        const scrollBtnRect = getScrollButtonRect();
+        if (scrollBtnRect) {
+          const gap = 12;
+          const wouldOverlap =
+            snappedX < scrollBtnRect.right + gap &&
+            snappedX + rect.width > scrollBtnRect.left - gap &&
+            snappedY < scrollBtnRect.bottom + gap &&
+            snappedY + rect.height > scrollBtnRect.top - gap;
+
+          if (wouldOverlap) {
+            const spaceAbove = scrollBtnRect.top - gap - rect.height;
+            snappedY = spaceAbove >= 0 ? spaceAbove : scrollBtnRect.bottom + gap;
+          }
+        }
+
+        setCoachSnapping(true);
+        setCoachPos({ x: snappedX, y: snappedY });
+
+        window.setTimeout(() => setCoachSnapping(false), 300);
+      }
+    };
+
+    document.addEventListener("pointermove", handleMove);
+    document.addEventListener("pointerup", handleUp);
+  };
+
+  // ====================================================
   // APPLY AI GENERATED CODE
   // ====================================================
 
@@ -1719,7 +1836,7 @@ export default function Editor() {
         <div
           role="status"
           aria-live="polite"
-          className={`fixed right-5 top-5 z-[100] flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-semibold shadow-xl backdrop-blur-sm transition-all ${copyStatus === "copied"
+          className={`fixed right-5 top-5 z-100 flex items-center gap-3 rounded-xl border px-4 py-3 text-sm font-semibold shadow-xl backdrop-blur-sm transition-all ${copyStatus === "copied"
             ? "border-emerald-200 bg-white/95 text-emerald-700 dark:border-emerald-700/60 dark:bg-slate-900/95 dark:text-emerald-400"
             : "border-red-200 bg-white/95 text-red-700 dark:border-red-800 dark:bg-slate-900/95 dark:text-red-400"
             }`}
@@ -2060,7 +2177,7 @@ export default function Editor() {
             <Button
               type="button"
               variant="outline"
-              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
               onClick={() => void handleFormatCode()}
               title={
                 activeLabel === "Java"
@@ -2081,7 +2198,7 @@ export default function Editor() {
             <Button
               type="button"
               variant="outline"
-              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
               onClick={handleCopy}
             >
               {copyStatus === "copied" ? (
@@ -2097,7 +2214,7 @@ export default function Editor() {
             <Button
               type="button"
               variant="outline"
-              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
               onClick={handleDownload}
             >
               <Download className="h-4 w-4 text-gray-600" />
@@ -2109,7 +2226,7 @@ export default function Editor() {
             <Button
               type="button"
               variant="outline"
-              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
               onClick={handleReset}
             >
               <RotateCcw className="h-4 w-4 text-gray-600" />
@@ -2121,7 +2238,7 @@ export default function Editor() {
             <Button
               type="button"
               variant="outline"
-              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+              className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
               onClick={handleClearEditor}
             >
               <Trash2 className="h-4 w-4 text-gray-600" />
@@ -2134,7 +2251,7 @@ export default function Editor() {
               <Button
                 type="button"
                 variant="outline"
-                className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900"
+                className="h-10 gap-2 rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200"
                 onClick={handleClearOutput}
               >
                 <Eraser className="h-4 w-4 text-gray-600" />
@@ -2481,7 +2598,7 @@ export default function Editor() {
                       className={
                         isWorkspaceFullscreen
                           ? "min-h-0 flex-1 overflow-auto bg-white"
-                          : "h-[500px] overflow-auto bg-white"
+                          : "h-125 overflow-auto bg-white"
                       }
                     >
                       <iframe
@@ -2503,7 +2620,7 @@ export default function Editor() {
                       className={
                         isWorkspaceFullscreen
                           ? "flex min-h-0 flex-1 items-center justify-center bg-white dark:bg-slate-950"
-                          : "flex h-[500px] items-center justify-center bg-white dark:bg-slate-950"
+                          : "flex h-125 items-center justify-center bg-white dark:bg-slate-950"
                       }
                     >
                       <div className="px-6 text-center">
@@ -2594,7 +2711,7 @@ export default function Editor() {
                     className={
                       isWorkspaceFullscreen
                         ? "min-h-0 flex-1 space-y-1 overflow-y-auto bg-white p-4 font-mono transition-colors duration-300 dark:bg-[#090d16]"
-                        : "h-[500px] space-y-1 overflow-y-auto bg-white p-4 font-mono transition-colors duration-300 dark:bg-[#090d16]"
+                        : "h-125 space-y-1 overflow-y-auto bg-white p-4 font-mono transition-colors duration-300 dark:bg-[#090d16]"
                     }
                   >
                     {output.length === 0 ? (
@@ -2640,8 +2757,8 @@ export default function Editor() {
           <aside
             className={
               isWorkspaceFullscreen
-                ? "fixed bottom-20 right-4 left-4 z-[90] max-h-[calc(100vh-7rem)] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-[390px]"
-                : "fixed bottom-24 right-4 left-4 z-[90] max-h-[70vh] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-[390px]"
+                ? "fixed bottom-20 right-4 left-4 z-90 max-h-[calc(100vh-7rem)] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-97.5"
+                : "fixed bottom-24 right-4 left-4 z-90 max-h-[70vh] overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-2xl shadow-black/20 dark:border-violet-900/70 dark:bg-[#0b1020] sm:left-auto sm:w-97.5"
             }
             aria-label="AI coding coach"
           >
@@ -2691,14 +2808,29 @@ export default function Editor() {
           </aside>
         )}
 
-        <div className="fixed bottom-5 right-5 z-[91]">
+        <div
+          className="fixed z-91 touch-none cursor-grab active:cursor-grabbing"
+          style={{
+            ...(coachPos
+              ? { left: coachPos.x, top: coachPos.y }
+              : { bottom: "1.25rem", right: "6rem" }),
+            transition: coachSnapping
+              ? "left 0.3s ease, top 0.3s ease"
+              : "none",
+          }}
+          onPointerDown={handleCoachPointerDown}
+        >
           {!isAiCoachOpen && (
             <span className="absolute inset-0 animate-ping rounded-full bg-violet-500 opacity-40" />
           )}
 
           <button
             type="button"
-            onClick={() => setIsAiCoachOpen((previous) => !previous)}
+            onClick={() => {
+              if (!coachDragInfo.current.moved) {
+                setIsAiCoachOpen((previous) => !previous);
+              }
+            }}
             className="relative inline-flex h-12 items-center gap-2 rounded-full bg-violet-600 px-4 text-sm font-bold text-white shadow-xl shadow-violet-950/25 transition hover:-translate-y-0.5 hover:bg-violet-700 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-violet-300/40"
             aria-expanded={isAiCoachOpen}
             aria-label="Open AI coding coach"
@@ -2729,7 +2861,7 @@ export default function Editor() {
       </div>
 
       {isPreviewFullscreen && isPreviewMode && (
-        <div className="fixed inset-0 z-[70] flex flex-col bg-white dark:bg-slate-950">
+        <div className="fixed inset-0 z-70 flex flex-col bg-white dark:bg-slate-950">
           <div className="flex h-14 shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50 px-4 dark:border-white/10 dark:bg-[#111827] sm:px-6">
             <div className="flex items-center gap-2">
               <span className="relative flex h-2.5 w-2.5">

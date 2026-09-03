@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Play } from "lucide-react";
 
+import { useTranslation } from "@/hooks/useTranslations";
+
 interface UpNextCardProps {
   thumbnail?: string | null;
   title: string;
@@ -52,6 +54,8 @@ export function UpNextCard({
   onAutoplayChange,
   href,
 }: UpNextCardProps) {
+  const t = useTranslation();
+  const upNext = t.lessonPlayer.upNext;
   const safeThumbnail = getValidImageUrl(thumbnail);
 
   return (
@@ -59,12 +63,12 @@ export function UpNextCard({
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-          បន្ទាប់
+          {upNext.heading}
         </h3>
 
         <div className="flex items-center gap-2">
           <span className="text-xs text-slate-500 dark:text-slate-400">
-            Autoplay
+            {upNext.autoplay}
           </span>
 
           <button
@@ -72,13 +76,13 @@ export function UpNextCard({
             role="switch"
             aria-checked={autoplay}
             onClick={() => onAutoplayChange(!autoplay)}
-            className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500/40 ${
+            className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-color/40 ${
               autoplay
-                ? "bg-indigo-600 dark:bg-indigo-500"
+                ? "bg-primary-color"
                 : "bg-slate-200 dark:bg-slate-700"
             }`}
           >
-            <span className="sr-only">Toggle autoplay</span>
+            <span className="sr-only">{upNext.autoplayToggleAria}</span>
 
             <span
               className={`pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200 ${
@@ -128,10 +132,10 @@ export function UpNextCard({
       {href ? (
         <Link
           href={href}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#002455] py-2.5 text-sm font-semibold text-white transition hover:bg-[#003b80] dark:bg-indigo-600 dark:hover:bg-indigo-500"
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-primary-color py-2.5 text-sm font-semibold text-white transition hover:bg-primary-color/90"
         >
           <Play className="h-3.5 w-3.5 fill-current" />
-          ដំណើរការមេរៀនបន្ទាប់
+          {upNext.playNext}
         </Link>
       ) : (
         <button
@@ -139,7 +143,7 @@ export function UpNextCard({
           disabled
           className="mt-4 flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-lg bg-slate-300 py-2.5 text-sm font-semibold text-white dark:bg-slate-700"
         >
-          មិនមានមេរៀនបន្ទាប់
+          {upNext.noNext}
         </button>
       )}
     </div>

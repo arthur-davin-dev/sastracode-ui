@@ -43,11 +43,8 @@ export default function Review() {
         <span className="font-khmer inline-block rounded-full border border-blue-600/15 bg-blue-100 px-5 py-2 text-sm font-bold text-blue-900 dark:border-blue-400/20 dark:bg-blue-950/30 dark:text-blue-300">
           {t.badge}
         </span>
-        <h2 className="font-khmer mt-4 text-4xl font-black tracking-tight text-[#0d1b3e] sm:text-5xl dark:text-white">
-          <span className="text-[#0d1b3e] dark:text-white">{t.title} </span>
-          <span className="bg-linear-to-r from-primary-color to-secondary-color bg-clip-text text-transparent dark:from-purple-400 dark:to-blue-400">
-            {t.titleAccent}
-          </span>
+        <h2 className="font-khmer mt-4 text-4xl font-black tracking-tight text-primary-color sm:text-5xl dark:text-white">
+          {t.title} {t.titleAccent}
         </h2>
         <p className="font-khmer mx-auto mt-4 max-w-xl text-base leading-7 text-slate-600 dark:text-gray-400">
           {t.description}

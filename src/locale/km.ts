@@ -22,10 +22,65 @@ export const km = {
     startLearning: "ចាប់ផ្ដើមសិក្សា",
   }, platformShowcase: {
     features: [
-      { title: "សិក្សាជាមួយឯកសារអន្តរកម្ម" },
-      { title: "ទទួលបានជំនួយពី AI" },
-      { title: "អនុវត្ត និងសាកល្បងជំនាញរបស់អ្នក" },
-      { title: "តាមដានវឌ្ឍនភាព និងទទួលបានរង្វាន់" },
+      {
+        title: "ឯកសារអន្តរកម្ម",
+        description:
+          "រុករកឯកសារជាមួយឧទាហរណ៍ និងកូដគំរូ។",
+      },
+      {
+        title: "ជំនួយពី AI",
+        description:
+          "សួរសំណួរ ទទួលបានការពន្យល់កូដភ្លាមៗ។",
+      },
+      {
+        title: "អនុវត្តជំនាញ",
+        description:
+          "ដោះស្រាយលំហាត់ និងសាកល្បងខ្លួនឯង។",
+      },
+      {
+        title: "វឌ្ឍនភាព និងរង្វាន់",
+        description:
+          "ទទួលបាន XP និងឡើងចំណាត់ថ្នាក់។",
+      },
+    ],
+  },
+
+  learningShowcase: {
+    titleLead: "រៀនសរសេរកូដ ",
+    titleHighlight: "កសាងអនាគត",
+    subtitleLine1:
+      "SastraCode គឺជាវេទិកាឯកសារ និងសិក្សាដ៏ពេញលេញសម្រាប់អ្នក។",
+    subtitleLine2:
+      "រៀន អនុវត្ត និងលើកកម្រិតជំនាញជាមួយឯកសារអន្តរកម្ម ការណែនាំពី AI សំណួរ និងច្រើនទៀត។",
+    cards: [
+      {
+        title: "រៀនជាមួយឯកសារអន្តរកម្ម",
+        description:
+          "ឯកសាររៀបចំជាប្រព័ន្ធ ជាមួយឧទាហរណ៍ ការពន្យល់ និងកូដគំរូ។",
+      },
+      {
+        title: "ទទួលជំនួយពី AI",
+        description:
+          "សួរសំណួរ ទទួលការពន្យល់កូដ និងការណែនាំឆ្លាតវៃភ្លាមៗ។",
+      },
+      {
+        title: "អនុវត្ត និងសាកល្បងជំនាញ",
+        description:
+          "ដោះស្រាយកិច្ចការកូដ ធ្វើសំណួរ និងប្រកួតជាមួយបញ្ហាជាក់ស្តែង។",
+      },
+      {
+        title: "តាមដានវឌ្ឍនភាព និងទទួលរង្វាន់",
+        description:
+          "ទទួល XP ដោះសោ badge និងឡើងចំណាត់ថ្នាក់ពេលអ្នករីកចម្រើន។",
+      },
+    ],
+    capabilities: [
+      { line1: "កម្មវិធីសាកល្បង", line2: "ច្រើនភាសា" },
+      { line1: "មេរៀនវីដេអូ", line2: "និងវគ្គសិក្សា" },
+      { line1: "ហ្គេមសរសេរកូដ", line2: "និងបញ្ហាប្រកួត" },
+      { line1: "Badge និង", line2: "វិញ្ញាបនបត្រ" },
+      { line1: "ចំណាត់ថ្នាក់", line2: "និងសហគមន៍" },
+      { line1: "ការស្វែងរក", line2: "និងការរុករក" },
     ],
   },
 
@@ -162,7 +217,7 @@ export const km = {
     "hint2Title": "ការណែនាំទី ២",
     "hint2TextPrefix": "ប្រាកដថាប៊ូតុងស្ថិតនៅខាងក្នុងស្លាក",
     "hint2TextSuffix": "។",
-    "successText": "មើលទៅល្អហើយ! សាកល្បងរ៉ាន់ម្តងទៀត។"
+    "successText": "មើលទៅល្អហើយ! សាកល្បងរ៉ាន់ម្តងទៀត。"
   },
 
   resultAndRewards: {
@@ -190,6 +245,7 @@ export const km = {
       ctaLabel: "ចាប់ផ្តើមរៀន",
     },
   },
+
   showCase: {
     heroCharacter: {
       badge: "ដំណើរឆ្ពោះទៅរកអនាគត",
@@ -199,7 +255,7 @@ export const km = {
       title3: "Code",
 
       description:
-        "ពីអ្នកចាប់ផ្តើមដំបូង ទៅជាអ្នកអភិវឌ្ឍន៍ជំនាញ- មេរៀនងាយយល់, ប្រកួតប្រជែង, រៀនបែបកម្សាន្ត. ពុំចាំបាច់ដំឡើងកម្មវិធីស្មុគស្មាញសម្រាប់ run code",
+        "ពីអ្នកចាប់ផ្តើមដំបូង ទៅជាអ្នកអភិវឌ្ឍន៍ជំនាញ - មេរៀនងាយយល់, ប្រកួតប្រជែង, រៀនបែបកម្សាន្ត, ពុំចាំបាច់ដំឡើងកម្មវិធីស្មុគស្មាញសម្រាប់ run code",
 
       button: "សាកល្បង coding",
     },
@@ -215,12 +271,15 @@ export const km = {
       liveCoding: "រៀនបានគ្រប់ពេលនិងគ្រប់ទីកន្លែង",
     },
   },
+
   technologyStack: {
     badge: "បច្ចេកវិទ្យាដែលត្រូវសិក្សា",
 
     title1: "កន្លែងសរសេរ និងសាកល្បងកូដ",
     description: "បច្ចេកវិទ្យាទំនើបៗជំរុញបទពិសោធន៍សិក្សាជំនាន់ក្រោយ។",
-  }, tutorials: {
+  },
+
+  tutorials: {
     loadingLabel: "កំពុងទាញយកមេរៀន",
     errorMessage: "មិនអាចទាញយកមេរៀនបានទេ។ សូមព្យាយាមម្ដងទៀត។",
     retry: "ព្យាយាមម្ដងទៀត",
@@ -233,16 +292,20 @@ export const km = {
       recommended: "មេរៀនសិក្សាអនុសាសន៍",
       popular: "មេរៀនពេញនិយម",
     },
-  }, hero: {
+  },
+
+  hero: {
     titleFirstLine: "មេរៀនបច្ចេកវិទ្យាព័ត៌មានវិទ្យា",
     titleSecondLine: "(IT) ជាភាសាខ្មែរ",
     description:
       "សិក្សាពីមូលដ្ឋានគ្រឹះនៃការសរសេរកូដ ការរចនា និងអភិវឌ្ឍគេហទំព័រ ការដោះស្រាយបញ្ហា មូលដ្ឋាននៃទិន្នន័យ បញ្ញាសិប្បនិម្មិត (AI) ប្រព័ន្ធសន្តិសុខសាយប័រ វិទ្យាសាស្ត្រទិន្នន័យ និងបច្ចេកវិទ្យាព័ត៌មានវិទ្យា (IT) ថ្មីៗជាច្រើនទៀត រហូតដល់ក្លាយខ្លួនជាអ្នកជំនាញ និងមានអាជីពវិជ្ជាជីវៈ។",
-  }, courses: {
+  },
+
+  courses: {
     banner: {
       welcomeText: "សូមស្វាគមន៍មកកាន់ Sastra Code",
       titleFirstLine: "រៀនសរសេរកូដជាភាសាខ្មែរ",
-      titleSecondLine: "ពីមូលដ្ឋានរហូតដល់គម្រោងពិត",
+      titleSecondLine: "ពីមូលដ្ឋានរហូតដល់គម្រោង",
       description:
         "SastraCode ជួយអ្នកអភិវឌ្ឍជំនាញសរសេរកូដជាជំហានៗ តាមរយៈវីដេអូមេរៀន ឯកសារសិក្សា លំហាត់អនុវត្ត និងគម្រោងពិត ដែលងាយស្រួលរៀន និងយល់សម្រាប់អ្នកសិក្សាកម្ពុជា។",
       features: ["វីដេអូមេរៀន", "ឯកសារសិក្សា", "លំហាត់ និងគម្រោង"],
@@ -253,8 +316,8 @@ export const km = {
     },
     categories: {
       all: "ទាំងអស់",
-      free: "Free Course",
-      premium: "Premium",
+      free: "វគ្គសិក្សាឥតគិតថ្លៃ",
+      premium: "វគ្គសិក្សាបង់ថ្លៃ",
     },
     sections: {
       latest: "វគ្គសិក្សាថ្មីបំផុត",
@@ -262,15 +325,237 @@ export const km = {
       popular: "វគ្គសិក្សាពេញនិយម",
       searchResults: "លទ្ធផលស្វែងរក",
       allCourses: "ថ្នាក់រៀនទាំងអស់",
-    }, card: {
+    },
+    card: {
       viewCourse: "មើលវគ្គសិក្សា",
       privateCourse: "វគ្គសិក្សាឯកជន",
+      level: {
+        BEGINNER: "កម្រិតដំបូង",
+        INTERMEDIATE: "កម្រិតមធ្យម",
+        ADVANCED: "កម្រិតខ្ពស់",
+      },
+      access: {
+        free: "ឥតគិតថ្លៃ",
+        premium: "បង់ថ្លៃ",
+        private: "ឯកជន",
+      },
+      lessonsUnit: "មេរៀន",
+      noDescription: "មិនទាន់មានសេចក្ដីពិពណ៌នា",
+      defaultInstructor: "គ្រូបង្រៀន SastraCode",
+      instructorAlt: "គ្រូបង្រៀន",
+      bookmark: {
+        add: "រក្សាទុកវគ្គសិក្សា",
+        remove: "ដកវគ្គសិក្សាពីបញ្ជីរក្សាទុក",
+        signInRequired: "សូមចូលគណនីជាមុន ដើម្បីរក្សាទុកវគ្គសិក្សានេះ។",
+        added: "បានរក្សាទុកវគ្គសិក្សាដោយជោគជ័យ។",
+        removed: "បានដកវគ្គសិក្សាចេញពីបញ្ជីរក្សាទុក។",
+        error: "មិនអាចធ្វើបច្ចុប្បន្នភាពការរក្សាទុកបានទេ។ សូមសាកល្បងម្ដងទៀត។",
+      },
     },
     states: {
       loading: "កំពុងទាញយកវគ្គសិក្សា",
       error: "មិនអាចទាញយកវគ្គសិក្សាបានទេ",
       retry: "ព្យាយាមម្ដងទៀត",
       empty: "មិនមានវគ្គសិក្សាដែលត្រូវនឹងលក្ខខណ្ឌស្វែងរកទេ",
+    },
+    detail: {
+      notFound: {
+        title: "រកមិនឃើញវគ្គសិក្សា",
+        description: "មិនអាចទាញយកព័ត៌មានវគ្គសិក្សាពី API បាន។",
+        back: "ត្រឡប់ទៅវគ្គសិក្សា",
+      },
+      private: {
+        description:
+          "វគ្គនេះមិនបង្ហាញជាសាធារណៈទេ។ សូមចូលទៅ Dashboard ដើម្បីមើលវគ្គ PRIVATE ដែលបានផ្តល់សិទ្ធិឱ្យអ្នក។",
+        myPrivateCourses: "វគ្គសិក្សាឯកជនរបស់ខ្ញុំ",
+      },
+      instructorLabel: "គ្រូបង្រៀន",
+      summary: {
+        heading: "សេចក្ដីសង្ខេបវគ្គសិក្សា",
+      },
+      curriculum: {
+        heading: "មាតិកាវគ្គសិក្សា",
+        chaptersUnit: "ជំពូក",
+        totalLessonsUnit: "មេរៀនសរុប",
+        empty: "វគ្គនេះមិនទាន់មាន Section/Video ដែលអាចបង្ហាញបានទេ។",
+      },
+      purchase: {
+        freePrice: "ឥតគិតថ្លៃ",
+        privatePrice: "សិទ្ធិឯកជន",
+        courseFallback: "វគ្គសិក្សា",
+        checking: "កំពុងពិនិត្យ...",
+        processing: "កំពុងដំណើរការ...",
+        startLearning: "ចូលរៀនឥឡូវនេះ",
+        privateRight: "សិទ្ធិឯកជន",
+        buyCourse: "ទិញវគ្គសិក្សា",
+        enrollNow: "ចុះឈ្មោះឥឡូវនេះ",
+        freeCourse: "វគ្គសិក្សាឥតគិតថ្លៃ",
+        premiumNotice: "ត្រូវទិញវគ្គសិក្សាមុនពេលចូលរៀន",
+        privateNotice: "ត្រូវការសិទ្ធិពីអ្នកគ្រប់គ្រង",
+        noLessonAvailable: "វគ្គសិក្សានេះមិនទាន់មានមេរៀនដែលអាចចូលរៀនបាន។",
+        privateNeedsPermission: "វគ្គ PRIVATE ត្រូវការសិទ្ធិពីអ្នកគ្រប់គ្រង។",
+        enrollSuccess: "ចុះឈ្មោះវគ្គសិក្សាបានជោគជ័យ",
+        enrollError: "មិនអាចចុះឈ្មោះវគ្គសិក្សាបាន",
+        purchaseSuccess: "ទិញ និងចុះឈ្មោះវគ្គសិក្សាបានជោគជ័យ",
+      },
+      payment: {
+        title: "ទូទាត់វគ្គសិក្សា",
+        subtitle: "បញ្ចូលព័ត៌មានទូទាត់របស់អ្នក",
+        orderSummary: "សេចក្ដីសង្ខេបការបញ្ជាទិញ",
+        originalPrice: "តម្លៃដើម",
+        discount: "បញ្ចុះតម្លៃ",
+        youSave: "អ្នកសន្សំបាន",
+        total: "តម្លៃសរុប",
+        method: "វិធីទូទាត់",
+        cardOption: "ប័ណ្ណឥណទាន / ឥណពន្ធ",
+        demoPayment: "ការទូទាត់សាកល្បង",
+        cardName: "ឈ្មោះលើកាត",
+        cardNamePlaceholder: "SOK DARA",
+        cardNumber: "លេខកាត",
+        expiry: "ផុតកំណត់",
+        cvv: "CVV",
+        demoNotice:
+          "នេះជា Demo Payment ប៉ុណ្ណោះ។ ព័ត៌មានកាតមិនត្រូវបានផ្ញើទៅ backend ទេ។",
+        buying: "កំពុងទិញ...",
+        buyNow: "ទិញឥឡូវនេះ",
+        errorCardName: "សូមបញ្ចូលឈ្មោះលើកាត",
+        errorCardNumber: "សូមបញ្ចូលលេខកាតឱ្យបានត្រឹមត្រូវ",
+        errorExpiry: "សូមបញ្ចូលថ្ងៃផុតកំណត់កាត",
+        errorCvv: "សូមបញ្ចូល CVV ឱ្យបានត្រឹមត្រូវ",
+        purchaseFailed: "មិនអាចទិញវគ្គសិក្សាបាន។ សូមព្យាយាមម្ដងទៀត។",
+        successTitle: "ការទិញបានជោគជ័យ",
+        successDescription: "អ្នកបានចុះឈ្មោះវគ្គសិក្សាដោយជោគជ័យ។",
+        courseLabel: "វគ្គសិក្សា",
+        done: "រួចរាល់",
+      },
+    },
+  },
+
+  lessonSidebar: {
+    heading: "ខ្លឹមសារវគ្គសិក្សា",
+    progressTitle: "វឌ្ឍនភាពសិក្សា",
+    completedPrefix: "បានបញ្ចប់",
+    completedMiddle: "លើ",
+    completedSuffix: "វីដេអូ",
+    previous: "មុន",
+    next: "បន្ទាប់",
+    nowPlaying: "កំពុងចាក់",
+    watched: "បានមើល",
+  },
+
+  lessonPlayer: {
+    lessonFallback: "មេរៀន",
+    chapterFallback: "ជំពូក",
+    positionPrefix: "មេរៀនទី",
+    positionMiddle: "ក្នុងចំណោម",
+    markAsDone: "សម្គាល់ថាបានបញ្ចប់",
+    saving: "កំពុងរក្សាទុក...",
+    completed: "បានបញ្ចប់",
+    completedAria: "មេរៀននេះបានបញ្ចប់",
+    completeToast: "អបអរសាទរ! អ្នកបានបញ្ចប់មេរៀននេះ",
+    progressError: "មិនអាចធ្វើបច្ចុប្បន្នភាពការវិវឌ្ឍន៍បានទេ",
+    video: {
+      unavailableTitle: "វីដេអូមិនអាចប្រើបានទេ",
+      unavailableDescription:
+        "សូមបន្ថែម URL វីដេអូទៅមេរៀននេះ ដើម្បីចាប់ផ្ដើមចាក់។",
+      notSupported: "កម្មវិធីរុករករបស់អ្នកមិនគាំទ្រការចាក់វីដេអូ HTML ទេ។",
+    },
+    upNext: {
+      heading: "បន្ទាប់",
+      autoplay: "ចាក់ស្វ័យប្រវត្តិ",
+      autoplayToggleAria: "បិទ/បើក ការចាក់ស្វ័យប្រវត្តិ",
+      playNext: "ដំណើរការមេរៀនបន្ទាប់",
+      noNext: "មិនមានមេរៀនបន្ទាប់",
+    },
+    states: {
+      courseErrorTitle: "មិនអាចបើកវគ្គសិក្សាបាន",
+      courseErrorDescription:
+        "សូមពិនិត្យការតភ្ជាប់របស់អ្នក ឬសាកល្បងម្ដងទៀតនៅពេលក្រោយ។",
+      backToCourse: "ត្រឡប់ទៅវគ្គសិក្សា",
+      contentErrorTitle: "មិនអាចទាញយកមាតិកាមេរៀនបាន",
+      contentErrorDescription:
+        "មាតិកាវគ្គសិក្សាមិនទាន់អាចប្រើបានទេ។ សូមសាកល្បងម្ដងទៀត។",
+      viewCourseInfo: "មើលព័ត៌មានវគ្គសិក្សា",
+      noAccessTitle: "អ្នកមិនទាន់មានសិទ្ធិចូលរៀនវគ្គនេះ",
+      noAccessDescription:
+        "វគ្គសិក្សាឯកជននេះត្រូវការការអនុញ្ញាត មុនពេលអ្នកអាចមើលមេរៀនបាន។",
+      viewMyPrivateCourses: "មើលវគ្គឯកជនរបស់ខ្ញុំ",
+      lessonNotFoundTitle: "រកមិនឃើញមេរៀននេះ",
+      lessonNotFoundDescription:
+        "មេរៀនអាចត្រូវបានផ្លាស់ទី ឬដកចេញពីវគ្គសិក្សានេះ។",
+      viewCurriculum: "មើលមាតិកាវគ្គសិក្សា",
+      lockedTitle: "មេរៀននេះត្រូវបានចាក់សោ",
+      lockedDescription:
+        "សូមចុះឈ្មោះក្នុងវគ្គសិក្សា ដើម្បីទទួលបានសិទ្ធិមើលមេរៀនពេញលេញ។",
+      viewEnrollInfo: "មើលព័ត៌មានចុះឈ្មោះ",
+    },
+  },
+
+  qa: {
+    heading: "សំណួរ",
+    tabs: {
+      all: "សំណួរទាំងអស់",
+      open: "មិនទាន់ដោះស្រាយ",
+      resolved: "បានដោះស្រាយ",
+      upvoted: "និយមបំផុត",
+    },
+    defaultUser: "អ្នកប្រើប្រាស់",
+    titlePlaceholder: "ចំណងជើងសំណួរ...",
+    descriptionPlaceholder: "ពិពណ៌នាលម្អិតអំពីសំណួររបស់អ្នក...",
+    cancel: "បោះបង់",
+    submit: "សួរសំណួរ",
+    submitting: "កំពុងផ្ញើ...",
+    submitSuccess: "សំណួររបស់អ្នកត្រូវបានផ្ញើ",
+    submitError: "មិនអាចផ្ញើសំណួរបានទេ",
+    loading: "កំពុងផ្ទុកសំណួរ...",
+    loadError: "មិនអាចផ្ទុកសំណួរបានទេ។ សូមចូលគណនីជាមុនសិន។",
+    empty: "មិនទាន់មានសំណួរសម្រាប់វីដេអូនេះទេ។ សួរសំណួរដំបូងរបស់អ្នក!",
+    page: "ទំព័រ",
+    pageOf: "នៃ",
+    previous: "មុន",
+    next: "បន្ទាប់",
+    resolvedBadge: "បានដោះស្រាយ",
+    unresolvedBadge: "មិនទាន់ដោះស្រាយ",
+    save: "រក្សាទុក",
+    questionUpdated: "បានកែប្រែសំណួរ",
+    questionUpdateError: "មិនអាចកែប្រែសំណួរបានទេ",
+    questionReopened: "សំណួរនេះត្រូវបានបើកឡើងវិញ",
+    questionResolved: "សំណួរនេះត្រូវបានដោះស្រាយ",
+    moreOptions: "ជម្រើសបន្ថែម",
+    reopenQuestion: "បើកសំណួរឡើងវិញ",
+    markResolved: "សម្គាល់ថាបានដោះស្រាយ",
+    editQuestion: "កែប្រែសំណួរ",
+    hideAnswers: "លាក់ចម្លើយ",
+    noAnswersYet: "មិនទាន់មានចម្លើយ",
+    answersUnit: "ចម្លើយ",
+    answersHeading: "ចម្លើយ",
+    loadingAnswers: "កំពុងផ្ទុកចម្លើយ...",
+    answersLoadError: "មិនអាចផ្ទុកចម្លើយបានទេ",
+    answersEmpty:
+      "មិនទាន់មានចម្លើយសម្រាប់សំណួរនេះនៅឡើយទេ។ សូមចូលរួមចែករំលែកចម្លើយរបស់អ្នក។",
+    loadMoreAnswers: "មើលចម្លើយបន្ថែម",
+    loadingMore: "កំពុងផ្ទុក...",
+    answerPlaceholder: "សរសេរចម្លើយរបស់អ្នក...",
+    answerSubmit: "ឆ្លើយ",
+    answerSuccess: "បានផ្ញើចម្លើយរបស់អ្នក",
+    answerError: "មិនអាចផ្ញើចម្លើយបានទេ",
+    acceptedBadge: "ចម្លើយត្រឹមត្រូវ",
+    acceptAsAnswer: "ទទួលយកជាចម្លើយ",
+    edit: "កែប្រែ",
+    answerAccepted: "បានទទួលយកចម្លើយនេះជាចម្លើយត្រឹមត្រូវ",
+    acceptError: "មិនអាចទទួលយកចម្លើយបានទេ",
+    answerUpdated: "បានកែប្រែចម្លើយ",
+    answerUpdateError: "មិនអាចកែប្រែចម្លើយបានទេ",
+    voteError: "មិនអាចបោះឆ្នោតបានទេ",
+    retractVoteAria: "ដកការបោះឆ្នោត",
+    upvoteAria: "បោះឆ្នោតគាំទ្រ",
+    time: {
+      justNow: "ទើបតែឥឡូវ",
+      minutesAgo: "{n} នាទីមុន",
+      hoursAgo: "{n} ម៉ោងមុន",
+      daysAgo: "{n} ថ្ងៃមុន",
+      monthsAgo: "{n} ខែមុន",
+      yearsAgo: "{n} ឆ្នាំមុន",
     },
   },
 
@@ -542,7 +827,6 @@ export const km = {
     titlePrefix: "បង្កើតឡើងសម្រាប់របៀបដែលអ្នក ",
     titleHighlight: "សរសេរកូដ។",
     description: "រៀនភាសាដែលជួយទ្រទ្រង់គេហទំព័រទំនើប កម្មវិធី ប្រព័ន្ធ Backend និងច្រើនទៀត។",
-    viewAll: "មើលភាសាទាំងអស់",
     startHere: "ចាប់ផ្តើមនៅទីនេះ",
     beginner: "កម្រិតដំបូង",
     outputPreview: "មើលលទ្ធផលគំរូ",
@@ -552,12 +836,13 @@ export const km = {
       html: "បង្កើតរចនាសម្ព័ន្ធ និងមូលដ្ឋានគ្រឹះនៃគេហទំព័រទំនើប។",
       css: "បង្កើតប្លង់ Animation និងរចនាបទដ៏ស្រស់ស្អាត។",
       javascript: "បន្ថែមលូជិក មុខងារ និងអន្តរកម្មទៅកាន់គេហទំព័រ។",
+      nodejs: "កសាង Server និង API ដ៏រហ័ស និងមាំមួន ដោយប្រើ JavaScript Runtime។",
       python: "រៀន Programming តាមរយៈទិន្នន័យ Automation និងកម្មវិធី។",
       java: "បង្កើតកម្មវិធី Backend និងប្រព័ន្ធសហគ្រាសដ៏មានឥទ្ធិពល។",
+      tailwind: "រចនាចំណុចប្រទាក់ទំនើបយ៉ាងលឿន ដោយប្រើ CSS Utility Classes។",
     },
   },
 
-  // ដាក់​ transaltion ឲនៅពីលើ footer។។។​ សូមអរគុណ
   homeCourses: {
     new: "វគ្គសិក្សាថ្មីៗ",
     recommended: "វគ្គសិក្សាណែនាំ",
@@ -599,6 +884,7 @@ export const km = {
 
   docs: {
     searchPlaceholder: "ស្វែងរកប្រធានបទ...",
+    viewAllLessons: "មើលមេរៀនទាំងអស់",
     sections: {
       introduction: {
         title: "សេចក្តីផ្តើម",
@@ -627,9 +913,64 @@ export const km = {
     }
   },
 
+  featuresProcess: {
+    header: {
+      title: "ផ្លូវសិក្សា ៤ ជំហានដែលច្បាស់លាស់",
+      subtitle:
+        "ចាប់ពីមេរៀនដំបូងរបស់អ្នក រហូតដល់ទទួលបានវិញ្ញាបនបត្រផ្លូវការ សូមដើរតាមផ្លូវដែលបានរៀបចំរបស់យើងដើម្បីស្ទាត់ជំនាញបច្ចេកវិទ្យាថ្មីៗ។",
+    },
+    steps: [
+      {
+        id: 1,
+        stepLabel: "1",
+        title: "វគ្គសិក្សាវីដេអូដឹកនាំដោយអ្នកជំនាញ",
+        description: "មេរៀនវីដេអូ HD ដឹកនាំដោយអ្នកជំនាញ ជាមួយការណែនាំជាជំហានៗ។",
+        badge: "ចូលរៀនបាន ២៤/៧",
+        buttonText: "ស្វែងរកវគ្គសិក្សា",
+      },
+      {
+        id: 2,
+        stepLabel: "2",
+        title: "ផ្លូវសិក្សាដែលមានភាពបត់បែន",
+        description: "រៀនតាមល្បឿនផ្ទាល់ខ្លួនរបស់អ្នកនៅលើគ្រប់ឧបករណ៍។",
+        badge: "រៀនតាមល្បឿនខ្លួនឯង",
+        buttonText: "រៀបចំផែនការសិក្សា",
+      },
+      {
+        id: 3,
+        stepLabel: "3",
+        title: "ការវាយតម្លៃជាក់ស្តែង",
+        description: "បញ្ជាក់សមត្ថភាព និងជំនាញតាមរយៈកម្រងសំណួរ និងលំហាត់កូដជាក់ស្តែង។",
+        badge: "អនុវត្តផ្ទាល់",
+        buttonText: "អនុវត្តជំនាញ",
+      },
+      {
+        id: 4,
+        stepLabel: "4",
+        title: "ទទួលបានវិញ្ញាបនបត្រ",
+        description: "ទទួលបានវិញ្ញាបនបត្រផ្លូវការបន្ទាប់ពីបញ្ចប់វគ្គសិក្សានីមួយៗ។",
+        badge: "វិញ្ញាបនបត្រផ្លូវការ",
+        buttonText: "ចាប់ផ្តើមទទួលវិញ្ញាបនបត្រ",
+      },
+    ],
+  },
+
+  heros: {
+    startBusiness: "ចាប់ផ្តើមអាជីវកម្មអនឡាញ",
+    caseStudies: "សិក្សាករណីជាក់ស្តែង",
+    learnAnywhere: "រៀនគ្រប់ទីកន្លែង",
+    anytime: "បានគ្រប់ពេល",
+    liveCoding: "រៀនកូដផ្ទាល់",
+    progressValue: "២៨ / ៣៥",
+    progress: "លទ្ធផល",
+    aiAssistTitle: "AI ជំនួយ",
+    aiAssistDesc: "AI បានជំនួយជួយដល់ការសិក្សារបស់យើងរហូតទៅដល់",
+    availability: "24 ម៉ោង",
+  },
+
   footer: {
     description:
-      "បង្កើតឡើងដើម្បីលើកកម្ពស់អ្នកអភិវឌ្ឍន៍ តាមរយៈមាតិកាបច្ចេកវិទ្យាដែលមានគុណភាព និងងាយយល់។",
+      "បង្កើតឡើងដើម្បីលើកកម្ពស់អ្នកអភិវឌ្ឍន៍។",
 
     quickLinks: {
       title: "តំណភ្ជាប់រហ័ស",

@@ -2,6 +2,6 @@
 
 import CourseDetailPage from "./CourseDetail";
 
-export default function CourseDetailClient({ courseId }: { courseId: string }) {
-  return <CourseDetailPage courseId={courseId} />;
+export default function CourseDetailClient({ slug }: { slug: string }) {
+  return <CourseDetailPage slug={slug} />;
 }

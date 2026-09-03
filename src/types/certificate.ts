@@ -129,10 +129,28 @@ export interface Certificate {
   issuedAt: string;
 }
 
-export interface CertificateVerifyResponse {
+/**
+ * Payload of `GET /api/v1/certificates/verify?verificationId={id}`
+ * (OpenAPI schema: CertificateVerificationResponse).
+ *
+ * Mirrors the backend exactly. `verificationId` is deliberately absent — the
+ * backend does not echo it back, so the public verify page shows the value
+ * from the URL as the reference. `grade` and `courseDescription` are also
+ * absent: they were speculative and are not part of the contract.
+ *
+ * `revoked` is required, not optional. Treating it as optional let an absent
+ * flag read as "not revoked", which rendered revoked certificates as valid.
+ */
+export interface CertificateVerificationResponse {
+  id: string;
+  /** Internal Keycloak subject. Never render this — it is not public data. */
+  userId: string;
+  certificateFileId: string;
+  certificateHash: string;
+  certificateNumber: string;
   studentName: string;
   courseTitle: string;
-  certificateNumber: string;
+  revoked: boolean;
   issuedAt: string;
 }
 

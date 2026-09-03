@@ -1,14 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Target,
-  Eye,
-  Sparkles,
-  CheckCircle2,
-  TrendingUp,
-  Code2,
-} from "lucide-react";
+import { Target, Eye, CheckCircle2, TrendingUp, Code2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useTranslation } from "@/hooks/useTranslations";
 import TiltedCard from "@/components/ui/TiltedCard";
@@ -17,7 +10,7 @@ export default function MissionVision() {
   const { mission } = useTranslation();
 
   return (
-    <section className="w-full text-slate-800 dark:text-slate-100 py-20 px-6 md:px-12 font-sans transition-colors duration-300">
+    <section className="w-full text-slate-800 dark:text-slate-100 py-10 px-4 md:px-12 font-sans transition-colors duration-300">
       <div className="max-w-6xl mx-auto space-y-20">
         {/* SECTION HEADER */}
         <motion.div
@@ -27,13 +20,13 @@ export default function MissionVision() {
           transition={{ duration: 0.5 }}
           className="text-center max-w-2xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 text-xs font-mono font-medium mb-4 border border-blue-200 dark:border-blue-900">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 text-[18px] font-mono font-medium mb-4 border border-blue-200 dark:border-blue-900">
             <span>{mission.section.badge}</span>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">
+          <h2 className="text-[30px] font-bold text-slate-900 dark:text-white tracking-tight">
             {mission.section.title}
           </h2>
-          <p className="mt-3 text-slate-600 dark:text-slate-400 text-base leading-relaxed">
+          <p className="mt-3 text-slate-600 dark:text-slate-400 text-[18px] leading-relaxed">
             {mission.section.description}
           </p>
         </motion.div>
@@ -62,13 +55,13 @@ export default function MissionVision() {
                     <div className="w-3 h-3 rounded-full bg-amber-400/80" />
                     <div className="w-3 h-3 rounded-full bg-emerald-400/80" />
                   </div>
-                  <span className="text-xs font-mono text-slate-400">
+                  <span className="text-[18px] font-mono text-slate-400">
                     interactive_editor.ts
                   </span>
                 </div>
 
                 {/* Code Snippet Visual */}
-                <div className="space-y-3 font-mono text-xs sm:text-sm">
+                <div className="space-y-3 font-mono text-[18px]">
                   <div className="flex items-center gap-3 text-slate-400">
                     <span className="w-4 text-right select-none text-slate-300 dark:text-slate-700">
                       1
@@ -117,7 +110,7 @@ export default function MissionVision() {
                   </div>
                 </div>
 
-                <div className="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 font-mono">
+                <div className="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[18px] text-slate-500 dark:text-slate-400 font-mono">
                   <span className="flex items-center gap-1.5">
                     <Code2 className="w-4 h-4 text-cyan-500" />{" "}
                     {mission.content.highlight}
@@ -136,12 +129,12 @@ export default function MissionVision() {
               <div className="w-10 h-10 rounded-xl bg-cyan-50 dark:bg-cyan-950/60 border border-cyan-200 dark:border-cyan-800 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
                 <Target className="w-5 h-5" />
               </div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+              <h3 className="text-[30px] font-bold text-slate-900 dark:text-white">
                 {mission.content.title}
               </h3>
             </div>
 
-            <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
+            <p className="text-slate-600 dark:text-slate-300 text-[18px] leading-relaxed">
               {mission.content.description}
             </p>
 
@@ -149,7 +142,7 @@ export default function MissionVision() {
               {mission.content.tags.map((tag: string, idx: number) => (
                 <span
                   key={idx}
-                  className="px-3.5 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-sm border border-slate-200 dark:border-slate-800"
+                  className="px-3.5 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-[18px] border border-slate-200 dark:border-slate-800"
                 >
                   {tag}
                 </span>
@@ -172,12 +165,12 @@ export default function MissionVision() {
               <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/60 border border-amber-200 dark:border-amber-800 flex items-center justify-center text-amber-600 dark:text-amber-400">
                 <Eye className="w-5 h-5" />
               </div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
+              <h3 className="text-[30px] font-bold text-slate-900 dark:text-white">
                 {mission.vision.title}
               </h3>
             </div>
 
-            <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
+            <p className="text-slate-600 dark:text-slate-300 text-[18px] leading-relaxed">
               {mission.vision.description}
             </p>
 
@@ -185,7 +178,7 @@ export default function MissionVision() {
               {mission.vision.tags.map((tag: string, idx: number) => (
                 <span
                   key={idx}
-                  className="px-3.5 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-sm border border-slate-200 dark:border-slate-800"
+                  className="px-3.5 py-1 rounded-md bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-[18px] border border-slate-200 dark:border-slate-800"
                 >
                   {tag}
                 </span>
@@ -204,18 +197,18 @@ export default function MissionVision() {
                 className="bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col justify-center min-h-80"
               >
                 <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-6">
-                  <span className="text-xs font-mono text-slate-500 dark:text-slate-400 font-medium flex items-center gap-2">
-                    <TrendingUp className="w-4 h-4 text-amber-500" />{" "}
+                  <span className="text-[18px] font-sans text-slate-500 dark:text-slate-400 font-medium flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-amber-500" />{" "}
                     {mission.vision.metrics.title}
                   </span>
-                  <span className="text-xs font-mono text-slate-400">
+                  <span className="text-[18px] font-sans text-slate-400">
                     {mission.vision.metrics.year}
                   </span>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <div className="flex justify-between text-xs font-mono mb-1.5">
+                    <div className="flex justify-between text-[18px] font-sans mb-1.5">
                       <span className="text-slate-700 dark:text-slate-300">
                         {mission.vision.metrics.practicalSkillBuilding.label}
                       </span>
@@ -247,7 +240,7 @@ export default function MissionVision() {
                   </div>
 
                   <div>
-                    <div className="flex justify-between text-xs font-mono mb-1.5">
+                    <div className="flex justify-between text-[18px] font-sans mb-1.5">
                       <span className="text-slate-700 dark:text-slate-300">
                         {mission.vision.metrics.techCareerPlacement.label}
                       </span>
@@ -258,8 +251,7 @@ export default function MissionVision() {
                         transition={{ duration: 0.6, delay: 0.25 }}
                         className="text-blue-600 dark:text-blue-400 font-semibold"
                       >
-                        {mission.vision.metrics.techCareerPlacement.percentage}
-                        %
+                        {mission.vision.metrics.techCareerPlacement.percentage}%
                       </motion.span>
                     </div>
                     <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
@@ -279,9 +271,8 @@ export default function MissionVision() {
                     </div>
                   </div>
                 </div>
-
-                <div className="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 font-mono">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+                <div className="mt-8 pt-4 border-t border-slate-100 dark:border-slate-800 flex items-start gap-2 text-[18px] text-slate-500 dark:text-slate-400 font-sans">
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-1" />
                   <span>{mission.vision.metrics.footer}</span>
                 </div>
               </motion.div>

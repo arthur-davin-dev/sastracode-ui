@@ -476,16 +476,68 @@ export function isPlaygroundLanguageSupported(value: string): boolean {
 
 const HTML_KEYWORD_PATTERN =
   /\b(function|def |public class|console\.log|import |System\.out|=>)\b/;
-const CSS_RULE_PATTERN = /^[.#a-zA-Z0-9\-_:,\s>*[\]="'()]+\{[\s\S]*?:[\s\S]*?;[\s\S]*?\}/;
+const CSS_RULE_PATTERN =
+  /[.#a-zA-Z0-9\-_:,\s>*[\]="'()]+\{[\s\S]*?:[\s\S]*?;[\s\S]*?\}/;
 
 /**
- * Lesson content sometimes tags a code block with the wrong language (e.g.
- * an HTML or CSS example left tagged "Java" from a CMS field that defaults
- * and doesn't always get changed per example). Rather than trust that tag
- * blindly, sanity-check it against the code itself — but only override it
- * when the code is unambiguously HTML or CSS, so a real Java/Python/JS
- * example is never misclassified. Anything less than unambiguous keeps the
- * originally declared language.
+ * Strips `/* ... *\/` and `//` comments so a leading comment can't hide the
+ * real language signals underneath it.
+ */
+function stripComments(code: string): string {
+  return code
+    .replace(/\/\*[\s\S]*?\*\//g, " ")
+    .replace(/^[ \t]*\/\/.*$/gm, " ");
+}
+
+function countMatches(code: string, patterns: RegExp[]): number {
+  return patterns.reduce(
+    (total, pattern) => (pattern.test(code) ? total + 1 : total),
+    0,
+  );
+}
+
+const JAVA_HINTS: RegExp[] = [
+  /\bpublic\s+class\s+\w+/,
+  /\b(public|private|protected)\s+static\s+void\s+main\s*\(/,
+  /\bSystem\.out\.(println|print)\s*\(/,
+  /\bString\[\]\s+\w+/,
+  /\b(int|double|float|boolean|char|long)\s+\w+\s*=/,
+  /\b(public|private|protected)\s+(static\s+)?[\w<>[\]]+\s+\w+\s*\([^)]*\)\s*\{/,
+];
+
+const PYTHON_HINTS: RegExp[] = [
+  /^\s*def\s+\w+\s*\([^)]*\)\s*:/m,
+  /^\s*class\s+\w+(\s*\([^)]*\))?\s*:/m,
+  /^\s*(from\s+[\w.]+\s+)?import\s+[\w.,*\s]+$/m,
+  /^\s*print\s*\(/m,
+  /^\s*(if|elif|for|while|with|try|except)\b[^\n]*:\s*$/m,
+  /\bself\b/,
+  /\bf["'][^"']*\{[^}]*\}/,
+  /\b__name__\b/,
+];
+
+const JAVASCRIPT_HINTS: RegExp[] = [
+  /\bconsole\.(log|error|warn|info|table)\s*\(/,
+  /\b(const|let)\s+[A-Za-z_$][\w$]*\s*=/,
+  /\bfunction\s*\*?\s*\w*\s*\([^)]*\)\s*\{/,
+  /=>\s*[{("'`\[]/,
+  /\bdocument\.(getElementById|querySelector|querySelectorAll|createElement)/,
+  /\b(require|import)\s*\(?\s*['"][^'"]+['"]/,
+  /\bexport\s+(default|const|function|class)\b/,
+  /`[^`]*\$\{[^}]*\}[^`]*`/,
+];
+
+/**
+ * Lesson content routinely tags a code block with the wrong language — a CMS
+ * "language" field defaults (often to "Java") and isn't always changed per
+ * example, so an HTML, CSS, Python or JavaScript snippet can arrive tagged
+ * "java". Rather than trust that tag blindly, inspect the code itself:
+ *
+ *  1. Unambiguous markup / stylesheet -> "html" / "css".
+ *  2. Otherwise score the body against Java / Python / JavaScript signal
+ *     patterns and take the clear winner (strictly more hits than the
+ *     others, at least one hit).
+ *  3. If nothing is conclusive, keep the originally declared language.
  */
 export function detectLanguageFromCode(
   code: string,
@@ -496,15 +548,35 @@ export function detectLanguageFromCode(
 
   const looksLikeHtml =
     /^<!doctype html/i.test(trimmed) ||
-    (/<html[\s>]/i.test(trimmed) && /<\/html>/i.test(trimmed)) ||
+    /<\/(html|head|body|div|p|span|ul|ol|li|section|main|header|footer|nav|article|table|form|button|a|h[1-6])>/i.test(
+      trimmed,
+    ) ||
+    /<(html|head|body|meta|link|!--)[\s>]/i.test(trimmed) ||
     (/^</.test(trimmed) && /<\/[a-z][\w-]*>/i.test(trimmed));
   if (looksLikeHtml) return "html";
 
+  const withoutComments = stripComments(trimmed);
+
   const looksLikeCss =
-    !/[<>]/.test(trimmed) &&
-    !HTML_KEYWORD_PATTERN.test(trimmed) &&
-    CSS_RULE_PATTERN.test(trimmed);
+    !/[<>]/.test(withoutComments) &&
+    !HTML_KEYWORD_PATTERN.test(withoutComments) &&
+    CSS_RULE_PATTERN.test(withoutComments) &&
+    /^[\s\S]*?[.#@a-zA-Z][\w\-.#:,\s>*[\]()="']*\{/.test(withoutComments.trim());
   if (looksLikeCss) return "css";
+
+  const scores: { language: string; score: number }[] = [
+    { language: "java", score: countMatches(withoutComments, JAVA_HINTS) },
+    { language: "python", score: countMatches(withoutComments, PYTHON_HINTS) },
+    {
+      language: "javascript",
+      score: countMatches(withoutComments, JAVASCRIPT_HINTS),
+    },
+  ].sort((a, b) => b.score - a.score);
+
+  const [best, second] = scores;
+  if (best && best.score > 0 && (!second || best.score > second.score)) {
+    return best.language;
+  }
 
   return declaredLanguage;
 }

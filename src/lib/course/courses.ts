@@ -7,6 +7,8 @@ export interface Lesson {
   locked: boolean;
   /** Public path (for example, /videos/intro.mp4) or an absolute video URL. */
   videoUrl?: string;
+  /** Video thumbnail URL, shown in the lesson list sidebar. */
+  thumbnail?: string;
 }
 
 export interface Chapter {

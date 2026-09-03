@@ -3,11 +3,13 @@
 import Link from "next/link";
 import EnrollmentPage from "./EnrollmentPage";
 import { mapApiCourseToCourse, mergeCourseSections } from "@/lib/course/course-adapter";
-import { useGetCourseByIdQuery, useGetCourseSectionsQuery } from "@/redux/api/course-api";
+import { useGetCourseBySlugQuery, useGetCourseSectionsQuery } from "@/redux/api/course-api";
 
-export default function EnrollmentCourseLoader({ courseId }: { courseId: string }) {
-  const courseQuery = useGetCourseByIdQuery(courseId);
-  const sectionsQuery = useGetCourseSectionsQuery(courseId, {
+export default function EnrollmentCourseLoader({ slug }: { slug: string }) {
+  const courseQuery = useGetCourseBySlugQuery(slug);
+  // Sections are still fetched by the course's real UUID (backend
+  // /v1/courses/{courseId}/sections is unchanged).
+  const sectionsQuery = useGetCourseSectionsQuery(courseQuery.data?.id ?? "", {
     skip:
       !courseQuery.data ||
       (courseQuery.data.accessType === "PRIVATE" &&

@@ -56,3 +56,9 @@ CLAUDE.md
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# Gemini CLI credentials
+.gemini/
+.gemini-cli/
+.config/gemini-cli/

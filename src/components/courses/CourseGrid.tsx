@@ -13,7 +13,7 @@ export function CourseGrid({
   courses,
   title,
   seeAllHref,
-  emptyMessage = "No courses match your search criteria",
+  emptyMessage,
 }: CourseGridProps) {
   if (courses.length === 0) {
     return (

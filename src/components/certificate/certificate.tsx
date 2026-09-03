@@ -31,29 +31,6 @@ export default function Certificate() {
 
       <InProgressCertificatesSection />
 
-      {/* <Card>
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold flex items-center gap-2 text-primary-color dark:text-white">
-            <span className="h-6 w-6 rounded-full bg-primary-color/20 flex items-center justify-center">
-              <Lock className="h-3.5 w-3.5 text-slate-700 dark:text-slate-300" />
-            </span>
-            វិញ្ញាបនបត្រមិនទាន់មានបញ្ចប់
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {requirements.map((r, i) => (
-            <motion.div
-              key={r.id}
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1, duration: 0.4 }}
-            >
-              <RequirementCard requirement={r} />
-            </motion.div>
-          ))}
-        </CardContent>
-      </Card> */}
-
       <ClaimCertificateSection />
     </main>
   );

@@ -499,6 +499,8 @@ import type {
   Lesson,
 } from "@/lib/course/courses";
 
+import { stripEmojiFrom } from "@/utils/strip-emoji";
+
 /*
  * ============================================
  * FALLBACKS
@@ -635,6 +637,32 @@ function resolveVideoUrl(
 
 /*
  * ============================================
+ * VIDEO THUMBNAIL
+ * ============================================
+ */
+
+function resolveVideoThumbnail(
+  video: VideoResponse,
+): string | undefined {
+  /*
+   * Prefer the backend-provided thumbnail.
+   */
+  if (video.thumbnailUrl) {
+    return video.thumbnailUrl;
+  }
+
+  /*
+   * Fall back to the YouTube-generated thumbnail.
+   */
+  if (video.youtubeVideoId) {
+    return `https://i.ytimg.com/vi/${video.youtubeVideoId}/mqdefault.jpg`;
+  }
+
+  return undefined;
+}
+
+/*
+ * ============================================
  * FULL COURSE ACCESS
  * ============================================
  */
@@ -711,8 +739,13 @@ function mapSection(
         return {
           id: video.id,
 
+          /*
+           * Emoji are stripped for display only; the stored title is
+           * untouched. Falls back to a numbered label if a title was
+           * nothing but emoji.
+           */
           title:
-            video.title ||
+            stripEmojiFrom(video.title) ||
             `មេរៀនទី ${
               videoIndex + 1
             }`,
@@ -726,6 +759,8 @@ function mapSection(
           locked,
 
           videoUrl: resolveVideoUrl(video),
+
+          thumbnail: resolveVideoThumbnail(video),
         };
       },
     );
@@ -990,7 +1025,7 @@ export function mapApiCourseToCourse(
      */
 
     href:
-      `/courses/${course.id}`,
+      `/courses/${course.slug || course.id}`,
 
     /*
      * =====================
@@ -1105,7 +1140,13 @@ export function mapApiCourseToCourse(
         "SastraCode Instructor",
 
       avatar:
-        FALLBACK_AVATAR,
+        course.instructorId
+          ?.avatarFileId
+          ? resolveCourseImage(
+              course.instructorId
+                .avatarFileId,
+            )
+          : FALLBACK_AVATAR,
 
       tags: [
         course.level,

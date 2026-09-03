@@ -72,7 +72,7 @@ html {
 /* Added Dark Mode Colors */
 .dark {
   --primary-color: #3b82f6;
-  --secondary-color: #ef4444;
+  --secondary-color: #F51518;
   --init-color: #f59e0b;
 
   --background: oklch(0.145 0 0);
@@ -208,18 +208,6 @@ p {
   }
   to {
     transform: rotate(360deg);
-  }
-}
-
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
   }
 }
 

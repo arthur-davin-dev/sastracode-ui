@@ -13,9 +13,7 @@ export default function HeroLesson({
             {lesson.lessonIndexLabel}
           </span>
 
-          <h1 className="mt-4 text-2xl font-bold">
-            {lesson.title}
-          </h1>
+          <h1 className="mt-4 text-2xl font-bold">{lesson.title}</h1>
 
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-white/80">
             {lesson.intro}
