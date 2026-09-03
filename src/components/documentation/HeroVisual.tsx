@@ -207,9 +207,9 @@ export default function HeroVisual() {
         className="absolute inset-0 z-10"
         style={{
           WebkitMaskImage:
-            "linear-gradient(black 60%, transparent 80%), radial-gradient(circle at 50% 100%, black 0%, transparent 15%), radial-gradient(circle at 50% 54%, black 0%, black 10%, transparent 42%)",
+            "linear-gradient(black 60%, transparent 80%), radial-gradient(circle at 50% 100%, black 0%, transparent 15%), radial-gradient(circle at 50% 54%, black 0%, black 10%, transparent 42%), radial-gradient(circle at 15% 60%, black 0%, black 8%, transparent 18%)",
           maskImage:
-            "linear-gradient(black 60%, transparent 80%), radial-gradient(circle at 50% 100%, black 0%, transparent 15%), radial-gradient(circle at 50% 54%, black 0%, black 10%, transparent 42%)",
+            "linear-gradient(black 60%, transparent 80%), radial-gradient(circle at 50% 100%, black 0%, transparent 15%), radial-gradient(circle at 50% 54%, black 0%, black 10%, transparent 42%), radial-gradient(circle at 15% 60%, black 0%, black 8%, transparent 18%)",
           WebkitMaskRepeat: "no-repeat",
           maskRepeat: "no-repeat",
           WebkitMaskSize: "100% 100%",
@@ -384,15 +384,13 @@ export default function HeroVisual() {
               fill="black"
             />
 
-            {/* small extra cutout around remaining laptop overlap */}
+            {/* expanded extra cutout around the far left laptop edge */}
             <path
               d="
-                M 62 292
-                L 100 292
-                L 113 318
-                L 101 340
-                L 76 336
-                L 62 316
+                M 30 280
+                L 100 280
+                L 113 345
+                L 30 340
                 Z
               "
               fill="black"
@@ -502,7 +500,7 @@ export default function HeroVisual() {
                   sm:h-14 sm:w-14
                   items-center
                   justify-center
-                  rounded-2xl
+                  rounded-full
                   border
                   border-white/70
                   bg-white/90
@@ -554,7 +552,7 @@ export default function HeroVisual() {
                   sm:h-14 sm:w-14
                   items-center
                   justify-center
-                  rounded-2xl
+                  rounded-full
                   border
                   border-white/70
                   bg-white/90

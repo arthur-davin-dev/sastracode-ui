@@ -104,7 +104,6 @@ export default function LanguageCards() {
       <div className="mb-10 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
         <div>
           <div className="mb-2.5 flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 w-fit">
-            <Sparkles className="size-3 text-primary" />
             <span className="text-[11px] font-black uppercase tracking-[0.2em] text-primary">
               {languagesData.length.toString().padStart(2, "0")}{" "}
               {t.languageCards.badge}
