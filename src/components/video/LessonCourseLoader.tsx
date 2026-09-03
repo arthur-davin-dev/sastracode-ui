@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { AlertCircle, BookOpen, LockKeyhole } from "lucide-react";
 import LessonPlayerPage from "./LessonPlayerPage";
+import { useTranslation } from "@/hooks/useTranslations";
 import {
   mapApiCourseToCourse,
   mergeCourseSections,
@@ -29,7 +30,7 @@ function LessonState({ icon, title, description, href, action }: LessonStateProp
   return (
     <main className="flex min-h-[70vh] items-center justify-center bg-slate-50 px-6 py-20 dark:bg-slate-950">
       <div className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-xl shadow-slate-900/5 dark:border-slate-800 dark:bg-slate-900">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-[#002455] dark:bg-blue-950/50 dark:text-blue-300">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-color/10 text-primary-color dark:bg-primary-color/15">
           {icon}
         </div>
         <h1 className="mt-5 text-2xl font-bold text-slate-950 dark:text-white">
@@ -40,7 +41,7 @@ function LessonState({ icon, title, description, href, action }: LessonStateProp
         </p>
         <Link
           href={href}
-          className="mt-7 inline-flex min-h-11 items-center justify-center rounded-xl bg-[#002455] px-6 text-sm font-semibold text-white transition hover:bg-[#003b80] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#002455]"
+          className="mt-7 inline-flex min-h-11 items-center justify-center rounded-xl bg-primary-color px-6 text-sm font-semibold text-white transition hover:bg-primary-color/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-color"
         >
           {action}
         </Link>
@@ -53,6 +54,8 @@ export default function LessonCourseLoader({
   slug,
   lessonId,
 }: LessonCourseLoaderProps) {
+  const t = useTranslation();
+  const states = t.lessonPlayer.states;
   const courseQuery = useGetCourseBySlugQuery(slug);
   const embeddedSections = courseQuery.data?.sections;
   // Sections are still fetched by the course's real UUID (backend
@@ -81,10 +84,10 @@ export default function LessonCourseLoader({
     return (
       <LessonState
         icon={<AlertCircle className="h-7 w-7" />}
-        title="មិនអាចបើកវគ្គសិក្សាបាន"
-        description="សូមពិនិត្យការតភ្ជាប់របស់អ្នក ឬសាកល្បងម្ដងទៀតនៅពេលក្រោយ។"
+        title={states.courseErrorTitle}
+        description={states.courseErrorDescription}
         href={`/courses/${slug}`}
-        action="ត្រឡប់ទៅវគ្គសិក្សា"
+        action={states.backToCourse}
       />
     );
   }
@@ -95,10 +98,10 @@ export default function LessonCourseLoader({
     return (
       <LessonState
         icon={<AlertCircle className="h-7 w-7" />}
-        title="មិនអាចទាញយកមាតិកាមេរៀនបាន"
-        description="មាតិកាវគ្គសិក្សាមិនទាន់អាចប្រើបានទេ។ សូមសាកល្បងម្ដងទៀត។"
+        title={states.contentErrorTitle}
+        description={states.contentErrorDescription}
         href={`/courses/${slug}`}
-        action="មើលព័ត៌មានវគ្គសិក្សា"
+        action={states.viewCourseInfo}
       />
     );
   }
@@ -109,10 +112,10 @@ export default function LessonCourseLoader({
     return (
       <LessonState
         icon={<LockKeyhole className="h-7 w-7" />}
-        title="អ្នកមិនទាន់មានសិទ្ធិចូលរៀនវគ្គនេះ"
-        description="វគ្គសិក្សាឯកជននេះត្រូវការការអនុញ្ញាត មុនពេលអ្នកអាចមើលមេរៀនបាន។"
+        title={states.noAccessTitle}
+        description={states.noAccessDescription}
         href="/courses/private-courses"
-        action="មើលវគ្គឯកជនរបស់ខ្ញុំ"
+        action={states.viewMyPrivateCourses}
       />
     );
   }
@@ -126,10 +129,10 @@ export default function LessonCourseLoader({
     return (
       <LessonState
         icon={<BookOpen className="h-7 w-7" />}
-        title="រកមិនឃើញមេរៀននេះ"
-        description="មេរៀនអាចត្រូវបានផ្លាស់ទី ឬដកចេញពីវគ្គសិក្សានេះ។"
+        title={states.lessonNotFoundTitle}
+        description={states.lessonNotFoundDescription}
         href={`/courses/${slug}`}
-        action="មើលមាតិកាវគ្គសិក្សា"
+        action={states.viewCurriculum}
       />
     );
   }
@@ -138,10 +141,10 @@ export default function LessonCourseLoader({
     return (
       <LessonState
         icon={<LockKeyhole className="h-7 w-7" />}
-        title="មេរៀននេះត្រូវបានចាក់សោ"
-        description="សូមចុះឈ្មោះក្នុងវគ្គសិក្សា ដើម្បីទទួលបានសិទ្ធិមើលមេរៀនពេញលេញ។"
+        title={states.lockedTitle}
+        description={states.lockedDescription}
         href={`/courses/${slug}`}
-        action="មើលព័ត៌មានចុះឈ្មោះ"
+        action={states.viewEnrollInfo}
       />
     );
   }

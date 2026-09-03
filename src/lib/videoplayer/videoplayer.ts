@@ -58,6 +58,7 @@ export function buildSectionsFromCurriculum(
       title: lesson.title,
       duration: lesson.duration,
       status: lesson.id === currentLessonId ? "current" : "upcoming",
+      thumbnail: lesson.thumbnail,
     })),
   }));
 }

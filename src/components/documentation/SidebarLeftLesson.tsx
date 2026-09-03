@@ -4,7 +4,6 @@ import { BookOpen, CheckCircle2, ChevronDown, ChevronRight } from "lucide-react"
 import { useState } from "react";
 
 import type { TutorialSection } from "@/types/tutorial-reader";
-import { TranslatedText } from "@/components/i18n/TranslatedText";
 
 interface SidebarLeftLessonProps {
   sections: TutorialSection[];
@@ -120,12 +119,9 @@ export default function SidebarLeftLesson({
                           : "bg-white/40 text-slate-700 hover:bg-white hover:text-[#002455] dark:bg-slate-900/30 dark:text-slate-300 dark:hover:bg-slate-900 dark:hover:text-white"
                     }`}
                   >
-                    <TranslatedText
-                      as="span"
-                      className="min-w-0 flex-1 whitespace-normal break-words font-khmer text-lg font-semibold leading-7"
-                    >
+                    <span className="min-w-0 flex-1 whitespace-normal break-words font-khmer text-lg font-semibold leading-7">
                       {section.title}
-                    </TranslatedText>
+                    </span>
                     {sectionCompleted && (
                       <CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-emerald-500" />
                     )}
@@ -175,12 +171,9 @@ export default function SidebarLeftLesson({
                               <span className="absolute -left-[18px] top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#002455] ring-4 ring-slate-50 dark:bg-blue-400 dark:ring-slate-950" />
                             )}
 
-                            <TranslatedText
-                              as="span"
-                              className="min-w-0 flex-1 whitespace-normal break-words"
-                            >
+                            <span className="min-w-0 flex-1 whitespace-normal break-words">
                               {subsection.title}
-                            </TranslatedText>
+                            </span>
 
                             {subsectionCompleted && (
                               <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-500" />

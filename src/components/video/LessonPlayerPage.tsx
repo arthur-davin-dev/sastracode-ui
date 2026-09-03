@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useRouter } from "next/navigation";
 import { VideoPlayer } from "./VideoPlayer";
 import { LessonHeader } from "./LessonHeader";
 import { QASection } from "./qa/QASection";
@@ -14,6 +15,8 @@ import {
 } from "@/lib/videoplayer/videoplayer";
 import { Course } from "@/lib/course/courses";
 import { toKhmerNumerals } from "@/lib/khmer-numerals";
+import { useLanguage } from "@/lib/language-context";
+import { useTranslation } from "@/hooks/useTranslations";
 
 interface LessonPlayerPageProps {
   course: Course;
@@ -23,21 +26,19 @@ interface LessonPlayerPageProps {
 const fallbackVideoUrl =
   "https://youtu.be/6Gwxa9_qjJw?si=2ln0xHCwZu_khIqq";
 
-const LEVEL_LABELS_KM: Record<string, string> = {
-  BEGINNER: "កម្រិតដំបូង",
-  INTERMEDIATE: "កម្រិតមធ្យម",
-  ADVANCED: "កម្រិតខ្ពស់",
-};
-
-function lessonPositionLabel(index: number, total: number) {
-  return `មេរៀនទី ${toKhmerNumerals(index)} ក្នុងចំណោម ${toKhmerNumerals(total)}`;
-}
-
 export default function LessonPlayerPage({
   course,
   lessonId,
 }: LessonPlayerPageProps) {
   const [autoplay, setAutoplay] = useState(true);
+  const router = useRouter();
+  const t = useTranslation();
+  const { lang } = useLanguage();
+
+  const num = (value: string | number) =>
+    lang === "km" ? toKhmerNumerals(value) : String(value);
+  const lessonPositionLabel = (index: number, total: number) =>
+    `${t.lessonPlayer.positionPrefix} ${num(index)} ${t.lessonPlayer.positionMiddle} ${num(total)}`;
 
   const chapters = course.curriculum ?? [];
   const found = findLessonById(chapters, lessonId);
@@ -70,12 +71,16 @@ export default function LessonPlayerPage({
   const lessonTitle =
     found?.lesson.title ??
     sectionLesson?.lesson.title.replace(/^\d+\.\s*/, "") ??
-    "មេរៀន";
+    t.lessonPlayer.lessonFallback;
   const sectionLabel =
-    found?.chapter.title ?? sectionLesson?.section.title ?? "ជំពូក";
-  const levelLabel = LEVEL_LABELS_KM[course.level ?? ""] ?? "កម្រិតដំបូង";
+    found?.chapter.title ??
+    sectionLesson?.section.title ??
+    t.lessonPlayer.chapterFallback;
+  const levelLabel = course.level
+    ? t.courses.card.level[course.level]
+    : t.courses.card.level.BEGINNER;
 
-  // find the lesson's position (e.g. "មេរៀនទី ៦ ក្នុងចំណោម ១២") across all chapters
+  // find the lesson's position (e.g. "Lesson 6 of 12") across all chapters
   const flatLessons =
     chapters.length > 0
       ? chapters.flatMap((chapter) => chapter.lessons)
@@ -83,6 +88,18 @@ export default function LessonPlayerPage({
   const lessonIndex = flatLessons.findIndex((l) => l.id === lessonId);
   const nextLesson =
     lessonIndex >= 0 ? flatLessons[lessonIndex + 1] : undefined;
+  const nextLessonHref = nextLesson
+    ? `/courses/${course.slug || course.id}/learn/${nextLesson.id}`
+    : undefined;
+
+  // Autoplay: when the current video ends and the toggle is on, advance to the
+  // next lesson. `autoplay` is read at call time so toggling it mid-video works.
+  const handleVideoEnded = () => {
+    if (autoplay && nextLessonHref) {
+      router.push(nextLessonHref);
+    }
+  };
+
   const lessonPosition =
     lessonIndex >= 0
       ? lessonPositionLabel(lessonIndex + 1, flatLessons.length)
@@ -102,6 +119,7 @@ export default function LessonPlayerPage({
               poster={course.image}
               title={lessonTitle}
               autoplay={autoplay}
+              onEnded={handleVideoEnded}
             />
 
             <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
@@ -112,11 +130,12 @@ export default function LessonPlayerPage({
                 sectionLabel={sectionLabel}
                 lessonPosition={lessonPosition}
                 level={levelLabel}
-                likeCount={128}
               />
             </div>
 
-            <QASection videoId={lessonId} />
+            <Suspense fallback={null}>
+              <QASection videoId={lessonId} />
+            </Suspense>
           </div>
 
           {/* Right Sidebar Section */}
@@ -137,11 +156,7 @@ export default function LessonPlayerPage({
               duration={nextLesson?.duration ?? "10:00"}
               autoplay={autoplay}
               onAutoplayChange={setAutoplay}
-              href={
-                nextLesson
-                  ? `/courses/${course.slug || course.id}/learn/${nextLesson.id}`
-                  : undefined
-              }
+              href={nextLessonHref}
             />
           </div>
         </div>

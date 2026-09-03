@@ -30,7 +30,6 @@ import {
   isPlaygroundLanguageSupported,
 } from "@/lib/playground/languages";
 import { highlightCode } from "@/utils/highlight-code";
-import { TranslatedText } from "@/components/i18n/TranslatedText";
 
 interface LessonBlockRendererProps {
   block: TutorialBlock;
@@ -281,12 +280,9 @@ export function QuizResultsProvider({
                     </p>
                   )}
                   {answer.explanation && (
-                    <TranslatedText
-                      as="p"
-                      className="mt-1 font-khmer text-base text-slate-600 dark:text-slate-300"
-                    >
+                    <p className="mt-1 font-khmer text-base text-slate-600 dark:text-slate-300">
                       {answer.explanation}
-                    </TranslatedText>
+                    </p>
                   )}
                 </div>
               ))}
@@ -441,35 +437,26 @@ function HeadingBlock({ data, type }: { data: BlockData; type: string }) {
 
   if (level === 1) {
     return (
-      <TranslatedText
-        as="h2"
-        className="font-khmer text-balance text-3xl font-bold tracking-tight text-blue-600 sm:text-[2rem] dark:text-blue-400"
-      >
+      <h2 className="font-khmer text-balance text-3xl font-bold tracking-tight text-blue-600 sm:text-[2rem] dark:text-blue-400">
         {text}
-      </TranslatedText>
+      </h2>
     );
   }
 
   if (level >= 3) {
     return (
-      <TranslatedText
-        as="h3"
-        className="font-khmer text-balance text-xl font-bold leading-8 text-blue-600 sm:text-2xl dark:text-blue-400"
-      >
+      <h3 className="font-khmer text-balance text-xl font-bold leading-8 text-blue-600 sm:text-2xl dark:text-blue-400">
         {text}
-      </TranslatedText>
+      </h3>
     );
   }
 
   return (
     <div className="pt-2">
       <div className="mb-3 h-1 w-9 rounded-full bg-[#002455]/90 dark:bg-blue-400" />
-      <TranslatedText
-        as="h2"
-        className="font-khmer text-balance text-2xl font-bold leading-tight tracking-tight text-blue-600 sm:text-[1.75rem] dark:text-blue-400"
-      >
+      <h2 className="font-khmer text-balance text-2xl font-bold leading-tight tracking-tight text-blue-600 sm:text-[1.75rem] dark:text-blue-400">
         {text}
-      </TranslatedText>
+      </h2>
     </div>
   );
 }
@@ -480,12 +467,9 @@ function ParagraphBlock({ data }: { data: BlockData }) {
   if (!text) return null;
 
   return (
-    <TranslatedText
-      as="p"
-      className="font-khmer whitespace-pre-line text-lg leading-9 text-slate-800 dark:text-slate-200"
-    >
+    <p className="font-khmer whitespace-pre-line text-lg leading-9 text-slate-800 dark:text-slate-200">
       {text}
-    </TranslatedText>
+    </p>
   );
 }
 
@@ -668,15 +652,12 @@ function CalloutBlock({
         <div className="flex gap-3">
           <Quote className="mt-0.5 h-5 w-5 shrink-0 text-[#002455]/70 dark:text-blue-400" />
           <div>
-            <TranslatedText
-              as="p"
-              className="font-khmer whitespace-pre-line text-[16px] leading-8 text-slate-700 dark:text-slate-300"
-            >
+            <p className="font-khmer whitespace-pre-line text-[16px] leading-8 text-slate-700 dark:text-slate-300">
               {text}
-            </TranslatedText>
+            </p>
             {author && (
               <footer className="font-khmer mt-3 text-sm font-semibold text-slate-500 dark:text-slate-400">
-                — <TranslatedText>{author}</TranslatedText>
+                — {author}
               </footer>
             )}
           </div>
@@ -702,18 +683,11 @@ function CalloutBlock({
 
         <div className="min-w-0">
           <p className={`font-khmer text-sm font-bold ${config.titleClass}`}>
-            {customTitle ? (
-              <TranslatedText>{customTitle}</TranslatedText>
-            ) : (
-              config.label
-            )}
+            {customTitle ? customTitle : config.label}
           </p>
-          <TranslatedText
-            as="p"
-            className="font-khmer mt-1 whitespace-pre-line text-[15px] leading-7 text-slate-700 dark:text-slate-300"
-          >
+          <p className="font-khmer mt-1 whitespace-pre-line text-[15px] leading-7 text-slate-700 dark:text-slate-300">
             {text}
-          </TranslatedText>
+          </p>
         </div>
       </div>
     </div>
@@ -935,12 +909,9 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
             សំណួរ {quizContext?.position(blockId) ?? 1} ក្នុងចំណោម{" "}
             {quizContext?.total ?? 1}
           </p>
-          <TranslatedText
-            as="p"
-            className="font-khmer mt-0.5 text-base font-bold text-slate-900 dark:text-slate-100"
-          >
+          <p className="font-khmer mt-0.5 text-base font-bold text-slate-900 dark:text-slate-100">
             {question}
-          </TranslatedText>
+          </p>
         </div>
       </div>
 
@@ -966,7 +937,7 @@ function QuizBlock({ data, blockId }: { data: BlockData; blockId: string }) {
               <span
                 className={`mt-1 h-5 w-5 shrink-0 rounded-full border-2 ${selected === option.id ? "border-blue-600 bg-blue-600 ring-4 ring-blue-100" : "border-slate-300 bg-white"}`}
               />
-              <TranslatedText>{option.text}</TranslatedText>
+              <span>{option.text}</span>
             </button>
           ))}
           {!submitted ? (
@@ -1063,7 +1034,7 @@ function ListBlock({
             key={`${item}-${index}`}
             className="pl-1 marker:text-[#002455] dark:marker:text-blue-400"
           >
-            <TranslatedText>{item}</TranslatedText>
+            <span>{item}</span>
           </li>
         ))}
       </ListTag>

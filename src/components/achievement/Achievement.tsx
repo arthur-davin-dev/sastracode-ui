@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Tv, Wrench, Target, Zap, GraduationCap, Award, Trophy, BookOpen, CircleCheck } from "lucide-react";
 import { ProfileSummaryCard } from "@/components/achievement/ProfileSummaryCard";
@@ -166,6 +166,46 @@ export default function Achievement() {
     ? displayedActivities
     : displayedActivities.slice(0, 4);
 
+  // Arriving from a badge notification (`/achivement#earned-badges`): once the
+  // "មេដាយដែលទទួលបាន" section has rendered, smooth-scroll it into view. Gated on
+  // the badges query so it waits for the real content, with a few re-aims to
+  // absorb the section's entrance animation / layout settling.
+  const scrolledToBadgesRef = useRef(false);
+  useEffect(() => {
+    const HASH = "#earned-badges";
+    let retryTimers: number[] = [];
+
+    const scrollToEarnedBadges = () => {
+      if (scrolledToBadgesRef.current) return;
+      if (window.location.hash !== HASH) return;
+      if (badgesQuery.isLoading) return;
+      if (!document.getElementById("earned-badges")) return;
+
+      scrolledToBadgesRef.current = true;
+      const run = () =>
+        document
+          .getElementById("earned-badges")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      requestAnimationFrame(() => requestAnimationFrame(run));
+      retryTimers = [250, 600, 1000].map((delay) =>
+        window.setTimeout(run, delay),
+      );
+    };
+
+    const onHashChange = () => {
+      scrolledToBadgesRef.current = false;
+      scrollToEarnedBadges();
+    };
+
+    scrollToEarnedBadges();
+    window.addEventListener("hashchange", onHashChange);
+    return () => {
+      window.removeEventListener("hashchange", onHashChange);
+      retryTimers.forEach((id) => window.clearTimeout(id));
+    };
+  }, [badgesQuery.isLoading]);
+
   return (
     <div className="min-h-screen bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 space-y-8 p-4 transition-colors duration-300">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -192,7 +232,10 @@ export default function Achievement() {
         />
 
         {/* Badges Section */}
-        <Card className="shadow-none dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300">
+        <Card
+          id="earned-badges"
+          className="scroll-mt-24 shadow-none dark:bg-slate-900/80 dark:border-slate-800 transition-colors duration-300"
+        >
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl font-bold text-primary-color dark:text-white transition-colors duration-300">
               មេដាយដែលទទួលបាន

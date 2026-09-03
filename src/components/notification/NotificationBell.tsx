@@ -120,6 +120,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import { useNotifications } from "@/hooks/useNotifications";
+import { resolveNotificationHref } from "@/lib/notifications/notification-href";
 
 function relativeTime(value: string) {
   const timestamp = new Date(value).getTime();
@@ -230,7 +231,7 @@ export default function NotificationBell() {
                 notifications.map((item) => (
                   <Link
                     key={item.notificationReceiverId}
-                    href={item.deepLink || "/notifications"}
+                    href={resolveNotificationHref(item)}
                     onClick={() => {
                       if (!item.isRead) markAsRead(item.notificationReceiverId);
                       setOpen(false);

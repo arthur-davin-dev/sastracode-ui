@@ -637,6 +637,32 @@ function resolveVideoUrl(
 
 /*
  * ============================================
+ * VIDEO THUMBNAIL
+ * ============================================
+ */
+
+function resolveVideoThumbnail(
+  video: VideoResponse,
+): string | undefined {
+  /*
+   * Prefer the backend-provided thumbnail.
+   */
+  if (video.thumbnailUrl) {
+    return video.thumbnailUrl;
+  }
+
+  /*
+   * Fall back to the YouTube-generated thumbnail.
+   */
+  if (video.youtubeVideoId) {
+    return `https://i.ytimg.com/vi/${video.youtubeVideoId}/mqdefault.jpg`;
+  }
+
+  return undefined;
+}
+
+/*
+ * ============================================
  * FULL COURSE ACCESS
  * ============================================
  */
@@ -733,6 +759,8 @@ function mapSection(
           locked,
 
           videoUrl: resolveVideoUrl(video),
+
+          thumbnail: resolveVideoThumbnail(video),
         };
       },
     );

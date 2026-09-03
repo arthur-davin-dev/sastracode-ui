@@ -14,6 +14,8 @@ import {
 
 import { toast } from "sonner";
 
+import { useTranslation } from "@/hooks/useTranslations";
+
 interface PaymentFormProps {
   courseTitle: string;
 
@@ -45,6 +47,9 @@ export function PaymentForm({
   onClose,
   onSubmit,
 }: PaymentFormProps) {
+  const t = useTranslation();
+  const pay = t.courses.detail.payment;
+
   const [cardName, setCardName] =
     useState("");
 
@@ -96,9 +101,7 @@ export function PaymentForm({
     event.preventDefault();
 
     if (!cardName.trim()) {
-      toast.error(
-        "សូមបញ្ចូលឈ្មោះលើកាត",
-      );
+      toast.error(pay.errorCardName);
       return;
     }
 
@@ -106,23 +109,17 @@ export function PaymentForm({
       cardNumber.replace(/\s/g, "");
 
     if (normalizedCard.length !== 16) {
-      toast.error(
-        "សូមបញ្ចូលលេខកាតឱ្យបានត្រឹមត្រូវ",
-      );
+      toast.error(pay.errorCardNumber);
       return;
     }
 
     if (expiry.length !== 5) {
-      toast.error(
-        "សូមបញ្ចូលថ្ងៃផុតកំណត់កាត",
-      );
+      toast.error(pay.errorExpiry);
       return;
     }
 
     if (cvv.length !== 3) {
-      toast.error(
-        "សូមបញ្ចូល CVV ឱ្យបានត្រឹមត្រូវ",
-      );
+      toast.error(pay.errorCvv);
       return;
     }
 
@@ -136,11 +133,11 @@ export function PaymentForm({
       <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 dark:border-slate-800">
         <div>
           <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-            ទូទាត់វគ្គសិក្សា
+            {pay.title}
           </h2>
 
           <p className="mt-0.5 text-xs text-slate-500">
-            បញ្ចូលព័ត៌មានទូទាត់របស់អ្នក
+            {pay.subtitle}
           </p>
         </div>
 
@@ -168,7 +165,7 @@ export function PaymentForm({
 
         <div className="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-            Order Summary
+            {pay.orderSummary}
           </p>
 
           <p className="mt-2 line-clamp-2 font-semibold text-slate-900 dark:text-white">
@@ -182,7 +179,7 @@ export function PaymentForm({
             {discount > 0 && (
               <div className="flex items-center justify-between">
                 <span className="text-sm text-slate-500">
-                  តម្លៃដើម
+                  {pay.originalPrice}
                 </span>
 
                 <span className="text-sm text-slate-500 line-through">
@@ -197,7 +194,7 @@ export function PaymentForm({
             {discount > 0 && (
               <div className="flex items-center justify-between">
                 <span className="text-sm text-slate-500">
-                  បញ្ចុះតម្លៃ
+                  {pay.discount}
                 </span>
 
                 <span className="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
@@ -211,7 +208,7 @@ export function PaymentForm({
             {savedAmount > 0 && (
               <div className="flex items-center justify-between">
                 <span className="text-sm text-slate-500">
-                  អ្នកសន្សំបាន
+                  {pay.youSave}
                 </span>
 
                 <span className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
@@ -225,10 +222,10 @@ export function PaymentForm({
 
             <div className="flex items-center justify-between border-t border-slate-100 pt-3 dark:border-slate-800">
               <span className="font-semibold text-slate-900 dark:text-white">
-                តម្លៃសរុប
+                {pay.total}
               </span>
 
-              <span className="text-xl font-bold text-[#002455] dark:text-blue-400">
+              <span className="text-xl font-bold text-primary-color">
                 {currency}{" "}
                 {finalPrice.toFixed(2)}
               </span>
@@ -240,21 +237,21 @@ export function PaymentForm({
 
         <div className="mt-4">
           <p className="mb-2 text-sm font-semibold text-slate-900 dark:text-white">
-            វិធីទូទាត់
+            {pay.method}
           </p>
 
-          <div className="flex items-center gap-3 rounded-xl border-2 border-[#002455] bg-blue-50/40 p-3 dark:bg-blue-950/20">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#002455] text-white">
+          <div className="flex items-center gap-3 rounded-xl border-2 border-primary-color bg-primary-color/5 p-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-color text-white">
               <CreditCard className="h-4 w-4" />
             </div>
 
             <div>
               <p className="text-sm font-semibold text-slate-900 dark:text-white">
-                Credit / Debit Card
+                {pay.cardOption}
               </p>
 
               <p className="text-xs text-slate-500">
-                Demo payment
+                {pay.demoPayment}
               </p>
             </div>
           </div>
@@ -271,7 +268,7 @@ export function PaymentForm({
               htmlFor="cardName"
               className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300"
             >
-              ឈ្មោះលើកាត
+              {pay.cardName}
             </label>
 
             <input
@@ -281,8 +278,8 @@ export function PaymentForm({
                 setCardName(event.target.value)
               }
               disabled={isProcessing}
-              placeholder="SOK DARA"
-              className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-[#002455] focus:ring-2 focus:ring-[#002455]/10 dark:border-slate-700 dark:bg-slate-800"
+              placeholder={pay.cardNamePlaceholder}
+              className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-primary-color focus:ring-2 focus:ring-primary-color/10 dark:border-slate-700 dark:bg-slate-800"
             />
           </div>
 
@@ -293,7 +290,7 @@ export function PaymentForm({
               htmlFor="cardNumber"
               className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300"
             >
-              លេខកាត
+              {pay.cardNumber}
             </label>
 
             <div className="relative">
@@ -310,7 +307,7 @@ export function PaymentForm({
                 disabled={isProcessing}
                 inputMode="numeric"
                 placeholder="1234 5678 9012 3456"
-                className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-3 text-sm outline-none transition focus:border-[#002455] focus:ring-2 focus:ring-[#002455]/10 dark:border-slate-700 dark:bg-slate-800"
+                className="h-10 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-3 text-sm outline-none transition focus:border-primary-color focus:ring-2 focus:ring-primary-color/10 dark:border-slate-700 dark:bg-slate-800"
               />
             </div>
           </div>
@@ -323,7 +320,7 @@ export function PaymentForm({
                 htmlFor="expiry"
                 className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300"
               >
-                ផុតកំណត់
+                {pay.expiry}
               </label>
 
               <input
@@ -337,7 +334,7 @@ export function PaymentForm({
                 disabled={isProcessing}
                 inputMode="numeric"
                 placeholder="MM/YY"
-                className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-[#002455] focus:ring-2 focus:ring-[#002455]/10 dark:border-slate-700 dark:bg-slate-800"
+                className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-primary-color focus:ring-2 focus:ring-primary-color/10 dark:border-slate-700 dark:bg-slate-800"
               />
             </div>
 
@@ -346,7 +343,7 @@ export function PaymentForm({
                 htmlFor="cvv"
                 className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-300"
               >
-                CVV
+                {pay.cvv}
               </label>
 
               <input
@@ -363,7 +360,7 @@ export function PaymentForm({
                 disabled={isProcessing}
                 inputMode="numeric"
                 placeholder="123"
-                className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-[#002455] focus:ring-2 focus:ring-[#002455]/10 dark:border-slate-700 dark:bg-slate-800"
+                className="h-10 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm outline-none transition focus:border-primary-color focus:ring-2 focus:ring-primary-color/10 dark:border-slate-700 dark:bg-slate-800"
               />
             </div>
           </div>
@@ -375,8 +372,7 @@ export function PaymentForm({
           <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
 
           <p className="text-xs leading-5 text-slate-600 dark:text-slate-400">
-            នេះជា Demo Payment ប៉ុណ្ណោះ។
-            ព័ត៌មានកាតមិនត្រូវបានផ្ញើទៅ backend ទេ។
+            {pay.demoNotice}
           </p>
         </div>
 
@@ -385,19 +381,19 @@ export function PaymentForm({
         <button
           type="submit"
           disabled={isProcessing}
-          className="mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#002455] text-sm font-semibold text-white transition hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-70"
+          className="mt-4 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-primary-color text-sm font-semibold text-white transition hover:bg-primary-color/90 disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isProcessing ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
 
-              កំពុងទិញ...
+              {pay.buying}
             </>
           ) : (
             <>
               <LockKeyhole className="h-4 w-4" />
 
-              ទិញឥឡូវនេះ · {currency}{" "}
+              {pay.buyNow} · {currency}{" "}
               {finalPrice.toFixed(2)}
             </>
           )}
