@@ -11,6 +11,7 @@ import {
   useMarkAllNotificationsReadMutation,
   useMarkNotificationReadMutation,
 } from "@/redux/service/notificationApi";
+import { resolveNotificationHref } from "@/lib/notifications/notification-href";
 
 export default function Notification() {
   const { status } = useSession();
@@ -99,7 +100,7 @@ export default function Notification() {
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
                   {!item.isRead && <button type="button" onClick={() => markRead(item.notificationReceiverId)} className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-primary-color dark:border-slate-700">Mark read</button>}
-                  {item.deepLink && <Link href={item.deepLink} onClick={() => !item.isRead && markRead(item.notificationReceiverId)} className="rounded-lg bg-primary-color px-3 py-2 text-xs font-bold text-white">Open</Link>}
+                  {item.deepLink && <Link href={resolveNotificationHref(item)} onClick={() => !item.isRead && markRead(item.notificationReceiverId)} className="rounded-lg bg-primary-color px-3 py-2 text-xs font-bold text-white">Open</Link>}
                 </div>
               </div>
             </article>

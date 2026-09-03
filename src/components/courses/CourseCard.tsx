@@ -14,7 +14,6 @@ import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { TranslatedText } from "@/components/i18n/TranslatedText";
 
 import { getApiErrorMessage } from "@/lib/api/error";
 import type { Course } from "@/lib/course/courses";
@@ -205,19 +204,12 @@ export function CourseCard({ course }: CourseCardProps) {
             {course.category}
           </Badge>
 
-          <TranslatedText
-            as="h3"
-            className="mb-2 line-clamp-2 text-[22px] font-bold leading-snug text-slate-800 transition-colors group-hover:text-primary-color dark:text-slate-100 dark:group-hover:text-primary-color"
-          >
+          <h3 className="mb-2 line-clamp-2 text-[22px] font-bold leading-snug text-slate-800 transition-colors group-hover:text-primary-color dark:text-slate-100 dark:group-hover:text-primary-color">
             {course.title}
-          </TranslatedText>
+          </h3>
 
           <p className="line-clamp-2 min-h-[3.65rem] text-lg leading-relaxed text-slate-500 dark:text-slate-400">
-            {course.description ? (
-              <TranslatedText>{course.description}</TranslatedText>
-            ) : (
-              card.noDescription
-            )}
+            {course.description ? course.description : card.noDescription}
           </p>
 
           {/* Course Information */}

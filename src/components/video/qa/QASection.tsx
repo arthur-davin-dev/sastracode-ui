@@ -1,34 +1,49 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { QuestionCard } from "./QuestionCard";
-import { useCreateQuestionMutation, useGetVideoQuestionsQuery } from "@/redux/api/qa-api";
+import { QuestionCard, questionAnchorId } from "./QuestionCard";
+import {
+  useCreateQuestionMutation,
+  useGetAnswersQuery,
+  useGetVideoQuestionsQuery,
+} from "@/redux/api/qa-api";
 import { useGetMyProfileQuery } from "@/redux/service/profile-api";
 import { useVideoQnaSocket } from "@/hooks/useVideoQnaSocket";
 import { getApiErrorMessage, initialsFromName } from "@/lib/qa/qa-utils";
-import { QUESTION_PAGE_SIZE } from "@/lib/qa/qa-constants";
+import {
+  DEEPLINK_LOOKUP_SIZE,
+  DEFAULT_ANSWER_QUERY,
+  QUESTION_PAGE_SIZE,
+} from "@/lib/qa/qa-constants";
+import { useTranslation } from "@/hooks/useTranslations";
+import { qaField } from "./qa-field-styles";
 import type { QuestionSort } from "@/types/api/qa";
 
-type ViewTab = "all" | "open" | "resolved" | "upvoted";
+type ViewTab = "all" | "open" | "resolved";
 type SortOption = Extract<QuestionSort, "newest" | "oldest">;
 
 interface QASectionProps {
   videoId: string;
 }
 
-const TABS: { key: ViewTab; label: string }[] = [
-  { key: "all", label: "សំណួរទាំងអស់" },
-  { key: "open", label: "មិនទាន់ដោះស្រាយ" },
-  { key: "resolved", label: "បានដោះស្រាយ" },
-  { key: "upvoted", label: "និយមបំផុត" },
-];
+const TAB_KEYS: ViewTab[] = ["all", "open", "resolved"];
 
 export function QASection({ videoId }: QASectionProps) {
+  const t = useTranslation();
+  const qa = t.qa;
   const { data: session, status } = useSession();
   const { data: profile } = useGetMyProfileQuery(undefined, {
     skip: status !== "authenticated",
@@ -42,8 +57,53 @@ export function QASection({ videoId }: QASectionProps) {
   const [draftTitle, setDraftTitle] = useState("");
   const [draftDescription, setDraftDescription] = useState("");
 
+  // ---- Notification deep link ------------------------------------------------
+  // Reached via /courses/{courseSlug}/learn/{videoId}?question={questionId}
+  // (this component's `videoId` prop === the learn route's `lessonId`).
+  // Active only while the `question` param is present and the user hasn't
+  // navigated away from it; the normal page behaviour is untouched otherwise.
+  const searchParams = useSearchParams();
+  const deepLinkQuestionId = searchParams.get("question") || null;
+  // Set (to the current target id) once the user clicks a tab / pager so they
+  // can leave the deep-linked view. A new target id !== this re-activates it.
+  const [dismissedDeepLinkId, setDismissedDeepLinkId] = useState<string | null>(
+    null,
+  );
+
+  // Scan the most recent questions to find which page the target lives on.
+  const { data: deepLinkLookup } = useGetVideoQuestionsQuery(
+    {
+      videoId,
+      resolved: undefined,
+      sort: "newest",
+      page: 0,
+      size: DEEPLINK_LOOKUP_SIZE,
+    },
+    { skip: !deepLinkQuestionId },
+  );
+
+  const deepLinkIndex =
+    deepLinkQuestionId && deepLinkLookup
+      ? deepLinkLookup.content.findIndex((q) => q.id === deepLinkQuestionId)
+      : -1;
+  // Only "active" once the target is actually located among recent questions.
+  // A missing / unknown id just falls back to the normal view — no crash.
+  const deepLinkActive =
+    deepLinkIndex >= 0 && dismissedDeepLinkId !== deepLinkQuestionId;
+
+  const dismissDeepLink = useCallback(() => {
+    setDismissedDeepLinkId(deepLinkQuestionId);
+  }, [deepLinkQuestionId]);
+
+  // While the deep link is active it drives the query; otherwise the user's
+  // own tab/sort/page selection does.
   const resolved = tab === "open" ? false : tab === "resolved" ? true : undefined;
-  const effectiveSort: QuestionSort = tab === "upvoted" ? "popular" : sort;
+  const effectiveTab: ViewTab = deepLinkActive ? "all" : tab;
+  const effectiveResolved = deepLinkActive ? undefined : resolved;
+  const effectiveSort: SortOption = deepLinkActive ? "newest" : sort;
+  const effectivePage = deepLinkActive
+    ? Math.floor(deepLinkIndex / QUESTION_PAGE_SIZE)
+    : page;
 
   const {
     data,
@@ -53,9 +113,9 @@ export function QASection({ videoId }: QASectionProps) {
     error,
   } = useGetVideoQuestionsQuery({
     videoId,
-    resolved,
+    resolved: effectiveResolved,
     sort: effectiveSort,
-    page,
+    page: effectivePage,
     size: QUESTION_PAGE_SIZE,
   });
 
@@ -83,16 +143,20 @@ export function QASection({ videoId }: QASectionProps) {
     size: 1,
   });
 
+  // Deep link only: pre-load the target question's first page of answers so the
+  // scroll below waits until the auto-expanded thread has real content (and its
+  // final height) before centring — not the transient "loading answers" state.
+  // Same args as `AnswerThread`, so this shares its cache entry (no extra call).
+  const { isLoading: deepLinkAnswersLoading } = useGetAnswersQuery(
+    { questionId: deepLinkQuestionId ?? "", ...DEFAULT_ANSWER_QUERY },
+    { skip: !deepLinkActive || !deepLinkQuestionId },
+  );
+
   const [createQuestion, { isLoading: posting }] = useCreateQuestionMutation();
 
   function changeTab(next: ViewTab) {
+    dismissDeepLink();
     setTab(next);
-    setPage(0);
-  }
-
-  function changeSort(next: SortOption) {
-    setSort(next);
-    setTab((current) => (current === "upvoted" ? "all" : current));
     setPage(0);
   }
 
@@ -115,13 +179,67 @@ export function QASection({ videoId }: QASectionProps) {
       setTab("all");
       setSort("newest");
       setPage(0);
-      toast.success("សំណួររបស់អ្នកត្រូវបានផ្ញើ");
+      toast.success(qa.submitSuccess);
     } catch (err) {
-      toast.error(getApiErrorMessage(err, "មិនអាចផ្ញើសំណួរបានទេ"));
+      toast.error(getApiErrorMessage(err, qa.submitError));
     }
   }
 
-  const questions = data?.content ?? [];
+  // Stable reference so the scroll effect below only re-runs on real changes.
+  const questions = useMemo(() => data?.content ?? [], [data]);
+
+  // Smooth-scroll the deep-linked question to the centre once — after its page
+  // has loaded, its card is in the DOM, and its auto-expanded answer thread has
+  // real content. Works on a cold navigation/reload, not just an in-place URL
+  // change. `scrollIntoView({ behavior: "smooth", block: "center" })` matches
+  // the in-video deep-link pattern; the retries re-aim it as avatars, images
+  // and the answer list finish settling the layout beneath the target (and
+  // outlast the browser's own scroll-restoration on reload). Timers live in a
+  // ref so a background socket refetch can't cut the sequence short.
+  const scrolledForRef = useRef<string | null>(null);
+  const scrollTimersRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const scrollFrameRef = useRef(0);
+
+  useEffect(
+    () => () => {
+      scrollTimersRef.current.forEach(clearTimeout);
+      cancelAnimationFrame(scrollFrameRef.current);
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (!deepLinkActive || !deepLinkQuestionId) return;
+    if (scrolledForRef.current === deepLinkQuestionId) return;
+    if (isLoading || deepLinkAnswersLoading) return;
+    if (!questions.some((question) => question.id === deepLinkQuestionId)) return;
+    if (!document.getElementById(questionAnchorId(deepLinkQuestionId))) return;
+
+    // Cancel anything still pending for a previous target before re-arming.
+    scrollTimersRef.current.forEach(clearTimeout);
+    cancelAnimationFrame(scrollFrameRef.current);
+    scrolledForRef.current = deepLinkQuestionId;
+
+    const scrollToTarget = () => {
+      document
+        .getElementById(questionAnchorId(deepLinkQuestionId))
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    };
+
+    scrollFrameRef.current = requestAnimationFrame(() =>
+      requestAnimationFrame(scrollToTarget),
+    );
+    scrollTimersRef.current = [250, 600, 1100, 1800].map((delay) =>
+      setTimeout(scrollToTarget, delay),
+    );
+  }, [
+    deepLinkActive,
+    deepLinkQuestionId,
+    isLoading,
+    deepLinkAnswersLoading,
+    questions,
+  ]);
+
   const openCount = openCounts?.totalElements ?? 0;
   const resolvedCount = resolvedCounts?.totalElements ?? 0;
   const totalCount = allCounts?.totalElements ?? openCount + resolvedCount;
@@ -129,23 +247,15 @@ export function QASection({ videoId }: QASectionProps) {
     [profile?.firstName, profile?.lastName].filter(Boolean).join(" ") ||
     profile?.username ||
     session?.user?.name ||
-    "អ្នកប្រើប្រាស់";
+    qa.defaultUser;
   const avatarSrc = profile?.avatarUrl || session?.user?.image || undefined;
 
   return (
     <div className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100">
-          សំណួរ ({totalCount})
+          {qa.heading} ({totalCount})
         </h2>
-        <select
-          value={sort}
-          onChange={(e) => changeSort(e.target.value as SortOption)}
-          className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 focus:outline-none focus:ring-2 focus:ring-primary-color/30 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300"
-        >
-          <option value="newest">ថ្មីបំផុត</option>
-          <option value="oldest">ចាស់បំផុត</option>
-        </select>
       </div>
 
       <form onSubmit={handleSubmit} className="mb-5 flex gap-3">
@@ -153,25 +263,25 @@ export function QASection({ videoId }: QASectionProps) {
           {avatarSrc && <AvatarImage src={avatarSrc} alt={userName} />}
           <AvatarFallback>{initialsFromName(userName)}</AvatarFallback>
         </Avatar>
-        <div className="flex-1 space-y-2.5">
+        <div className="min-w-0 flex-1 space-y-2.5">
           <input
             value={draftTitle}
             onChange={(e) => setDraftTitle(e.target.value)}
-            placeholder="ចំណងជើងសំណួរ..."
+            placeholder={qa.titlePlaceholder}
             required
             maxLength={200}
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition-colors focus:border-primary-color focus:bg-white dark:focus:bg-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-primary-color"
+            className={qaField}
           />
           <textarea
             value={draftDescription}
             onChange={(e) => setDraftDescription(e.target.value)}
-            placeholder="ពិពណ៌នាលម្អិតអំពីសំណួររបស់អ្នក..."
+            placeholder={qa.descriptionPlaceholder}
             required
             rows={3}
             maxLength={5000}
-            className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none transition-colors focus:border-primary-color focus:bg-white dark:focus:bg-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:border-primary-color"
+            className={`${qaField} resize-none`}
           />
-          <div className="flex justify-end gap-2">
+          <div className="flex flex-wrap justify-end gap-2">
             <button
               type="button"
               onClick={() => {
@@ -181,23 +291,24 @@ export function QASection({ videoId }: QASectionProps) {
               disabled={posting || (!draftTitle.trim() && !draftDescription.trim())}
               className="rounded-full border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
             >
-              បោះបង់
+              {qa.cancel}
             </button>
             <button
               type="submit"
               disabled={posting || !draftTitle.trim() || !draftDescription.trim()}
               className="shrink-0 rounded-full bg-primary-color px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary-color/90 disabled:opacity-50"
             >
-              {posting ? "កំពុងផ្ញើ..." : "សួរសំណួរ"}
+              {posting ? qa.submitting : qa.submit}
             </button>
           </div>
         </div>
       </form>
 
       <div className="mb-5 flex items-center gap-5 border-b border-slate-100 dark:border-slate-800/60">
-        {TABS.map(({ key, label }) => {
+        {TAB_KEYS.map((key) => {
+          const label = qa.tabs[key];
           const count = key === "open" ? openCount : key === "resolved" ? resolvedCount : null;
-          const active = tab === key;
+          const active = effectiveTab === key;
           return (
             <button
               key={key}
@@ -228,20 +339,24 @@ export function QASection({ videoId }: QASectionProps) {
 
       {isLoading ? (
         <div className="flex items-center gap-2 py-8 text-sm text-slate-400">
-          <Loader2 className="h-4 w-4 animate-spin" /> កំពុងផ្ទុកសំណួរ...
+          <Loader2 className="h-4 w-4 animate-spin" /> {qa.loading}
         </div>
       ) : isError ? (
         <p className="py-8 text-center text-sm text-red-500 dark:text-red-400">
-          {getApiErrorMessage(error, "មិនអាចផ្ទុកសំណួរបានទេ។ សូមចូលគណនីជាមុនសិន។")}
+          {getApiErrorMessage(error, qa.loadError)}
         </p>
       ) : questions.length === 0 ? (
         <p className="py-8 text-center text-sm text-slate-400 dark:text-slate-500">
-          មិនទាន់មានសំណួរសម្រាប់វីដេអូនេះទេ។ សួរសំណួរដំបូងរបស់អ្នក!
+          {qa.empty}
         </p>
       ) : (
         <div className="space-y-3">
           {questions.map((question) => (
-            <QuestionCard key={question.id} question={question} />
+            <QuestionCard
+              key={question.id}
+              question={question}
+              autoExpand={deepLinkActive && question.id === deepLinkQuestionId}
+            />
           ))}
         </div>
       )}
@@ -250,22 +365,28 @@ export function QASection({ videoId }: QASectionProps) {
         <div className="mt-5 flex items-center justify-center gap-3">
           <button
             type="button"
-            onClick={() => setPage((p) => Math.max(0, p - 1))}
+            onClick={() => {
+              dismissDeepLink();
+              setPage(Math.max(0, effectivePage - 1));
+            }}
             disabled={data.first || isFetching}
             className="flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 disabled:opacity-40 dark:border-slate-700 dark:text-slate-300"
           >
-            <ChevronLeft className="h-3.5 w-3.5" /> មុន
+            <ChevronLeft className="h-3.5 w-3.5" /> {qa.previous}
           </button>
           <span className="text-xs text-slate-500 dark:text-slate-400">
-            ទំព័រ {page + 1} នៃ {data.totalPages}
+            {qa.page} {effectivePage + 1} {qa.pageOf} {data.totalPages}
           </span>
           <button
             type="button"
-            onClick={() => setPage((p) => p + 1)}
+            onClick={() => {
+              dismissDeepLink();
+              setPage(effectivePage + 1);
+            }}
             disabled={data.last || isFetching}
             className="flex items-center gap-1 rounded-lg border border-slate-200 px-2.5 py-1.5 text-xs font-medium text-slate-600 disabled:opacity-40 dark:border-slate-700 dark:text-slate-300"
           >
-            បន្ទាប់ <ChevronRight className="h-3.5 w-3.5" />
+            {qa.next} <ChevronRight className="h-3.5 w-3.5" />
           </button>
         </div>
       )}

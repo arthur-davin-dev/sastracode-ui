@@ -1,17 +1,20 @@
 "use client";
 
 import { useRef } from "react";
-import { ThumbsUp, CheckCircle2, Circle, Bookmark, MoreHorizontal, Loader2 } from "lucide-react";
+import { CheckCircle2, Circle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 import {
   useGetVideoProgressQuery,
   useUpdateVideoProgressMutation,
 } from "@/redux/api/qa-api";
-import { achievementApi, useGetMyXpQuery } from "@/redux/service/achievementApi";
+import {
+  achievementApi,
+  useGetMyXpQuery,
+} from "@/redux/service/achievementApi";
 import { useAppDispatch } from "@/redux/hook";
 import { getApiErrorMessage } from "@/lib/qa/qa-utils";
-import { TranslatedText } from "@/components/i18n/TranslatedText";
+import { useTranslation } from "@/hooks/useTranslations";
 
 interface LessonHeaderProps {
   videoId: string;
@@ -20,7 +23,6 @@ interface LessonHeaderProps {
   sectionLabel: string;
   lessonPosition: string;
   level: string;
-  likeCount: number;
 }
 
 export function LessonHeader({
@@ -30,11 +32,12 @@ export function LessonHeader({
   sectionLabel,
   lessonPosition,
   level,
-  likeCount,
 }: LessonHeaderProps) {
+  const t = useTranslation();
   const { data: progress, isLoading: loadingProgress } =
     useGetVideoProgressQuery(videoId);
-  const [updateVideoProgress, { isLoading: updating }] = useUpdateVideoProgressMutation();
+  const [updateVideoProgress, { isLoading: updating }] =
+    useUpdateVideoProgressMutation();
   // Already fetched by CourseContentSidebar on the same page in the common
   // case, so this just subscribes to the shared cache entry — no extra
   // request. Gives us the XP total from *before* this completion, to diff
@@ -62,7 +65,11 @@ export function LessonHeader({
     submitting.current = true;
 
     try {
-      await updateVideoProgress({ videoId, courseId, completed: true }).unwrap();
+      await updateVideoProgress({
+        videoId,
+        courseId,
+        completed: true,
+      }).unwrap();
 
       // The backend decides XP entirely — it awards it once, server-side, and
       // never reports an amount on the progress response itself. Diffing the
@@ -71,19 +78,21 @@ export function LessonHeader({
       // shows the real, backend-computed reward without the frontend ever
       // calculating an XP amount itself.
       const xpAfter = await dispatch(
-        achievementApi.endpoints.getMyXp.initiate(undefined, { forceRefetch: true }),
+        achievementApi.endpoints.getMyXp.initiate(undefined, {
+          forceRefetch: true,
+        }),
       ).unwrap();
       const xpGained = (xpAfter.totalXp ?? 0) - (xpBefore?.totalXp ?? 0);
 
       if (xpGained > 0) {
-        toast.success("អបអរសាទរ! អ្នកបានបញ្ចប់មេរៀននេះ", {
+        toast.success(t.lessonPlayer.completeToast, {
           description: `+${xpGained} XP`,
         });
       } else {
-        toast.success("អបអរសាទរ! អ្នកបានបញ្ចប់មេរៀននេះ");
+        toast.success(t.lessonPlayer.completeToast);
       }
     } catch (error) {
-      toast.error(getApiErrorMessage(error, "មិនអាចធ្វើបច្ចុប្បន្នភាពការវិវឌ្ឍន៍បានទេ"));
+      toast.error(getApiErrorMessage(error, t.lessonPlayer.progressError));
     } finally {
       submitting.current = false;
     }
@@ -92,13 +101,10 @@ export function LessonHeader({
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
       {/* Title & Meta Info */}
-      <div>
-        <TranslatedText
-          as="h1"
-          className="text-xl font-bold text-slate-900 dark:text-slate-100"
-        >
+      <div className="w-full sm:w-[68%]">
+        <h1 className="w-full whitespace-normal break-words text-xl font-bold text-slate-900 dark:text-slate-100">
           {title}
-        </TranslatedText>
+        </h1>
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
           <span>
             {sectionLabel} · {lessonPosition}
@@ -111,20 +117,14 @@ export function LessonHeader({
 
       {/* Action Buttons */}
       <div className="flex items-center gap-2">
-        {/* Like Button */}
-        <button className="flex items-center gap-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-3 py-2 text-xs font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800">
-          <ThumbsUp className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-          {likeCount}
-        </button>
-
         {/* Completion indicator / Mark-as-done action */}
         {isComplete ? (
           <span
-            aria-label="មេរៀននេះបានបញ្ចប់"
+            aria-label={t.lessonPlayer.completedAria}
             className="flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-medium text-emerald-600 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-400"
           >
             <CheckCircle2 className="h-3.5 w-3.5" />
-            បានបញ្ចប់
+            {t.lessonPlayer.completed}
           </span>
         ) : (
           <button
@@ -139,27 +139,9 @@ export function LessonHeader({
             ) : (
               <Circle className="h-3.5 w-3.5" />
             )}
-            {updating ? "កំពុងរក្សាទុក..." : "សម្គាល់ថាបានបញ្ចប់"}
+            {updating ? t.lessonPlayer.saving : t.lessonPlayer.markAsDone}
           </button>
         )}
-
-        {/* Bookmark Button */}
-        <button
-          type="button"
-          aria-label="រក្សាទុកមេរៀន"
-          className="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800"
-        >
-          <Bookmark className="h-3.5 w-3.5" />
-        </button>
-
-        {/* More Options Button */}
-        <button
-          type="button"
-          aria-label="ជម្រើសបន្ថែម"
-          className="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-50 dark:hover:bg-slate-800"
-        >
-          <MoreHorizontal className="h-3.5 w-3.5" />
-        </button>
       </div>
     </div>
   );

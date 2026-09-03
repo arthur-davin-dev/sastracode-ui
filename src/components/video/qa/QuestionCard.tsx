@@ -21,14 +21,47 @@ import {
   resolveAvatarUrl,
 } from "@/lib/qa/qa-utils";
 import { useQaPermissions } from "@/lib/qa/use-qa-permissions";
+import { useTranslation } from "@/hooks/useTranslations";
+import { qaField } from "./qa-field-styles";
 import type { QuestionResponse } from "@/types/api/qa";
+
+/** Stable DOM id used to scroll a question into view from a `?question=` deep link. */
+export function questionAnchorId(questionId: string) {
+  return `qa-question-${questionId}`;
+}
 
 interface QuestionCardProps {
   question: QuestionResponse;
+  /**
+   * Opened from a notification deep link: expand the answer thread by default
+   * (the viewer can still collapse it). No effect on normal navigation, and
+   * no visual change to the card itself.
+   */
+  autoExpand?: boolean;
 }
 
-export function QuestionCard({ question }: QuestionCardProps) {
-  const [expanded, setExpanded] = useState(false);
+export function QuestionCard({
+  question,
+  autoExpand = false,
+}: QuestionCardProps) {
+  const t = useTranslation();
+  const qa = t.qa;
+  // `manualExpanded` is the viewer's own toggle; `autoCollapsed` lets them close
+  // a deep-link auto-expanded thread. Deriving `expanded` (instead of syncing it
+  // in an effect) keeps the auto-expand race-free with async question loading.
+  const [manualExpanded, setManualExpanded] = useState(false);
+  const [autoCollapsed, setAutoCollapsed] = useState(false);
+  const expanded = manualExpanded || (autoExpand && !autoCollapsed);
+
+  const toggleExpanded = () => {
+    if (expanded) {
+      setManualExpanded(false);
+      setAutoCollapsed(true);
+    } else {
+      setManualExpanded(true);
+      setAutoCollapsed(false);
+    }
+  };
   const [menuOpen, setMenuOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [draftTitle, setDraftTitle] = useState(question.title ?? "");
@@ -54,10 +87,10 @@ export function QuestionCard({ question }: QuestionCardProps) {
     try {
       await resolveQuestion(question.id).unwrap();
       toast.success(
-        question.isResolved ? "សំណួរនេះត្រូវបានបើកឡើងវិញ" : "សំណួរនេះត្រូវបានដោះស្រាយ",
+        question.isResolved ? qa.questionReopened : qa.questionResolved,
       );
     } catch (error) {
-      toast.error(getApiErrorMessage(error, "មិនអាចធ្វើបច្ចុប្បន្នភាពសំណួរបានទេ"));
+      toast.error(getApiErrorMessage(error, qa.questionUpdateError));
     }
   }
 
@@ -70,45 +103,48 @@ export function QuestionCard({ question }: QuestionCardProps) {
         content: draftContent.trim(),
       }).unwrap();
       setEditing(false);
-      toast.success("បានកែប្រែសំណួរ");
+      toast.success(qa.questionUpdated);
     } catch (error) {
-      toast.error(getApiErrorMessage(error, "មិនអាចកែប្រែសំណួរបានទេ"));
+      toast.error(getApiErrorMessage(error, qa.questionUpdateError));
     }
   }
 
   const avatarUrl = resolveAvatarUrl(question.user?.avatarFileId);
-  const userName = question.user?.userName ?? "អ្នកប្រើប្រាស់";
+  const userName = question.user?.userName ?? qa.defaultUser;
 
   return (
-    <div className="relative rounded-xl border border-slate-200/80 p-4 transition-colors dark:border-slate-800">
+    <div
+      id={questionAnchorId(question.id)}
+      className="relative scroll-mt-24 rounded-xl border border-slate-200/80 p-4 dark:border-slate-800"
+    >
       <div className="min-w-0 flex-1">
         {editing ? (
           <div className="space-y-2 pr-6">
             <input
               value={draftTitle}
               onChange={(e) => setDraftTitle(e.target.value)}
-              placeholder="ចំណងជើងសំណួរ..."
+              placeholder={qa.titlePlaceholder}
               required
               maxLength={200}
-              className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-900 outline-none focus:border-primary-color focus:bg-white dark:focus:bg-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+              className={`${qaField} font-semibold`}
             />
             <textarea
               value={draftContent}
               onChange={(e) => setDraftContent(e.target.value)}
-              placeholder="ពិពណ៌នាលម្អិតអំពីសំណួររបស់អ្នក..."
+              placeholder={qa.descriptionPlaceholder}
               required
               rows={3}
               maxLength={5000}
-              className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 outline-none focus:border-primary-color focus:bg-white dark:focus:bg-slate-950 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+              className={`${qaField} resize-none`}
             />
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <button
                 type="button"
                 onClick={handleSaveEdit}
                 disabled={saving}
                 className="rounded-lg bg-primary-color px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-color/90 disabled:opacity-50"
               >
-                រក្សាទុក
+                {qa.save}
               </button>
               <button
                 type="button"
@@ -119,7 +155,7 @@ export function QuestionCard({ question }: QuestionCardProps) {
                 }}
                 className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 dark:border-slate-700 dark:text-slate-300"
               >
-                បោះបង់
+                {qa.cancel}
               </button>
             </div>
           </div>
@@ -131,11 +167,11 @@ export function QuestionCard({ question }: QuestionCardProps) {
               </h3>
               {question.isResolved ? (
                 <span className="flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400">
-                  <CheckCircle2 className="h-3 w-3" /> បានដោះស្រាយ
+                  <CheckCircle2 className="h-3 w-3" /> {qa.resolvedBadge}
                 </span>
               ) : (
                 <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
-                  មិនទាន់ដោះស្រាយ
+                  {qa.unresolvedBadge}
                 </span>
               )}
             </div>
@@ -155,7 +191,7 @@ export function QuestionCard({ question }: QuestionCardProps) {
               {userName}
             </span>
             <span className="text-xs text-slate-400 dark:text-slate-500">
-              · {formatRelativeTime(question.createdAt)}
+              · {formatRelativeTime(question.createdAt, qa.time)}
             </span>
           </div>
 
@@ -167,15 +203,15 @@ export function QuestionCard({ question }: QuestionCardProps) {
             />
             <button
               type="button"
-              onClick={() => setExpanded((v) => !v)}
+              onClick={toggleExpanded}
               className="flex items-center gap-1.5 text-xs font-medium text-primary-color transition-colors hover:opacity-80 dark:text-primary-color"
             >
               <MessageCircle className="h-3.5 w-3.5" />
               {expanded
-                ? "លាក់ចម្លើយ"
+                ? qa.hideAnswers
                 : answerCount === 0
-                  ? "មិនទាន់មានចម្លើយ"
-                  : `${answerCount} ចម្លើយ`}
+                  ? qa.noAnswersYet
+                  : `${answerCount} ${qa.answersUnit}`}
             </button>
           </div>
         </div>
@@ -192,7 +228,7 @@ export function QuestionCard({ question }: QuestionCardProps) {
         <div className="absolute top-3 right-3">
           <button
             type="button"
-            aria-label="ជម្រើសបន្ថែម"
+            aria-label={qa.moreOptions}
             onClick={() => setMenuOpen((v) => !v)}
             className="rounded p-1 text-slate-400 transition-colors hover:text-primary-color dark:hover:text-primary-color"
           >
@@ -209,7 +245,7 @@ export function QuestionCard({ question }: QuestionCardProps) {
                   className="flex w-full items-center gap-2 px-3 py-2 text-left text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
                 >
                   <CheckCircle2 className="h-3.5 w-3.5" />
-                  {question.isResolved ? "បើកសំណួរឡើងវិញ" : "សម្គាល់ថាបានដោះស្រាយ"}
+                  {question.isResolved ? qa.reopenQuestion : qa.markResolved}
                 </button>
                 <button
                   type="button"
@@ -219,7 +255,7 @@ export function QuestionCard({ question }: QuestionCardProps) {
                   }}
                   className="flex w-full items-center gap-2 px-3 py-2 text-left text-xs text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
                 >
-                  <Pencil className="h-3.5 w-3.5" /> កែប្រែសំណួរ
+                  <Pencil className="h-3.5 w-3.5" /> {qa.editQuestion}
                 </button>
               </div>
             </>

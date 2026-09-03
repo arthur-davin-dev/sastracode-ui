@@ -8,7 +8,6 @@ import {
   BookOpen,
   Code2,
   PlayCircle,
-  Sparkles,
 } from "lucide-react";
 
 // import { buttonVariants } from "@/components/ui/button";
@@ -221,8 +220,6 @@ export default function CourseBanner() {
                 dark:text-primary-color
               "
             >
-              <Sparkles className="h-5 w-5 shrink-0" />
-
               <TypingWelcome text={banner.welcomeText} />
             </div>
 

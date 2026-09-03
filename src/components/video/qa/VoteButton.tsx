@@ -5,6 +5,7 @@ import { ThumbsUp } from "lucide-react";
 import { toast } from "sonner";
 
 import { getApiErrorMessage } from "@/lib/qa/qa-utils";
+import { useTranslation } from "@/hooks/useTranslations";
 import type { VoteResponse } from "@/types/api/qa";
 
 interface VoteButtonProps {
@@ -24,6 +25,7 @@ interface VoteButtonProps {
  * rules remain the source of truth — a rejected vote surfaces as a toast.
  */
 export function VoteButton({ count, onVote, onRetractVote }: VoteButtonProps) {
+  const qa = useTranslation().qa;
   const [result, setResult] = useState<{ score: number; voted: boolean } | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -37,7 +39,7 @@ export function VoteButton({ count, onVote, onRetractVote }: VoteButtonProps) {
       const response = voted ? await onRetractVote() : await onVote();
       setResult({ score: response.score, voted: response.status });
     } catch (error) {
-      toast.error(getApiErrorMessage(error, "មិនអាចបោះឆ្នោតបានទេ"));
+      toast.error(getApiErrorMessage(error, qa.voteError));
     } finally {
       setPending(false);
     }
@@ -49,7 +51,7 @@ export function VoteButton({ count, onVote, onRetractVote }: VoteButtonProps) {
       onClick={handleClick}
       disabled={pending}
       aria-pressed={voted}
-      aria-label={voted ? "ដកការបោះឆ្នោត" : "បោះឆ្នោតគាំទ្រ"}
+      aria-label={voted ? qa.retractVoteAria : qa.upvoteAria}
       className={`flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors disabled:opacity-50 ${
         voted
           ? "bg-primary-color/10 text-primary-color dark:bg-primary-color/10 dark:text-primary-color"
