@@ -11,6 +11,7 @@ import {
   useMarkNotificationReadMutation,
 } from "@/redux/service/notificationApi";
 import { resolveNotificationHref } from "@/lib/notifications/notification-href";
+import { useCourseSlugById } from "@/hooks/useCourseSlugById";
 
 export default function SidebarNotifications({
   collapsed,
@@ -27,6 +28,7 @@ export default function SidebarNotifications({
   const { data: count = 0 } = useGetUnreadNotificationCountQuery(undefined, { skip: !enabled });
   const { data } = useGetMyNotificationsQuery({ isRead: false, size: 3 }, { skip: !enabled || !open });
   const [markRead] = useMarkNotificationReadMutation();
+  const courseSlugById = useCourseSlugById();
 
   if (!enabled) return null;
 
@@ -51,7 +53,7 @@ export default function SidebarNotifications({
           ) : data.content.map((item) => (
             <Link
               key={item.notificationReceiverId}
-              href={resolveNotificationHref(item)}
+              href={resolveNotificationHref(item, { courseSlugById })}
               onClick={() => { markRead(item.notificationReceiverId); onNavigate(); }}
               className="block rounded-xl px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800"
             >

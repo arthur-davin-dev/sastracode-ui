@@ -121,6 +121,7 @@ import { useState } from "react";
 
 import { useNotifications } from "@/hooks/useNotifications";
 import { resolveNotificationHref } from "@/lib/notifications/notification-href";
+import { useCourseSlugById } from "@/hooks/useCourseSlugById";
 
 function relativeTime(value: string) {
   const timestamp = new Date(value).getTime();
@@ -146,6 +147,7 @@ export default function NotificationBell() {
     markAllAsRead,
   } = useNotifications({ isRead: false, size: 5, pollUnreadCountMs: 60_000 });
   const [markingAll, setMarkingAll] = useState(false);
+  const courseSlugById = useCourseSlugById();
 
   const handleMarkAllRead = async () => {
     setMarkingAll(true);
@@ -231,7 +233,7 @@ export default function NotificationBell() {
                 notifications.map((item) => (
                   <Link
                     key={item.notificationReceiverId}
-                    href={resolveNotificationHref(item)}
+                    href={resolveNotificationHref(item, { courseSlugById })}
                     onClick={() => {
                       if (!item.isRead) markAsRead(item.notificationReceiverId);
                       setOpen(false);

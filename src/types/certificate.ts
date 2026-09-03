@@ -23,16 +23,6 @@
 //   color: "blue" | "green" | "yellow" | "purple";
 // }
 
-export interface EarnedCertificate {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
-  level: string;
-  date: string;
-  certificateId: string;
-  category: string;
-}
-
 export interface CertificateRequirement {
   id: string;
   title: string;

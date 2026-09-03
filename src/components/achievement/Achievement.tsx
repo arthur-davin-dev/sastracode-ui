@@ -123,6 +123,7 @@ export default function Achievement() {
     name: p.courseTitle,
     status: p.status === "COMPLETED" ? "បានបញ្ចប់" : "កំពុងរៀន",
     progressPercent: p.percentage,
+    href: `/courses/${p.courseSlug || p.courseId}`,
   }));
 
   const continueHref =

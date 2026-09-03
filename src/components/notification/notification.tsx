@@ -12,6 +12,7 @@ import {
   useMarkNotificationReadMutation,
 } from "@/redux/service/notificationApi";
 import { resolveNotificationHref } from "@/lib/notifications/notification-href";
+import { useCourseSlugById } from "@/hooks/useCourseSlugById";
 
 export default function Notification() {
   const { status } = useSession();
@@ -29,6 +30,7 @@ export default function Notification() {
   const [markRead] = useMarkNotificationReadMutation();
   const [markAllRead, { isLoading: markingAll }] =
     useMarkAllNotificationsReadMutation();
+  const courseSlugById = useCourseSlugById();
 
   if (status === "loading" || isLoading) {
     return <div className="space-y-4 p-6">{[1, 2, 3, 4].map((item) => <div key={item} className="h-32 animate-pulse rounded-2xl bg-slate-200 dark:bg-slate-800" />)}</div>;
@@ -100,7 +102,7 @@ export default function Notification() {
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
                   {!item.isRead && <button type="button" onClick={() => markRead(item.notificationReceiverId)} className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-bold text-primary-color dark:border-slate-700">Mark read</button>}
-                  {item.deepLink && <Link href={resolveNotificationHref(item)} onClick={() => !item.isRead && markRead(item.notificationReceiverId)} className="rounded-lg bg-primary-color px-3 py-2 text-xs font-bold text-white">Open</Link>}
+                  {item.deepLink && <Link href={resolveNotificationHref(item, { courseSlugById })} onClick={() => !item.isRead && markRead(item.notificationReceiverId)} className="rounded-lg bg-primary-color px-3 py-2 text-xs font-bold text-white">Open</Link>}
                 </div>
               </div>
             </article>

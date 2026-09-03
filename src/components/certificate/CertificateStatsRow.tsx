@@ -1,71 +1,31 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-import { useSession } from "next-auth/react";
 import { Card, CardContent } from "@/components/ui/card";
 import { GraduationCap, CheckCircle2, Hourglass } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useGetMyCertificatesQuery } from "@/redux/features/certificate/certificateApi";
-import { useGetMyEnrollmentsQuery } from "@/redux/api";
-import { CourseCompletionProbe } from "@/components/certificate/CourseCompletionProbe";
-import type { EnrollmentResponse } from "@/types/api/course";
+import { useCourseCompletionMap } from "@/hooks/useCourseCompletionMap";
 
 export function CertificateStatsRow() {
-  const { status } = useSession();
-  const isAuthenticated = status === "authenticated";
+  const {
+    processingList,
+    completedList,
+    isAuthenticated,
+    isLoading: isLoadingEnrollments,
+    probes,
+  } = useCourseCompletionMap();
 
   const { data: certificatesData, isFetching: isFetchingCertificates } =
-    useGetMyCertificatesQuery(
-      { page: 0, size: 1 },
-      { skip: !isAuthenticated },
-    );
-  const { data: completedEnrollments, isFetching: isFetchingCompleted } =
-    useGetMyEnrollmentsQuery(
-      { status: "COMPLETED", size: 50 },
-      { skip: !isAuthenticated },
-    );
-  const { data: activeEnrollments, isFetching: isFetchingActive } =
-    useGetMyEnrollmentsQuery(
-      { status: "ACTIVE", size: 50 },
-      { skip: !isAuthenticated },
-    );
+    useGetMyCertificatesQuery({ page: 0, size: 1 }, { skip: !isAuthenticated });
 
   const isLoading =
-    status === "loading" ||
-    (isAuthenticated &&
-      (isFetchingCertificates || isFetchingCompleted || isFetchingActive));
+    isLoadingEnrollments || (isAuthenticated && isFetchingCertificates);
 
-  // Enrollment status can lag behind actual watch progress, so course
-  // completion here is recomputed from real progress the same way the
-  // certificate tabs below do, rather than trusting the status alone.
-  const [completionMap, setCompletionMap] = useState<Record<string, boolean>>(
-    {},
-  );
-  const handleResolved = useCallback((courseId: string, completed: boolean) => {
-    setCompletionMap((prev) =>
-      prev[courseId] === completed ? prev : { ...prev, [courseId]: completed },
-    );
-  }, []);
-
-  const allEnrollments = useMemo(() => {
-    const merged = [
-      ...(activeEnrollments?.content ?? []),
-      ...(completedEnrollments?.content ?? []),
-    ];
-    return Array.from(new Map(merged.map((e) => [e.id, e])).values());
-  }, [activeEnrollments, completedEnrollments]);
-
-  const isCourseCompleted = useCallback(
-    (enrollment: EnrollmentResponse) =>
-      completionMap[enrollment.courseId] ?? enrollment.status === "COMPLETED",
-    [completionMap],
-  );
-
+  // Course completion is recomputed from real watch progress by the shared
+  // hook, so the counts here move in lockstep with the certificate tabs below.
   const totalCourses = certificatesData?.data.totalElements ?? 0;
-  const completedCourses = allEnrollments.filter(isCourseCompleted).length;
-  const inProgressCourses = allEnrollments.filter(
-    (e) => !isCourseCompleted(e),
-  ).length;
+  const completedCourses = completedList.length;
+  const inProgressCourses = processingList.length;
 
   const stats = [
     {
@@ -119,15 +79,7 @@ export function CertificateStatsRow() {
 
   return (
     <>
-      {/* Invisible progress probes keep the "completed" count accurate even
-          when the enrollment status hasn't caught up with 100% progress. */}
-      {allEnrollments.map((enrollment) => (
-        <CourseCompletionProbe
-          key={enrollment.id}
-          courseId={enrollment.courseId}
-          onResolved={handleResolved}
-        />
-      ))}
+      {probes}
 
       {isLoading ? (
         <div

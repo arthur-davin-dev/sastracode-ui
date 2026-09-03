@@ -1,13 +1,10 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { useSession } from "next-auth/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ClaimCertificateCard } from "@/components/certificate/ClaimCertificateCard";
-import { CourseCompletionProbe } from "@/components/certificate/CourseCompletionProbe";
-import { useGetMyEnrollmentsQuery } from "@/redux/api";
+import { useCourseCompletionMap } from "@/hooks/useCourseCompletionMap";
 import {
   Award,
   GraduationCap,
@@ -66,53 +63,18 @@ function ClaimList({
 }
 
 export function ClaimCertificateSection() {
-  const { status } = useSession();
-  const isAuthenticated = status === "authenticated";
+  const {
+    processingList,
+    completedList,
+    isCourseCertifiable,
+    isAuthenticated,
+    isLoading,
+    isError,
+    retry,
+    probes,
+  } = useCourseCompletionMap();
 
-  const activeQuery = useGetMyEnrollmentsQuery(
-    { status: "ACTIVE", size: 50 },
-    { skip: !isAuthenticated },
-  );
-  const completedQuery = useGetMyEnrollmentsQuery(
-    { status: "COMPLETED", size: 50 },
-    { skip: !isAuthenticated },
-  );
-
-  const [completionMap, setCompletionMap] = useState<Record<string, boolean>>(
-    {},
-  );
-  const handleResolved = useCallback((courseId: string, completed: boolean) => {
-    setCompletionMap((prev) =>
-      prev[courseId] === completed ? prev : { ...prev, [courseId]: completed },
-    );
-  }, []);
-
-  const allEnrollments = useMemo(() => {
-    const merged = [
-      ...(activeQuery.data?.content ?? []),
-      ...(completedQuery.data?.content ?? []),
-    ];
-    return Array.from(new Map(merged.map((e) => [e.id, e])).values());
-  }, [activeQuery.data, completedQuery.data]);
-
-  const isCourseCompleted = useCallback(
-    (enrollment: EnrollmentResponse) =>
-      completionMap[enrollment.courseId] ?? enrollment.status === "COMPLETED",
-    [completionMap],
-  );
-
-  const processingList = allEnrollments.filter((e) => !isCourseCompleted(e));
-  const completedList = allEnrollments.filter(isCourseCompleted);
-
-  const isLoading =
-    status === "loading" ||
-    (isAuthenticated && (activeQuery.isFetching || completedQuery.isFetching));
-  const isError = activeQuery.isError || completedQuery.isError;
-
-  const handleRetry = () => {
-    activeQuery.refetch();
-    completedQuery.refetch();
-  };
+  const claimableInProgress = processingList.filter(isCourseCertifiable);
 
   return (
     <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
@@ -126,14 +88,8 @@ export function ClaimCertificateSection() {
       </CardHeader>
       <CardContent>
         {/* Invisible progress probes keep tab placement accurate even when
-            the enrollment status hasn't caught up with 100% watch progress. */}
-        {allEnrollments.map((enrollment) => (
-          <CourseCompletionProbe
-            key={enrollment.id}
-            courseId={enrollment.courseId}
-            onResolved={handleResolved}
-          />
-        ))}
+            the enrollment status hasn't caught up with real watch progress. */}
+        {probes}
 
         {!isAuthenticated ? (
           <div className="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 p-8 text-center">
@@ -150,7 +106,7 @@ export function ClaimCertificateSection() {
             </p>
             <button
               type="button"
-              onClick={handleRetry}
+              onClick={retry}
               className="mt-3 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 transition-colors"
             >
               ព្យាយាមម្ដងទៀត
@@ -173,10 +129,10 @@ export function ClaimCertificateSection() {
             </TabsList>
             <TabsContent value="processing" className="pt-4">
               <ClaimList
-                enrollments={processingList}
+                enrollments={claimableInProgress}
                 completed={false}
-                emptyTitle="អ្នកមិនមានវគ្គសិក្សាកំពុងសិក្សានៅពេលនេះទេ"
-                emptyDescription="ចុះឈ្មោះវគ្គសិក្សាថ្មីមួយដើម្បីចាប់ផ្តើមតាមដានវឌ្ឍនភាព"
+                emptyTitle="មិនទាន់អាចទាមទារវិញ្ញាបនបត្របានទេ"
+                emptyDescription="បន្តរៀនឲ្យវឌ្ឍនភាពសិក្សាឈានដល់ ៨០% ដើម្បីទាមទារវិញ្ញាបនបត្រ"
               />
             </TabsContent>
             <TabsContent value="completed" className="pt-4">

@@ -4,12 +4,6 @@ import { CertificateStatsRow } from "@/components/certificate/CertificateStatsRo
 import { EarnedCertificatesSection } from "@/components/certificate/EarnedCertificatesSection";
 import { InProgressCertificatesSection } from "@/components/certificate/InProgressCertificatesSection";
 import { ClaimCertificateSection } from "@/components/certificate/ClaimCertificateSection";
-import { CertificateRequirement } from "@/types/certificate";
-
-const requirements: CertificateRequirement[] = [
-  { id: "1", title: "DevOps Fundamentals", progressPercent: 30 },
-  { id: "2", title: "AI & Machine Learning", progressPercent: 20 },
-];
 
 export default function Certificate() {
   return (

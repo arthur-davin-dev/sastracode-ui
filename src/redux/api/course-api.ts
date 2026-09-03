@@ -17,6 +17,7 @@ const ALL_PAGE_SIZE = 100;
 
 export interface CourseLearningProgress {
   courseId: string;
+  courseSlug?: string;
   courseTitle: string;
   status: "ACTIVE" | "COMPLETED" | "CANCELLED";
   percentage: number;
@@ -240,6 +241,7 @@ export const courseApi = sastraApi.injectEndpoints({
 
             return {
               courseId: enrollment.courseId,
+              courseSlug: enrollment.courseSlug,
               courseTitle: enrollment.courseTitle ?? "",
               status: enrollment.status ?? "ACTIVE",
               percentage: Math.round(

@@ -112,6 +112,8 @@ export interface LearningPath {
   name: string;
   status: string;
   progressPercent: number;
+  /** Link to the course detail page. */
+  href?: string;
 }
 
 export interface LearningPathProgressProps {

@@ -1,6 +1,8 @@
 "use client";
 
-import { XpLevelBadge } from "@/components/ui/xp-level-badge"; 
+import type { ElementType } from "react";
+import Link from "next/link";
+import { XpLevelBadge } from "@/components/ui/xp-level-badge";
 import { LearningPath } from "@/types/achievement";
 import { ChevronRight, CheckCircle2, Award } from "lucide-react";
 
@@ -39,15 +41,17 @@ export function LearningPathProgress({ paths, completedCount, totalCount, contin
           )}
           {paths.map((path) => {
             const isCompleted = path.progressPercent === 100;
+            const RowTag: ElementType = path.href ? Link : "div";
 
             return (
-              <div 
-                key={path.id} 
-                className="space-y-2 p-4 rounded-2xl bg-white dark:bg-slate-900/25 border border-slate-100 dark:border-white/10 hover:border-blue-100 transition-all duration-300 group"
+              <RowTag
+                key={path.id}
+                {...(path.href ? { href: path.href } : {})}
+                className="block space-y-2 p-4 rounded-2xl bg-white dark:bg-slate-900/25 border border-slate-100 dark:border-white/10 hover:border-primary-color/40 hover:shadow-sm transition-all duration-300 group cursor-pointer"
               >
                 {/* Title & Status Bar */}
                 <div className="flex justify-between items-center gap-2">
-                  <span className="font-bold text-lg text-primary-color dark:text-white transition-colors duration-300">
+                  <span className="font-bold text-lg text-primary-color dark:text-white group-hover:underline transition-colors duration-300">
                     {path.name}
                   </span>
 
@@ -56,7 +60,7 @@ export function LearningPathProgress({ paths, completedCount, totalCount, contin
                     {isCompleted ? (
                       <span className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-primary-color/20 text-primary-color dark:text-white text-lg font-bold border border-primary-color/40">
                         <CheckCircle2 className="h-5 w-5 text-primary-color" />
-                        {path.status}
+                        បានបញ្ចប់
                       </span>
                     ) : (
                       <span className="px-3 py-1 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-lg font-bold border border-red-200 dark:border-red-900/50">
@@ -77,7 +81,7 @@ export function LearningPathProgress({ paths, completedCount, totalCount, contin
                     style={{ width: `${Math.min(path.progressPercent, 100)}%` }}
                   />
                 </div>
-              </div>
+              </RowTag>
             );
           })}
         </div>

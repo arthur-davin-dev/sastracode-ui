@@ -48,12 +48,41 @@ export const certificateApi = sastraApi.injectEndpoints({
       providesTags: ["Certificate"],
     }),
 
-    // GET /api/v1/courses/{courseId}/certificate
-    getCourseCertificate: builder.query<ApiResponse<Certificate>, string>({
-      query: (courseId) => ({
-        url: `/v1/courses/${encodeURIComponent(courseId)}/certificate`,
-        method: "GET",
-      }),
+    // GET /api/v1/users/me/certificates — every page, flattened.
+    //
+    // There is no per-course "get certificate" endpoint (issuing is POST-only),
+    // so the already-claimed check has to scan the caller's whole list. This
+    // pages through it once here rather than making every claim card guess at a
+    // page size or fire its own request.
+    getAllMyCertificates: builder.query<Certificate[], void>({
+      async queryFn(_arg, _api, _extra, baseQuery) {
+        const PAGE_SIZE = 100;
+        const all: Certificate[] = [];
+
+        // Guard the loop so a backend that never reports `last` can't spin it
+        // forever (5_000 certificates is already far past anything realistic).
+        for (let page = 0; page < 50; page += 1) {
+          const result = await baseQuery({
+            url: "/v1/users/me/certificates",
+            params: { page, size: PAGE_SIZE },
+          });
+
+          if (result.error) {
+            // 404 is the backend's "you have none yet" — an empty list, not a
+            // failure (mirrors getMyCertificates' transformErrorResponse).
+            if (result.error.status === 404) break;
+            return { error: result.error };
+          }
+
+          const body = result.data as ApiResponse<PageResponse<Certificate>>;
+          const content = body?.data?.content ?? [];
+          all.push(...content);
+
+          if (body?.data?.last || content.length < PAGE_SIZE) break;
+        }
+
+        return { data: all };
+      },
       providesTags: ["Certificate"],
     }),
 
@@ -110,7 +139,7 @@ export const certificateApi = sastraApi.injectEndpoints({
 
 export const {
   useGetMyCertificatesQuery,
-  useGetCourseCertificateQuery,
+  useGetAllMyCertificatesQuery,
   useIssueCourseCertificateMutation,
   useGetCertificateByIdQuery,
   useLazyGetCertificateDownloadQuery,
