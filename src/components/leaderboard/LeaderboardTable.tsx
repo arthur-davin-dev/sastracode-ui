@@ -14,7 +14,7 @@ interface LeaderboardTableProps {
 export function LeaderboardTable({ entries, currentUser }: LeaderboardTableProps) {
   return (
     <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-      <CardContent className="p-5 md:p-6">
+      <CardContent className="p-3 sm:p-5 md:p-6">
         
         {/* Table Header / Title Section */}
         <div className="flex items-center justify-between mb-5 pb-4 border-b border-slate-100 dark:border-slate-800">
@@ -32,9 +32,9 @@ export function LeaderboardTable({ entries, currentUser }: LeaderboardTableProps
         </div>
 
         {/* Column Labels */}
-        <div className="flex items-center justify-between px-3 py-1.5 mb-2 text-base font-bold text-slate-500 dark:text-slate-400 tracking-wider">
-          <span className="w-10 text-center">លំដាប់</span>
-          <span className="flex-1 ml-10">អ្នកប្រើប្រាស់</span>
+        <div className="mb-2 grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-1.5 px-2 py-1.5 text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 sm:grid-cols-[5rem_minmax(0,1fr)_auto] sm:gap-3 sm:px-3 sm:text-base">
+          <span className="text-center">លំដាប់</span>
+          <span>អ្នកប្រើប្រាស់</span>
           <span className="text-right">ពិន្ទុ XP</span>
         </div>
 

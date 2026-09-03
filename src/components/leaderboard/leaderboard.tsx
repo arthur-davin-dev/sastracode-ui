@@ -166,9 +166,6 @@ export default function Leaderboard() {
       <div className="max-w-6xl mx-auto space-y-6">
         <div className="flex flex-col  sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-lg font-bold uppercase tracking-wider text-primary-color dark:text-white">
-              Community ranking
-            </p>
             <h1 className="mt-1 text-2xl font-extrabold text-primary-color transition-colors duration-300 dark:text-white">
               តារាងចំណាត់ថ្នាក់
             </h1>

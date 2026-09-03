@@ -36,11 +36,11 @@ export default function DocumentBookmarks() {
             <Bookmark className="h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-[#002455] dark:text-white sm:text-3xl">
-              Saved tutorials
+            <h1 className="text-2xl font-bold text-primary-color dark:text-white sm:text-3xl">
+              មេរៀនដែលបានរក្សាទុក
             </h1>
             <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-              Your bookmarked documentation and tutorials.
+              ឯកសារណែនាំ និងមេរៀនដែលអ្នកបានរក្សាទុក
             </p>
           </div>
         </div>
@@ -54,13 +54,13 @@ export default function DocumentBookmarks() {
             aria-current="page"
             className="rounded-lg bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white dark:bg-blue-600"
           >
-            Documents
+            មេរៀន
           </Link>
           <Link
             href="/courses/bookmark"
             className="rounded-lg px-5 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
           >
-            Courses
+            វគ្គសិក្សា
           </Link>
         </nav>
 
@@ -69,29 +69,29 @@ export default function DocumentBookmarks() {
         ) : status !== "authenticated" ? (
           <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center dark:border-slate-700 dark:bg-slate-900">
             <p className="font-semibold text-slate-800 dark:text-white">
-              Sign in to see your saved tutorials.
+              ចូលគណនីដើម្បីមើលមេរៀនដែលអ្នកបានរក្សាទុក
             </p>
             <Link href="/documentation" className="mt-5 inline-flex rounded-xl bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white">
-              Browse documentation
+              ស្វែងរកឯកសារណែនាំ
             </Link>
           </div>
         ) : error ? (
           <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-900 dark:bg-red-950/30">
             <p className="font-semibold text-red-800 dark:text-red-200">
-              Unable to load your saved tutorials.
+              មិនអាចទាញយកមេរៀនដែលអ្នកបានរក្សាទុកបានទេ
             </p>
             <button type="button" onClick={() => refetch()} className="mt-4 inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white">
-              <RefreshCw className="h-4 w-4" /> Try again
+              <RefreshCw className="h-4 w-4" /> ព្យាយាមម្តងទៀត
             </button>
           </div>
         ) : tutorials.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center dark:border-slate-700 dark:bg-slate-900">
             <Bookmark className="mx-auto h-8 w-8 text-slate-400" />
             <p className="mt-4 font-semibold text-slate-800 dark:text-white">
-              You have no saved tutorials yet.
+              អ្នកមិនមានមេរៀនដែលបានរក្សាទុកទេ
             </p>
             <Link href="/documentation" className="mt-5 inline-flex rounded-xl bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white dark:bg-blue-600">
-              Browse documentation
+              ស្វែងរកឯកសារណែនាំ
             </Link>
           </div>
         ) : (

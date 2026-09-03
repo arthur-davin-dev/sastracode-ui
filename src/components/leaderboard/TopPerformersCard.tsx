@@ -1,8 +1,9 @@
-import Link from "next/link";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { TopPerformer } from "@/types/leaderboard";
-import { Crown, Medal } from "lucide-react";
+import { Crown, Trophy } from "lucide-react";
+import Link from "next/link";
 
 const podiumStyles: Record<
   number,
@@ -17,13 +18,13 @@ const podiumStyles: Record<
   2: {
     card: "border-primary-color/80 bg-primary-color/90 shadow-lg shadow-primary-color/15",
     avatar: "border-white/80 ring-4 ring-white/75",
-    trophy: "bg-white text-primary-color",
+    trophy: "bg-slate-200 text-primary-color",
     rankText: "text-white",
   },
   3: {
     card: "border-primary-color/80 bg-primary-color/90 shadow-lg shadow-primary-color/15",
     avatar: "border-white/80 ring-4 ring-white/75",
-    trophy: "bg-white text-primary-color",
+    trophy: "bg-orange-800 text-white",
     rankText: "text-white",
   },
 };
@@ -43,6 +44,15 @@ function formatXP(xp: number) {
     notation: "compact",
     maximumFractionDigits: 1,
   }).format(xp).toLowerCase();
+}
+
+function formatRank(rank: number) {
+  const suffix =
+    rank % 100 >= 11 && rank % 100 <= 13
+      ? "th"
+      : ({ 1: "st", 2: "nd", 3: "rd" }[rank % 10] ?? "th");
+
+  return `${rank}${suffix}`;
 }
 
 export function TopPerformersCard({ performers }: { performers: TopPerformer[] }) {
@@ -75,7 +85,7 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
         </a>
       </CardHeader>
 
-      <CardContent className="grid grid-cols-3 items-end gap-1.5 pt-6 sm:gap-3">
+      <CardContent className="mx-auto grid w-full max-w-4xl grid-cols-3 items-end gap-2 pt-6 sm:gap-4">
         {display.map((p) => {
           const style = podiumStyles[p.rank] ?? podiumStyles[3];
           const isFirst = p.rank === 1;
@@ -97,11 +107,11 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
               onClick={(event) => {
                 if (!profileHref) event.preventDefault();
               }}
-              className={`relative flex flex-col items-center rounded-2xl border p-2 sm:p-3 text-center transition-all duration-200 hover:-translate-y-0.5 ${style.card} ${
+              className={`relative flex flex-col items-center rounded-2xl border p-2 text-center transition-all duration-200 hover:-translate-y-0.5 sm:p-3 ${style.card} ${
                 isFirst ? "-translate-y-3 pb-4 pt-4" : "pt-3"
               }`}
             >
-              {/* Trophy Badge */}
+              {/* Podium Badge */}
               <span
                 className={`absolute flex items-center justify-center rounded-full shadow-sm ${style.trophy} ${
                   isFirst
@@ -109,13 +119,19 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
                     : "-top-3 right-1 sm:right-3 h-6 w-6 sm:h-8 sm:w-8"
                 }`}
               >
-                <Trophy size={isFirst ? 18 : 14} className="sm:w-5 sm:h-5" />
+                {isFirst ? (
+                  <Crown size={18} className="fill-amber-300 sm:h-5 sm:w-5" />
+                ) : (
+                  <Trophy size={14} className="sm:h-5 sm:w-5" />
+                )}
               </span>
 
-                <div className="relative">
+              <div className="relative">
                   <Avatar
                     className={`border-2 ${style.avatar} ${
-                      isFirst ? "h-24 w-24" : "h-20 w-20"
+                      isFirst
+                        ? "h-16 w-16 sm:h-24 sm:w-24"
+                        : "h-14 w-14 sm:h-20 sm:w-20"
                     }`}
                   >
                     <AvatarImage src={withCacheBust(p.avatarUrl)} alt={p.name} />
@@ -126,29 +142,24 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
                   <span
                     className={`absolute -bottom-3 left-1/2 flex h-7 min-w-7 -translate-x-1/2 items-center justify-center rounded-full px-2 text-xs font-black shadow-md ${style.trophy}`}
                   >
-                    {p.rank}
+                    {formatRank(p.rank)}
                   </span>
                 </div>
-              </div>
-
               {/* Name - Removed truncate, added wrapping and responsive text sizes */}
-              <p className="mt-2 w-full break-words text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-tight">
+              <p className="mt-2 w-full break-words py-3 text-xs font-bold leading-tight text-white sm:py-4 sm:text-base dark:text-white">
                 {p.name}
               </p>
 
               {/* Rank */}
-              <p className={`text-xl sm:text-2xl font-black leading-none mt-1 sm:mt-0 ${style.rankText}`}>#{p.rank}</p>
-              <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                សកល
-              </p>
+              {/* <p className={`text-xl sm:text-2xl font-black leading-none mt-1 sm:mt-0 ${style.rankText}`}>#{p.rank}</p> */}
 
               {/* XP Badge - Removed truncate, adjusted mobile padding & font size */}
               <span
-                className={`mt-2 w-full rounded-lg border border-slate-200 bg-white font-extrabold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white break-words ${
-                  isFirst ? "px-1 py-1 sm:px-2.5 sm:py-1.5 text-xs sm:text-lg" : "px-1 py-1 sm:px-2 sm:py-1 text-[10px] sm:text-base"
+                className={` rounded-lg border border-slate-200 bg-white font-extrabold text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-white break-words ${
+                  isFirst ? "px-2 py-1 text-xs sm:px-2.5 sm:text-base" : "px-2 py-1 text-[10px] sm:px-2 sm:text-sm"
                 }`}
               >
-                {formatXP(p.xp)} <span className="text-red-600 dark:text-red-400">XP</span>
+                {formatXP(p.xp)} <span className="text-red-600 dark:text-red-400 sm:px-2.5  text-xs sm:text-sm">XP</span>
               </span>
             </Link>
           );
