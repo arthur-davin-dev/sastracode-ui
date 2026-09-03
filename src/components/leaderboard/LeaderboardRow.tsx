@@ -70,7 +70,9 @@ export function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
       {/* User Info */}
       <div className="flex min-w-0 items-center gap-1.5 sm:ml-2 sm:gap-3">
         <Avatar className="h-8 w-8 shrink-0 border-2 border-slate-200 dark:border-slate-700 sm:h-10 sm:w-10">
-          <AvatarImage src={entry.avatarUrl} alt={entry.name} />
+          {entry.avatarUrl ? (
+            <AvatarImage src={entry.avatarUrl} alt={entry.name} />
+          ) : null}
           <AvatarFallback className="bg-primary-color text-white dark:bg-slate-300 dark:text-primary-color text-base font-extrabold">
             {entry.name?.[0] || "U"}
           </AvatarFallback>

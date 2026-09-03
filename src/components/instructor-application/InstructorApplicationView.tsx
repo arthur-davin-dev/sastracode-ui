@@ -33,7 +33,7 @@ function CenteredSpinner() {
 
 function ErrorCard({ onRetry }: { onRetry: () => void }) {
   return (
-    <div className="flex min-h-[500px] items-center justify-center p-6">
+    <div className="flex min-h-[500px] items-center justify-center ">
       <div className="w-full max-w-md rounded-3xl border border-red-100 bg-white p-8 text-center shadow-sm dark:border-red-900 dark:bg-slate-950">
         <h2 className="text-xl font-bold text-red-500">មិនអាចទាញយកព័ត៌មានបាន</h2>
 
@@ -102,7 +102,7 @@ export function InstructorApplicationView() {
 
   if (status === "unauthenticated") {
     return (
-      <div className="flex min-h-[500px] items-center justify-center p-6">
+      <div className="flex min-h-[500px] items-center justify-center">
         <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm dark:border-slate-800 dark:bg-slate-950">
           <h2 className="text-xl font-bold text-primary-color">
             សូមចូលគណនីជាមុនសិន

@@ -10,19 +10,19 @@ const podiumStyles: Record<
   { card: string; avatar: string; trophy: string; rankText: string }
 > = {
   1: {
-    card: "border-primary-color bg-primary-color shadow-xl shadow-primary-color/20",
+    card: "border-primary-color bg-primary-color dark:bg-primary-color/2 shadow-xl shadow-primary-color/20",
     avatar: "border-amber-300 ring-4 ring-white/90",
     trophy: "bg-amber-400 text-slate-950",
     rankText: "text-amber-300",
   },
   2: {
-    card: "border-primary-color/80 bg-primary-color/90 shadow-lg shadow-primary-color/15",
+    card: "border-primary-color/80 bg-primary-color/90 dark:bg-primary-color/10 shadow-lg shadow-primary-color/15",
     avatar: "border-white/80 ring-4 ring-white/75",
     trophy: "bg-slate-200 text-primary-color",
     rankText: "text-white",
   },
   3: {
-    card: "border-primary-color/80 bg-primary-color/90 shadow-lg shadow-primary-color/15",
+    card: "border-primary-color/80  bg-primary-color/90 dark:bg-primary-color/10 shadow-lg shadow-primary-color/15",
     avatar: "border-white/80 ring-4 ring-white/75",
     trophy: "bg-orange-800 text-white",
     rankText: "text-white",
@@ -134,7 +134,12 @@ export function TopPerformersCard({ performers }: { performers: TopPerformer[] }
                         : "h-14 w-14 sm:h-20 sm:w-20"
                     }`}
                   >
-                    <AvatarImage src={withCacheBust(p.avatarUrl)} alt={p.name} />
+                    {p.avatarUrl ? (
+                      <AvatarImage
+                        src={withCacheBust(p.avatarUrl)}
+                        alt={p.name}
+                      />
+                    ) : null}
                     <AvatarFallback className="bg-white font-extrabold text-primary-color">
                       {p.name?.[0] || "U"}
                     </AvatarFallback>

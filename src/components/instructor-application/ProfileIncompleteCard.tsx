@@ -28,11 +28,11 @@ export function ProfileIncompleteCard({
         </span>
 
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+          <h2 className="text-xl font-bold text-primary-color dark:text-white">
             សូមបំពេញព័ត៌មានប្រវត្តិរូបជាមុនសិន
           </h2>
 
-          <p className="mt-1 text-lg text-slate-500">
+          <p className="mt-1 text-lg text-primary-color/2 dark:text-slate-400">
             លោកអ្នកត្រូវបំពេញព័ត៌មានប្រវត្តិរូបឲ្យបានពេញលេញ មុននឹងដាក់ពាក្យសុំធ្វើជាគ្រូបង្រៀន។
           </p>
         </div>

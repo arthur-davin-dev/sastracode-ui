@@ -8,6 +8,7 @@ import { ProfileHeaderCard } from "@/components/profile/ProfileHeaderCard";
 import { ProfileForm } from "@/components/profile/ProfileForm";
 import { ProfileOverviewCards } from "@/components/profile/ProfileOverviewCards";
 import Login from "@/components/auth/Login";
+import InteractiveBackground from "@/components/InteractiveBackground";
 import { useGetMyProfileQuery } from "@/redux/service/profile-api";
 
 export default function Profile() {
@@ -98,8 +99,9 @@ export default function Profile() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50/50 dark:bg-slate-950">
-      <div className="mx-auto w-full max-w-[1400px] space-y-6 p-4 sm:p-6 lg:p-8">
+    <main className="relative min-h-screen bg-slate-50/50 dark:bg-slate-950">
+      <InteractiveBackground speed={1} density={100} enableMouseGlow />
+      <div className="relative z-10 mx-auto w-full max-w-[1400px] space-y-6 p-4 sm:p-6 lg:p-8">
         <ProfileHeaderCard
           profile={profile}
           isEditing={isEditing}
