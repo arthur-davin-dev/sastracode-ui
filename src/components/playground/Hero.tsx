@@ -68,7 +68,7 @@ export default function Hero() {
   return (
     <section className="relative max-w-6xl mx-auto px-4 sm:px-6 pt-20 pb-12 overflow-hidden">
       {/* Background Glows */}
-      <div className="absolute top-1/4 -left-32 w-80 h-80 bg-indigo-500/10 dark:bg-indigo-500/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 -left-32 w-80 h-80 bg-primary/10 dark:bg-primary/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 -right-32 w-80 h-80 bg-blue-500/10 dark:bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
 
       {/* Hero Container */}
@@ -80,8 +80,7 @@ export default function Hero() {
           {/* Left Side: Content */}
           <div className="md:col-span-7 flex flex-col justify-center">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 self-start rounded-full border border-indigo-200 dark:border-indigo-800/60 bg-indigo-50/80 dark:bg-indigo-950/50 px-3.5 py-1.5 text-xs font-semibold text-indigo-700 dark:text-indigo-300 backdrop-blur-md mb-5 shadow-sm transition-colors">
-              <Sparkles className="h-3.5 w-3.5 text-primary-color animate-pulse" />
+            <div className="inline-flex items-center gap-2 self-start rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1.5 text-xs font-semibold text-primary backdrop-blur-md mb-5 shadow-sm transition-colors">
               <span>{t.badge}</span>
             </div>
 
@@ -106,7 +105,7 @@ export default function Hero() {
               <Link href="/playground/editor" className="w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="group relative w-full sm:w-auto h-12 px-7 rounded-full text-base font-semibold bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/20 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                  className="group relative w-full sm:w-auto h-12 px-7 rounded-full text-base font-semibold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
                 >
                   <Rocket className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   <span>{t.openPlayground}</span>
@@ -128,12 +127,12 @@ export default function Hero() {
                 </div>
 
                 <div className="flex items-center gap-1.5 text-xs font-mono text-slate-500 dark:text-slate-400">
-                  <Terminal className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
+                  <Terminal className="h-3.5 w-3.5 text-primary" />
                   <span>main.js</span>
                 </div>
 
                 <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-500/20 font-semibold transition-colors">
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20 font-semibold transition-colors">
                     JavaScript
                   </span>
                 </div>
