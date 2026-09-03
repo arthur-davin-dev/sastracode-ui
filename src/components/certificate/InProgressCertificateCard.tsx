@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { PlayCircle, Hourglass, Film, CheckCircle2 } from "lucide-react";
 import {
@@ -96,7 +95,7 @@ export function InProgressCertificateCard({
           </div>
 
           {/* Progress Percent Text */}
-          <div className="flex items-center justify-between text-lg font-bold text-primary-color dark:text-white">
+          <div className="flex items-center justify-between text-lg font-bold text-primary-color">
             <span className="opacity-80">វឌ្ឍនភាពសិក្សា</span>
             <span className={completed ? "text-green-600" : "text-secondary-color"}>
               {progressPercent}%
@@ -104,21 +103,21 @@ export function InProgressCertificateCard({
           </div>
 
           {/* Styled Progress Bar */}
-          <Progress
-            value={progressPercent}
-            className={`h-2.5 bg-slate-100 dark:bg-slate-800 rounded-full ${
-              completed
-                ? "[&>div]:bg-green-500"
-                : "[&>div]:bg-secondary-color"
-            }`}
-          />
+          <div className="relative h-2.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+            <div
+              className={`h-full rounded-full transition-all duration-500 ${
+                completed ? "bg-emerald-500" : "bg-blue-600"
+              }`}
+              style={{ width: `${Math.min(progressPercent, 100)}%` }}
+            />
+          </div>
 
           {/* Videos Watched Info */}
-          <div className="flex items-center gap-2 text-lg font-medium text-primary-color dark:text-white opacity-80 pt-1">
+          <div className="flex items-center gap-2 text-lg font-medium text-primary-color opacity-80 pt-1">
             <Film className="h-5 w-5 text-secondary-color shrink-0" />
             <span>
               បានមើល{" "}
-              <span className="font-bold text-primary-color dark:text-white">
+              <span className="font-bold text-primary-color ">
                 {completedVideos}
               </span>{" "}
               លើ {totalVideos} វីដេអូ
