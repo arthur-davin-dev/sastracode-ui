@@ -230,7 +230,7 @@ export default function Achievement() {
   }, [badgesQuery.isLoading]);
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-[#eaf4ff] via-[#f4f8fe] to-[#eaf4ff] dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 space-y-8 p-4 transition-colors duration-300">
+    <div className="min-h-screen space-y-8 p-4">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Page Header */}
         <div className="space-y-2">
