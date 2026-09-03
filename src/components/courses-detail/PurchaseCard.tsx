@@ -8,6 +8,7 @@ import { toast } from "sonner";
 
 import { getApiErrorMessage } from "@/lib/api/error";
 import type { Course } from "@/lib/course/courses";
+import { useTranslation } from "@/hooks/useTranslations";
 import { useEnrollCourseMutation } from "@/redux/api/course-api";
 import { getCoursePricing } from "./payment/payment-prcie";
 import { PaymentModal } from "./payment/PaymentModal";
@@ -18,6 +19,9 @@ interface PurchaseCardProps {
 
 export function PurchaseCard({ course }: PurchaseCardProps) {
   const router = useRouter();
+  const t = useTranslation();
+  const card = t.courses.card;
+  const purchase = t.courses.detail.purchase;
   const { status } = useSession();
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [enroll, { isLoading }] = useEnrollCourseMutation();
@@ -40,9 +44,9 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
 
   const priceLabel =
     course.accessType === "FREE"
-      ? "ឥតគិតថ្លៃ"
+      ? purchase.freePrice
       : course.accessType === "PRIVATE"
-        ? "Private access"
+        ? purchase.privatePrice
         : `${currency} ${finalPrice.toFixed(2)}`;
 
   const showStrikethrough =
@@ -66,12 +70,12 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
         router.push(`/courses/${courseSlug}/learn/${firstAvailableLesson.id}`);
         return;
       }
-      toast.info("វគ្គសិក្សានេះមិនទាន់មានមេរៀនដែលអាចចូលរៀនបាន។");
+      toast.info(purchase.noLessonAvailable);
       return;
     }
 
     if (course.accessType === "PRIVATE") {
-      toast.info("វគ្គ PRIVATE ត្រូវការសិទ្ធិពីអ្នកគ្រប់គ្រង។");
+      toast.info(purchase.privateNeedsPermission);
       return;
     }
 
@@ -86,11 +90,11 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
   const handleFreeEnrollment = async () => {
     try {
       await enroll(course.id).unwrap();
-      toast.success("ចុះឈ្មោះវគ្គសិក្សាបានជោគជ័យ");
+      toast.success(purchase.enrollSuccess);
       router.refresh();
     } catch (error) {
       console.error("Free enrollment error:", error);
-      toast.error(getApiErrorMessage(error, "មិនអាចចុះឈ្មោះវគ្គសិក្សាបាន"));
+      toast.error(getApiErrorMessage(error, purchase.enrollError));
       throw error;
     }
   };
@@ -102,7 +106,7 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
   const handlePremiumPurchase = async () => {
     try {
       await enroll(course.id).unwrap();
-      toast.success("ទិញ និងចុះឈ្មោះវគ្គសិក្សាបានជោគជ័យ");
+      toast.success(purchase.purchaseSuccess);
     } catch (error) {
       console.error("Premium enrollment error:", error);
       throw error;
@@ -114,12 +118,12 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
   };
 
   const buttonLabel = () => {
-    if (status === "loading") return "កំពុងពិនិត្យ...";
-    if (isLoading) return "កំពុងដំណើរការ...";
-    if (course.hasFullAccess) return "ចូលរៀនឥឡូវនេះ";
-    if (course.accessType === "PRIVATE") return "សិទ្ធិឯកជន";
-    if (course.accessType === "PREMIUM") return "ទិញវគ្គសិក្សា";
-    return "ចុះឈ្មោះឥឡូវនេះ";
+    if (status === "loading") return purchase.checking;
+    if (isLoading) return purchase.processing;
+    if (course.hasFullAccess) return purchase.startLearning;
+    if (course.accessType === "PRIVATE") return purchase.privateRight;
+    if (course.accessType === "PREMIUM") return purchase.buyCourse;
+    return purchase.enrollNow;
   };
 
   const ActionIcon =
@@ -137,7 +141,12 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
           )}
           <p className="text-2xl font-bold text-slate-900 dark:text-white">{priceLabel}</p>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            {course.level ?? "Course"} · {course.accessType ?? "FREE"}
+            {course.level ? card.level[course.level] : purchase.courseFallback} ·{" "}
+            {course.accessType === "PREMIUM"
+              ? card.access.premium
+              : course.accessType === "PRIVATE"
+                ? card.access.private
+                : card.access.free}
           </p>
         </div>
 
@@ -146,7 +155,7 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
           type="button"
           onClick={handleAction}
           disabled={isLoading || status === "loading"}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#002455] py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary-color py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-color/90 disabled:cursor-not-allowed disabled:opacity-60"
         >
           <ActionIcon className="h-4 w-4" />
           {buttonLabel()}
@@ -155,23 +164,23 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
         {/* COURSE INFORMATION */}
         <div className="mt-5 space-y-3 border-t border-slate-100 pt-4 dark:border-slate-800">
           <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300">
-            <BookOpen className="h-4 w-4 shrink-0 text-[#002455] dark:text-blue-400" />
+            <BookOpen className="h-4 w-4 shrink-0 text-primary-color" />
             <span>
-              {course.lessons} មេរៀន · {course.duration}
+              {course.lessons} {card.lessonsUnit} · {course.duration}
             </span>
           </div>
 
           <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300">
-            <Clock className="h-4 w-4 shrink-0 text-[#002455] dark:text-blue-400" />
+            <Clock className="h-4 w-4 shrink-0 text-primary-color" />
             <span>{course.totalDuration ?? course.duration}</span>
           </div>
 
           <div className="flex items-center gap-2.5 text-sm text-slate-600 dark:text-slate-300">
-            <ShieldCheck className="h-4 w-4 shrink-0 text-[#002455] dark:text-blue-400" />
+            <ShieldCheck className="h-4 w-4 shrink-0 text-primary-color" />
             <span>
-              {course.accessType === "FREE" && "វគ្គសិក្សាឥតគិតថ្លៃ"}
-              {course.accessType === "PREMIUM" && "ត្រូវទិញវគ្គសិក្សាមុនពេលចូលរៀន"}
-              {course.accessType === "PRIVATE" && "ត្រូវការសិទ្ធិពីអ្នកគ្រប់គ្រង"}
+              {course.accessType === "FREE" && purchase.freeCourse}
+              {course.accessType === "PREMIUM" && purchase.premiumNotice}
+              {course.accessType === "PRIVATE" && purchase.privateNotice}
             </span>
           </div>
         </div>

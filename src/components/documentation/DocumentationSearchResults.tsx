@@ -4,6 +4,7 @@ import Link from "next/link";
 import { SearchX } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { useTranslation } from "@/hooks/useTranslations";
 import FilterTabs from "@/components/documentation/FilterTabs";
 import SearchResultCard from "@/components/documentation/SearchResultCard";
 import SortDropdown from "@/components/documentation/SortDropdown";
@@ -21,6 +22,7 @@ import {
 const PAGE_SIZE = 20;
 
 export default function DocumentationSearchResults({ query }: { query: string }) {
+  const t = useTranslation();
   const normalizedQuery = query.trim();
   const [level, setLevel] = useState<LevelFilterValue>("ALL");
   const [sortKey, setSortKey] = useState<SortKey>("relevance");
@@ -146,7 +148,7 @@ export default function DocumentationSearchResults({ query }: { query: string })
               href="/documentation"
               className="font-khmer text-sm font-semibold text-primary underline"
             >
-              មើលមេរៀនទាំងអស់
+              {t.docs.viewAllLessons}
             </Link>
           )}
         </div>

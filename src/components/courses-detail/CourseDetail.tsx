@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { LockKeyhole } from "lucide-react";
 
+import { useTranslation } from "@/hooks/useTranslations";
 import { DetailBanner } from "./DetailBanner";
 import { InstructorBar } from "./InstroctorBar";
 import { WhatYouLearn } from "./WhatYouLearn";
@@ -21,6 +22,7 @@ interface CourseDetailPageProps {
 }
 
 export default function CourseDetailPage({ slug }: CourseDetailPageProps) {
+  const t = useTranslation();
   const courseQuery = useGetCourseBySlugQuery(slug);
   // Sections are still fetched by the course's real UUID (backend
   // /v1/courses/{courseId}/sections is unchanged), which only exists once
@@ -44,9 +46,9 @@ export default function CourseDetailPage({ slug }: CourseDetailPageProps) {
   if (courseQuery.error || !courseQuery.data) {
     return (
       <div className="mx-auto min-h-[60vh] max-w-3xl px-6 py-20 text-center">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">រកមិនឃើញវគ្គសិក្សា</h1>
-        <p className="mt-2 text-slate-500">មិនអាចទាញយកព័ត៌មានវគ្គសិក្សាពី API បាន។</p>
-        <Link href="/courses" className="mt-6 inline-block rounded-xl bg-[#002455] px-5 py-3 text-sm font-semibold text-white">ត្រឡប់ទៅវគ្គសិក្សា</Link>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{t.courses.detail.notFound.title}</h1>
+        <p className="mt-2 text-slate-500">{t.courses.detail.notFound.description}</p>
+        <Link href="/courses" className="mt-6 inline-block rounded-xl bg-primary-color px-5 py-3 text-sm font-semibold text-white">{t.courses.detail.notFound.back}</Link>
       </div>
     );
   }
@@ -59,10 +61,10 @@ export default function CourseDetailPage({ slug }: CourseDetailPageProps) {
     return (
       <div className="mx-auto flex min-h-[65vh] max-w-3xl items-center justify-center px-6 py-16">
         <div className="w-full rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <LockKeyhole className="mx-auto h-12 w-12 text-[#002455] dark:text-blue-300" />
-          <h1 className="mt-4 text-2xl font-bold text-[#002455] dark:text-white">វគ្គសិក្សាឯកជន</h1>
-          <p className="mt-2 text-slate-500 dark:text-slate-400">វគ្គនេះមិនបង្ហាញជាសាធារណៈទេ។ សូមចូលទៅ Dashboard ដើម្បីមើលវគ្គ PRIVATE ដែលបានផ្តល់សិទ្ធិឱ្យអ្នក។</p>
-          <Link href="/courses/private-courses" className="mt-6 inline-block rounded-xl bg-[#002455] px-5 py-3 text-sm font-semibold text-white">វគ្គសិក្សាឯកជនរបស់ខ្ញុំ</Link>
+          <LockKeyhole className="mx-auto h-12 w-12 text-primary-color" />
+          <h1 className="mt-4 text-2xl font-bold text-primary-color dark:text-white">{t.courses.card.privateCourse}</h1>
+          <p className="mt-2 text-slate-500 dark:text-slate-400">{t.courses.detail.private.description}</p>
+          <Link href="/courses/private-courses" className="mt-6 inline-block rounded-xl bg-primary-color px-5 py-3 text-sm font-semibold text-white">{t.courses.detail.private.myPrivateCourses}</Link>
         </div>
       </div>
     );

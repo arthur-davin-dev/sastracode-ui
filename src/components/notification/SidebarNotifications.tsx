@@ -10,6 +10,7 @@ import {
   useGetUnreadNotificationCountQuery,
   useMarkNotificationReadMutation,
 } from "@/redux/service/notificationApi";
+import { resolveNotificationHref } from "@/lib/notifications/notification-href";
 
 export default function SidebarNotifications({
   collapsed,
@@ -50,7 +51,7 @@ export default function SidebarNotifications({
           ) : data.content.map((item) => (
             <Link
               key={item.notificationReceiverId}
-              href={item.deepLink || "/notifications"}
+              href={resolveNotificationHref(item)}
               onClick={() => { markRead(item.notificationReceiverId); onNavigate(); }}
               className="block rounded-xl px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
