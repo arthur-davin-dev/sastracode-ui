@@ -9,10 +9,10 @@ interface LeaderboardTabsProps {
 
 export function LeaderboardTabs({ activeTab, onTabChange }: LeaderboardTabsProps) {
   const tabs = [
-    { id: "GLOBAL", label: "សកល (Global)" },
-    { id: "DAILY", label: "ប្រចាំថ្ងៃ (Daily)" },
-    { id: "WEEKLY", label: "ប្រចាំសប្តាហ៍ (Weekly)" },
-    { id: "MONTHLY", label: "ប្រចាំខែ (Monthly)" },
+    { id: "GLOBAL", label: "សកល" },
+    { id: "DAILY", label: "ប្រចាំថ្ងៃ " },
+    { id: "WEEKLY", label: "ប្រចាំសប្តាហ៍" },
+    { id: "MONTHLY", label: "ប្រចាំខែ" },
   ];
 
   return (
@@ -25,7 +25,7 @@ export function LeaderboardTabs({ activeTab, onTabChange }: LeaderboardTabsProps
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
             className={`
-              relative px-4 py-2 rounded-xl text-lg font-bold transition-colors duration-200 select-none flex-1 sm:flex-none text-center
+              relative px-4 py-2 rounded-xl sm:!text-lg !text-[16px] font-bold transition-colors duration-200 select-none flex-1 sm:flex-none text-center
               ${
                 isActive
                   ? "text-white dark:text-slate-950"

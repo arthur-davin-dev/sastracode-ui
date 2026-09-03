@@ -37,11 +37,11 @@ export default function Bookmark() {
             <BookmarkIcon className="h-5 w-5" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-[#002455] dark:text-slate-100 sm:text-3xl">
-              Bookmarked courses
+            <h1 className="text-2xl font-bold text-primary-color dark:text-slate-100 sm:text-3xl">
+              វគ្គសិក្សា​ដែល​បាន​រក្សាទុក
             </h1>
             <p className="mt-1 text-sm text-slate-600 dark:text-slate-400 sm:text-base">
-              Courses you saved for later appear here.
+              វគ្គសិក្សាដែលអ្នកបានរក្សាទុកសម្រាប់ពេលក្រោយនឹងបង្ហាញនៅទីនេះ’
             </p>
           </div>
         </div>
@@ -55,14 +55,14 @@ export default function Bookmark() {
           href="/documentation/bookmark"
           className="rounded-lg px-5 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
         >
-          Documents
+          មេរៀន
         </Link>
         <Link
           href="/courses/bookmark"
           aria-current="page"
           className="rounded-lg bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white dark:bg-blue-600"
         >
-          Courses
+          វគ្គសិក្សា
         </Link>
       </nav>
 
@@ -71,39 +71,39 @@ export default function Bookmark() {
       ) : status !== "authenticated" ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center dark:border-slate-700 dark:bg-slate-900">
           <p className="font-semibold text-slate-800 dark:text-slate-100">
-            Sign in to see your bookmarked courses.
+            ចូលគណនីដើម្បីមើលវគ្គសិក្សាដែលអ្នកបានរក្សាទុក
           </p>
           <Link
             href="/"
             className="mt-5 inline-flex rounded-xl bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#003b80]"
           >
-            Return home to sign in
+            ត្រឡប់ទៅទំព័រដើមវិញដើម្បីចូលគណនី
           </Link>
         </div>
       ) : error ? (
         <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-900 dark:bg-red-950/30">
           <p className="font-semibold text-red-800 dark:text-red-200">
-            Unable to load your bookmarked courses.
+            មិនអាចទាញយកវគ្គសិក្សាដែលអ្នកបានរក្សាទុកបានទេ
           </p>
           <button
             type="button"
             onClick={() => refetch()}
             className="mt-4 inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-700"
           >
-            <RefreshCw className="h-4 w-4" /> Try again
+            <RefreshCw className="h-4 w-4" /> ព្យាយាមម្តងទៀត
           </button>
         </div>
       ) : courses.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center dark:border-slate-700 dark:bg-slate-900">
           <BookmarkIcon className="mx-auto h-8 w-8 text-slate-400" />
           <p className="mt-4 font-semibold text-slate-800 dark:text-slate-100">
-            You have no bookmarked courses yet.
+            អ្នកមិនមានវគ្គសិក្សាដែលបានរក្សាទុកទេ
           </p>
           <Link
             href="/courses"
             className="mt-5 inline-flex rounded-xl bg-[#002455] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#003b80] dark:bg-blue-600 dark:hover:bg-blue-500"
           >
-            Browse public courses
+            រកមើលវគ្គសិក្សាបានសេរី
           </Link>
         </div>
       ) : (

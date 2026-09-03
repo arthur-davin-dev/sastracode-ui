@@ -167,7 +167,7 @@ export default function NotificationBell() {
         aria-label={`Notifications${unreadCount ? `, ${unreadCount} unread` : ""}`}
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
-        className="relative rounded-2xl border border-slate-200 bg-slate-100 p-3 text-primary-color transition-all hover:bg-yellow-400/20 dark:border-slate-700 dark:bg-slate-800"
+        className="relative rounded-2xl border border-slate-200 bg-slate-100 p-3 text-primary-color transition-all hover:bg-primary-color/20 dark:border-slate-700 dark:bg-slate-800"
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (

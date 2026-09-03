@@ -173,15 +173,15 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
               type="button"
               onClick={onOpenSidebar}
               aria-label="Open Sidebar"
-              className="shrink-0 rounded-2xl border border-slate-200 p-2.5 text-primary-color transition-colors hover:bg-yellow-400/20 lg:hidden dark:border-slate-800"
+              className="shrink-0 rounded-2xl border border-slate-200 p-2.5 text-primary-color transition-colors hover:bg-primary-color/20 lg:hidden dark:border-slate-800"
             >
               <PanelLeft className="h-6 w-6 text-primary-color" />
             </button>
 
             <div className="flex min-w-0 items-center gap-3">
               {Icon && (
-                <div className="shrink-0 rounded-2xl bg-yellow-400/20 p-2 text-yellow-600">
-                  <Icon className="h-7 w-7 text-primary-color" />
+                <div className="shrink-0 rounded-2xl bg-primary-color p-2 text-white">
+                  <Icon className="h-7 w-7 text-white" />
                 </div>
               )}
 
@@ -191,9 +191,8 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
             </div>
           </div>
 
-          {/* ===================================== */}
           {/* Search */}
-          {/* ===================================== */}
+
 
           <div className="relative mx-4 hidden w-full max-w-md md:block">
             <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-primary-color opacity-50" />
@@ -218,7 +217,7 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
               type="button"
               onClick={toggleTheme}
               aria-label="Toggle Theme"
-              className="rounded-full p-1.5 text-primary-color transition-colors hover:bg-yellow-400/20 dark:hover:bg-slate-800/50"
+              className="rounded-full p-1.5 text-primary-color transition-colors hover:bg-primary-color/20 dark:hover:bg-slate-800/50"
             >
               {darkMode ? (
                 <SunMedium className="h-6 w-6 text-yellow-400" />
@@ -254,18 +253,18 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
                   aria-expanded={profileOpen}
                   aria-haspopup="menu"
                   className={`
-      rounded-full p-1
-      transition-all duration-200
-      hover:bg-slate-100
-      dark:hover:bg-slate-800
-      ${
-        profileOpen
-          ? "bg-slate-100 ring-2 ring-primary-color/10 dark:bg-slate-800"
-          : ""
-      }
-    `}
+                  rounded-full p-1
+                  transition-all duration-200
+                  hover:bg-slate-100
+                  dark:hover:bg-slate-800
+                  ${
+                    profileOpen
+                      ? "bg-slate-100 ring-2 ring-primary-color/10 dark:bg-slate-800"
+                      : ""
+                  }
+                `}
                 >
-                  <Avatar className="h-11 w-11 border-2 border-yellow-400 shadow-sm">
+                  <Avatar className="h-11 w-11 border-2 border-primary-color shadow-sm">
                     {userAvatarUrl && (
                       <AvatarImage
                         src={userAvatarUrl}
@@ -274,7 +273,7 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
                       />
                     )}
 
-                    <AvatarFallback className="bg-yellow-400 text-lg font-extrabold text-red-600">
+                    <AvatarFallback className="bg-primary-color text-lg font-extrabold text-white">
                       {userInitial}
                     </AvatarFallback>
                   </Avatar>
@@ -429,9 +428,8 @@ export default function SubNavbar({ onOpenSidebar }: NavbarProps) {
             ) : null}
           </div>
 
-          {/* ===================================== */}
+        
           {/* Mobile Controls */}
-          {/* ===================================== */}
 
           <div className="flex shrink-0 items-center gap-2 md:hidden">
             {/* Notifications — visible outside the hamburger menu */}

@@ -24,7 +24,7 @@ export function WeeklyGoalCard({
           <div className="p-2 bg-red-50 dark:bg-red-950/40 text-red-600 rounded-xl">
             <Target size={22} />
           </div>
-          <CardTitle className="text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+          <CardTitle className="text-lg font-bold text-primary-color dark:text-white tracking-tight">
             គោលដៅប្រចាំសប្តាហ៍
           </CardTitle>
         </div>
