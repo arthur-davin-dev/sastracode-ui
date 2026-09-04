@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { toast } from "sonner";
+import { playgroundToast } from "@/components/ui/playground-toast";
 import { Loader2 } from "lucide-react";
 
 import { AnswerCard } from "./AnswerCard";
@@ -45,9 +45,9 @@ export function AnswerThread({
     try {
       await createAnswer({ questionId, content }).unwrap();
       setDraft("");
-      toast.success(qa.answerSuccess);
+      playgroundToast.success(qa.answerSuccess);
     } catch (error) {
-      toast.error(getApiErrorMessage(error, qa.answerError));
+      playgroundToast.error(getApiErrorMessage(error, qa.answerError));
     }
   }
 

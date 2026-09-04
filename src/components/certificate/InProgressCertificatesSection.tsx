@@ -77,8 +77,8 @@ export function InProgressCertificatesSection() {
     <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
       <CardHeader>
         <CardTitle className="text-2xl font-semibold flex items-center gap-2 text-primary-color dark:text-white">
-          <span className="h-7 w-7 rounded-full bg-orange-50 dark:bg-orange-950/40 border border-orange-200/60 dark:border-orange-800/40 flex items-center justify-center shrink-0">
-            <Hourglass className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+          <span className="h-9 w-9 rounded-full bg-orange-50 dark:bg-orange-950/40 border border-orange-200/60 dark:border-orange-800/40 flex items-center justify-center shrink-0">
+            <Hourglass className="h-5 w-5 text-orange-600 dark:text-orange-400" />
           </span>
           វិញ្ញាបនបត្រកំពុងដំណើរការ
         </CardTitle>

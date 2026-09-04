@@ -22,6 +22,7 @@ import {
   Loader2,
   AlertTriangle,
   UserCog,
+  GraduationCap,
 } from "lucide-react";
 import {
   useGetCourseBySlugQuery,
@@ -99,12 +100,26 @@ export function ClaimCertificateCard({
     !course
   ) {
     return (
-      <Card className="rounded-3xl border-2 border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
-        <CardContent className="flex flex-col items-center gap-6 p-8 animate-pulse">
-          <div className="h-20 w-20 rounded-2xl bg-slate-100 dark:bg-slate-800" />
-          <div className="h-6 w-2/3 rounded bg-slate-100 dark:bg-slate-800" />
-          <div className="h-3 w-full max-w-sm rounded-full bg-slate-100 dark:bg-slate-800" />
-          <div className="h-24 w-full max-w-sm rounded-2xl bg-slate-100 dark:bg-slate-800" />
+      <Card className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="h-1 w-full bg-slate-100 dark:bg-slate-800" />
+        <CardContent className="animate-pulse space-y-4 p-5">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 shrink-0 rounded-xl bg-slate-100 dark:bg-slate-800" />
+            <div className="flex-1 space-y-2">
+              <div className="h-2.5 w-24 rounded bg-slate-100 dark:bg-slate-800" />
+              <div className="h-4 w-2/3 rounded bg-slate-100 dark:bg-slate-800" />
+            </div>
+          </div>
+          <div className="h-2 w-full rounded-full bg-slate-100 dark:bg-slate-800" />
+          <div className="space-y-1.5">
+            {[0, 1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="h-9 rounded-lg bg-slate-100 dark:bg-slate-800"
+              />
+            ))}
+          </div>
+          <div className="h-14 rounded-xl bg-slate-100 dark:bg-slate-800" />
         </CardContent>
       </Card>
     );
@@ -124,7 +139,36 @@ export function ClaimCertificateCard({
   const allVideosCompleted = totalVideos > 0 && completedVideos >= totalVideos;
   const canIssue = progressRaw >= CERTIFICATE_ISSUE_PERCENT;
   const alreadyIssued = justIssued || !!existingCertificate;
-  const unlocked = alreadyIssued || canIssue;
+  const clampedPercent = Math.min(100, Math.max(0, progressPercent));
+
+  // One state drives the whole card's accent: issued (emerald), ready to claim
+  // (brand), or still locked (neutral).
+  const accent = alreadyIssued
+    ? {
+        bar: "bg-emerald-500",
+        icon: "bg-emerald-50 text-emerald-600 ring-1 ring-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-400 dark:ring-emerald-900/60",
+        badge:
+          "bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:ring-emerald-900/60",
+        fill: "bg-emerald-500",
+        badgeLabel: "ទទួលបានហើយ",
+      }
+    : canIssue
+      ? {
+          bar: "bg-primary-color",
+          icon: "bg-primary-color/10 text-primary-color ring-1 ring-primary-color/20",
+          badge:
+            "bg-primary-color/10 text-primary-color ring-1 ring-primary-color/20",
+          fill: "bg-primary-color",
+          badgeLabel: "អាចទាមទារបាន",
+        }
+      : {
+          bar: "bg-slate-200 dark:bg-slate-700",
+          icon: "bg-slate-100 text-slate-400 ring-1 ring-slate-200 dark:bg-slate-800 dark:text-slate-500 dark:ring-slate-700",
+          badge:
+            "bg-slate-100 text-slate-500 ring-1 ring-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:ring-slate-700",
+          fill: "bg-primary-color/70",
+          badgeLabel: "កំពុងរៀន",
+        };
 
   const items: RequirementChecklistItem[] = [
     { label: "ចាប់ផ្តើមសិក្សាមេរៀន", completed: completedVideos > 0 },
@@ -192,142 +236,129 @@ export function ClaimCertificateCard({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
     >
-      <Card className="relative overflow-hidden rounded-3xl border-2 border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl transition-all duration-300">
-        <div className="absolute top-0 left-0 w-full h-2 " />
+      <Card className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow duration-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+        {/* State accent strip */}
+        <div className={`h-1 w-full ${accent.bar}`} />
 
-        {/* Ambient Glow */}
-        <div
-          className={`absolute -top-16 -right-16 h-48 w-48 rounded-full blur-3xl transition-all duration-500 ${
-            alreadyIssued
-              ? "bg-green-500/20"
-              : canIssue
-                ? "bg-init-color/20"
-                : "bg-init-color/10"
-          }`}
-        />
-
-        <CardContent className="flex flex-col items-center gap-6 p-8 text-center relative z-10">
-          {/* Top Icon Header */}
-          <div className="relative pt-2">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className={`h-20 w-20 rounded-2xl flex items-center justify-center shadow-md transition-all duration-300 border ${
-                alreadyIssued
-                  ? "bg-green-50 dark:bg-green-950/30 border-green-300 dark:border-green-800 text-green-600"
-                  : canIssue
-                    ? "bg-init-color/20 border-init-color/60 text-secondary-color"
-                    : "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-secondary-color"
-              }`}
+        <CardContent className="space-y-4 p-5">
+          {/* Header: icon · label + course title · state badge */}
+          <div className="flex items-start gap-3">
+            <div
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${accent.icon}`}
             >
               {alreadyIssued ? (
-                <CheckCircle2 className="h-10 w-10 text-green-600" />
+                <CheckCircle2 className="h-5 w-5" />
               ) : (
-                <Award className="h-10 w-10 text-secondary-color" />
+                <Award className="h-5 w-5" />
               )}
-            </motion.div>
-          </div>
-
-          {/* Title & Subtitle */}
-          <div className="space-y-2 w-full max-w-sm">
-            <h3 className="text-2xl font-extrabold text-primary-color dark:text-white leading-tight">
-              ទាមទារវិញ្ញាបនបត្រ
-            </h3>
-            <p className="text-lg font-bold text-primary-color dark:text-white">
-              {course.title}
-            </p>
-            <p className="text-lg text-primary-color dark:text-white opacity-80 leading-relaxed">
-              បំពេញគ្រប់លក្ខខណ្ឌខាងក្រោមដើម្បីទទួលបានវិញ្ញាបនបត្រនេះ
-            </p>
-          </div>
-
-          {/* Progress Status Bar */}
-          <div className="w-full max-w-sm space-y-2 pt-1">
-            <div className="flex justify-between items-center text-lg font-bold text-primary-color dark:text-white">
-              <span className="opacity-80">វឌ្ឍនភាពសិក្សា</span>
-              <span
-                className={
-                  unlocked ? "text-primary-color" : "text-secondary-color"
-                }
-              >
-                {completedVideos} / {totalVideos} ({progressPercent}%)
-              </span>
             </div>
 
-            <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden p-0.5 border border-slate-200 dark:border-slate-700">
+            <div className="min-w-0 flex-1">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-black dark:text-white">
+                ទាមទារវិញ្ញាបនបត្រ
+              </p>
+              <h3 className="mt-0.5 line-clamp-2 text-base font-bold leading-snug text-primary-color dark:text-white">
+                {course.title}
+              </h3>
+            </div>
+
+            <span
+              className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${accent.badge}`}
+            >
+              {accent.badgeLabel}
+            </span>
+          </div>
+
+          {/* Progress */}
+          <div>
+            <div className="flex items-end justify-between gap-2">
+              <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                វឌ្ឍនភាពសិក្សា
+              </span>
+              <span className="flex items-baseline gap-1.5 font-semibold text-slate-600 dark:text-slate-300">
+                <span className="text-sm">
+                  {completedVideos}/{totalVideos} មេរៀន
+                </span>
+                <span className="text-base leading-none text-primary-color dark:text-white">
+                  {progressPercent}%
+                </span>
+              </span>
+            </div>
+            <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
               <div
-                className="h-full rounded-full transition-all duration-500 bg-linear-to-r from-primary-color to-blue-400"
-                style={{ width: `${progressPercent}%` }}
+                className={`h-full rounded-full transition-all duration-700 ease-out ${accent.fill}`}
+                style={{ width: `${clampedPercent}%` }}
               />
             </div>
           </div>
 
-          {/* Requirement Checklist */}
-          <div className="w-full max-w-sm space-y-3 text-left pt-2">
+          {/* Requirements */}
+          <ul className="divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-100 dark:divide-slate-800 dark:border-slate-800">
             {items.map((item, i) => (
-              <div
+              <li
                 key={i}
-                className={`flex items-center gap-3 p-3.5 rounded-2xl border-2 transition-all ${
-                  item.completed
-                    ? "bg-init-color/10 border-init-color/40 text-slate-900 dark:text-white"
-                    : "bg-slate-50 dark:bg-slate-800/40 border-slate-100 dark:border-slate-800 text-slate-700 dark:text-slate-300 opacity-60"
+                className={`flex items-center gap-2.5 px-3 py-2 ${
+                  item.completed ? "bg-emerald-50/40 dark:bg-emerald-950/15" : ""
                 }`}
               >
                 {item.completed ? (
-                  <CheckCircle2 className="h-6 w-6 text-green-600 shrink-0" />
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
                 ) : (
-                  <Circle className="h-6 w-6 text-slate-400 shrink-0" />
+                  <Circle className="h-4 w-4 shrink-0 text-slate-300 dark:text-slate-600" />
                 )}
                 <span
-                  className={`text-lg font-bold ${item.completed ? "line-through opacity-80" : ""}`}
+                  className={`text-sm ${
+                    item.completed
+                      ? "font-medium text-slate-700 dark:text-slate-200"
+                      : "text-slate-400 dark:text-slate-500"
+                  }`}
                 >
                   {item.label}
                 </span>
-              </div>
+              </li>
             ))}
-          </div>
+          </ul>
 
-          {/* Claiming opens at 80%, so the last checklist item can still be
-              unchecked when the button is enabled — say so plainly. */}
-          <p className="w-full max-w-sm text-left text-sm font-medium text-primary-color/70 dark:text-white/60">
-            អ្នកអាចទាមទារវិញ្ញាបនបត្របាន នៅពេលវឌ្ឍនភាពសិក្សាឈានដល់ ៨០% ឡើងទៅ។
-          </p>
-
-          {/* Action Button */}
-          <div className="w-full max-w-sm pt-2 space-y-2">
+          {/* Action */}
+          <div className="space-y-2 border-t border-slate-100 pt-4 dark:border-slate-800">
             {alreadyIssued ? (
               <Button
                 disabled
-                className="w-full min-h-14 rounded-2xl px-4 py-2 text-base sm:text-lg font-bold shadow-md transition-all duration-300 gap-2 flex items-center justify-center whitespace-normal leading-tight text-center bg-green-600 text-white opacity-90 disabled:opacity-90 cursor-not-allowed"
+                className="flex h-14 min-h-14 w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-4 text-[15px] font-semibold text-white shadow-sm opacity-100 disabled:cursor-default disabled:opacity-100"
               >
                 <CheckCircle2 className="h-5 w-5 shrink-0" />
-                <span>បានទទួលវិញ្ញាបនបត្រ</span>
+                បានទទួលវិញ្ញាបនបត្រ
               </Button>
             ) : (
               <Button
                 onClick={handleIssue}
                 disabled={!canIssue || isIssuing || isCheckingProfile}
-                className={`w-full min-h-14 rounded-2xl px-4 py-2 text-base sm:text-lg font-bold shadow-md transition-all duration-300 gap-2 flex items-center justify-center whitespace-normal leading-tight text-center group ${
+                className={`group flex h-14 min-h-14 w-full items-center justify-center gap-2 rounded-xl py-4 text-[15px] font-semibold transition active:scale-[0.99] ${
                   canIssue
-                    ? "bg-primary-color hover:bg-blue-400 hover:text-slate-950 text-white"
-                    : "bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 cursor-not-allowed border border-slate-300 dark:border-slate-700"
+                    ? "bg-primary-color text-white shadow-sm hover:bg-primary-color/90 hover:shadow-md"
+                    : "cursor-not-allowed bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500"
                 }`}
               >
                 {isIssuing || isCheckingProfile ? (
-                  <Loader2 className="h-5 w-5 animate-spin shrink-0" />
+                  <Loader2 className="h-5 w-5 shrink-0 animate-spin" />
                 ) : (
-                  <span>
-                    {canIssue
-                      ? "ទាមទារវិញ្ញាបនបត្រឥឡូវនេះ"
-                      : "មិនទាន់គ្រប់លក្ខខណ្ឌ"}
-                  </span>
-                )}
-                {canIssue && !isIssuing && !isCheckingProfile && (
-                  <ArrowRight className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-1" />
+                  <>
+                    <span>
+                      {canIssue
+                        ? "ទាមទារវិញ្ញាបនបត្រឥឡូវនេះ"
+                        : "មិនទាន់គ្រប់លក្ខខណ្ឌ"}
+                    </span>
+                    {canIssue && (
+                      <ArrowRight className="h-5 w-5 shrink-0 transition-transform group-hover:translate-x-0.5" />
+                    )}
+                  </>
                 )}
               </Button>
             )}
             {issueError && (
-              <p className="text-sm font-medium text-red-600">{issueError}</p>
+              <p className="text-xs font-medium text-red-600 dark:text-red-400">
+                {issueError}
+              </p>
             )}
           </div>
         </CardContent>
@@ -340,81 +371,108 @@ export function ClaimCertificateCard({
           if (!open && !isIssuing) setDialog(null);
         }}
       >
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="w-[calc(100%-2rem)] gap-0 overflow-hidden rounded-2xl p-0 sm:max-w-xl">
           {dialog?.type === "incomplete" ? (
             <>
               {/* Profile is missing required fields — the backend would reject
                   issuance. Send the user to fill exactly what's listed. */}
-              <DialogHeader>
-                <DialogTitle className="flex items-center gap-2 text-primary-color dark:text-white">
-                  <AlertTriangle className="h-5 w-5 shrink-0 text-amber-500" />
-                  សូមបំពេញព័ត៌មានប្រវត្តិរូបជាមុនសិន
-                </DialogTitle>
-                <DialogDescription className="text-primary-color/70 dark:text-white/60">
-                  វិញ្ញាបនបត្រត្រូវប្រើព័ត៌មានប្រវត្តិរូបរបស់អ្នក។ សូមបំពេញព័ត៌មានខាងក្រោម
-                  រួចត្រឡប់មកទាមទារវិញ្ញាបនបត្រម្តងទៀត។
-                </DialogDescription>
-              </DialogHeader>
+              <div className="flex flex-col items-center px-8 pt-10 pb-6">
+                <div className="relative mb-4">
+                  <div className="absolute inset-0 -z-10 rounded-full bg-amber-400/20 blur-2xl" />
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 ring-1 ring-amber-200 dark:bg-amber-950/40 dark:text-amber-400 dark:ring-amber-900/60">
+                    <AlertTriangle className="h-8 w-8" />
+                  </div>
+                </div>
+                <DialogHeader className="w-full sm:text-center">
+                  <DialogTitle className="text-center text-xl font-bold text-slate-900 dark:text-white">
+                    សូមបំពេញព័ត៌មានប្រវត្តិរូបជាមុនសិន
+                  </DialogTitle>
+                  <DialogDescription className="mx-auto max-w-sm text-center text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                    វិញ្ញាបនបត្រត្រូវប្រើព័ត៌មានប្រវត្តិរូបរបស់អ្នក។ សូមបំពេញព័ត៌មានខាងក្រោម
+                    រួចត្រឡប់មកទាមទារវិញ្ញាបនបត្រម្តងទៀត។
+                  </DialogDescription>
+                </DialogHeader>
 
-              {dialog.missingFields.length > 0 && (
-                <ul className="space-y-2">
-                  {dialog.missingFields.map((field) => (
-                    <li
-                      key={field}
-                      className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/70 px-4 py-2.5 text-sm font-medium text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-200"
-                    >
-                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
-                      {missingFieldLabel(field)}
-                    </li>
-                  ))}
-                </ul>
-              )}
+                {dialog.missingFields.length > 0 && (
+                  <ul className="mt-5 w-full divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-100 dark:divide-slate-800 dark:border-slate-800">
+                    {dialog.missingFields.map((field) => (
+                      <li
+                        key={field}
+                        className="flex items-center gap-2.5 bg-slate-50/60 px-3.5 py-2.5 text-sm font-medium text-slate-700 dark:bg-slate-800/30 dark:text-slate-200"
+                      >
+                        <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
+                        {missingFieldLabel(field)}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
 
-              <DialogFooter>
+              <DialogFooter className="grid grid-cols-2 gap-3 border-t border-slate-100 bg-slate-50/50 px-8 py-5 dark:border-slate-800 dark:bg-slate-950/30">
                 <Button
                   variant="outline"
                   onClick={() => setDialog(null)}
-                  className="rounded-xl"
+                  className="h-11 rounded-xl"
                 >
                   បិទ
                 </Button>
                 <Button
                   onClick={() => router.push("/profile")}
-                  className="rounded-xl bg-primary-color text-white hover:bg-primary-color/90"
+                  className="h-11 rounded-xl bg-primary-color text-white hover:bg-primary-color/90"
                 >
                   <UserCog className="mr-2 h-4 w-4" />
                   បំពេញប្រវត្តិរូប
-                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </DialogFooter>
             </>
           ) : (
             <>
               {/* Profile is fine — just confirm before issuing. */}
-              <DialogHeader>
-                <DialogTitle className="flex items-center gap-2 text-primary-color dark:text-white">
-                  <Award className="h-5 w-5 shrink-0 text-secondary-color" />
-                  បញ្ជាក់ការទាមទារវិញ្ញាបនបត្រ
-                </DialogTitle>
-                <DialogDescription className="text-primary-color/70 dark:text-white/60">
-                  តើអ្នកប្រាកដទេថាចង់ទាមទារវិញ្ញាបនបត្រសម្រាប់វគ្គសិក្សា «{course.title}»?
-                  វិញ្ញាបនបត្រនឹងចេញដោយប្រើឈ្មោះក្នុងប្រវត្តិរូបរបស់អ្នក។
-                </DialogDescription>
-              </DialogHeader>
+              <div className="flex flex-col items-center px-8 pt-10 pb-6">
+                <div className="relative mb-4">
+                  <div className="absolute inset-0 -z-10 rounded-full bg-primary-color/20 blur-2xl" />
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-color/10 text-primary-color ring-1 ring-primary-color/20">
+                    <Award className="h-8 w-8" />
+                  </div>
+                </div>
+                <DialogHeader className="w-full sm:text-center">
+                  <DialogTitle className="text-center text-xl font-bold text-slate-900 dark:text-white">
+                    បញ្ជាក់ការទាមទារវិញ្ញាបនបត្រ
+                  </DialogTitle>
+                  <DialogDescription className="mx-auto max-w-sm text-center text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+                    វិញ្ញាបនបត្រនឹងចេញដោយប្រើឈ្មោះក្នុងប្រវត្តិរូបរបស់អ្នក
+                    ហើយមិនអាចកែប្រែក្រោយពេលចេញបានទេ។
+                  </DialogDescription>
+                </DialogHeader>
 
-              <DialogFooter>
+                <div className="mt-5 flex w-full items-center gap-3 rounded-xl border border-slate-100 bg-slate-50/60 p-3.5 dark:border-slate-800 dark:bg-slate-800/30">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-color/10 text-primary-color">
+                    <GraduationCap className="h-5 w-5" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400 dark:text-slate-500">
+                      វគ្គសិក្សា
+                    </p>
+                    <p className="truncate text-sm font-bold text-slate-900 dark:text-white">
+                      {course.title}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <DialogFooter className="grid grid-cols-2 gap-3 border-t border-slate-100 bg-slate-50/50 px-8 py-5 dark:border-slate-800 dark:bg-slate-950/30">
                 <Button
                   variant="outline"
                   disabled={isIssuing}
                   onClick={() => setDialog(null)}
-                  className="rounded-xl"
+                  className="h-11 rounded-xl"
                 >
                   បោះបង់
                 </Button>
                 <Button
                   disabled={isIssuing}
                   onClick={confirmIssue}
-                  className="rounded-xl bg-primary-color text-white hover:bg-primary-color/90"
+                  className="h-11 rounded-xl bg-primary-color text-white hover:bg-primary-color/90"
                 >
                   {isIssuing ? (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

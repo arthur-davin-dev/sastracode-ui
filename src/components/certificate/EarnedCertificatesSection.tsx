@@ -209,8 +209,8 @@ export function EarnedCertificatesSection() {
       {/* Header */}
       <CardHeader className="flex flex-row items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
         <CardTitle className="text-[18px] font-semibold flex items-center gap-2.5 text-slate-900 dark:text-slate-100">
-          <span className="h-7 w-7 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800/40 flex items-center justify-center shrink-0">
-            <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+          <span className="h-9 w-9 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800/40 flex items-center justify-center shrink-0">
+            <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
           </span>
           វិញ្ញាបនបត្រដែលបានទទួល
         </CardTitle>
@@ -320,13 +320,13 @@ export function EarnedCertificatesSection() {
                             <div className="flex-1 space-y-3">
                               <h3
                                 title={cert.courseTitle}
-                                className="text-[18px] font-bold leading-snug text-slate-900 dark:text-slate-100 break-words group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"
+                                className="text-[18px] font-bold leading-snug text-primary-color dark:text-white break-words group-hover:text-primary-color/70 dark:group-hover:text-white/70 transition-colors"
                               >
                                 {cert.courseTitle}
                               </h3>
 
                               <div className="flex flex-wrap items-center justify-between gap-2">
-                                <span className="text-sm font-medium text-slate-500 dark:text-slate-400">
+                                <span className="text-sm font-medium text-primary-color/70 dark:text-white/60">
                                   {formatIssuedDate(cert.issuedAt)}
                                 </span>
                                 <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-800/40 shrink-0">
@@ -339,10 +339,10 @@ export function EarnedCertificatesSection() {
 
                               <div className="flex items-start justify-between gap-2 pt-1">
                                 <div className="flex min-w-0 flex-1 flex-col">
-                                  <span className="text-[10px] font-bold tracking-wider uppercase text-slate-400 dark:text-slate-500">
+                                  <span className="text-[10px] font-bold tracking-wider uppercase text-primary-color/60 dark:text-white/50">
                                     Certificate No.
                                   </span>
-                                  <span className="break-all text-sm font-semibold text-indigo-600 dark:text-indigo-400 font-mono">
+                                  <span className="break-all text-sm font-semibold text-primary-color dark:text-white font-mono">
                                     #{cert.certificateNumber}
                                   </span>
                                 </div>
@@ -370,12 +370,12 @@ export function EarnedCertificatesSection() {
                             <div className="flex-1 space-y-2 w-full min-w-0">
                               <h3
                                 title={cert.courseTitle}
-                                className="text-[18px] font-bold leading-snug text-slate-900 dark:text-slate-100 break-words group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors"
+                                className="text-[18px] font-bold leading-snug text-primary-color dark:text-white break-words group-hover:text-primary-color/70 dark:group-hover:text-white/70 transition-colors"
                               >
                                 {cert.courseTitle}
                               </h3>
                               <div className="flex flex-wrap items-center gap-3">
-                                <span className="text-sm text-slate-500 dark:text-slate-400">
+                                <span className="text-sm text-primary-color/70 dark:text-white/60">
                                   {formatIssuedDate(cert.issuedAt)}
                                 </span>
                                 <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 px-3 py-0.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400 border border-emerald-200/60 dark:border-emerald-800/40">
@@ -386,10 +386,10 @@ export function EarnedCertificatesSection() {
                             </div>
 
                             <div className="flex lg:flex-col items-start lg:items-end justify-between gap-2 w-full lg:w-auto lg:max-w-48 pt-2 lg:pt-0 border-t lg:border-t-0 border-slate-100 dark:border-slate-800 shrink-0">
-                              <span className="text-xs text-slate-400 dark:text-slate-500 uppercase font-bold shrink-0">
+                              <span className="text-xs text-primary-color/60 dark:text-white/50 uppercase font-bold shrink-0">
                                 Certificate No.
                               </span>
-                              <span className="break-all text-sm font-semibold text-indigo-600 dark:text-indigo-400 font-mono lg:text-right">
+                              <span className="break-all text-sm font-semibold text-primary-color dark:text-white font-mono lg:text-right">
                                 #{cert.certificateNumber}
                               </span>
                             </div>

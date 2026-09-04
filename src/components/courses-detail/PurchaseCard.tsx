@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { BookOpen, Clock, CreditCard, ShieldCheck } from "lucide-react";
-import { toast } from "sonner";
+import { playgroundToast } from "@/components/ui/playground-toast";
 
 import { getApiErrorMessage } from "@/lib/api/error";
 import type { Course } from "@/lib/course/courses";
@@ -70,12 +70,12 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
         router.push(`/courses/${courseSlug}/learn/${firstAvailableLesson.id}`);
         return;
       }
-      toast.info(purchase.noLessonAvailable);
+      playgroundToast.info(purchase.noLessonAvailable);
       return;
     }
 
     if (course.accessType === "PRIVATE") {
-      toast.info(purchase.privateNeedsPermission);
+      playgroundToast.info(purchase.privateNeedsPermission);
       return;
     }
 
@@ -90,11 +90,11 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
   const handleFreeEnrollment = async () => {
     try {
       await enroll(course.id).unwrap();
-      toast.success(purchase.enrollSuccess);
+      playgroundToast.success(purchase.enrollSuccess);
       router.refresh();
     } catch (error) {
       console.error("Free enrollment error:", error);
-      toast.error(getApiErrorMessage(error, purchase.enrollError));
+      playgroundToast.error(getApiErrorMessage(error, purchase.enrollError));
       throw error;
     }
   };
@@ -106,7 +106,7 @@ export function PurchaseCard({ course }: PurchaseCardProps) {
   const handlePremiumPurchase = async () => {
     try {
       await enroll(course.id).unwrap();
-      toast.success(purchase.purchaseSuccess);
+      playgroundToast.success(purchase.purchaseSuccess);
     } catch (error) {
       console.error("Premium enrollment error:", error);
       throw error;

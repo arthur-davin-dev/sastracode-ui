@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { CheckCircle2, Circle, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { playgroundToast } from "@/components/ui/playground-toast";
 
 import {
   useGetVideoProgressQuery,
@@ -85,14 +85,14 @@ export function LessonHeader({
       const xpGained = (xpAfter.totalXp ?? 0) - (xpBefore?.totalXp ?? 0);
 
       if (xpGained > 0) {
-        toast.success(t.lessonPlayer.completeToast, {
+        playgroundToast.success(t.lessonPlayer.completeToast, {
           description: `+${xpGained} XP`,
         });
       } else {
-        toast.success(t.lessonPlayer.completeToast);
+        playgroundToast.success(t.lessonPlayer.completeToast);
       }
     } catch (error) {
-      toast.error(getApiErrorMessage(error, t.lessonPlayer.progressError));
+      playgroundToast.error(getApiErrorMessage(error, t.lessonPlayer.progressError));
     } finally {
       submitting.current = false;
     }

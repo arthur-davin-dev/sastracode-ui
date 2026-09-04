@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { toast } from "sonner";
+import { playgroundToast } from "@/components/ui/playground-toast";
 import { MoreVertical, CheckCircle2, Pencil } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -49,9 +49,9 @@ export function AnswerCard({ answer, questionId, canAcceptAnswers = false }: Ans
     setMenuOpen(false);
     try {
       await acceptAnswer({ answerId: answer.answerId, questionId }).unwrap();
-      toast.success(qa.answerAccepted);
+      playgroundToast.success(qa.answerAccepted);
     } catch (error) {
-      toast.error(getApiErrorMessage(error, qa.acceptError));
+      playgroundToast.error(getApiErrorMessage(error, qa.acceptError));
     }
   }
 
@@ -64,9 +64,9 @@ export function AnswerCard({ answer, questionId, canAcceptAnswers = false }: Ans
         content: draft.trim(),
       }).unwrap();
       setEditing(false);
-      toast.success(qa.answerUpdated);
+      playgroundToast.success(qa.answerUpdated);
     } catch (error) {
-      toast.error(getApiErrorMessage(error, qa.answerUpdateError));
+      playgroundToast.error(getApiErrorMessage(error, qa.answerUpdateError));
     }
   }
 

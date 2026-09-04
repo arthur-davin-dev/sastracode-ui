@@ -10,7 +10,7 @@ import {
 } from "react";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import { toast } from "sonner";
+import { playgroundToast } from "@/components/ui/playground-toast";
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -179,9 +179,9 @@ export function QASection({ videoId }: QASectionProps) {
       setTab("all");
       setSort("newest");
       setPage(0);
-      toast.success(qa.submitSuccess);
+      playgroundToast.success(qa.submitSuccess);
     } catch (err) {
-      toast.error(getApiErrorMessage(err, qa.submitError));
+      playgroundToast.error(getApiErrorMessage(err, qa.submitError));
     }
   }
 

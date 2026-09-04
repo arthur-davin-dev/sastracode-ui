@@ -12,7 +12,7 @@ import {
   X,
 } from "lucide-react";
 
-import { toast } from "sonner";
+import { playgroundToast } from "@/components/ui/playground-toast";
 
 import { useTranslation } from "@/hooks/useTranslations";
 
@@ -101,7 +101,7 @@ export function PaymentForm({
     event.preventDefault();
 
     if (!cardName.trim()) {
-      toast.error(pay.errorCardName);
+      playgroundToast.error(pay.errorCardName);
       return;
     }
 
@@ -109,17 +109,17 @@ export function PaymentForm({
       cardNumber.replace(/\s/g, "");
 
     if (normalizedCard.length !== 16) {
-      toast.error(pay.errorCardNumber);
+      playgroundToast.error(pay.errorCardNumber);
       return;
     }
 
     if (expiry.length !== 5) {
-      toast.error(pay.errorExpiry);
+      playgroundToast.error(pay.errorExpiry);
       return;
     }
 
     if (cvv.length !== 3) {
-      toast.error(pay.errorCvv);
+      playgroundToast.error(pay.errorCvv);
       return;
     }
 

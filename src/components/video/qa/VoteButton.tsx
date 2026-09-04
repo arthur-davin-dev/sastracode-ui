@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ThumbsUp } from "lucide-react";
-import { toast } from "sonner";
+import { playgroundToast } from "@/components/ui/playground-toast";
 
 import { getApiErrorMessage } from "@/lib/qa/qa-utils";
 import { useTranslation } from "@/hooks/useTranslations";
@@ -39,7 +39,7 @@ export function VoteButton({ count, onVote, onRetractVote }: VoteButtonProps) {
       const response = voted ? await onRetractVote() : await onVote();
       setResult({ score: response.score, voted: response.status });
     } catch (error) {
-      toast.error(getApiErrorMessage(error, qa.voteError));
+      playgroundToast.error(getApiErrorMessage(error, qa.voteError));
     } finally {
       setPending(false);
     }

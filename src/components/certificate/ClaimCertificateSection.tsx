@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ClaimCertificateCard } from "@/components/certificate/ClaimCertificateCard";
 import { useCourseCompletionMap } from "@/hooks/useCourseCompletionMap";
 import {
@@ -44,7 +43,7 @@ function ClaimList({
   }
 
   return (
-    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
       {enrollments.map((enrollment, i) => (
         <motion.div
           key={enrollment.id}
@@ -64,9 +63,7 @@ function ClaimList({
 
 export function ClaimCertificateSection() {
   const {
-    processingList,
     completedList,
-    isCourseCertifiable,
     isAuthenticated,
     isLoading,
     isError,
@@ -74,20 +71,18 @@ export function ClaimCertificateSection() {
     probes,
   } = useCourseCompletionMap();
 
-  const claimableInProgress = processingList.filter(isCourseCertifiable);
-
   return (
     <Card className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors duration-300">
       <CardHeader>
-        <CardTitle className="text-2xl font-semibold flex items-center gap-2 text-primary-color dark:text-white">
-          <span className="h-7 w-7 rounded-full bg-init-color/20 border border-init-color/50 flex items-center justify-center shrink-0">
-            <GraduationCap className="h-4 w-4 text-secondary-color" />
+        <CardTitle className="text-2xl font-semibold flex items-center gap-2 text-black dark:text-white">
+          <span className="h-9 w-9 rounded-full bg-init-color/20 border border-init-color/50 flex items-center justify-center shrink-0">
+            <GraduationCap className="h-5 w-5 text-secondary-color" />
           </span>
           ទាមទារវិញ្ញាបនបត្រ
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {/* Invisible progress probes keep tab placement accurate even when
+        {/* Invisible progress probes keep completion state accurate even when
             the enrollment status hasn't caught up with real watch progress. */}
         {probes}
 
@@ -113,37 +108,21 @@ export function ClaimCertificateSection() {
             </button>
           </div>
         ) : isLoading ? (
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            {[1, 2].map((i) => (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="h-96 rounded-3xl bg-slate-100 dark:bg-slate-800 animate-pulse"
+                className="h-96 rounded-2xl bg-slate-100 dark:bg-slate-800 animate-pulse"
               />
             ))}
           </div>
         ) : (
-          <Tabs defaultValue="processing">
-            <TabsList>
-              <TabsTrigger value="processing">កំពុងសិក្សា</TabsTrigger>
-              <TabsTrigger value="completed">បានបញ្ចប់</TabsTrigger>
-            </TabsList>
-            <TabsContent value="processing" className="pt-4">
-              <ClaimList
-                enrollments={claimableInProgress}
-                completed={false}
-                emptyTitle="មិនទាន់អាចទាមទារវិញ្ញាបនបត្របានទេ"
-                emptyDescription="បន្តរៀនឲ្យវឌ្ឍនភាពសិក្សាឈានដល់ ៨០% ដើម្បីទាមទារវិញ្ញាបនបត្រ"
-              />
-            </TabsContent>
-            <TabsContent value="completed" className="pt-4">
-              <ClaimList
-                enrollments={completedList}
-                completed
-                emptyTitle="អ្នកមិនទាន់មានវគ្គសិក្សាបានបញ្ចប់នៅឡើយទេ"
-                emptyDescription="បញ្ចប់វគ្គសិក្សាដើម្បីទាមទារវិញ្ញាបនបត្រ"
-              />
-            </TabsContent>
-          </Tabs>
+          <ClaimList
+            enrollments={completedList}
+            completed
+            emptyTitle="អ្នកមិនទាន់មានវគ្គសិក្សាបានបញ្ចប់នៅឡើយទេ"
+            emptyDescription="បញ្ចប់វគ្គសិក្សាដើម្បីទាមទារវិញ្ញាបនបត្រ"
+          />
         )}
       </CardContent>
     </Card>

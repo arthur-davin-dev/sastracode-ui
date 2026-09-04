@@ -11,7 +11,7 @@ import {
 const benefits = [
   { icon: PlayCircle, title: "អាចចូលមើលមេរៀនវីដេអូបានពេញលេញ", description: "និងឯកសារវគ្គសិក្សាទាំងអស់" },
   { icon: Download, title: "ទាញយកឯកសារ", description: "ធនធាន និងឯកសារកូដ" },
-  { icon: Award, title: "វិញ្ញាបនបត្របញ្ជាក់ការបញ្ចប់វគ្គសិក្សា", description: "អាចប្រើបានបន្ទាប់ពីបញ្ចប់" },
+  { icon: Award, title: "វិញ្ញាបនបត្របញ្ជាក់ការបញ្ចប់វគ្គសិក្សា", description: "ទាមទារបានពេលវឌ្ឍនភាពសិក្សាដល់ ៨០%" },
   { icon: MessageCircleQuestion, title: "ការគាំទ្រសំណួរ និងចម្លើយ (Q&A)", description: "សួរសំណួរនៅក្នុងការពិភាក្សា" },
   { icon: InfinityIcon, title: "រៀនតាមល្បឿនផ្ទាល់ខ្លួនរបស់អ្នក", description: "ជាមួយនឹងសិទ្ធិប្រើប្រាស់បានពេញមួយជីវិត" },
   { icon: Monitor, title: "អាចចូលប្រើបាននៅលើឧបករណ៍ទាំងអស់", description: "គ្រប់ពេលវេលា និងគ្រប់ទីកន្លែង" },

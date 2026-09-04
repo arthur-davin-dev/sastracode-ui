@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { toast } from "sonner";
+import { playgroundToast } from "@/components/ui/playground-toast";
 
 import { getApiErrorMessage } from "@/lib/api/error";
 import type { Course } from "@/lib/course/courses";
@@ -80,7 +80,7 @@ export function PaymentModal({
 
       setPaymentStatus("idle");
 
-      toast.error(
+      playgroundToast.error(
         getApiErrorMessage(error, t.courses.detail.payment.purchaseFailed),
       );
     }

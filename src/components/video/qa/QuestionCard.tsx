@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { toast } from "sonner";
+import { playgroundToast } from "@/components/ui/playground-toast";
 import { CheckCircle2, MessageCircle, MoreHorizontal, Pencil } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -86,11 +86,11 @@ export function QuestionCard({
     setMenuOpen(false);
     try {
       await resolveQuestion(question.id).unwrap();
-      toast.success(
+      playgroundToast.success(
         question.isResolved ? qa.questionReopened : qa.questionResolved,
       );
     } catch (error) {
-      toast.error(getApiErrorMessage(error, qa.questionUpdateError));
+      playgroundToast.error(getApiErrorMessage(error, qa.questionUpdateError));
     }
   }
 
@@ -103,9 +103,9 @@ export function QuestionCard({
         content: draftContent.trim(),
       }).unwrap();
       setEditing(false);
-      toast.success(qa.questionUpdated);
+      playgroundToast.success(qa.questionUpdated);
     } catch (error) {
-      toast.error(getApiErrorMessage(error, qa.questionUpdateError));
+      playgroundToast.error(getApiErrorMessage(error, qa.questionUpdateError));
     }
   }
 

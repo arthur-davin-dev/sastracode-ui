@@ -36,6 +36,43 @@ function withCourseSlug(
 }
 
 /**
+ * Certificate notifications carry a deep link built with the PLURAL
+ * `/certificates/{id}` path, but the frontend route is the SINGULAR
+ * `/certificate/{id}` (see `app/(achivement)/certificate/[certificateId]`),
+ * whose page fetches the certificate with `useGetCertificateByIdQuery`. Rewrite
+ * the leading segment so the link resolves; the id and any query/hash are kept.
+ * When the deep link is missing, fall back to `referenceId`.
+ *
+ * Returns `null` when the notification is not certificate-related.
+ */
+function certificateHref(
+  item: Pick<
+    ApiNotification,
+    "type" | "referenceType" | "referenceId" | "deepLink"
+  >,
+): string | null {
+  const path = item.deepLink?.split(/[?#]/)[0].replace(/\/+$/, "");
+  const suffix = path ? item.deepLink!.slice(path.length) : "";
+
+  if (path === "/certificates" || path?.startsWith("/certificates/")) {
+    return `/certificate${path.slice("/certificates".length)}${suffix}`;
+  }
+
+  const isCertificate =
+    item.type === "CERTIFICATE" || item.referenceType === "CERTIFICATE";
+  if (
+    isCertificate &&
+    !path &&
+    item.referenceId &&
+    UUID_RE.test(item.referenceId)
+  ) {
+    return `/certificate/${item.referenceId}`;
+  }
+
+  return null;
+}
+
+/**
  * Resolve the in-app URL a notification should open.
  *
  * The backend-provided `deepLink` is used verbatim for every notification type
@@ -46,6 +83,9 @@ function withCourseSlug(
  *   - course notifications (completion, enrollment, lecture added, …), whose
  *     deep link carries the course UUID — rewritten to the course slug when
  *     {@link ResolveNotificationHrefOptions.courseSlugById} maps that id.
+ *   - certificate notifications, whose deep link uses the plural
+ *     `/certificates/{id}` path — rewritten to the singular `/certificate/{id}`
+ *     route that actually exists (see {@link certificateHref}).
  *
  * Frontend-only: the backend deepLink generation is not changed.
  */
@@ -56,7 +96,10 @@ export interface ResolveNotificationHrefOptions {
 }
 
 export function resolveNotificationHref(
-  item: Pick<ApiNotification, "type" | "referenceType" | "deepLink">,
+  item: Pick<
+    ApiNotification,
+    "type" | "referenceType" | "referenceId" | "deepLink"
+  >,
   options: ResolveNotificationHrefOptions = {},
 ): string {
   const { courseSlugById, fallback = "/notifications" } = options;
@@ -68,6 +111,9 @@ export function resolveNotificationHref(
     deepLinkPath === "/profile/badges";
 
   if (isBadgeNotification) return BADGE_UI_ROUTE;
+
+  const certHref = certificateHref(item);
+  if (certHref) return certHref;
 
   return withCourseSlug(item.deepLink || fallback, courseSlugById);
 }
