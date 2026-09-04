@@ -90,7 +90,6 @@ export default function Achievement() {
   const continueLearningQuery = useGetContinueLearningQuery(undefined, {
     skip: !authenticated,
   });
-  // Only the running total is needed here — ask for a single row.
   const certificatesQuery = useGetMyCertificatesQuery(
     { page: 0, size: 1 },
     { skip: !authenticated },
@@ -190,10 +189,6 @@ export default function Achievement() {
     ? displayedActivities
     : displayedActivities.slice(0, 4);
 
-  // Arriving from a badge notification (`/achivement#earned-badges`): once the
-  // "មេដាយដែលទទួលបាន" section has rendered, smooth-scroll it into view. Gated on
-  // the badges query so it waits for the real content, with a few re-aims to
-  // absorb the section's entrance animation / layout settling.
   const scrolledToBadgesRef = useRef(false);
   useEffect(() => {
     const HASH = "#earned-badges";
