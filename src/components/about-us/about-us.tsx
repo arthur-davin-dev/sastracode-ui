@@ -15,7 +15,7 @@ export default function AboutUs() {
         <HeroSection />
         <Mission />
         <Timeline />
-        <Stack></Stack>
+        {/* <Stack></Stack> */}
         {/* Grouping related team sections for better document outline  */}
         <section aria-labelledby="team-section-heading">
           <Mentor />
